@@ -1,0 +1,52 @@
+package	gate;
+
+//gate server connection and related
+
+message	GateConnection
+{
+ 	enum EventType {
+ 		EVENT_CONNECTED		=	1;
+ 		EVENT_CLOSE			=	2;
+ 		EVENT_DATA			=	3;
+  	};	
+  	enum ConnectionCloseReason
+  	{
+  		CONNECTION_CLOSE_BY_DEFAULT	= 0;
+  		CONNECTION_CLOSE_BY_CLIENT	= 1;
+		CONNECTION_CLOSE_STOP_SVR 	= 2;
+		CONNECTION_CLOSE_EXCEPTION	= 3;
+  	};
+	required	EventType	event	=	1;	//event type
+	required	uint32		idx		=	2;	//connection idx
+	optional	uint32		ip		=	3;	//when event is connect,it's valid
+	optional	uint32		port	=	4;	//when event is connect,it's valid
+	optional	uint32		reason	=	5;	//when event is close,it's valid .
+	optional	uint64		uid		=	6;	//user id
+};
+
+message AuthReq
+{
+	required	uint32	id		=	1;	//uid
+	required	uint32	auth	=	2;	//type
+	optional	string	token	=	3;	//passwd when type is password auth	
+};
+
+message AuthRsp
+{
+	required	uint32	result	=	1;	//result
+};
+
+
+message GateAuth
+{
+	enum	GateAuthCMD
+	{
+		GATE_NEED_AUTH		=	1;
+		GATE_AUTH_REQ		=	2;
+		GATE_AUTH_RSP		=	3;
+	};
+	required	uint32		cmd 	= 	1;
+	optional	AuthReq		authReq	=	2;
+	optional	AuthRsp		authRsp	=	3;	
+}
+
