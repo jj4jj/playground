@@ -1,0 +1,5 @@
+main game svr (player agent) 
+----------------------------
+login
+register
+rely msg sth
