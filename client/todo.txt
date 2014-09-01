@@ -1,0 +1,9 @@
+a simple client demo
+--------------------
+connect
+auth
+login
+register
+simple playing 
+reconnect
++lua interface 
