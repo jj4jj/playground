@@ -51,7 +51,9 @@ int     GateServerHandler::OnNewConnection(TcpSocket   &   client)
     ga.SerializeToString(&seri);      
     //todo :  add a buffer cache the msg ?
     //...
-    client.Send(Buffer(seri.get_data,seri.length()));     
+    client.Send(Buffer(seri.data(),seri.length()));  
+    m_vecConnections[iIdx].bState = Connection::STATE_AUTHING;
+    
     return 0; 
 }
 int     GateServerHandler::OnClientDataRecv(TcpSocket &   client,const Buffer & recvBuffer) 
