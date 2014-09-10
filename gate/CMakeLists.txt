@@ -18,7 +18,7 @@ link_directories(
 )
 
 #it will generate a exe
-ADD_EXECUTABLE(pingpang_server
+ADD_EXECUTABLE(gate
 		${playground_gate_SRCS}
 )
 
