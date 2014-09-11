@@ -5,7 +5,7 @@
 #if 1
 GateServerHandler::~GateServerHandler()
 {
-    for(int i = 0;i < m_vecConnections.size(); ++i)
+    for(int i = 0;i < (int)m_vecConnections.size(); ++i)
     {
         Connection * pConn = GetConnectionByIdx(i);
         if(!pConn)
@@ -35,7 +35,7 @@ int     GateServerHandler::OnNewConnection(TcpSocket   &   client)
     int iIdx = GetNextIdx();
     LOG_INFO("new connection comming fd = %d alived = %d total = %d",client.GetFD(),m_iAlivedConnections,m_vecConnections.size());
     if(!m_vecConnections[iIdx].recvBuffer.pBuffer &&
-        m_vecConnections[iIdx].recvBuffer.Create(Connection::DEFAULT_RECV_BUFFER_SIZE))
+        m_vecConnections[iIdx].recvBuffer.Create(Connection::DEFAULT_RECV_BUFF_SIZE))
     {
         LOG_ERROR("client allocate recv buffer error");
         client.Close();
@@ -46,13 +46,26 @@ int     GateServerHandler::OnNewConnection(TcpSocket   &   client)
     m_vecConnections[iIdx].cliSocket = client;
     //authorizing
     gate::GateAuth    ga;
-    ga.set_cmd(GateAuth::GATE_NEED_AUTH);
-    string  seri;
-    ga.SerializeToString(&seri);      
+    ga.set_cmd(gate::GateAuth::GATE_NEED_AUTH);
+
+    //void* data, int size
+    Buffer buf;
+    if(buf.Create(ga.ByteSize()))
+    {
+        LOG_ERROR("no mem !");
+        return -1;
+    }
+    if(!ga.SerializeToArray(buf.pBuffer,buf.iCap))
+    {
+        LOG_ERROR("serialize error !");
+        buf.Destroy();
+        return -1;
+    }
     //todo :  add a buffer cache the msg ?
     //...
-    client.Send(Buffer(seri.data(),seri.length()));  
+    client.Send(buf);  
     m_vecConnections[iIdx].bState = Connection::STATE_AUTHING;
+    buf.Destroy();
     
     return 0; 
 }
@@ -85,7 +98,7 @@ int     GateServerHandler::OnClientDataRecv(TcpSocket &   client,const Buffer & 
                 pConn->recvBuffer.iUsed = pConn->recvBuffer.iCap;
             }
             //sizeof(uint16_t) = 2
-            if(0 == pConn->iMsgLen && pConn->recvBuffer.iUsed > sizeof(uint16_t))
+            if(0 == pConn->iMsgLen && pConn->recvBuffer.iUsed > (int)sizeof(uint16_t))
             {
                 pConn->iMsgLen = ntohs(*(short*)pConn->recvBuffer.pBuffer);                
             }
@@ -98,7 +111,7 @@ int     GateServerHandler::OnClientDataRecv(TcpSocket &   client,const Buffer & 
             //read a auth
             bool    bGotGA = true;
             gate::GateAuth  ga;
-            if(!ga.SerializeFromString(pConn->recvBuffer.pBuffer + sizeof(uint16_t)))
+            if(!ga.ParseFromArray(pConn->recvBuffer.pBuffer + sizeof(uint16_t),pConn->iMsgLen-sizeof(uint16_t)))
             {
                 bGotGA = false;
                 LOG_ERROR("decode ga pack error!");                                        
@@ -112,16 +125,16 @@ int     GateServerHandler::OnClientDataRecv(TcpSocket &   client,const Buffer & 
             if(bGotGA)
             {
                 LOG_INFO("got a ga package cmd = %d uid = %lu type =%d pwd = %s",
-                    ga.get_cmd(),ga.get_authReq().get_id(),
-                    ga.get_authReq().get_auth(),
-                    ga.get_authReq().get_token());
+                    ga.cmd(),ga.authreq().id(),
+                    ga.authreq().auth(),
+                    ga.authreq().token().c_str() );
                 //authorized
                 pConn->recvBuffer.Destroy();
-                pConn->iState = Connection::STATE_AUTHORIZED;
+                pConn->bState = Connection::STATE_AUTHORIZED;
             }
             else
             {
-                RemoveConnection(pConn);
+                RemoveConnection(pConn,gate::GateConnection::CONNECTION_CLOSE_EXCEPTION);
             }                
         }
         break;
@@ -134,7 +147,7 @@ int     GateServerHandler::OnClientDataRecv(TcpSocket &   client,const Buffer & 
         case Connection::STATE_CONNECTED:
             //nothing to do ? error state ?
         default:
-            RemoveConnection(pConn);
+            RemoveConnection(pConn,gate::GateConnection::CONNECTION_CLOSE_EXCEPTION);
             return -1;
     }    
     return 0;
@@ -150,7 +163,7 @@ int     GateServerHandler::OnConnectionClosed(TcpSocket &  client)
         LOG_ERROR("not found connection by fd = %d",client.GetFD());
         return -1;    
     }
-    RemoveConnection(pConn,0)
+    RemoveConnection(pConn,gate::GateConnection::CONNECTION_CLOSE_BY_CLIENT);
     return 0;
 }
 #endif
@@ -176,11 +189,11 @@ int     GateServerHandler::GetNextIdx()
 }
 void        GateServerHandler::RemoveConnection(Connection* pConn,int iReason)
 {
-    m_mpConnections.erase(pConn->cliSocket.GetFD()));
+    m_mpConnections.erase(pConn->cliSocket.GetFD());
     ReportEvent(pConn,gate::GateConnection::EVENT_CLOSE,iReason);
     pConn->Close();
 }
-Connection* GateServerHandler::GetConnectionByFD(int fd)
+GateServerHandler::Connection* GateServerHandler::GetConnectionByFD(int fd)
 {
     if(m_mpConnections.find(fd) != m_mpConnections.end())
     {
@@ -188,7 +201,7 @@ Connection* GateServerHandler::GetConnectionByFD(int fd)
     }
     return NULL;
 }
-Connection* GateServerHandler::GetConnectionByIdx(int idx)
+GateServerHandler::Connection* GateServerHandler::GetConnectionByIdx(int idx)
 {
     if(idx <= 0 || idx >= m_vecConnections.size())
     {
@@ -204,45 +217,50 @@ void        GateServerHandler::ReportEvent(Connection* pConn,int iEvent,int iPar
 {
 
     gate::GateConnection gc;
-    gc.set_event(iEvent);
-    gc.set_idx(m_mpConnections[pConn->cliClient.GetFD());    
+    gc.set_event((gate::GateConnection_EventType)iEvent);
+    gc.set_idx(m_mpConnections[pConn->cliSocket.GetFD()]);    
     switch(iEvent)
     {
-        case GateConnection::EVENT_CONNECTED:
-        gc.set_ip(pConn->cliSocket.GetPeerAddress().GetIP())
-        gc.set_port(pConn->cliSocket.GetPeerAddress().GetPort())
-        gc.set_uid(pConn->ullUid);
+        case gate::GateConnection::EVENT_CONNECTED:
+        gc.set_ip(pConn->cliSocket.GetPeerAddress().GetIP());
+        gc.set_port(pConn->cliSocket.GetPeerAddress().GetPort());
+        gc.set_uid(pConn->ulUid);
         break;
-        case GateConnection::EVENT_CLOSE:
-        gc.set_uid(pConn->ullUid);            
+        case gate::GateConnection::EVENT_CLOSE:
+        gc.set_uid(pConn->ulUid);            
         gc.set_reason(iParam);
         break;
-        case GateConnection::EVENT_DATA:
+        case gate::GateConnection::EVENT_DATA:
         break;
         default:
         assert(false);
-        return -1;
+        return ;
         break;
     }
     ///////////////////////////////////////////////
     LOG_INFO("report event = %d to dst = %d",iEvent,pConn->iDst);
 
-    string msg;
-    gc.SerializeToString(&msg);
-    SendToAgent(pConn->iDst,Buffer(msg.data(),msg.legnth());
+    Buffer buff;
+    buff.Create(gc.ByteSize());
+    gc.SerializeToArray(buff.pBuffer,buff.iCap);
+    SendToAgent(pConn->iDst,buff);
+    buff.Destroy();
 }
 void        GateServerHandler::ForwardData(Connection* pConn,const Buffer& buffer)
 {
     gate::GateConnection gc;
     gc.set_event(gate::GateConnection::EVENT_DATA);
-    gc.set_idx(m_mpConnections[pConn->cliClient.GetFD());    
-    gc.set_uid(pConn->ullUid);            
+    gc.set_idx(m_mpConnections[pConn->cliSocket.GetFD()]);    
+    gc.set_uid(pConn->ulUid);            
     string msg;
-    gc.SerializeToString(&msg);
+    Buffer buff;
+    buff.Create(gc.ByteSize());
+    gc.SerializeToArray(buff.pBuffer,buff.iCap);
     std::vector<Buffer> vBuff;
-    vBuff.push_back(gc);
+    vBuff.push_back(buff);
     vBuff.push_back(buffer);
     SendToAgent(pConn->iDst,vBuff);    
+    buff.Destroy();
 }
 int         GateServerHandler::SendToAgent(int iDst,const std::vector<Buffer>  &  vBuff)
 {
@@ -258,7 +276,7 @@ int         GateServerHandler::SendToAgent(int iDst,const std::vector<Buffer>  &
     }
     uint16_t   nLen = htons((uint16_t)iLength);
 
-    ChannelAgent  * pChannel = ChannelAgentMgr::Insntace().GetChannel(iDst);
+    ChannelAgent  * pChannel = ChannelAgentMgr::Instance().GetChannel(iDst);
     if(pChannel)
     {
         LOG_ERROR("channel agent is not ready !");
