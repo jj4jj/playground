@@ -13,7 +13,7 @@ include_directories(
 #base dir linked lib dir
 #
 link_directories(
-	${SSUKITS_HOME}/lib
+	${SSUKITS_HOME}/bin
 	/usr/lib
 )
 
@@ -26,6 +26,7 @@ ADD_EXECUTABLE(gate
 target_link_libraries(gate
 	ssukits_base.a
 	ssukits_net.a	
+	protobuf.a
 )
 
 #installing

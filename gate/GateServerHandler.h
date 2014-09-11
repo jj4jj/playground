@@ -5,6 +5,7 @@
 //msg
 //
 
+class GateChannelProxy;
 class GateServerHandler: public TcpServerHandler
 {
 public:
@@ -13,7 +14,7 @@ public:
     int     OnConnectionClosed( TcpSocket &  client);
 public:
     virtual ~GateServerHandler();
-    GateServerHandler(int iMaxConnections);
+    GateServerHandler(GateChannelProxy * p,int iMaxConnections);
 
 private:
     int     GetNextIdx();
@@ -31,21 +32,22 @@ private:
         };
 		enum
 		{
-			DEFAULT_RECV_BUFF_LEN = 4096,
+			DEFAULT_RECV_BUFF_SIZE = 4096,
 		};
         TcpSocket   cliSocket;
         Buffer      recvBuffer;
         //Buffer      sendBuffer;
         int         iDst;
         int         iMsgLen;
-        int         iState;//invalid ? init ? authorized ? 
+        int         bState;//invalid ? init ? authorized ? 
         uint64_t    ulUid;//
-        Connection():iState(0),iDst(0),iMsgLen(0),ulUid(0)
+    public:
+        Connection():iDst(0),iMsgLen(0),bState(0),ulUid(0)
         {
         }
         void Close()
         {
-            switch(iState)
+            switch(bState)
             {
                 case STATE_CONNECTED:
                 case STATE_AUTHING:
@@ -59,7 +61,7 @@ private:
                 case STATE_INVALID:
                 break;
             }
-            iState = STATE_INVALID;
+            bState = STATE_INVALID;
         }
         ~Connection()
         {
@@ -83,6 +85,7 @@ private:
     int     m_iMaxConnection;
     int     m_iAlivedConnections;    
     int     m_iLastFreeIdx ;
+    GateChannelProxy * m_pChannelProxy;
 }; 
 
 
