@@ -29,6 +29,10 @@ private:
             STATE_AUTHING       = 2,
             STATE_AUTHORIZED    = 3,
         };
+		enum
+		{
+			DEFAULT_RECV_BUFF_LEN = 4096,
+		};
         TcpSocket   cliSocket;
         Buffer      recvBuffer;
         //Buffer      sendBuffer;

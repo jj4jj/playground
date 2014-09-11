@@ -1,7 +1,7 @@
 
 #include "GateServerHandler.h"
 #include "base/Log.h"
-#include "proto/gate/gate.ph.h"
+#include "proto/gate/gate.pb.h"
 #if 1
 GateServerHandler::~GateServerHandler()
 {
@@ -35,7 +35,7 @@ int     GateServerHandler::OnNewConnection(TcpSocket   &   client)
     int iIdx = GetNextIdx();
     LOG_INFO("new connection comming fd = %d alived = %d total = %d",client.GetFD(),m_iAlivedConnections,m_vecConnections.size());
     if(!m_vecConnections[iIdx].recvBuffer.pBuffer &&
-        m_vecConnections[iIdx].recvBuffer.Create())
+        m_vecConnections[iIdx].recvBuffer.Create(Connection::DEFAULT_RECV_BUFFER_SIZE))
     {
         LOG_ERROR("client allocate recv buffer error");
         client.Close();

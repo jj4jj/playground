@@ -1,4 +1,4 @@
 dep:
 	ssukits
-	protobuf
+	protobuf:https://github.com/google/protobuf.git
 	zeromq-3.2.4

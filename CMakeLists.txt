@@ -49,7 +49,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 set(SSUKITS_HOME ${CMAKE_SOURCE_DIR}/../ssukits)
 
 # install dir
-set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/../inst-playeground)
+set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/bin)
 
 
 add_subdirectory(gate)
