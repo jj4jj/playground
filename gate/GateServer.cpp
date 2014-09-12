@@ -1,6 +1,10 @@
 #include "GateServerHandler.h"
 #include "net/TcpServer.h"
+<<<<<<< HEAD
 #include "GateChannelProxy.h"
+=======
+#include "GateChannelProxy.h"
+>>>>>>> 260f3888a8736281c9b1eb253c283df674e163a7
 int main()
 {
     TcpServer   server;
@@ -9,6 +13,7 @@ int main()
     if(server.Init(SockAddress(1234),true,iMaxClient))
     {
         return -1;
+<<<<<<< HEAD
     }
     GateChannelProxy proxy;
     if(proxy.Init())
@@ -16,6 +21,15 @@ int main()
         return -1;
     }
     TcpServerHandler* pHandler = new GateServerHandler(&proxy,iMaxClient);
+=======
+    }
+    GateChannelProxy proxy;
+    if(proxy.Init())
+    {
+        return -1;
+    }
+    TcpServerHandler* pHandler = new GateServerHandler(&proxy,iMaxClient);
+>>>>>>> 260f3888a8736281c9b1eb253c283df674e163a7
     server.SetServerHandler(pHandler);
     if(server.Start()!=0)
     {
