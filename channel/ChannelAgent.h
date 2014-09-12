@@ -1,6 +1,7 @@
 #pragma once
 #include "zmq.h"
-
+#include "base/Buffer.h"
+#include "base/CommonMacro.h"
 
 struct  ChannelMessage
 {
@@ -29,12 +30,12 @@ public:
         zmq_msg_t   sndMsg;
         zmq_msg_init(&sndMsg);
         zmq_msg_init_size(&sndMsg,buffer.iUsed);
-        STRNCPY(zmq_msg_data(&sndMsg),buffer.pBuffer,buffer.iUsed);
+        memcpy(zmq_msg_data(&sndMsg),buffer.pBuffer,buffer.iUsed);
         int iRet = zmq_msg_send(&sndMsg,sender,0);
         zmq_msg_close(&sndMsg);
         if(iRet)
         {
-            LOG_ERROR("zmq send msg error = %d",iRet):
+            LOG_ERROR("zmq send msg error = %d",iRet);
             return -1;
         }
         return 0;
@@ -47,7 +48,7 @@ public:
         if(iRet &&
            iRet != EINTR )
         {
-            LOG_ERROR("zmq recv msg error = %d",iRet):
+            LOG_ERROR("zmq recv msg error = %d",iRet);
             zmq_msg_close(&rcvMsg);
             return -1;
         }
@@ -149,19 +150,16 @@ class ChannelMessageHandler;
 class ChannelAgent
 {
 public:
-    ChannelAgent(){}
+    ChannelAgent();
     virtual    ~ChannelAgent();
 public:
-    virtual    int    Init(ChannelMessageHandler * p){channel.Init();pHandler = p;return 0;}
+    virtual    int    Init(void * ctx,int mode,const char * pszName,const char* pszAddr,ChannelMessageHandler * p);
 public:
-    int        CreateChannel(int id,void* ctx,
-                    const char* pszLocalAddr,const char* pszRemoteAddr);
-    void       DestroyChannel();
     //return 0 get a message , otherwise , return error code
     int GetMessage(ChannelMessage & msg);
     //return 0 is ok , otherwise return an error code
     int PostMessage(const ChannelMessage & msg);
-    inline int DispatchMessage(const ChannelMessage & msg){return pHandler->OnRecvMessage(msg);}
+    int DispatchMessage(const ChannelMessage & msg);
 private:
     Channel     channel;    
     ChannelMessageHandler*  pHandler;

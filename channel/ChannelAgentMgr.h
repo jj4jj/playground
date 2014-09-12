@@ -11,9 +11,9 @@ public:
     typedef unordered_map<int,ChannelAgentPtr >     ChannelAgentMap;
     typedef ChannelAgentMap::iterator               ChannelAgentMapItr;
 public:
-    int             Init(const char* pszLocalAddr);
-    int             AddChannel(int id,const char* pszLocalAddr,const char* pszRemoteAddr,ChannelMessageHandler* pHandler);
-    ChannelAgentPtr GetChannel(int id);
+    int             Init();
+    int             AddChannel(int id,bool bRemote,const char * pszName,const char* pszAddr,ChannelMessageHandler* pHandler);
+    ChannelAgent*   GetChannel(int id);
     int             RemoveChannel(int id);
     int             Polling();
 private:

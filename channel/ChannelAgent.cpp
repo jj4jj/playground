@@ -44,8 +44,12 @@ int ChannelAgent::GetMessage(ChannelMessage & msg)
 int ChannelAgent::PostMessage(const ChannelMessage & msg)
 {
     //post the message to channel    
-    Buffer buff(msg.pData,msg.dwSize);
+    Buffer buff((char*)msg.pData,msg.dwSize);
     return channel.Write(buff);
+}
+int ChannelAgent::DispatchMessage(const ChannelMessage & msg)
+{
+    return pHandler->OnRecvMessage(msg);
 }
 #endif
 

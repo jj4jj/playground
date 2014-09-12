@@ -3,8 +3,9 @@
 #include "base/Log.h"
 #include "ChannelAgent.h"
 #include "ChannelAgentMgr.h"
+#include "zmq.h"
 
-int             ChannelAgentMgr::Init(const char* pszLocalAddr)
+int             ChannelAgentMgr::Init()
 {
     assert(NULL == zmq_context);
     zmq_context = zmq_ctx_new();
@@ -16,46 +17,41 @@ int             ChannelAgentMgr::Init(const char* pszLocalAddr)
             
     return 0;
 }
-int             ChannelAgentMgr::AddChannel(int id,const char* pszLocalAddr,const char* pszRemoteAddr,ChannelMessageHandler* pHandler)
+int             ChannelAgentMgr::AddChannel(int id,bool bRemote,const char * pszName,const char* pszAddr,ChannelMessageHandler* pHandler)
 {
     if(m_mpChannelAgent.find(id) != m_mpChannelAgent.end())
     {
         //already exist
-        LOG_ERROR("register channel repeatly id = %d",id):
+        LOG_ERROR("register channel repeatly id = %d",id);
         return -1;
     }
     ChannelAgentPtr p(new ChannelAgent());
-    if(p->Init(pHandler))
+    int chnMode = bRemote?Channel::CHANNEL_MODE_REMOTE:Channel::CHANNEL_MODE_LOCAL;
+    int iRet = p->Init(zmq_context,chnMode,pszName,pszAddr,pHandler);
+    if(iRet)
     {
         LOG_ERROR("create channell error = %d",iRet);
         return -2;
     }
-    int iRet = p->CreateChannel(id,zmq_context,pszLocalAddr,pszRemoteAddr);
-    if(iRet)
-    {
-        LOG_ERROR("create channell error = %d",iRet);
-        return -3;
-    }
     m_mpChannelAgent[id] = p;    
     return 0;
 }
-ChannelAgentPtr ChannelAgentMgr::GetChannel(int id)
+ChannelAgent* ChannelAgentMgr::GetChannel(int id)
 {
     if(m_mpChannelAgent.find(id)!= m_mpChannelAgent.end())
     {
-        return m_mpChannelAgent[id];
+        return m_mpChannelAgent[id].get();
     }
     //////////////
-    return nullptr;
+    return NULL;
 }
 int             ChannelAgentMgr::RemoveChannel(int id)
 {
-    ChannelAgentPtr p = GetChannel(id);
+    ChannelAgent* p = GetChannel(id);
     if(!p)
     {
         return -1;
     }
-    p->DestroyChannel();
     m_mpChannelAgent.erase(id);
     return 0;
 }
