@@ -10,9 +10,138 @@ struct  ChannelMessage
 
 struct Channel
 {
-    int   id;
+    enum
+    {
+        CHANNEL_MODE_INVALID = 0,
+        CHANNEL_MODE_LOCAL = 1,
+        CHANNEL_MODE_REMOTE = 2,
+    };
+    int   mode;
     void* sender;
-    void* receiver;    
+    void* receiver; 
+    Buffer rcvBuffer;
+public:
+    Channel():mode(CHANNEL_MODE_INVALID),sender(NULL),receiver(NULL)
+    {
+    }
+    int Write(const Buffer & buffer)
+    {
+        zmq_msg_t   sndMsg;
+        zmq_msg_init(&sndMsg);
+        zmq_msg_init_size(&sndMsg,buffer.iUsed);
+        STRNCPY(zmq_msg_data(&sndMsg),buffer.pBuffer,buffer.iUsed);
+        int iRet = zmq_msg_send(&sndMsg,sender,0);
+        zmq_msg_close(&sndMsg);
+        if(iRet)
+        {
+            LOG_ERROR("zmq send msg error = %d",iRet):
+            return -1;
+        }
+        return 0;
+    }
+    int Read(Buffer & buffer)
+    {
+        zmq_msg_t   rcvMsg;
+        zmq_msg_init(&rcvMsg);        
+        int iRet = zmq_msg_recv(&rcvMsg,receiver,0);
+        if(iRet &&
+           iRet != EINTR )
+        {
+            LOG_ERROR("zmq recv msg error = %d",iRet):
+            zmq_msg_close(&rcvMsg);
+            return -1;
+        }
+
+        int msglen = zmq_msg_size(&rcvMsg);
+        //todo zero copy
+        if(rcvBuffer.iUsed < msglen)
+        {
+            rcvBuffer.Destroy();
+            if(buffer.Create(msglen))
+            {
+                LOG_ERROR("msg buffer create error !");
+                zmq_msg_close(&rcvMsg);
+                return -1;
+            }
+        }        
+        memcpy(rcvBuffer.pBuffer,zmq_msg_data(&rcvMsg),rcvBuffer.iCap);        
+        zmq_msg_close(&rcvMsg);
+        buffer = rcvBuffer;
+        return 0;
+    }
+    int Create(int mode,void* ctx,const char* pszAddr,const char* name,int hwm = 1000)
+    {
+        char senderName[32];
+        char receiverName[32];
+        SNPRINTF(senderName,sizeof(senderName),"%s:snd:%d",name,mode);
+        SNPRINTF(receiverName,sizeof(senderName),"%s:rcv:%d",name,mode);
+        sender = receiver = NULL;
+        /////////////////////////////////////////////////////////////////
+        sender = zmq_socket(ctx,ZMQ_PUSH);                        
+        if(!sender)
+        {
+            return -1;
+        }
+        //set name
+        zmq_setsockopt(sender,ZMQ_IDENTITY,senderName,strlen(senderName));            
+        //set hwm
+        zmq_setsockopt(sender,ZMQ_SNDHWM,&hwm,sizeof(hwm));
+        zmq_setsockopt(sender,ZMQ_RCVHWM,&hwm,sizeof(hwm));
+
+        if(mode == CHANNEL_MODE_LOCAL && zmq_bind(ctx,pszAddr))
+        {
+            Destroy();
+            return -2;
+        }
+        if(mode == CHANNEL_MODE_REMOTE && zmq_connect(ctx,pszAddr))
+        {
+            Destroy();
+            return -2;
+        }             
+        //////////////////////////////////////////////////////////
+        receiver = zmq_socket(ctx,ZMQ_PULL);                        
+        if(!receiver)
+        {
+            Destroy();
+            return -3;
+        }
+        //set name
+        zmq_setsockopt(receiver,ZMQ_IDENTITY,receiverName,strlen(receiverName));            
+        //set hwm
+        zmq_setsockopt(receiver,ZMQ_SNDHWM,&hwm,sizeof(hwm));
+        zmq_setsockopt(receiver,ZMQ_RCVHWM,&hwm,sizeof(hwm));
+        if(mode == CHANNEL_MODE_LOCAL && zmq_bind(ctx,pszAddr))
+        {
+            Destroy();
+            return -4;
+        }            
+        if(mode == CHANNEL_MODE_REMOTE && zmq_connect(ctx,pszAddr))
+        {
+            Destroy();            
+            return -4;
+        }   
+        /////////////////////////////////////////////////////////////
+
+        return 0;
+    }
+    void Destroy()
+    {
+        if(sender)
+        {
+            zmq_close(sender);
+        }
+        if(receiver)
+        {
+            zmq_close(receiver);
+        }
+        sender = NULL;
+        receiver = NULL;
+        mode = CHANNEL_MODE_INVALID;
+    }
+    ~Channel()
+    {
+        Destroy();
+    }
 };
 
 class ChannelMessageHandler;
@@ -26,65 +155,25 @@ public:
     virtual    int    Init(ChannelMessageHandler * p){channel.Init();pHandler = p;return 0;}
 public:
     int        CreateChannel(int id,void* ctx,
-                    const char* pszLocalAddr,const char* pszRemoteAddr)
-    {
-        void* receiver = NULL,sender = NULL; 
-        receiver = zmq_socket(ctx,zmq::ZMQ_PULL);
-        zmq_bind(receiver ,pszLocalAddr);
-        if(!receiver)
-        {
-            LOG_FATAL("receiver bind %s error !",pszLocalAddr);
-            return -2;
-        }        
-        sender = zmq_socket(ctx,zmq::ZMQ_PUSH);
-        zmq_bind(sender,pszRemoteAddr);
-        if(!sender)
-        {
-            LOG_FATAL("sender bind %s error !",pszLocalAddr);
-            zmq_close(receiver);
-            return -3;
-        }        
-        channel.id = id;
-        channel.sender = sender;
-        channel.receiver = receiver;
-        return 0;
-    }
-    void       DestroyChannel()
-    {
-        LOG_INFO("destroy channel id = %d",channel.id);
-        zmq_close(channel.sender);
-        zmq_close(channel.sender);
-        channel.id = -1;
-        channel.sender = NULL;
-        channel.receiver = NULL;
-    }
+                    const char* pszLocalAddr,const char* pszRemoteAddr);
+    void       DestroyChannel();
     //return 0 get a message , otherwise , return error code
-    int GetMessage(ChannelMessage & msg)
-    {
-        //receive a message
-        
-    }
+    int GetMessage(ChannelMessage & msg);
     //return 0 is ok , otherwise return an error code
-    int PostMessage(const ChannelMessage & msg)
-    {
-        //post the message to channel
-    }
-    //
-    inline int DispatchMessage(const ChannelMessage & msg)
-    {
-        return pHandler->OnRecvMessage(msg);
-    }
-
+    int PostMessage(const ChannelMessage & msg);
+    inline int DispatchMessage(const ChannelMessage & msg){return pHandler->OnRecvMessage(msg);}
 private:
     Channel     channel;    
     ChannelMessageHandler*  pHandler;
 };
 
+/////////////////////////////////////////////////////////////////////////////////////
 
 class ChannelMessageHandler
-{
+{    
 public:    
     virtual   int OnRecvMessage(const ChannelMessage & );
+    virtual   ~ChannelMessageHandler();
 public:
     void    SetAgent(ChannelAgent* p){m_pAgent = p;}
 public:

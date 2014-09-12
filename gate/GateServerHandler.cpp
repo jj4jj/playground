@@ -1,7 +1,11 @@
-
-#include "GateServerHandler.h"
 #include "base/Log.h"
 #include "proto/gate/gate.pb.h"
+#include "GateChannelProxy.h"
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+#include "GateServerHandler.h"
+
 #if 1
 GateServerHandler::~GateServerHandler()
 {
@@ -14,12 +18,15 @@ GateServerHandler::~GateServerHandler()
         }
     }
 }
-GateServerHandler::GateServerHandler(int iMaxConnections)
+GateServerHandler::GateServerHandler(GateChannelProxy * p,int iMaxConnections)
 {
     m_iMaxConnection = iMaxConnections;
     m_iAlivedConnections = 0;        
     m_mpConnections.clear();
     m_vecConnections.resize(m_iMaxConnection);
+    m_pChannelProxy = p;
+    /////////////////////////////////////////
+        
 }
 
 
@@ -177,7 +184,7 @@ int     GateServerHandler::GetNextIdx()
     {
         return -1;
     }
-    for(int i = 1;i < m_vecConnections.size(); ++i)
+    for(int i = 1;i < (int)m_vecConnections.size(); ++i)
     {
         if(m_vecConnections[i].bState)
         {
@@ -203,7 +210,7 @@ GateServerHandler::Connection* GateServerHandler::GetConnectionByFD(int fd)
 }
 GateServerHandler::Connection* GateServerHandler::GetConnectionByIdx(int idx)
 {
-    if(idx <= 0 || idx >= m_vecConnections.size())
+    if(idx <= 0 || idx >= (int)m_vecConnections.size())
     {
         return NULL;
     }
@@ -243,7 +250,7 @@ void        GateServerHandler::ReportEvent(Connection* pConn,int iEvent,int iPar
     Buffer buff;
     buff.Create(gc.ByteSize());
     gc.SerializeToArray(buff.pBuffer,buff.iCap);
-    SendToAgent(pConn->iDst,buff);
+    m_pChannelProxy->SendToAgent(pConn->iDst,buff);
     buff.Destroy();
 }
 void        GateServerHandler::ForwardData(Connection* pConn,const Buffer& buffer)
@@ -259,52 +266,8 @@ void        GateServerHandler::ForwardData(Connection* pConn,const Buffer& buffe
     std::vector<Buffer> vBuff;
     vBuff.push_back(buff);
     vBuff.push_back(buffer);
-    SendToAgent(pConn->iDst,vBuff);    
+    m_pChannelProxy->SendToAgent(pConn->iDst,vBuff);    
     buff.Destroy();
-}
-int         GateServerHandler::SendToAgent(int iDst,const std::vector<Buffer>  &  vBuff)
-{
-    int iLength = 0;
-    for(int i = 0;i < vBuff.size(); ++i)
-    {
-        iLength += vBuff[i].iUsed;
-    }   
-    if(iLength > 0x7FFF)
-    {
-        LOG_ERROR("Buffer size is too much = %d",iLength);
-        return -1;
-    }
-    uint16_t   nLen = htons((uint16_t)iLength);
-
-    ChannelAgent  * pChannel = ChannelAgentMgr::Instance().GetChannel(iDst);
-    if(pChannel)
-    {
-        LOG_ERROR("channel agent is not ready !");
-        return -1;
-    }
-    //////////////////////////////////////////////
-    //buffer 
-    //len
-    //msg
-        //ga_connection
-        //data
-    if(pChannel->GetAvaileSize() < iLength)
-    {
-        LOG_ERROR("channel has no more space");
-        return -1;
-    }
-    pChannel->Write(Buffer((char*)&nLen,sizeof(nLen)));
-    for(int i  = 0;i < vBuff.size(); ++i)
-    {
-        pChannel->Write(vBuff[i]);
-    }
-    return 0;
-}
-int         GateServerHandler::SendToAgent(int iDst,Buffer   buff)
-{
-    vector<Buffer>  v;
-    v.push_back(buff);
-    return SendToAgent(iDst,v);
 }
 
 #endif

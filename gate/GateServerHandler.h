@@ -5,6 +5,7 @@
 //msg
 //
 
+class GateChannelProxy;
 class GateServerHandler: public TcpServerHandler
 {
 public:
@@ -13,7 +14,7 @@ public:
     int     OnConnectionClosed( TcpSocket &  client);
 public:
     virtual ~GateServerHandler();
-    GateServerHandler(int iMaxConnections);
+    GateServerHandler(GateChannelProxy * p,int iMaxConnections);
 
 private:
     int     GetNextIdx();
@@ -41,7 +42,7 @@ private:
         int         bState;//invalid ? init ? authorized ? 
         uint64_t    ulUid;//
     public:
-        Connection():bState(0),iDst(0),iMsgLen(0),ulUid(0)
+        Connection():iDst(0),iMsgLen(0),bState(0),ulUid(0)
         {
         }
         void Close()
@@ -84,6 +85,7 @@ private:
     int     m_iMaxConnection;
     int     m_iAlivedConnections;    
     int     m_iLastFreeIdx ;
+    GateChannelProxy * m_pChannelProxy;
 }; 
 
 
