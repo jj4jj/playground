@@ -14,6 +14,7 @@ include_directories(
 #
 link_directories(
 	${SSUKITS_HOME}/bin
+	${PROJECT_SOURCE_DIR}/lib
 	/usr/lib
 )
 
@@ -27,6 +28,9 @@ target_link_libraries(gate
 	ssukits_base.a
 	ssukits_net.a	
 	protobuf.a
+	channel.a
+	zmq.a
+	rt
 )
 
 #installing

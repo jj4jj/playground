@@ -32,17 +32,17 @@ endif()
 
 
 # debug common
-set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wall -Wfatal-errors -Wextra -g -rdynamic -gdwarf-2 -g3 -Wl,-Bdynamic -ldl -lpthread ")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -rdynamic -gdwarf-2 -Wall -Wfatal-errors -Wextra -Wno-unused-parameter -ldl -lpthread")
+set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wall -Wfatal-errors -Wextra -g -rdynamic -gdwarf-2 -g3 -Wl,-Bdynamic -ldl -pthread  ")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -rdynamic -gdwarf-2 -Wall -Wfatal-errors -Wextra -Wno-unused-parameter -ldl -pthread ")
 
 # release mode
-set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -O2 -g --no-warnings -ldl -lpthread")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2 -g --no-warnings -ldl -lpthread")
+set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -O2 -g --no-warnings -ldl -pthread")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2 -g --no-warnings -ldl -pthread")
 
 
 # output dir
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
 
@@ -52,12 +52,6 @@ set(SSUKITS_HOME ${CMAKE_SOURCE_DIR}/../ssukits)
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/bin)
 
 
+add_subdirectory(channel)
 add_subdirectory(gate)
-#add_subdirectory(net)
-#add_subdirectory(io)
-#add_subdirectory(math)
-#add_subdirectory(thread)
-#add_subdirectory(utility)
-#add_subdirectory(script)
-#add_subdirectory(test)
 

@@ -11,9 +11,11 @@ include_directories(
 
 #base dir linked lib dir
 #
-#link_directories(
-#  /usr/local/lib
-#)
+link_directories(
+  /usr/local/lib
+  ${SSUKITS_HOME}/lib
+  ${PROJECT_SOURCE_DIR}/lib
+)
 
 #it will generate a static lib for comiling faster
 add_library(channel STATIC
