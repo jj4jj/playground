@@ -5,61 +5,60 @@
     //2.1 gate add test mode , just return 1024B msg .
     //2.3 gate server add no-auth mode 
 
-
 #include "base/Log.h"
 #include "net/TcpClient.h"
 #include "net/BatchTcpConnection.h"
-#include "PingPangHandler.h"
+#include "gate/client/GateClientHandler.h"
 
 static int client_id = 0;
 static Buffer send_buffer;
 
-class TestGateClientHandler: public TcpClientHandler
+class TestGateClientHandler: public GateClientHandler
 {
 public:    
-    int     OnConnected( TcpSocket &   client);
-    //readable
-    int     OnDataRecv( TcpSocket &   client,const Buffer & recvBuffer);
-    //peer close .
-    int     OnDisconnected( TcpSocket &   client);
-    ~PingPangClientHandler(){}
+    virtual   int  OnConnect(bool bSuccess)
+    {
+        ++client_id;
+        LOG_INFO("client connected state = %d id = %d",bSuccess,client_id);
+        return 0;
+    }
+    virtual   int  OnMessage(char* pBuffer,int iBuffLen)
+    {
+        LOG_INFO("recv msg len = %d",iBuffLen);
+        return 0;
+    }
+    virtual   int  OnClose(bool bByMyself)//server or me close 
+    {
+        LOG_INFO("socket has been close by = %d",bByMyself);
+        return 0;
+    }
 };
-int     TestGateClientHandler::OnConnected( TcpSocket &   client)
+
+int main(int argc,char* argv[])
 {
-    ++client_id;    
-    client.Send(send_buffer);
-    return 0;
-}
-//readable
-int     TestGateClientHandler::OnDataRecv( TcpSocket &   client,const Buffer & recvBuffer)
-{
-    //recognize a package
-    return 0;
-}
-//peer close .
-int     TestGateClientHandler::OnDisconnected( TcpSocket &   client)
-{
-    LOG_INFO("client fd = %d is closed",client.GetFD());
-    return 0;
+    if(argc < 4)
+    {
+        printf("usage : ip port client_num\n");
+        return -1;
+    }
+    int port = atoi(argv[1]);
+    const char* pszIP = argv[2];
+    int client_num = atoi(argv[3]);
 
-
-
-
-
-int main()
-{
-
-    Log::Instance().Init("test_gate_client.log");
+    Log::Instance().Init("test_gate_client.log");    
 
     //use batch connection 
     BatchTcpConnection  btc;
-    if(btc.Init(1))
+    if(btc.Init(client_num))
     {
         return -1;
     }
-    if(btc.AddConnection(SockAddress(1234,"127.0.0.1"),TcpClientHandlerSharedPtr( new TestGateClientHandler())))
+    for(int i = 0;i < client_num; ++i)
     {
-        return -1;
+        if(btc.AddConnection(SockAddress(port,pszIP),TcpClientHandlerSharedPtr( new TestGateClientHandler())))
+        {
+            LOG_ERROR("connection error = %d",i);
+        }
     }
     while(true)
     {
