@@ -1,5 +1,6 @@
 
 #include "base/Log.h"
+#include "gate/proto/gate/gate.pb.h"
 #include "GateClientHandler.h"
 
 
@@ -53,8 +54,12 @@ int     GateClientHandler::DispatchMessage(char* pBuffer,int iBuffLen)
         case GATE_CLI_STATE_CONNECTED:
         case GATE_CLI_STATE_AUTHORIZING:
         {
-            GateAuth ga;
-            ga.ParseFromBytes();
+            gate::GateAuth ga;
+            if(!ga.ParseFromArray(pBuffer,iBuffLen))
+            {
+                LOG_FATAL("gate gate auth parse error ! state = %d",m_iCurState);
+                return -1;
+            }
             switch(ga.cmd())
             {
                case gate::GateAuth::GATE_NEED_AUTH:
@@ -62,14 +67,14 @@ int     GateClientHandler::DispatchMessage(char* pBuffer,int iBuffLen)
                break;
                case gate::GateAuth::GATE_AUTH_RSP:
                {
-                    return OnAuthResult(ga.authRsp().result());
+                    return OnAuthResult(ga.authrsp().result());
                }
                break;
             }
         }
         break;
         case GATE_CLI_STATE_AUTHORIZED:
-        return OnMessage( pBuffer, iBuffLen)            
+        return OnMessage( pBuffer, iBuffLen);
     }
     LOG_ERROR("error state = %d!",m_iCurState);
     assert(false);
@@ -84,21 +89,21 @@ int     GateClientHandler::OnConnected( TcpSocket &   client)
 int     GateClientHandler::OnDataRecv( TcpSocket &   client,const Buffer & recvBuffer)
 {
     int iRet = 0;
-    #define GATE_MESSAGE_PREFIX_LEN = sizeof(uint16_t);
+    #define GATE_MESSAGE_PREFIX_LEN  (sizeof(uint16_t))
     //msg:lenth+data
     //current state must be no msg or part msg
     int iRcvBuffOffSet = 0;
     if( 0 == m_iMsgLen)
     {
-        assert(m_rcvMsgBuffer.iUsed < GATE_MESSAGE_PREFIX_LEN );
+        assert(m_rcvMsgBuffer.iUsed < (int)GATE_MESSAGE_PREFIX_LEN );
         //if has recv a message prefix length
-        if(m_rcvMsgBuffer.iUsed + recvBuffer.iUsed >= GATE_MESSAGE_PREFIX_LEN)
+        if(m_rcvMsgBuffer.iUsed + recvBuffer.iUsed >=  (int)GATE_MESSAGE_PREFIX_LEN)
         {
             iRcvBuffOffSet = GATE_MESSAGE_PREFIX_LEN - m_rcvMsgBuffer.iUsed ;
             memcpy(m_rcvMsgBuffer.pBuffer + m_rcvMsgBuffer.iUsed,
                    recvBuffer.pBuffer,
                    iRcvBuffOffSet);
-            m_iMsgLen = ntohs(m_rcvMsgBuffer.pBuffer);
+            m_iMsgLen = ntohs(*((uint16_t*)(m_rcvMsgBuffer.pBuffer)));
             m_rcvMsgBuffer.iUsed = 0;
         }
         else
@@ -125,7 +130,7 @@ int     GateClientHandler::OnDataRecv( TcpSocket &   client,const Buffer & recvB
                 m_iMsgLen - m_rcvMsgBuffer.iUsed);
         iRcvBuffOffSet += (m_iMsgLen - m_rcvMsgBuffer.iUsed);
         ////////////////////////////////////////////////////////////////            
-        int iMsgRet = DispatchMessage(m_rcvMsgBuffer.pBuffer,m_iMsgLen);
+        int iMsgRet = DispatchMessage((char*)m_rcvMsgBuffer.pBuffer,m_iMsgLen);
         if(iMsgRet)
         {
             LOG_INFO("msg error = %d",iMsgRet);
@@ -133,7 +138,7 @@ int     GateClientHandler::OnDataRecv( TcpSocket &   client,const Buffer & recvB
         }     
         m_iMsgLen = 0;
         m_rcvMsgBuffer.iUsed = 0;
-        iRet += OnDataRecv(client,Buffer(recvBuffer.pBuffer+iRcvBuffOffSet,recvBuffer.iCap - iRcvBuffOffSet));
+        iRet += OnDataRecv(client,Buffer((char*)recvBuffer.pBuffer+iRcvBuffOffSet,recvBuffer.iCap - iRcvBuffOffSet));
     }        
     return iRet;
 }

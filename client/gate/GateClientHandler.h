@@ -1,7 +1,6 @@
 #pragma once
 
-#include "proto/gate/gate.pb.h"
-#include "TcpClientHandler.h"
+#include "net/TcpClientHandler.h"
 
 enum GateClientState
 {
