@@ -1,7 +1,7 @@
+#include <stdint.h>
 #include "base/Log.h"
 #include "proto/gate/gate.pb.h"
 #include "GateChannelProxy.h"
-
 
 /////////////////////////////////////////////////////////////////////////////////////
 #include "GateServerHandler.h"
@@ -49,114 +49,123 @@ int     GateServerHandler::OnNewConnection(TcpSocket   &   client)
         return -1;    
     }
     m_mpConnections[client.GetFD()] = iIdx;
-    m_vecConnections[iIdx].bState = Connection::STATE_CONNECTED;
+    //m_vecConnections[iIdx].bState = Connection::STATE_CONNECTED;//not real state
     m_vecConnections[iIdx].cliSocket = client;
-    //authorizing
-    gate::GateAuth    ga;
-    ga.set_cmd(gate::GateAuth::GATE_NEED_AUTH);
-
-    //void* data, int size
-    Buffer buf;
-    if(buf.Create(ga.ByteSize()))
-    {
-        LOG_ERROR("no mem !");
-        return -1;
-    }
-    if(!ga.SerializeToArray(buf.pBuffer,buf.iCap))
-    {
-        LOG_ERROR("serialize error !");
-        buf.Destroy();
-        return -1;
-    }
-    //todo :  add a buffer cache the msg ?
-    //...
-    client.Send(buf);  
+    m_vecConnections[iIdx].iIdx = iIdx;
     m_vecConnections[iIdx].bState = Connection::STATE_AUTHING;
-    buf.Destroy();
-    
+    //authorizing
+    if(NotifyNeedAuth(&(m_vecConnections[iIdx])))
+    {
+        LOG_ERROR("client notify auth error !");
+        m_vecConnections[iIdx].Close();
+        return -1;
+    }    
     return 0; 
 }
-int     GateServerHandler::OnClientDataRecv(TcpSocket &   client,const Buffer & recvBuffer) 
+int     GateServerHandler::OnClientDataRecv(TcpSocket &   client,const Buffer & recvBuffer)
 {
-    //get connection    
     Connection* pConn = GetConnectionByFD(client.GetFD());
     if(!pConn)
     {
         LOG_FATAL("can't find a connection fd = %d",client.GetFD());
         client.Close();
+        return -1;
     }
-    //
-    switch(pConn->bState)
+
+    int iRet = 0;
+    #define GATE_MESSAGE_PREFIX_LEN  (sizeof(uint16_t))
+    //msg:lenth+data
+    //current state must be no msg or part msg
+    int iRcvBuffOffSet = 0;
+    if( 0 == pConn->iMsgLen)
     {
-        
+        assert(pConn->recvBuffer.iUsed < (int)GATE_MESSAGE_PREFIX_LEN );
+        //if has recv a message prefix length
+        if(pConn->recvBuffer.iUsed + recvBuffer.iUsed >=  (int)GATE_MESSAGE_PREFIX_LEN)
+        {
+            iRcvBuffOffSet = GATE_MESSAGE_PREFIX_LEN - pConn->recvBuffer.iUsed ;
+            memcpy(pConn->recvBuffer.pBuffer + pConn->recvBuffer.iUsed,
+                   recvBuffer.pBuffer,
+                   iRcvBuffOffSet);
+            pConn->iMsgLen = ntohs(*((uint16_t*)(pConn->recvBuffer.pBuffer)));
+            pConn->recvBuffer.iUsed = 0;
+        }
+        else
+        {
+            //copy rest buffer
+            memcpy(pConn->recvBuffer.pBuffer + pConn->recvBuffer.iUsed,
+                   recvBuffer.pBuffer + iRcvBuffOffSet,
+                   recvBuffer.iUsed - iRcvBuffOffSet);                        
+        }
+    }
+    //even a msg prefix length not received
+    if( 0 == pConn->iMsgLen)        
+    {
+        //no message
+        return 0;
+    }
+    /////////////////////////////////////////////////////////////
+    //has a part msg , recv new msg        offset:iUsed[len]
+    if(recvBuffer.iUsed + pConn->recvBuffer.iUsed >= pConn->iMsgLen)
+    {
+        //got a msg
+        memcpy(pConn->recvBuffer.pBuffer+pConn->recvBuffer.iUsed,
+                recvBuffer.pBuffer + iRcvBuffOffSet ,
+                pConn->iMsgLen - pConn->recvBuffer.iUsed);
+        iRcvBuffOffSet += (pConn->iMsgLen - pConn->recvBuffer.iUsed);
+        //////////////////////////////////////////////////////////////////////////////            
+        int iMsgRet = OnClientMessage(pConn,(char*)pConn->recvBuffer.pBuffer,pConn->iMsgLen);
+        if(iMsgRet)
+        {
+            LOG_INFO("msg error = %d",iMsgRet);
+            ++iRet;
+        }     
+        pConn->iMsgLen = 0;
+        pConn->recvBuffer.iUsed = 0;
+        iRet += OnClientDataRecv(client,Buffer((char*)recvBuffer.pBuffer+iRcvBuffOffSet,recvBuffer.iCap - iRcvBuffOffSet));
+    }        
+    return iRet;
+}
+int     GateServerHandler::OnClientMessage(GateServerHandler::Connection* pConn,char* pMsgBuffer,int iMsgLen)
+{
+    switch(pConn->bState)
+    {        
         case Connection::STATE_AUTHING:
         {                        
-            int iAvail = pConn->recvBuffer.iCap - pConn->recvBuffer.iUsed;
-            if(recvBuffer.iUsed < iAvail)
-            {
-                memcpy(pConn->recvBuffer.pBuffer + pConn->recvBuffer.iUsed,
-                           recvBuffer.pBuffer,recvBuffer.iUsed);
-                pConn->recvBuffer.iUsed += recvBuffer.iUsed;                  
-            }
-            else
-            {
-                memcpy(pConn->recvBuffer.pBuffer + pConn->recvBuffer.iUsed,
-                           recvBuffer.pBuffer,iAvail);  
-                pConn->recvBuffer.iUsed = pConn->recvBuffer.iCap;
-            }
-            //sizeof(uint16_t) = 2
-            if(0 == pConn->iMsgLen && pConn->recvBuffer.iUsed > (int)sizeof(uint16_t))
-            {
-                pConn->iMsgLen = ntohs(*(short*)pConn->recvBuffer.pBuffer);                
-            }
-            if(pConn->recvBuffer.iUsed < pConn->iMsgLen)
-            {
-                break;
-            }
-
             //a package
             //read a auth
-            bool    bGotGA = true;
             gate::GateAuth  ga;
-            if(!ga.ParseFromArray(pConn->recvBuffer.pBuffer + sizeof(uint16_t),pConn->iMsgLen-sizeof(uint16_t)))
+            if(!ga.ParseFromArray(pMsgBuffer,iMsgLen))
             {
-                bGotGA = false;
-                LOG_ERROR("decode ga pack error!");                                        
-            }                                       
-            memmove(pConn->recvBuffer.pBuffer,
-                    pConn->recvBuffer.pBuffer + pConn->iMsgLen,
-                    pConn->recvBuffer.iUsed - pConn->iMsgLen);
-            pConn->recvBuffer.iUsed -= pConn->iMsgLen;
-            pConn->iMsgLen = 0;
-            ///////////////////////////////////////////////////
-            if(bGotGA)
+                LOG_ERROR("decode ga pack error!");  
+                return -1;
+            }            
+            /////////////////////
+            int iRet = Authorizing(pConn,ga.authreq());
+            //////////////////////////////////////////
+            NotifyAuthResult(pConn,iRet);            
+            if(0 == iRet)
             {
                 LOG_INFO("got a ga package cmd = %d uid = %lu type =%d pwd = %s",
                     ga.cmd(),ga.authreq().id(),
                     ga.authreq().auth(),
                     ga.authreq().token().c_str() );
-                //authorized
-                pConn->recvBuffer.Destroy();
                 pConn->bState = Connection::STATE_AUTHORIZED;
             }
-            else
-            {
-                RemoveConnection(pConn,gate::GateConnection::CONNECTION_CLOSE_EXCEPTION);
-            }                
         }
         break;
         case Connection::STATE_AUTHORIZED:
             //rely to agent
             LOG_INFO("rely to agent = %d",pConn->iDst);
-            ForwardData(pConn,recvBuffer);
+            ForwardData(pConn,Buffer(pMsgBuffer,iMsgLen));
         break;
         ///////////////////////////////////////////
+        //nothing to do ? error state ?
         case Connection::STATE_CONNECTED:
-            //nothing to do ? error state ?
         default:
             RemoveConnection(pConn,gate::GateConnection::CONNECTION_CLOSE_EXCEPTION);
             return -1;
-    }    
+    }
     return 0;
 }
 
@@ -178,6 +187,63 @@ int     GateServerHandler::OnConnectionClosed(TcpSocket &  client)
 
 
 #if 1
+int     GateServerHandler::NotifyNeedAuth(GateServerHandler::Connection* pConn)
+{    
+    int iIdx = ConnxToIndex(pConn);   
+    gate::GateAuth    ga;
+    ga.set_cmd(gate::GateAuth::GATE_NEED_AUTH);
+
+    //void* data, int size
+    Buffer buf;
+    if(buf.Create(ga.ByteSize()))
+    {
+        LOG_ERROR("no mem !");
+        return -1;
+    }
+    if(!ga.SerializeToArray(buf.pBuffer,buf.iCap))
+    {
+        LOG_ERROR("serialize error !");
+        buf.Destroy();
+        return -1;
+    }
+    //todo :  add a buffer cache the msg ?
+    //...
+    buf.iUsed = ga.ByteSize();
+    int iRet = SendToClient(iIdx,buf);
+    buf.Destroy();
+    return iRet;
+}
+int         GateServerHandler::Authorizing(GateServerHandler::Connection * pConn,const gate::AuthReq & auth)
+{
+    LOG_INFO("authorizing uid = %d type = %d token = %s ... ok !",auth.id(),auth.auth(),auth.token().c_str());
+    return 0;
+}
+int         GateServerHandler::NotifyAuthResult(GateServerHandler::Connection* pConn,int result)
+{
+    int iIdx = ConnxToIndex(pConn);
+    gate::GateAuth    ga;
+    ga.set_cmd(gate::GateAuth::GATE_AUTH_RSP);
+    ga.mutable_authrsp()->set_result(result);
+    //void* data, int size
+    Buffer buf;
+    if(buf.Create(ga.ByteSize()))
+    {
+        LOG_ERROR("no mem !");
+        return -1;
+    }
+    if(!ga.SerializeToArray(buf.pBuffer,buf.iCap))
+    {
+        LOG_ERROR("serialize error !");
+        buf.Destroy();
+        return -1;
+    }
+    buf.iUsed = ga.ByteSize();
+    int iSndRet = SendToClient(iIdx,buf);
+    buf.Destroy();
+    return iSndRet;
+}
+
+
 int     GateServerHandler::GetNextIdx()
 {
     if(m_iAlivedConnections >= m_iMaxConnection)
@@ -208,6 +274,12 @@ GateServerHandler::Connection* GateServerHandler::GetConnectionByFD(int fd)
     }
     return NULL;
 }
+int         GateServerHandler::ConnxToIndex(GateServerHandler::Connection* p)
+{
+    assert(p != NULL);
+    return p->iIdx;
+}
+
 GateServerHandler::Connection* GateServerHandler::GetConnectionByIdx(int idx)
 {
     if(idx <= 0 || idx >= (int)m_vecConnections.size())
@@ -268,6 +340,22 @@ void        GateServerHandler::ForwardData(Connection* pConn,const Buffer& buffe
     vBuff.push_back(buffer);
     m_pChannelProxy->SendToAgent(pConn->iDst,vBuff);    
     buff.Destroy();
+}
+int         GateServerHandler::SendToClient(int iIdx,const Buffer & buff)
+{
+    Connection* pConn = GetConnectionByIdx(iIdx);
+    if(!pConn)
+    {
+        return -1;
+    }
+    
+    assert(buff.iUsed < (1<<(sizeof(uint16_t)*8)) );
+    uint16_t wMsgLen = htons((uint16_t)buff.iUsed);
+    if(pConn->cliSocket.Send(Buffer((char*)&wMsgLen),sizeof(uint16_t)))
+    {
+        return -1;
+    }
+    return    pConn->cliSocket.Send(buff);
 }
 
 #endif

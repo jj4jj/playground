@@ -22,9 +22,14 @@ public:
         LOG_INFO("client connected state = %d id = %d",bSuccess,client_id);
         return 0;
     }
+    virtual   int  OnNeedAuth()
+    {
+        return Authorize(0,client_id,"test");
+    }
     virtual   int  OnMessage(char* pBuffer,int iBuffLen)
     {
         LOG_INFO("recv msg len = %d",iBuffLen);
+        return SendMessage(send_buffer.pBuffer,send_buffer.iUsed);
         return 0;
     }
     virtual   int  OnClose(bool bByMyself)//server or me close 
@@ -38,27 +43,39 @@ int main(int argc,char* argv[])
 {
     if(argc < 4)
     {
-        printf("usage : ip port client_num\n");
+        printf("usage : port ip client_num\n");
         return -1;
     }
     int port = atoi(argv[1]);
     const char* pszIP = argv[2];
     int client_num = atoi(argv[3]);
+    printf("connect to %s:%d with %d clients\n",
+        pszIP,port,client_num);
 
     Log::Instance().Init("test_gate_client.log");    
-
+    send_buffer(512);
+    send_buffer.iUsed = send_buffer.iCap;
     //use batch connection 
     BatchTcpConnection  btc;
     if(btc.Init(client_num))
     {
         return -1;
     }
+    int iErrorNum = 0;
+    SockAddress addr(port,pszIP);    
+    LOG_INFO("gate server is listening on %s",addr.ToString());
     for(int i = 0;i < client_num; ++i)
     {
-        if(btc.AddConnection(SockAddress(port,pszIP),TcpClientHandlerSharedPtr( new TestGateClientHandler())))
+        if(btc.AddConnection(addr,TcpClientHandlerSharedPtr( new TestGateClientHandler())))
         {
             LOG_ERROR("connection error = %d",i);
+            ++iErrorNum;
         }
+    }
+    if( iErrorNum >= client_num)
+    {
+        LOG_ERROR("connection is error !");
+        return -1;
     }
     while(true)
     {

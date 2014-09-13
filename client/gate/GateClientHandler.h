@@ -21,13 +21,14 @@ class GateClientHandler : public TcpClientHandler
 {
 public:    
     inline    int     GetState(){return m_iCurState;}
+    int       Authorize(int type,uint64_t uid,const char* pszToken);
+    int       SendMessage(char* pBuffer,int iBuffLen);
 public:
     virtual   int  OnConnect(bool bSuccess);
     virtual   int  OnNeedAuth();
     virtual   int  OnAuthResult(int result);
     virtual   int  OnMessage(char* pBuffer,int iBuffLen);
     virtual   int  OnClose(bool bByMyself);//server or me close        
-
 
 protected:
     virtual     int     DispatchMessage(char* pBuffer,int iBuffLen);
@@ -40,6 +41,7 @@ public:
     virtual ~GateClientHandler();
     GateClientHandler();
 private:
+    TcpSocket m_sock;
     int m_iCurState;
     int m_iMsgLen;
     //ring buffer todo

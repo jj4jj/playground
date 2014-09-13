@@ -19,7 +19,34 @@ GateClientHandler::GateClientHandler()
     m_iMsgLen = 0;
 }
 #endif
-
+#if 1
+int       GateClientHandler::Authorize(int type,uint64_t uid,const char* pszToken)
+{
+    gate::GateAuth ga;
+    ga.set_cmd(gate::GateAuth::GATE_AUTH_REQ);
+    gate::AuthReq&  req = ga.authreq();
+    req.set_id((int)uid);
+    req.set_auth((int)type);
+    req.set_token(pszToken);
+    Buffer buff;
+    buff.Create(ga.ByteSize());
+    ga.SerializeToArray(buff.pBuffer,buff.iCap);
+    buff.iUsed = buff.iCap;
+    ///////////////////////////////////////////
+    return SendMessage(buff.pBuffer,buff.iCap);
+}
+int       GateClientHandler::SendMessage(char* pBuffer,int iBuffLen)
+{
+    assert(iBuffLen < (1<<16));
+    uint16_t wMsgLen = htons((uint16_t)iBuffLen);
+    if(m_sock.Send(Buffer((char*)(&wMsgLen),sizeof(uint16_t)))
+    {
+        LOG_ERROR("send msg error !");
+        return -1;
+    }
+    return    m_sock.Send(Buffer(pBuffer,iBuffLen));
+}
+#endif
 
 #if 1
 int  GateClientHandler::OnConnect(bool bSuccess)
@@ -83,6 +110,7 @@ int     GateClientHandler::DispatchMessage(char* pBuffer,int iBuffLen)
 int     GateClientHandler::OnConnected( TcpSocket &   client)
 {
     m_iCurState = GATE_CLI_STATE_CONNECTED;
+    m_sock = client;
     return OnConnect(true);
 }
 //readable
@@ -146,6 +174,7 @@ int     GateClientHandler::OnDataRecv( TcpSocket &   client,const Buffer & recvB
 int     GateClientHandler::OnDisconnected( TcpSocket &   client)
 {
     m_iCurState = GATE_CLI_STATE_CLOSED;
+    m_sock.SetFD(-1);
     m_iMsgLen = 0;
     m_rcvMsgBuffer.iUsed = 0;
     return OnClose(false);

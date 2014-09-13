@@ -1,6 +1,6 @@
 #pragma once
 #include "net/TcpServerHandler.h"
-
+#include "proto/gate/gate.pb.h"
 //gate server report connection event to agent
 //msg
 //
@@ -18,7 +18,7 @@ public:
 
 private:
     int     GetNextIdx();
-
+    
 private:
     //
     struct  Connection
@@ -34,6 +34,7 @@ private:
 		{
 			DEFAULT_RECV_BUFF_SIZE = 4096,
 		};
+        int         iIdx;
         TcpSocket   cliSocket;
         Buffer      recvBuffer;
         //Buffer      sendBuffer;
@@ -42,7 +43,7 @@ private:
         int         bState;//invalid ? init ? authorized ? 
         uint64_t    ulUid;//
     public:
-        Connection():iDst(0),iMsgLen(0),bState(0),ulUid(0)
+        Connection():iIdx(-1),iDst(0),iMsgLen(0),bState(0),ulUid(0)
         {
         }
         void Close()
@@ -62,6 +63,7 @@ private:
                 break;
             }
             bState = STATE_INVALID;
+            iIdx = -1;
         }
         ~Connection()
         {
@@ -70,13 +72,17 @@ private:
         }        
     };
 public:
+    int     OnClientMessage(Connection* pConn,char* pMsgBuffer,int iMsgLen);
     void        RemoveConnection(Connection* pConn,int iReason);
     Connection* GetConnectionByFD(int fd);    
     Connection* GetConnectionByIdx(int idx);
+    int         ConnxToIndex(Connection* p);
     void        ReportEvent(Connection* pConn,int iEvent,int iParam);
     void        ForwardData(Connection* pConn,const Buffer& buffer);
-    int         SendToAgent(int iDst,const std::vector<Buffer>  &  vBuff);
-    int         SendToAgent(int iDst,Buffer   buff);
+    int         SendToClient(int iIdx,const Buffer & buff);
+    int         NotifyNeedAuth(Connection* pConn);
+    int         Authorizing(Connection * pConn,const gate::AuthReq & auth);
+    int         NotifyAuthResult(Connection* pConn,int iRet);
 private:
     vector<Connection>      m_vecConnections;
     typedef unordered_map<int,int>  FD2IDXConnectionMap;

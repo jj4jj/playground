@@ -1,12 +1,25 @@
 #include "GateServerHandler.h"
 #include "net/TcpServer.h"
 #include "GateChannelProxy.h"
-int main()
+#include "base/Log.h"
+int main(int argc , char * argv[])
 {
+    if(argc < 3)
+    {
+        printf("usage : gate <ip> <port> <max_clients>\n");
+        return -1;
+    }
+    const char* pszIP = argv[1];
+    int port = atoi(argv[2]);
+    int iMaxClient = atoi(argv[3]);
+    printf("listening on %s:%d with max client num = %d\n",
+            pszIP,port,iMaxClient);
+
     TcpServer   server;
-    int iMaxClient = 50000;
     //port is 1234
-    if(server.Init(SockAddress(1234),true,iMaxClient))
+    SockAddress addr(port,pszIP);
+    LOG_INFO("server will listen on %s\n",addr.ToString());
+    if(server.Init(addr,true,iMaxClient))
     {
         return -1;
     }
