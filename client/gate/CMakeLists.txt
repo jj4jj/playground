@@ -19,7 +19,6 @@ include_directories(
 #it will generate a static lib for comiling faster
 add_library(gate_client STATIC
   ${gate_client_SRCS}
-  ${gate_proto_files}
 )
 #set_target_properties(ssukits_net PROPERTIES LINKER_LANGUAGE CXX)
 
