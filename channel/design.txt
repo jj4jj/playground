@@ -1,0 +1,41 @@
+
+
+	  C1	  C2       C3
+	______  ______  ______
+   /|\ \ / /|\ \ / /|\ \ /
+	|	|	|	|	|	|
+	|	|	|	|	|	|
+	|	|	|	|	|	|
+	|	|	|	|	|	|
+	|	|	|	|	|	|
+	|	|	|	|	|	|
+	|-------------------|
+	|					|
+	|					|
+	|-------------------|
+	|					|
+  \	| Local	Listening	| /
+   \|					|/
+   /					 \
+  / 					  \
+  -------------------------
+
+
+
+   1.every node has some local listening points .
+   2.every node can build many channels to other nodes listening points.
+   3.channel message will caching when one channel end is down .
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,38 @@
+
+
+
+								|							|----connection
+								|							|----connection
+								|							|----connection
+								|							|----connection
+								|							|----connection
+  ------------------------------|							
+			
+	
+									IDX -> Connection
+
+
+  ------------------------------|
+								|							|----connection
+								|							|----connection
+								|							|----connection
+								|							|----connection
+								|							|----connection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
