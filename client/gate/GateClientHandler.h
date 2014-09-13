@@ -17,7 +17,7 @@ enum GateClientState
     //1.connect success 
     //2.recv msg
     //3.connect close
-class GateClientHandler : TcpClientHandler
+class GateClientHandler : public TcpClientHandler
 {
 public:    
     inline    int     GetState(){return m_iCurState;}

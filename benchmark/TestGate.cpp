@@ -8,7 +8,7 @@
 #include "base/Log.h"
 #include "net/TcpClient.h"
 #include "net/BatchTcpConnection.h"
-#include "gate/client/GateClientHandler.h"
+#include "client/gate/GateClientHandler.h"
 
 static int client_id = 0;
 static Buffer send_buffer;
