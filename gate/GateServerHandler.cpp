@@ -351,7 +351,7 @@ int         GateServerHandler::SendToClient(int iIdx,const Buffer & buff)
     
     assert(buff.iUsed < (1<<(sizeof(uint16_t)*8)) );
     uint16_t wMsgLen = htons((uint16_t)buff.iUsed);
-    if(pConn->cliSocket.Send(Buffer((char*)&wMsgLen),sizeof(uint16_t)))
+    if(pConn->cliSocket.Send(Buffer((char*)&wMsgLen,sizeof(uint16_t))))
     {
         return -1;
     }

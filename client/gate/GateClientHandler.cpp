@@ -24,7 +24,7 @@ int       GateClientHandler::Authorize(int type,uint64_t uid,const char* pszToke
 {
     gate::GateAuth ga;
     ga.set_cmd(gate::GateAuth::GATE_AUTH_REQ);
-    gate::AuthReq&  req = ga.authreq();
+    gate::AuthReq &  req =  *ga.mutable_authreq();
     req.set_id((int)uid);
     req.set_auth((int)type);
     req.set_token(pszToken);
@@ -33,13 +33,13 @@ int       GateClientHandler::Authorize(int type,uint64_t uid,const char* pszToke
     ga.SerializeToArray(buff.pBuffer,buff.iCap);
     buff.iUsed = buff.iCap;
     ///////////////////////////////////////////
-    return SendMessage(buff.pBuffer,buff.iCap);
+    return SendMessage((char*)buff.pBuffer,buff.iCap);
 }
 int       GateClientHandler::SendMessage(char* pBuffer,int iBuffLen)
 {
     assert(iBuffLen < (1<<16));
     uint16_t wMsgLen = htons((uint16_t)iBuffLen);
-    if(m_sock.Send(Buffer((char*)(&wMsgLen),sizeof(uint16_t)))
+    if(m_sock.Send(Buffer((char*)(&wMsgLen),sizeof(uint16_t))))
     {
         LOG_ERROR("send msg error !");
         return -1;

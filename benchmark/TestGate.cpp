@@ -26,10 +26,15 @@ public:
     {
         return Authorize(0,client_id,"test");
     }
+    virtual   int  OnAuthResult(int result)
+    {
+        LOG_INFO("server auth result = %d",result);
+        return SendMessage((char*)send_buffer.pBuffer,send_buffer.iUsed);
+    }
     virtual   int  OnMessage(char* pBuffer,int iBuffLen)
     {
         LOG_INFO("recv msg len = %d",iBuffLen);
-        return SendMessage(send_buffer.pBuffer,send_buffer.iUsed);
+        return SendMessage((char*)send_buffer.pBuffer,send_buffer.iUsed);
         return 0;
     }
     virtual   int  OnClose(bool bByMyself)//server or me close 
@@ -52,8 +57,8 @@ int main(int argc,char* argv[])
     printf("connect to %s:%d with %d clients\n",
         pszIP,port,client_num);
 
-    Log::Instance().Init("test_gate_client.log");    
-    send_buffer(512);
+    //Log::Instance().Init("test_gate_client.log");    //stdout
+    send_buffer.Create(512);
     send_buffer.iUsed = send_buffer.iCap;
     //use batch connection 
     BatchTcpConnection  btc;
@@ -90,6 +95,7 @@ int main(int argc,char* argv[])
             usleep(1000);
        }
     }     
+    send_buffer.Destroy();
     return 0;
 }
 
