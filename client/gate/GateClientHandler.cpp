@@ -14,7 +14,7 @@ GateClientHandler::~GateClientHandler()
 GateClientHandler::GateClientHandler()
 {
     //64K
-    m_rcvMsgBuffer.Create(1<<(sizeof(uint16_t)));
+    m_rcvMsgBuffer.Create((1<<16) + sizeof(uint32_t));
     m_iCurState = GATE_CLI_STATE_CLOSED;
     m_iMsgLen = 0;
 }
@@ -38,6 +38,7 @@ int       GateClientHandler::Authorize(int type,uint64_t uid,const char* pszToke
 int       GateClientHandler::SendMessage(char* pBuffer,int iBuffLen)
 {
     assert(iBuffLen < (1<<16));
+    LOG_DEBUG("send meessage len = %d to server ",iBuffLen);
     uint16_t wMsgLen = htons((uint16_t)iBuffLen);
     if(m_sock.Send(Buffer((char*)(&wMsgLen),sizeof(uint16_t))))
     {
@@ -91,12 +92,18 @@ int     GateClientHandler::DispatchMessage(char* pBuffer,int iBuffLen)
             switch(ga.cmd())
             {
                case gate::GateAuth::GATE_NEED_AUTH:
+                m_iCurState = GATE_CLI_STATE_AUTHORIZING;
                 return OnNeedAuth();
                break;
                case gate::GateAuth::GATE_AUTH_RSP:
                {
-                    return OnAuthResult(ga.authrsp().result());
-               }
+                    int iResult = ga.authrsp().result();
+                    if(0 == iResult)
+                    {
+                        m_iCurState = GATE_CLI_STATE_AUTHORIZED;
+                    }
+                    return OnAuthResult(iResult);
+               }               
                break;
             }
         }

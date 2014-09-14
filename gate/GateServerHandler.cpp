@@ -165,7 +165,7 @@ int     GateServerHandler::OnClientMessage(GateServerHandler::Connection* pConn,
         break;
         case Connection::STATE_AUTHORIZED:
             //rely to agent
-            LOG_INFO("rely to agent = %d",pConn->iDst);
+            LOG_INFO("rely to agent = %d msg len = %d",pConn->iDst,iMsgLen);
             ForwardData(pConn,Buffer(pMsgBuffer,iMsgLen));
         break;
         ///////////////////////////////////////////

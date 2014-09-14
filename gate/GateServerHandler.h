@@ -32,7 +32,7 @@ private:
         };
 		enum
 		{
-			DEFAULT_RECV_BUFF_SIZE = 4096,
+			DEFAULT_RECV_BUFF_SIZE = (1<<16)+sizeof(uint32_t),
 		};
         int         iIdx;
         TcpSocket   cliSocket;
