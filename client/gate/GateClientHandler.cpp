@@ -76,6 +76,7 @@ int  GateClientHandler::OnClose(bool bByMyself)//server or me close
 }
 int     GateClientHandler::DispatchMessage(char* pBuffer,int iBuffLen)
 {
+    LOG_DEBUG("dispatch message len = %d",iBuffLen);
     switch(m_iCurState)
     {
         case GATE_CLI_STATE_CONNECTED:
@@ -116,6 +117,8 @@ int     GateClientHandler::OnConnected( TcpSocket &   client)
 //readable
 int     GateClientHandler::OnDataRecv( TcpSocket &   client,const Buffer & recvBuffer)
 {
+    LOG_DEBUG("recv data buffer len = %d expect msg len = %d recv part len = %d",
+            recvBuffer.iUsed ,m_iMsgLen,m_rcvMsgBuffer.iUsed);
     int iRet = 0;
     #define GATE_MESSAGE_PREFIX_LEN  (sizeof(uint16_t))
     //msg:lenth+data
@@ -123,7 +126,7 @@ int     GateClientHandler::OnDataRecv( TcpSocket &   client,const Buffer & recvB
     int iRcvBuffOffSet = 0;
     if( 0 == m_iMsgLen)
     {
-        assert(m_rcvMsgBuffer.iUsed < (int)GATE_MESSAGE_PREFIX_LEN );
+        assert(m_rcvMsgBuffer.iUsed < (int)GATE_MESSAGE_PREFIX_LEN );//just for client 
         //if has recv a message prefix length
         if(m_rcvMsgBuffer.iUsed + recvBuffer.iUsed >=  (int)GATE_MESSAGE_PREFIX_LEN)
         {
@@ -150,7 +153,7 @@ int     GateClientHandler::OnDataRecv( TcpSocket &   client,const Buffer & recvB
     }
     /////////////////////////////////////////////////////////////
     //has a part msg , recv new msg        offset:iUsed[len]
-    if(recvBuffer.iUsed + m_rcvMsgBuffer.iUsed >= m_iMsgLen)
+    if(recvBuffer.iUsed + m_rcvMsgBuffer.iUsed - iRcvBuffOffSet >= m_iMsgLen)
     {
         //got a msg
         memcpy(m_rcvMsgBuffer.pBuffer+m_rcvMsgBuffer.iUsed,
@@ -166,8 +169,12 @@ int     GateClientHandler::OnDataRecv( TcpSocket &   client,const Buffer & recvB
         }     
         m_iMsgLen = 0;
         m_rcvMsgBuffer.iUsed = 0;
-        iRet += OnDataRecv(client,Buffer((char*)recvBuffer.pBuffer+iRcvBuffOffSet,recvBuffer.iCap - iRcvBuffOffSet));
-    }        
+        if(recvBuffer.iUsed <= iRcvBuffOffSet)
+        {
+            return iRet;
+        }
+        iRet += OnDataRecv(client,Buffer((char*)recvBuffer.pBuffer+iRcvBuffOffSet,recvBuffer.iUsed - iRcvBuffOffSet));
+    }
     return iRet;
 }
 //peer close .

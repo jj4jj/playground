@@ -79,7 +79,12 @@ int     GateServerHandler::OnClientDataRecv(TcpSocket &   client,const Buffer & 
     int iRcvBuffOffSet = 0;
     if( 0 == pConn->iMsgLen)
     {
-        assert(pConn->recvBuffer.iUsed < (int)GATE_MESSAGE_PREFIX_LEN );
+        if(pConn->recvBuffer.iUsed >= (int)GATE_MESSAGE_PREFIX_LEN)
+        {
+            LOG_ERROR("connect idx = %d recv buff part len = %d",ConnxToIndex(pConn),pConn->recvBuffer.iUsed);
+            pConn->Close();
+            return -1;
+        }        
         //if has recv a message prefix length
         if(pConn->recvBuffer.iUsed + recvBuffer.iUsed >=  (int)GATE_MESSAGE_PREFIX_LEN)
         {
@@ -106,7 +111,7 @@ int     GateServerHandler::OnClientDataRecv(TcpSocket &   client,const Buffer & 
     }
     /////////////////////////////////////////////////////////////
     //has a part msg , recv new msg        offset:iUsed[len]
-    if(recvBuffer.iUsed + pConn->recvBuffer.iUsed >= pConn->iMsgLen)
+    if(recvBuffer.iUsed + pConn->recvBuffer.iUsed - iRcvBuffOffSet >= pConn->iMsgLen)
     {
         //got a msg
         memcpy(pConn->recvBuffer.pBuffer+pConn->recvBuffer.iUsed,
@@ -122,7 +127,11 @@ int     GateServerHandler::OnClientDataRecv(TcpSocket &   client,const Buffer & 
         }     
         pConn->iMsgLen = 0;
         pConn->recvBuffer.iUsed = 0;
-        iRet += OnClientDataRecv(client,Buffer((char*)recvBuffer.pBuffer+iRcvBuffOffSet,recvBuffer.iCap - iRcvBuffOffSet));
+        if(recvBuffer.iUsed <= iRcvBuffOffSet)
+        {
+            return iRet;
+        }
+        iRet += OnClientDataRecv(client,Buffer((char*)recvBuffer.pBuffer+iRcvBuffOffSet,recvBuffer.iUsed - iRcvBuffOffSet));
     }        
     return iRet;
 }
@@ -192,7 +201,7 @@ int     GateServerHandler::NotifyNeedAuth(GateServerHandler::Connection* pConn)
     int iIdx = ConnxToIndex(pConn);   
     gate::GateAuth    ga;
     ga.set_cmd(gate::GateAuth::GATE_NEED_AUTH);
-
+    
     //void* data, int size
     Buffer buf;
     if(buf.Create(ga.ByteSize()))
@@ -211,6 +220,7 @@ int     GateServerHandler::NotifyNeedAuth(GateServerHandler::Connection* pConn)
     buf.iUsed = ga.ByteSize();
     int iRet = SendToClient(iIdx,buf);
     buf.Destroy();
+    LOG_DEBUG("notify need auth result = %d",iRet);
     return iRet;
 }
 int         GateServerHandler::Authorizing(GateServerHandler::Connection * pConn,const gate::AuthReq & auth)
@@ -240,6 +250,7 @@ int         GateServerHandler::NotifyAuthResult(GateServerHandler::Connection* p
     buf.iUsed = ga.ByteSize();
     int iSndRet = SendToClient(iIdx,buf);
     buf.Destroy();
+    LOG_DEBUG("notify auth result = %d",result);
     return iSndRet;
 }
 
@@ -340,6 +351,15 @@ void        GateServerHandler::ForwardData(Connection* pConn,const Buffer& buffe
     vBuff.push_back(buffer);
     m_pChannelProxy->SendToAgent(pConn->iDst,vBuff);    
     buff.Destroy();
+    //////////////////////////////////////////////////////
+    //TEST MODE'
+    static Buffer  s_b;
+    if(!s_b.pBuffer)
+    {
+        s_b.Create(1024);
+        s_b.iUsed = 1024;        
+    }
+    SendToClient(ConnxToIndex(pConn),s_b);
 }
 int         GateServerHandler::SendToClient(int iIdx,const Buffer & buff)
 {
