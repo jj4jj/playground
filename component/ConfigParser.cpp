@@ -23,7 +23,7 @@ void     ConfigParser::VisualConfig(string & s,ConfigValue & v,int level,const c
         s+=string(prefix,level);
         s+=v.key;
         s+=":";
-        s+=rootValue.value;
+        s+=v.value;
         s+="\n";
         return ;
     }
