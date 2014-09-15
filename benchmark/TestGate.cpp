@@ -57,7 +57,15 @@ int main(int argc,char* argv[])
     printf("connect to %s:%d with %d clients\n",
         pszIP,port,client_num);
 
-    //Log::Instance().Init("test_gate_client.log");    //stdout
+    const char* pszLogFileName = NULL;
+    if(argc > 4)
+    {
+        pszLogFileName = argv[4];
+    }
+    if(pszLogFileName)  
+    {
+        Log::Instance().Init( pszLogFileName, Log::LOG_LV_DEBUG, 1024000);
+    }
     send_buffer.Create(512);
     send_buffer.iUsed = send_buffer.iCap;
     //use batch connection 

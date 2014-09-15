@@ -56,4 +56,5 @@ add_subdirectory(channel)
 add_subdirectory(gate)
 add_subdirectory(client/gate)
 add_subdirectory(benchmark)
+add_subdirectory(component)
 

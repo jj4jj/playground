@@ -4,9 +4,9 @@
 #include "base/Log.h"
 int main(int argc , char * argv[])
 {
-    if(argc < 3)
+    if(argc < 4)
     {
-        printf("usage : gate <ip> <port> <max_clients>\n");
+        printf("usage : gate <ip> <port> <max_clients> [logfile]\n");
         return -1;
     }
     const char* pszIP = argv[1];
@@ -14,6 +14,15 @@ int main(int argc , char * argv[])
     int iMaxClient = atoi(argv[3]);
     printf("listening on %s:%d with max client num = %d\n",
             pszIP,port,iMaxClient);
+    const char* pszLogFileName = NULL;
+    if(argc > 4)
+    {
+        pszLogFileName = argv[4];
+    }
+    if(pszLogFileName)  
+    {
+        Log::Instance().Init( pszLogFileName, Log::LOG_LV_DEBUG, 1024000);
+    }
 
     TcpServer   server;
     //port is 1234
@@ -42,7 +51,7 @@ int main(int argc , char * argv[])
         iProc = server.Loop();
         if(iProc < 0)
         {
-            return -1;
+            break;
         }
         else if(0 == iProc)
         {
