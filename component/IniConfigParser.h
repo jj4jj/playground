@@ -1,15 +1,26 @@
 #pragma once
 #include "ConfigParser.h"
+#include "iniparser.h"
 
 class IniConfigParser : public ConfigParser
 {
 public:    
-    virtual int     ReadConfigFile(const char* pszFileName);
-    virtual int     GetConfig(const char* pszKey,ConfigValue  & v);
+    int     ReadConfigFile(const char* pszFileName);
+    int     GetConfig(ConfigValue  & v);
+
+    int     GetConfigInt(const char* pszKey,int defaultValue = 0);
+
+    double  GetConfigReal(const char* pszKey,double defaultValue = 0.0);
     ///////////////////////////////////////////////////////
-    virtual int     CreateConfig(const char* pszKey,const ConfigValue & v,const char* pszDesc = NULL);    
+    int     CreateConfig(const ConfigValue & v,const char* pszDesc = NULL);
     ///////////////////////////////////////////////////////    
-    virtual int     DumpConfig(const char* pszFileName);
+    int     Create();
+    int     DumpConfig(const char* pszFileName);
+private:
+    dictionary * dic;
+public:
+    IniConfigParser();
+    ~IniConfigParser();    
 };
 
 
