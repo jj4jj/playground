@@ -68,11 +68,31 @@ int     IniConfigParser::GetConfig(ConfigValue  & v)
 }
 int   IniConfigParser::GetConfigInt(const char* pszKey,int defaultValue )
 {
-    return iniparser_getint(dic, pszKey,defaultValue);
+    string key = pszKey;
+    if( key  != rootValue.key && key.find(':') == string::npos )
+    {
+        key = rootValue.key + ":" + key;
+    }    
+    return iniparser_getint(dic, key.c_str(),defaultValue);
+}
+string  IniConfigParser::GetConfigString(const char* pszKey ,const char* pszDefault)
+{
+    string key = pszKey;
+    if( key  != rootValue.key && key.find(':') == string::npos)
+    {
+        key = rootValue.key + ":" + key;
+    } 
+    const char* p = pszDefault?pszDefault:"";
+    return string(iniparser_getstring(dic,key.c_str(),(char*)p));
 }
 double IniConfigParser::GetConfigReal(const char* pszKey,double defaultValue )
 {
-    return iniparser_getdouble(dic, pszKey,defaultValue);
+    string key = pszKey;
+    if( key  != rootValue.key && key.find(':') == string::npos)
+    {
+        key = rootValue.key + ":" + key;
+    }    
+    return iniparser_getdouble(dic, key.c_str(),defaultValue);
 }
 ///////////////////////////////////////////////////////
 int     IniConfigParser::CreateConfig(const ConfigValue & v,const char* pszDesc)
@@ -111,7 +131,7 @@ int     IniConfigParser::CreateConfig(const ConfigValue & v,const char* pszDesc)
     
     return iniparser_set(dic,key.c_str(),v.value.c_str());
 }
-int     IniConfigParser::Create()
+int     IniConfigParser::Create(const char* pszRootName )
 {
     assert(dic == NULL);
     dic = dictionary_new(0);
@@ -119,6 +139,7 @@ int     IniConfigParser::Create()
     {
         return -1;
     }
+    SetRootName(pszRootName);
     return 0;
 }
 ///////////////////////////////////////////////////////    

@@ -9,12 +9,12 @@ public:
     int     GetConfig(ConfigValue  & v);
 
     int     GetConfigInt(const char* pszKey,int defaultValue = 0);
-
+    string  GetConfigString(const char* pszKey ,const char* pszDefault = NULL);
     double  GetConfigReal(const char* pszKey,double defaultValue = 0.0);
     ///////////////////////////////////////////////////////
     int     CreateConfig(const ConfigValue & v,const char* pszDesc = NULL);
     ///////////////////////////////////////////////////////    
-    int     Create();
+    int     Create(const char* pszRootName = NULL);
     int     DumpConfig(const char* pszFileName);
 private:
     dictionary * dic;

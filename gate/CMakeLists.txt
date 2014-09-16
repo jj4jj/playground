@@ -9,6 +9,7 @@ include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${PROJECT_SOURCE_DIR}
   ${SSUKITS_HOME}
+  ${PROJECT_SOURCE_DIR}/dep/iniparser/src
 )
 
 #base dir linked lib dir
@@ -17,6 +18,7 @@ link_directories(
 	${SSUKITS_HOME}/bin
 	${PROJECT_SOURCE_DIR}/lib
 	/usr/lib
+	${PROJECT_SOURCE_DIR}/dep/iniparser	
 )
 
 #it will generate a exe
@@ -33,6 +35,9 @@ target_link_libraries(gate
 	channel.a
 	zmq.a
 	rt
+	playground_component
+	iniparser
+	ssukits_utility
 )
 
 

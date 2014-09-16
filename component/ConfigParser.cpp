@@ -4,7 +4,7 @@
 #if 1
 ConfigParser::ConfigParser()
 {
-    rootValue.key = "root";
+    SetRootName();
 }
 ConfigParser::~ConfigParser()
 {
@@ -12,6 +12,18 @@ ConfigParser::~ConfigParser()
 }
 #endif
 #if 1
+void     ConfigParser::SetRootName(const char* pszRootName )
+{
+    if(pszRootName)
+    {
+        rootValue.key = pszRootName;
+    }
+    else
+    {
+        rootValue.key = "root";
+    }
+}
+
 void     ConfigParser::VisualConfig(string & s)
 {
     VisualConfig(s,rootValue,0,"\t");

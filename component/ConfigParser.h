@@ -33,9 +33,10 @@ public:
     ///////////////////////////////////////////////////////
     virtual int     CreateConfig(const ConfigValue & v,const char* pszDesc = NULL) = 0;    
     ///////////////////////////////////////////////////////    
-    virtual int     Create() = 0;//create an empty config
+    virtual int     Create(const char* pszRootName = NULL) = 0;//create an empty config
     virtual int     DumpConfig(const char* pszFileName) = 0;    
 public:
+    void     SetRootName(const char* pszRootName = NULL);
     void     VisualConfig(string & s);
     void     VisualConfig(string & s,ConfigValue & v,int level,const char* prefix);
 protected:

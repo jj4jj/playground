@@ -2,26 +2,57 @@
 #include "net/TcpServer.h"
 #include "GateChannelProxy.h"
 #include "base/Log.h"
+#include "component/IniConfigParser.h"
+#include "utility/Daemon.h"
+
 int main(int argc , char * argv[])
 {
-    if(argc < 4)
+    IniConfigParser parser;
+    parser.SetRootName("gate");
+    if(argc < 2)
     {
-        printf("usage : gate <ip> <port> <max_clients> [logfile]\n");
+        printf("usage : %s <config file> \n",argv[0]);        
+        parser.Create("gate");
+        static const char * kv[][2] = {{"ip","127.0.0.1"},
+                                {"port","58800"},
+                                {"max_clients","5000"},
+                                {"logfile","gate.log"},
+                                {"daemon","0"},
+                                {NULL,NULL}};
+        int i = 0;
+        ConfigValue v;
+        while(kv[i][0])
+        {
+            v.key  = kv[i][0];
+            v.value  = kv[i][1];
+            parser.CreateConfig(v);
+            ++i;
+        }
+        parser.DumpConfig("gate.cfg.example");
+        return 0;
+    }
+    if(parser.ReadConfigFile(argv[1]))
+    {        
         return -1;
     }
-    const char* pszIP = argv[1];
-    int port = atoi(argv[2]);
-    int iMaxClient = atoi(argv[3]);
-    printf("listening on %s:%d with max client num = %d\n",
-            pszIP,port,iMaxClient);
-    const char* pszLogFileName = NULL;
-    if(argc > 4)
-    {
-        pszLogFileName = argv[4];
-    }
+    string sIP = parser.GetConfigString("ip");
+    int port = parser.GetConfigInt("port");    
+    int iMaxClient = parser.GetConfigInt("max_clients");
+    string sLogFileName = parser.GetConfigString("logfile");
+    int daemon = parser.GetConfigInt("daemon");    
+    const char* pszLogFileName = sLogFileName.c_str();
+    const char* pszIP = sIP.c_str();
+    string configString;
+    parser.VisualConfig(configString);
+    LOG_INFO(configString.c_str());
     if(pszLogFileName)  
     {
         Log::Instance().Init( pszLogFileName, Log::LOG_LV_DEBUG, 1024000);
+    }
+    if(daemon)
+    {
+        //daemonlize
+        Daemon::Instance().Create();
     }
 
     TcpServer   server;
