@@ -8,48 +8,27 @@
 #include "net/UdpDriver.h"
 #include "GateServerContext.h"
 
+
+
+
 int main(int argc , char * argv[])
 {
     IniConfigParser parser;
-    parser.SetRootName("gate");
+    GateServerContext ctx;
     if(argc < 2)
     {
-        printf("usage : %s <config file> \n",argv[0]);        
-        parser.Create("gate");
-        static const char * kv[][2] = {
-        //gate server
-        {"ip","127.0.0.1"},
-        {"port","58800"},
-        {"max_clients","5000"},
-        {"logfile","gate.log"},
-        {"daemon","0"},
-        //console
-        {"console:ip","127.0.0.1"},
-        {"console:port","58810"},
-
-                                {NULL,NULL}};
-        int i = 0;
-        ConfigValue v;
-        while(kv[i][0])
-        {
-            v.key  = kv[i][0];
-            v.value  = kv[i][1];
-            parser.CreateConfig(v);
-            ++i;
-        }
-        parser.DumpConfig("gate.cfg.example");
-        return 0;
-    }
-    if(parser.ReadConfigFile(argv[1]))
-    {        
+        ctx.Init(NULL);
         return -1;
     }
-    GateServerContext ctx;
+    if(ctx.Init(argv[1]))
+    {
+        printf("gate server context init error !");
+        return -1;
+    }    
     
     string sIP = parser.GetConfigString("ip");
     string sLogFileName = parser.GetConfigString("logfile");
     string sConsoleIP = parser.GetConfigString("console:ip");
-
     
     int port = parser.GetConfigInt("port");    
     int iMaxClient = parser.GetConfigInt("max_clients");

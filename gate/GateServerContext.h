@@ -1,12 +1,12 @@
 #pragma once
-
+#include "base/stdinc.h"
 class TcpServer ;
 class IniConfigParser;
 class GateChannelProxy;
 struct GateServerContext
 {
     TcpServer *          gateServer;
-    IniConfigParser  *   parser;
+    shared_ptr<IniConfigParser>     parser;
     GateChannelProxy *   proxy;
     ///////////////////////
 public:
