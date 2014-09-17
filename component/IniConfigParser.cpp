@@ -116,7 +116,8 @@ int     IniConfigParser::CreateConfig(const ConfigValue & v,const char* pszDesc)
     if(v.key.find(':') != string::npos)
     {
         int idx = v.key.find(':');
-        section = v.key.substr(0,idx);        
+        section = v.key.substr(0,idx);     
+        key = v.key;
     }
     else
     {

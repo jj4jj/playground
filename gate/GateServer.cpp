@@ -13,7 +13,6 @@
 
 int main(int argc , char * argv[])
 {
-    IniConfigParser parser;
     GateServerContext ctx;
     if(argc < 2)
     {
@@ -22,9 +21,11 @@ int main(int argc , char * argv[])
     }
     if(ctx.Init(argv[1]))
     {
-        printf("gate server context init error !");
+        printf("gate server context init error !\n");
         return -1;
     }    
+    IniConfigParser & parser = *(ctx.parser);
+
     
     string sIP = parser.GetConfigString("ip");
     string sLogFileName = parser.GetConfigString("logfile");

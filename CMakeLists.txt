@@ -59,6 +59,7 @@ set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/bin)
 
 add_subdirectory(channel)
 add_subdirectory(gate)
+add_subdirectory(client)
 add_subdirectory(client/gate)
 add_subdirectory(benchmark)
 add_subdirectory(component)

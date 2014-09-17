@@ -17,7 +17,7 @@ int    GateServerContext::Init(const char * pszConfigFile)
     }
     if(!File::Exist(pszConfigFile))
     {
-        printf("config file  %s is not exist , so create it use default option .",pszConfigFile);        
+        printf("config file  %s is not exist , so create it use default option .\n",pszConfigFile);        
         parser->Create("gate");
         static const char * kv[][2] = {
         //gate server
@@ -42,7 +42,7 @@ int    GateServerContext::Init(const char * pszConfigFile)
             ++i;
         }
         parser->DumpConfig(pszConfigFile);
-        printf("create default config ok !");
+        printf("create default config ok !\n");
         return -1;
     }
     else if(parser->ReadConfigFile(pszConfigFile))
