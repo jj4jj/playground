@@ -11,7 +11,11 @@ int    GateServerContext::Init(const char * pszConfigFile)
 {
     parser = shared_ptr<IniConfigParser>(new IniConfigParser());
     parser->SetRootName("gate");    
-    if(!pszConfigFile || !File::Exist(pszConfigFile))
+    if(!pszConfigFile)
+    {
+        pszConfigFile = "gate.cfg.example";
+    }
+    if(!File::Exist(pszConfigFile))
     {
         printf("config file  %s is not exist , so create it use default option .",pszConfigFile);        
         parser->Create("gate");
