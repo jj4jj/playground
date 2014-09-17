@@ -12,7 +12,7 @@ GateServerHandler::~GateServerHandler()
     for(int i = 0;i < (int)m_vecConnections.size(); ++i)
     {
         Connection * pConn = GetConnectionByIdx(i);
-        if(!pConn)
+        if(pConn)
         {
             RemoveConnection(pConn,gate::GateConnection::CONNECTION_CLOSE_STOP_SVR);
         }
@@ -48,11 +48,11 @@ int     GateServerHandler::OnNewConnection(TcpSocket   &   client)
         client.Close();
         return -1;    
     }
-    m_mpConnections[client.GetFD()] = iIdx;
-    //m_vecConnections[iIdx].bState = Connection::STATE_CONNECTED;//not real state
+    //build client fd map idx
+    //////////////////////////////////////////////////////////////////////////////
+    m_vecConnections[iIdx].Init();
+    m_vecConnections[iIdx].bState = Connection::STATE_CONNECTED;//not real state
     m_vecConnections[iIdx].cliSocket = client;
-    m_vecConnections[iIdx].iIdx = iIdx;
-    m_vecConnections[iIdx].bState = Connection::STATE_AUTHING;
     //authorizing
     if(NotifyNeedAuth(&(m_vecConnections[iIdx])))
     {
@@ -60,6 +60,11 @@ int     GateServerHandler::OnNewConnection(TcpSocket   &   client)
         m_vecConnections[iIdx].Close();
         return -1;
     }    
+    ///////////////////////////////////////////////////////
+    m_vecConnections[iIdx].iIdx = iIdx;
+    m_vecConnections[iIdx].bState = Connection::STATE_AUTHING;
+    m_mpConnections[client.GetFD()] = iIdx;
+
     return 0; 
 }
 int     GateServerHandler::OnClientDataRecv(TcpSocket &   client,const Buffer & recvBuffer)
@@ -76,6 +81,9 @@ int     GateServerHandler::OnClientDataRecv(TcpSocket &   client,const Buffer & 
     #define GATE_MESSAGE_PREFIX_LEN  (sizeof(uint16_t))
     //msg:lenth+data
     //current state must be no msg or part msg
+    LOG_DEBUG("recv connx uid = %u data len = %d msg len = %d rcved = %d",
+        pConn->ulUid,recvBuffer.iUsed,
+        pConn->iMsgLen,pConn->recvBuffer.iUsed);
     int iRcvBuffOffSet = 0;
     if( 0 == pConn->iMsgLen)
     {
@@ -137,6 +145,8 @@ int     GateServerHandler::OnClientDataRecv(TcpSocket &   client,const Buffer & 
 }
 int     GateServerHandler::OnClientMessage(GateServerHandler::Connection* pConn,char* pMsgBuffer,int iMsgLen)
 {
+
+    LOG_DEBUG("recv connx uid = %u msg = %d state = %d" ,pConn->ulUid,iMsgLen,pConn->bState);
     switch(pConn->bState)
     {        
         case Connection::STATE_AUTHING:
@@ -198,10 +208,8 @@ int     GateServerHandler::OnConnectionClosed(TcpSocket &  client)
 #if 1
 int     GateServerHandler::NotifyNeedAuth(GateServerHandler::Connection* pConn)
 {    
-    int iIdx = ConnxToIndex(pConn);   
     gate::GateAuth    ga;
-    ga.set_cmd(gate::GateAuth::GATE_NEED_AUTH);
-    
+    ga.set_cmd(gate::GateAuth::GATE_NEED_AUTH);    
     //void* data, int size
     Buffer buf;
     if(buf.Create(ga.ByteSize()))
@@ -215,10 +223,9 @@ int     GateServerHandler::NotifyNeedAuth(GateServerHandler::Connection* pConn)
         buf.Destroy();
         return -1;
     }
-    //todo :  add a buffer cache the msg ?
     //...
     buf.iUsed = ga.ByteSize();
-    int iRet = SendToClient(iIdx,buf);
+    int iRet = SendToClient(pConn,buf);
     buf.Destroy();
     LOG_DEBUG("notify need auth result = %d",iRet);
     return iRet;
@@ -288,6 +295,7 @@ GateServerHandler::Connection* GateServerHandler::GetConnectionByFD(int fd)
 int         GateServerHandler::ConnxToIndex(GateServerHandler::Connection* p)
 {
     assert(p != NULL);
+    assert(p->iIdx >= 0);
     return p->iIdx;
 }
 
@@ -361,14 +369,8 @@ void        GateServerHandler::ForwardData(Connection* pConn,const Buffer& buffe
     }
     SendToClient(ConnxToIndex(pConn),s_b);
 }
-int         GateServerHandler::SendToClient(int iIdx,const Buffer & buff)
+int         GateServerHandler::SendToClient(Connection* pConn,const Buffer & buff)
 {
-    Connection* pConn = GetConnectionByIdx(iIdx);
-    if(!pConn)
-    {
-        return -1;
-    }
-    
     assert(buff.iUsed < (1<<(sizeof(uint16_t)*8)) );
     uint16_t wMsgLen = htons((uint16_t)buff.iUsed);
     if(pConn->cliSocket.Send(Buffer((char*)&wMsgLen,sizeof(uint16_t))))
@@ -376,6 +378,15 @@ int         GateServerHandler::SendToClient(int iIdx,const Buffer & buff)
         return -1;
     }
     return    pConn->cliSocket.Send(buff);
+}
+int         GateServerHandler::SendToClient(int iIdx,const Buffer & buff)
+{
+    Connection* pConn = GetConnectionByIdx(iIdx);
+    if(!pConn)
+    {
+        return -1;
+    }
+    return SendToClient(pConn,buff);
 }
 
 #endif

@@ -33,7 +33,7 @@ endif()
 
 # debug common
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wall -Wfatal-errors -Wextra -g -rdynamic -gdwarf-2 -g3 -Wl,-Bdynamic -ldl -pthread  ")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -rdynamic -gdwarf-2 -Wall -Wfatal-errors -Wextra -Wno-unused-parameter -ldl -pthread ")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -rdynamic -gdwarf-2 -Wall -Wfatal-errors -Wextra -Wno-unused-parameter -ldl -pthread ")
 
 # release mode
 set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -O2 -g --no-warnings -ldl -pthread")

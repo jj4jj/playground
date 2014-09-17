@@ -11,7 +11,7 @@ include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${PROJECT_SOURCE_DIR}
   ${SSUKITS_HOME}  
-  ${PROJECT_SOURCE_DIR}/dep/iniparser/src
+  ${INIPARSER_HOME}/src
 )
 
 #base dir linked lib dir

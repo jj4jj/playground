@@ -37,14 +37,27 @@ private:
         int         iIdx;
         TcpSocket   cliSocket;
         Buffer      recvBuffer;
-        //Buffer      sendBuffer;
         int         iDst;
         int         iMsgLen;
         int         bState;//invalid ? init ? authorized ? 
         uint64_t    ulUid;//
     public:
-        Connection():iIdx(-1),iDst(0),iMsgLen(0),bState(0),ulUid(0)
+        Connection()
         {
+            Init();
+        }
+        ~Connection()
+        {
+            recvBuffer.Destroy();
+        } 
+        void Init()
+        {
+            iIdx = -1;
+            iDst = 0;
+            iMsgLen = 0;
+            bState = STATE_INVALID;
+            ulUid = 0;
+            recvBuffer.iUsed = 0;
         }
         void Close()
         {
@@ -52,11 +65,9 @@ private:
             {
                 case STATE_CONNECTED:
                 case STATE_AUTHING:
-                //close
                 cliSocket.Close();
                 break;
                 case STATE_AUTHORIZED:
-                //report stop to dst server
                 cliSocket.Close();
                 break;
                 case STATE_INVALID:
@@ -65,11 +76,7 @@ private:
             bState = STATE_INVALID;
             iIdx = -1;
         }
-        ~Connection()
-        {
-            recvBuffer.Destroy();
-            //sendBuffer.Destroy();
-        }        
+               
     };
 public:
     int     OnClientMessage(Connection* pConn,char* pMsgBuffer,int iMsgLen);
@@ -80,6 +87,7 @@ public:
     void        ReportEvent(Connection* pConn,int iEvent,int iParam);
     void        ForwardData(Connection* pConn,const Buffer& buffer);
     int         SendToClient(int iIdx,const Buffer & buff);
+    int         SendToClient(Connection* pConn,const Buffer & buff);
     int         NotifyNeedAuth(Connection* pConn);
     int         Authorizing(Connection * pConn,const gate::AuthReq & auth);
     int         NotifyAuthResult(Connection* pConn,int iRet);

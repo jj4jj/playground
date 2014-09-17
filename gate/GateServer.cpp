@@ -5,6 +5,26 @@
 #include "component/IniConfigParser.h"
 #include "utility/Daemon.h"
 
+struct GateServerContext
+{
+    TcpServer *     gateServer;
+    IniConfigParser parser;
+    ///////////////////////
+public:
+    int    Init(const char * pszConfigFile);
+    int    SetServer(TcpServer* pServer);
+    
+
+
+        
+};
+
+
+
+
+
+
+
 int main(int argc , char * argv[])
 {
     IniConfigParser parser;
@@ -35,6 +55,8 @@ int main(int argc , char * argv[])
     {        
         return -1;
     }
+    GateServerContext ctx;
+    
     string sIP = parser.GetConfigString("ip");
     int port = parser.GetConfigInt("port");    
     int iMaxClient = parser.GetConfigInt("max_clients");
@@ -53,7 +75,7 @@ int main(int argc , char * argv[])
     {
         //daemonlize
         Daemon::Instance().Create();
-    }
+    }    
 
     TcpServer   server;
     //port is 1234

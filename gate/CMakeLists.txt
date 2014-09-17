@@ -9,7 +9,7 @@ include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${PROJECT_SOURCE_DIR}
   ${SSUKITS_HOME}
-  ${PROJECT_SOURCE_DIR}/dep/iniparser/src
+  ${INIPARSER_HOME}/src
 )
 
 #base dir linked lib dir
@@ -18,7 +18,7 @@ link_directories(
 	${SSUKITS_HOME}/bin
 	${PROJECT_SOURCE_DIR}/lib
 	/usr/lib
-	${PROJECT_SOURCE_DIR}/dep/iniparser	
+	${INIPARSER_HOME}	
 )
 
 #it will generate a exe
