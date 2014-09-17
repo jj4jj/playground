@@ -1,3 +1,6 @@
 [submodule "dep/iniparser"]
 	path = dep/iniparser
 	url = https://github.com/ndevilla/iniparser.git
+[submodule "dep/ssukits"]
+	path = dep/ssukits
+	url = https://github.com/jj4jj/ssukits.git
