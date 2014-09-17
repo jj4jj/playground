@@ -4,3 +4,6 @@
 [submodule "dep/ssukits"]
 	path = dep/ssukits
 	url = https://github.com/jj4jj/ssukits.git
+[submodule "dep/protobuf"]
+	path = dep/protobuf
+	url = https://github.com/jj4jj/protobuf.git
