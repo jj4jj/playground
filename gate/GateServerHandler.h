@@ -5,6 +5,7 @@
 //msg
 //
 
+struct GateFrame;
 class GateChannelProxy;
 class GateServerHandler: public TcpServerHandler
 {
@@ -23,17 +24,6 @@ private:
     //
     struct  Connection
     {
-        enum    
-        {
-            STATE_INVALID       = 0,
-            STATE_CONNECTED     = 1,
-            STATE_AUTHING       = 2,
-            STATE_AUTHORIZED    = 3,
-        };
-		enum
-		{
-			DEFAULT_RECV_BUFF_SIZE = (1<<16)+sizeof(uint32_t),
-		};
         int         iIdx;
         TcpSocket   cliSocket;
         Buffer      recvBuffer;
@@ -42,52 +32,21 @@ private:
         int         bState;//invalid ? init ? authorized ? 
         uint64_t    ulUid;//
     public:
-        Connection()
-        {
-            Init();
-        }
-        ~Connection()
-        {
-            recvBuffer.Destroy();
-        } 
-        void Init()
-        {
-            iIdx = -1;
-            iDst = 0;
-            iMsgLen = 0;
-            bState = STATE_INVALID;
-            ulUid = 0;
-            recvBuffer.iUsed = 0;
-        }
-        void Close()
-        {
-            switch(bState)
-            {
-                case STATE_CONNECTED:
-                case STATE_AUTHING:
-                cliSocket.Close();
-                break;
-                case STATE_AUTHORIZED:
-                cliSocket.Close();
-                break;
-                case STATE_INVALID:
-                break;
-            }
-            bState = STATE_INVALID;
-            iIdx = -1;
-        }
-               
+        Connection();
+        ~Connection();
+        void Init();        
+        void Close();
     };
 public:
-    int     OnClientMessage(Connection* pConn,char* pMsgBuffer,int iMsgLen);
+    int         OnClientMessage(Connection* pConn,char* pMsgBuffer,int iMsgLen);
     void        RemoveConnection(Connection* pConn,int iReason);
     Connection* GetConnectionByFD(int fd);    
     Connection* GetConnectionByIdx(int idx);
     int         ConnxToIndex(Connection* p);
     void        ReportEvent(Connection* pConn,int iEvent,int iParam);
     void        ForwardData(Connection* pConn,const Buffer& buffer);
-    int         SendToClient(int iIdx,const Buffer & buff);
-    int         SendToClient(Connection* pConn,const Buffer & buff);
+    int         SendFrameToClient(Connection* pConn,const GateFrame & frame);
+    int         SendToClient(Connection* pConn,gate::GateAuth & ga);
     int         NotifyNeedAuth(Connection* pConn);
     int         Authorizing(Connection * pConn,const gate::AuthReq & auth);
     int         NotifyAuthResult(Connection* pConn,int iRet);

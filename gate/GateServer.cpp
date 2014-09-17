@@ -4,26 +4,9 @@
 #include "base/Log.h"
 #include "component/IniConfigParser.h"
 #include "utility/Daemon.h"
-
-struct GateServerContext
-{
-    TcpServer *     gateServer;
-    IniConfigParser parser;
-    ///////////////////////
-public:
-    int    Init(const char * pszConfigFile);
-    int    SetServer(TcpServer* pServer);
-    
-
-
-        
-};
-
-
-
-
-
-
+#include "GateConsoleHandler.h"
+#include "net/UdpDriver.h"
+#include "GateServerContext.h"
 
 int main(int argc , char * argv[])
 {
@@ -33,11 +16,17 @@ int main(int argc , char * argv[])
     {
         printf("usage : %s <config file> \n",argv[0]);        
         parser.Create("gate");
-        static const char * kv[][2] = {{"ip","127.0.0.1"},
-                                {"port","58800"},
-                                {"max_clients","5000"},
-                                {"logfile","gate.log"},
-                                {"daemon","0"},
+        static const char * kv[][2] = {
+        //gate server
+        {"ip","127.0.0.1"},
+        {"port","58800"},
+        {"max_clients","5000"},
+        {"logfile","gate.log"},
+        {"daemon","0"},
+        //console
+        {"console:ip","127.0.0.1"},
+        {"console:port","58810"},
+
                                 {NULL,NULL}};
         int i = 0;
         ConfigValue v;
@@ -58,15 +47,25 @@ int main(int argc , char * argv[])
     GateServerContext ctx;
     
     string sIP = parser.GetConfigString("ip");
+    string sLogFileName = parser.GetConfigString("logfile");
+    string sConsoleIP = parser.GetConfigString("console:ip");
+
+    
     int port = parser.GetConfigInt("port");    
     int iMaxClient = parser.GetConfigInt("max_clients");
-    string sLogFileName = parser.GetConfigString("logfile");
     int daemon = parser.GetConfigInt("daemon");    
+    int console_port = parser.GetConfigInt("console:port");
+
     const char* pszLogFileName = sLogFileName.c_str();
     const char* pszIP = sIP.c_str();
+    const char* pszConsoleIP = sConsoleIP.c_str();
+
+    
     string configString;
     parser.VisualConfig(configString);
     LOG_INFO(configString.c_str());
+
+
     if(pszLogFileName)  
     {
         Log::Instance().Init( pszLogFileName, Log::LOG_LV_DEBUG, 1024000);
@@ -76,11 +75,32 @@ int main(int argc , char * argv[])
         //daemonlize
         Daemon::Instance().Create();
     }    
+    
 
+    ////////////////////////////////////////////////////////////////////////
+    UdpDriver  consoleDrv;
+    consoleDrv.Init(10);
+    UdpSocketHandlerSharedPtr pHdlr(new GateConsoleHandler(&ctx));
+    consoleDrv.SetHandler(pHdlr);
+    UdpSocket console;
+    if(console.Init())
+    {
+        return -1;
+    }
+    SockAddress consoleAddr(console_port,pszConsoleIP);
+    LOG_INFO("gate console will listen on %s\n",consoleAddr.ToString());
+    if(console.Bind(consoleAddr))
+    {
+        return -1;
+    }
+    consoleDrv.AddSocket(console.GetFD());    
+    /////////////////////////////////////////////////////////////////
+
+    
     TcpServer   server;
     //port is 1234
     SockAddress addr(port,pszIP);
-    LOG_INFO("server will listen on %s\n",addr.ToString());
+    LOG_INFO("gate server will listen on %s\n",addr.ToString());
     if(server.Init(addr,true,iMaxClient))
     {
         return -1;
@@ -90,29 +110,33 @@ int main(int argc , char * argv[])
     {
         return -1;
     }
-    TcpServerHandler* pHandler = new GateServerHandler(&proxy,iMaxClient);
+    TcpServerHandlerPtr  ptrHandler = TcpServerHandlerPtr(new GateServerHandler(&proxy,iMaxClient));
 
-    server.SetServerHandler(pHandler);
+    server.SetServerHandler(ptrHandler.get());
     if(server.Start()!=0)
     {
         return -1;  
     }
 
-    int iProc = 0;
+    ///////////////////////////////////////////////////
+    int iProcMsg = 0;
     while(true)
     {
-        iProc = server.Loop();
-        if(iProc < 0)
+        //check console
+        consoleDrv.Loop(1,0);
+
+        //check server
+        iProcMsg = server.Loop();
+        if(iProcMsg < 0)
         {
             break;
         }
-        else if(0 == iProc)
+        else if(0 == iProcMsg)
         {
             //1ms
             usleep(1000);
         }
     }
 
-    delete pHandler;
     return 0;
 }
