@@ -10,18 +10,21 @@ GateConsoleHandler::GateConsoleHandler(GateServerContext* p)
 int GateConsoleHandler::SplitCMDLine(string & line,vector<string> & list,const char* pszDeli)
 {
     list.clear();
-    //
+    //placeholder
+    line.append(pszDeli);
+    int len = strlen(pszDeli);
     int start = 0;
     int end = line.find(pszDeli,start);
     while(start < (int)line.length() &&
           end != (int)string::npos )
     {
-        string seg = line.substr(start,end);
-        start = end + 1;
-        if(seg != pszDeli)
+        string seg = line.substr(start,end-start);
+        if(strcmp(seg.c_str(),pszDeli) && end > start)
         {
             list.push_back(seg); 
         }
+        ///////////////////////////////////////////////
+        start = end + len;
         end = line.find(pszDeli,start);
     }
     return 0;
@@ -30,11 +33,18 @@ string GateConsoleHandler::OnCMD(const std::vector<string> & cmdLine)
 {
     if(cmdLine.empty())
     {
-        return string("no comannds !");
+        return string("not comannds !");
     }
     //todo
-
-    return string("result !");
+    //echo
+    char buffer[32];
+    snprintf(buffer,sizeof(buffer),"echo:%d\n",(int)cmdLine.size());    
+    string result = buffer;
+    for(int i  = 0 ; i < (int)cmdLine.size(); ++i)
+    {
+        result +=  "[" + cmdLine[i] + "] ";
+    }    
+    return result;
 }
 int GateConsoleHandler::OnDataRecv(UdpSocket& udpSock,const Buffer & recvBuffer,const SockAddress& _addr)
 {    
