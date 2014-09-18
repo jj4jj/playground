@@ -1,14 +1,13 @@
 #pragma once
-
+#include "base/stdinc.h"
 //CMD : <cmd> <arg...>
 
 class ConsoleControler
 {
 public:
-    virtual    int     OnCMD(const char* pszCMDName,...);    
+    virtual    string     OnCMD(const std::vector<string> & cmdLine);    
     
 public:
   ~ConsoleControler(){}  
-
 };
 

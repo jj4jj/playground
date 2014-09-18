@@ -4,7 +4,7 @@ file(GLOB_RECURSE components_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp *.h
 #
 #
 
-message(${components_SRCS})
+#message(${components_SRCS})
 #message(${gate_client_SRCS})
 #base dir depend on itself and some other lib
 include_directories(

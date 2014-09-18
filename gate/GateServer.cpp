@@ -9,8 +9,6 @@
 #include "GateServerContext.h"
 
 
-
-
 int main(int argc , char * argv[])
 {
     GateServerContext ctx;
