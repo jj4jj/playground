@@ -1,4 +1,3 @@
-
 #include "base/stdinc.h"
 #include "base/Log.h"
 #include "ChannelAgent.h"

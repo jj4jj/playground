@@ -12,5 +12,15 @@ public:
     int      Init();
     int      SendToAgent(int iDst,const std::vector<Buffer>  &  vBuff);
     int      SendToAgent(int iDst,const Buffer &  buff);
+public:
+    GateChannelProxy();
+    virtual ~GateChannelProxy();
+
+private:
+    Buffer chnMsgSendBuffer;
+    enum
+    {
+        MAX_CHANNEL_MESSAGE_SIZE = 65536,
+    };
 };
 

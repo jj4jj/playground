@@ -1,14 +1,34 @@
 #include "GateChannelProxy.h"
 #include "base/Log.h"
+#include "channel/ChannelAgent.h"
 #include "channel/ChannelAgentMgr.h"
+
+#if 1
+GateChannelProxy::GateChannelProxy()
+{
+}
+GateChannelProxy::~GateChannelProxy()
+{
+    chnMsgSendBuffer.Destroy();
+}
+
+#endif
+
 
 #if 1
 
 int     GateChannelProxy::Init()
 {
-    //todo
-    //build all dst chennel , map id
+    int   iRet = chnMsgSendBuffer.Create(MAX_CHANNEL_MESSAGE_SIZE);
+    if(iRet)
+    {
+        return -1;
+    }
+
+    //build all dst chennel , map id . from config file
     ChannelAgentMgr::Instance().Init();
+
+
     return 0;
 }
 int         GateChannelProxy::SendToAgent(int iDst,const std::vector<Buffer>  &  vBuff)
@@ -18,13 +38,11 @@ int         GateChannelProxy::SendToAgent(int iDst,const std::vector<Buffer>  & 
     {
         iLength += vBuff[i].iUsed;
     }   
-    if(iLength > 0x7FFF)
+    if(iLength > MAX_CHANNEL_MESSAGE_SIZE)
     {
         LOG_ERROR("Buffer size is too much = %d",iLength);
         return -1;
     }
-    /*
-    uint16_t   nLen = htons((uint16_t)iLength);
     ChannelAgent  * pChannel = ChannelAgentMgr::Instance().GetChannel(iDst);
     if(pChannel)
     {
@@ -36,19 +54,15 @@ int         GateChannelProxy::SendToAgent(int iDst,const std::vector<Buffer>  & 
     //len
     //msg
         //ga_connection
-        //data
-    if(pChannel->GetAvaileSize() < iLength)
+        //data    
+    chnMsgSendBuffer.iUsed = 0;
+    for(int i = 0;i < (int)vBuff.size(); ++i)
     {
-        LOG_ERROR("channel has no more space");
-        return -1;
-    }
-    pChannel->Write(Buffer((char*)&nLen,sizeof(nLen)));
-    for(int i  = 0;i < vBuff.size(); ++i)
-    {
-        pChannel->Write(vBuff[i]);
-    }
-    */
-    return 0;
+        memcpy(chnMsgSendBuffer.pBuffer + chnMsgSendBuffer.iUsed,
+                vBuff[i].pBuffer,vBuff[i].iUsed);
+        chnMsgSendBuffer.iUsed += vBuff[i].iUsed;
+    }    
+    return pChannel->PostMessage(ChannelMessage(chnMsgSendBuffer));
 }
 int      GateChannelProxy::SendToAgent(int iDst,const Buffer & buff)
 {
