@@ -11,7 +11,7 @@ ChannelAgent::ChannelAgent()
 }
 ChannelAgent::~ChannelAgent()
 {
-
+    LOG_DEBUG("channel agent destroy");
 }
 #endif
 

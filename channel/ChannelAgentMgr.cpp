@@ -52,7 +52,9 @@ int             ChannelAgentMgr::RemoveChannel(int id)
     {
         return -1;
     }
+    LOG_DEBUG("remove channel agent = %d",id);
     m_mpChannelAgent.erase(id);
+
     return 0;
 }
 int             ChannelAgentMgr::Polling()

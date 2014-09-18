@@ -11,6 +11,13 @@
 Channel::Channel():mode(CHANNEL_MODE_INVALID),sender(NULL),receiver(NULL)
 {
 }
+Channel::~Channel()
+{
+    Destroy();
+}
+#endif
+
+#if 1
 int  Channel::Write(const Buffer & buffer)
 {
     zmq_msg_t   sndMsg;
@@ -67,6 +74,7 @@ int Channel::Create(int mode,void* ctx,const char* pszAddr,const char* name,int 
     sender = zmq_socket(ctx,ZMQ_PUSH);                        
     if(!sender)
     {
+        LOG_ERROR("zmq socket error  error = %s",zmq_strerror(zmq_errno()));
         return -1;
     }
     //set name
@@ -75,13 +83,16 @@ int Channel::Create(int mode,void* ctx,const char* pszAddr,const char* name,int 
     zmq_setsockopt(sender,ZMQ_SNDHWM,&hwm,sizeof(hwm));
     zmq_setsockopt(sender,ZMQ_RCVHWM,&hwm,sizeof(hwm));
 
-    if(mode == CHANNEL_MODE_LOCAL && zmq_bind(ctx,pszAddr))
+    int zret = 0;
+    if(mode == CHANNEL_MODE_LOCAL && (zret = zmq_bind(sender,pszAddr)))
     {
+        LOG_ERROR("zmq bind = %d error = %s",zret,zmq_strerror(zmq_errno()));
         Destroy();
         return -2;
     }
-    if(mode == CHANNEL_MODE_REMOTE && zmq_connect(ctx,pszAddr))
+    if(mode == CHANNEL_MODE_REMOTE && (zret = zmq_connect(sender,pszAddr)))
     {
+        LOG_ERROR("zmq connect = %d error = %s",zret,zmq_strerror(zmq_errno()));
         Destroy();
         return -2;
     }             
@@ -89,6 +100,7 @@ int Channel::Create(int mode,void* ctx,const char* pszAddr,const char* name,int 
     receiver = zmq_socket(ctx,ZMQ_PULL);                        
     if(!receiver)
     {
+        LOG_ERROR("zmq socket error  error = %s",zmq_strerror(zmq_errno()));
         Destroy();
         return -3;
     }
@@ -97,13 +109,11 @@ int Channel::Create(int mode,void* ctx,const char* pszAddr,const char* name,int 
     //set hwm
     zmq_setsockopt(receiver,ZMQ_SNDHWM,&hwm,sizeof(hwm));
     zmq_setsockopt(receiver,ZMQ_RCVHWM,&hwm,sizeof(hwm));
-    if(mode == CHANNEL_MODE_LOCAL && zmq_bind(ctx,pszAddr))
+
+    zret = zmq_connect(receiver,pszAddr);
+    if(zret)
     {
-        Destroy();
-        return -4;
-    }            
-    if(mode == CHANNEL_MODE_REMOTE && zmq_connect(ctx,pszAddr))
-    {
+        LOG_ERROR("zmq connect = %d error = %s",zret,zmq_strerror(zmq_errno()));
         Destroy();            
         return -4;
     }   
@@ -124,10 +134,7 @@ void  Channel::Destroy()
     sender = NULL;
     receiver = NULL;
     mode = CHANNEL_MODE_INVALID;
-}
-Channel::~Channel()
-{
-    Destroy();
+    LOG_DEBUG("close channel");
 }
 
 #endif
