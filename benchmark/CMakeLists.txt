@@ -30,21 +30,8 @@ target_link_libraries(gate_cli
 	protobuf.a
 )
 
-
-
-###################################
-ADD_EXECUTABLE(channel_test
-	${CMAKE_CURRENT_SOURCE_DIR}/TestChannel.cpp
-)
-target_link_libraries(channel_test
-	libssukits_base.a
-	channel
-	zmq
-)
-
 #installing
 INSTALL(TARGETS  gate_cli DESTINATION benchmark/)
-INSTALL(TARGETS  channel_test DESTINATION benchmark/)
 
 
 	

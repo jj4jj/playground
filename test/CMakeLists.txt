@@ -1,9 +1,3 @@
-#the compiling files
-file(GLOB_RECURSE playground_test_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp *.h)
-#
-
-SET_SOURCE_FILES_PROPERTIES(${benchmark_SRCS} PROPERTIES LANGUAGE CXX )
-
 
 #base dir depend on itself and some other lib
 include_directories(
@@ -24,7 +18,7 @@ link_directories(
 
 #it will generate a exe
 ADD_EXECUTABLE(test_config
-	${playground_test_SRCS}	
+	${CMAKE_CURRENT_SOURCE_DIR}/TestConfig.cpp
 )
 
 #assign custrom link lib
@@ -36,5 +30,18 @@ target_link_libraries(test_config
 
 
 
+###################################
+ADD_EXECUTABLE(channel_test
+	${CMAKE_CURRENT_SOURCE_DIR}/TestChannel.cpp
+)
+target_link_libraries(channel_test
+	libssukits_base.a
+	channel
+	zmq
+)
+
 #installing
 INSTALL(TARGETS  test_config DESTINATION test/)
+INSTALL(TARGETS  channel_test DESTINATION test/)
+
+

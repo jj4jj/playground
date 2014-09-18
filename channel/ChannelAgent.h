@@ -18,6 +18,7 @@ public:
     //return 0 is ok , otherwise return an error code
     int PostMessage(const ChannelMessage & msg);
     int DispatchMessage(const ChannelMessage & msg);
+    inline Channel & GetChannel(){return channel;}
 private:
     Channel     channel;    
     ChannelMessageHandler*  pHandler;

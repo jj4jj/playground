@@ -24,7 +24,7 @@ void listen()
 }
 void close()
 {
-    ChannelAgentMgr::Instance().RemoveChannel(channel_id);
+    //ChannelAgentMgr::Instance().RemoveChannel(channel_id);
 }
 void write()
 {

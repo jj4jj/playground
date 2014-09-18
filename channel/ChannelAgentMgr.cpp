@@ -6,17 +6,46 @@
 #include "ChannelAgent.h"
 #include "ChannelAgentMgr.h"
 
-int             ChannelAgentMgr::Init()
+
+#if 1
+ChannelAgentMgr::ChannelAgentMgr()
 {
-    assert(NULL == zmq_context);
+    zmq_context = NULL;
+    nzpollitem = 0;
+    zpollitems = 0;    
+}
+ChannelAgentMgr::~ChannelAgentMgr()
+{
+    Destroy();
+}
+#endif
+
+#if 1
+int             ChannelAgentMgr::Init(int iMaxChannel)
+{
+    assert(NULL == zmq_context && iMaxChannel > 0 && zpollitems == NULL);
     zmq_context = zmq_ctx_new();
     if(!zmq_context)
     {
         LOG_FATAL("zmq init error !");
         return -1;
     }            
+    nzpollitem = iMaxChannel;
+    zpollitems = (zmq_pollitem_t*)malloc(iMaxChannel*sizeof(zmq_pollitem_t));
+    assert(zpollitems != NULL);
     return 0;
 }
+void            ChannelAgentMgr::Destroy()
+{
+    if(zmq_context)
+    {
+        zmq_ctx_destroy(zmq_context);
+        zmq_context = NULL;
+    }        
+    SAFE_FREE(zpollitems);
+    nzpollitem = 0;
+}
+
 int             ChannelAgentMgr::AddChannel(int id,bool bRemote,const char * pszName,const char* pszAddr,ChannelMessageHandler* pHandler)
 {
     if(m_mpChannelAgent.find(id) != m_mpChannelAgent.end())
@@ -33,6 +62,12 @@ int             ChannelAgentMgr::AddChannel(int id,bool bRemote,const char * psz
         LOG_ERROR("create channell error = %d",iRet);
         return -2;
     }
+    Channel & chnl = p->GetChannel();    
+    zmq_pollitem_t & item = zpollitems[nzpollitem++];
+    item.socket = chnl.receiver;
+    item.fd = id;
+    item.events = ZMQ_POLLIN;
+    item.revents = 0;
     m_mpChannelAgent[id] = p;    
     return 0;
 }
@@ -47,6 +82,8 @@ ChannelAgent* ChannelAgentMgr::GetChannel(int id)
 }
 int             ChannelAgentMgr::RemoveChannel(int id)
 {
+    return -1; //do not supported
+    ////////////////////////////////
     ChannelAgent* p = GetChannel(id);
     if(!p)
     {
@@ -57,26 +94,41 @@ int             ChannelAgentMgr::RemoveChannel(int id)
 
     return 0;
 }
-int             ChannelAgentMgr::Polling()
+int             ChannelAgentMgr::Polling(int timeout)
 {
-    //
-    ChannelAgentMapItr it = m_mpChannelAgent.begin();
-    int iRet = 0;
-    ChannelMessage msg;
-    //todo use zmq_poll
-    for(;it != m_mpChannelAgent.end();++it)
-    {   
-        iRet = it->second->GetMessage(msg);
-        if(iRet)
-        {
-            continue;
-        }
-        it->second->DispatchMessage(msg);            
+
+    int n = zmq_poll(zpollitems, nzpollitem,timeout);
+    if( n < 0)
+    {
+        LOG_ERROR("zmq poll error !");
+        return -1;
     }
-    return iRet;
+    int ievnnts = 0;
+    ChannelMessage msg;
+    int iRet = 0;
+    for(int i = 0 ;i < nzpollitem; ++i)
+    {
+        if(zpollitems[i].revents & ZMQ_POLLIN)
+        {
+            ChannelAgentMapItr it = m_mpChannelAgent.find(zpollitems[i].fd);
+            if(  it == m_mpChannelAgent.end()  )
+            {
+                continue;
+            }
+            iRet = it->second->GetMessage(msg);
+            if(iRet)
+            {
+                continue;
+            }
+            it->second->DispatchMessage(msg);            
+            ///////////////////////////////////
+            ++ievnnts;
+        }
+    }
+    return ievnnts;
 }
 
-
+#endif
 
 
 

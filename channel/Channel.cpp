@@ -26,9 +26,9 @@ int  Channel::Write(const Buffer & buffer)
     memcpy(zmq_msg_data(&sndMsg),buffer.pBuffer,buffer.iUsed);
     int iRet = zmq_msg_send(&sndMsg,sender,0);
     zmq_msg_close(&sndMsg);
-    if(iRet)
+    if(iRet < 0)
     {
-        LOG_ERROR("zmq send msg error = %d",iRet);
+        LOG_ERROR("zmq send msg error = %d for = %s",iRet,zmq_strerror(iRet));
         return -1;
     }
     return 0;
@@ -38,17 +38,17 @@ int  Channel::Read(Buffer & buffer)
     zmq_msg_t   rcvMsg;
     zmq_msg_init(&rcvMsg);        
     int iRet = zmq_msg_recv(&rcvMsg,receiver,0);
-    if(iRet &&
+    if(iRet < 0 &&
        iRet != EINTR )
     {
-        LOG_ERROR("zmq recv msg error = %d",iRet);
+        LOG_ERROR("zmq recv msg error = %d for = %s",iRet,zmq_strerror(iRet));
         zmq_msg_close(&rcvMsg);
         return -1;
     }
 
     int msglen = zmq_msg_size(&rcvMsg);
     //todo zero copy
-    if(rcvBuffer.iUsed < msglen)
+    if(rcvBuffer.iCap < msglen)
     {
         rcvBuffer.Destroy();
         if(buffer.Create(msglen))
@@ -59,6 +59,8 @@ int  Channel::Read(Buffer & buffer)
         }
     }        
     memcpy(rcvBuffer.pBuffer,zmq_msg_data(&rcvMsg),rcvBuffer.iCap);        
+    rcvBuffer.iUsed = msglen;
+
     zmq_msg_close(&rcvMsg);
     buffer = rcvBuffer;
     return 0;
