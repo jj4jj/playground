@@ -1,8 +1,10 @@
 #include "base/stdinc.h"
 #include "base/Log.h"
+#include "ChannelMessage.h"
+#include "Channel.h"
+#include "ChannelMessageHandler.h"
 #include "ChannelAgent.h"
 #include "ChannelAgentMgr.h"
-#include "zmq.h"
 
 int             ChannelAgentMgr::Init()
 {
@@ -12,8 +14,7 @@ int             ChannelAgentMgr::Init()
     {
         LOG_FATAL("zmq init error !");
         return -1;
-    }
-            
+    }            
     return 0;
 }
 int             ChannelAgentMgr::AddChannel(int id,bool bRemote,const char * pszName,const char* pszAddr,ChannelMessageHandler* pHandler)
