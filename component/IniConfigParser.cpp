@@ -25,15 +25,34 @@ int     IniConfigParser::ReadConfigFile(const char* pszFileName)
     {
         LOG_ERROR("load ini file = %s error !",pszFileName);
         return -1;
-    }   
+    }       
     GetConfig(rootValue);
+    int nsec = iniparser_getnsec(dic);
+    for(int i = 0; i < nsec ; ++i)
+    {
+        char* sec_name = iniparser_getsecname(dic, i);
+        if(rootValue.key == sec_name)
+        {
+            continue;
+        }
+        ConfigValue v;
+        v.key = sec_name;        
+        GetConfig(v,true);
+        rootValue.dic.push_back(v);
+    }
     return 0 ;
 }
-int     IniConfigParser::GetConfig(ConfigValue  & v)
+int     IniConfigParser::GetConfig(ConfigValue & v)
+{
+    return GetConfig(v,false);
+}
+int     IniConfigParser::GetConfig(ConfigValue  & v,bool bIsSec)
 {
     //insert     
     string key = v.key;
-    if(v.key != rootValue.key && v.key.find(':') == string::npos)
+    if(v.key != rootValue.key &&
+       v.key.find(':') == string::npos &&
+       !bIsSec)
     {
         key = rootValue.key + ":" +v.key;
     }

@@ -16,6 +16,8 @@ public:
     ///////////////////////////////////////////////////////    
     int     Create(const char* pszRootName = NULL);
     int     DumpConfig(const char* pszFileName);
+protected:
+    int     GetConfig(ConfigValue & v,bool bIsSec);
 private:
     dictionary * dic;
 public:

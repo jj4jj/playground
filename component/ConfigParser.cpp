@@ -32,7 +32,10 @@ void     ConfigParser::VisualConfig(string & s,ConfigValue & v,int level,const c
 {
     if(v.dic.empty())
     {
-        s+=string(prefix,level);
+        for(int j = 0 ;  j < level ;++j)
+        {
+            s+= prefix;
+        }
         s+=v.key;
         s+=":";
         s+=v.value;
@@ -41,7 +44,10 @@ void     ConfigParser::VisualConfig(string & s,ConfigValue & v,int level,const c
     }
     else
     {
-        s+=string(prefix,level);
+        for(int j = 0 ;  j < level ;++j)
+        {
+            s+= prefix;
+        }
         s+=v.key;
         s+=":";
         s+="\n";
