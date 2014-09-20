@@ -27,6 +27,8 @@ target_link_libraries(test_config
 	libssukits_base.a
 	libiniparser.a
 )
+#installing
+INSTALL(TARGETS  test_config DESTINATION test/)
 
 
 
@@ -39,9 +41,23 @@ target_link_libraries(channel_test
 	channel
 	zmq
 )
-
-#installing
-INSTALL(TARGETS  test_config DESTINATION test/)
 INSTALL(TARGETS  channel_test DESTINATION test/)
+
+
+###################################
+ADD_EXECUTABLE(test_app
+	${CMAKE_CURRENT_SOURCE_DIR}/TestApp.cpp
+)
+target_link_libraries(test_app
+	playground_app
+	playground_component
+	iniparser
+	ssukits_utility
+	ssukits_net
+	ssukits_base
+)
+INSTALL(TARGETS  test_app DESTINATION test/)
+
+
 
 

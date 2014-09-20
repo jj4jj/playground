@@ -24,7 +24,7 @@ int main(int argc , char * argv[])
     }    
     IniConfigParser & parser = *(ctx.parser);
 
-    
+    //////////////////////////////////////////
     string sIP = parser.GetConfigString("ip");
     string sLogFileName = parser.GetConfigString("logfile");
     string sConsoleIP = parser.GetConfigString("console:ip");
@@ -41,7 +41,7 @@ int main(int argc , char * argv[])
     
     string configString;
     parser.VisualConfig(configString);
-    LOG_INFO(configString.c_str());
+    LOG_INFO("gate config :\n%s",configString.c_str());
 
 
     if(pszLogFileName)  

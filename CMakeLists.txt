@@ -64,4 +64,5 @@ add_subdirectory(client/gate)
 add_subdirectory(benchmark)
 add_subdirectory(component)
 add_subdirectory(test)
+add_subdirectory(app)
 
