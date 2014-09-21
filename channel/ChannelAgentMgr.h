@@ -1,7 +1,7 @@
 #pragma once
 #include "base/stdinc.h"
 #include "base/Singleton.hpp"
-#include "ChannelMessageHandler.h"
+#include "ChannelMessageDispatcher.h"
 #include "ChannelAgent.h"
 
 
@@ -15,11 +15,12 @@ public:
     ChannelAgentMgr();
     ~ChannelAgentMgr();
 public:
-    int             Init(int iMaxChannel = 5);
+    int             Init(int iMaxChannel ,ChannelMessageDispatcher*  pDispatcher);
     void            Destroy();
-    int             AddChannel(int id,bool bRemote,const char * pszName,const char* pszAddr,ChannelMessageHandlerPtr pHandler);
+    int             AddChannel(int id,bool bRemote,const char * pszName,const char* pszAddr);
     ChannelAgent*   GetChannel(int id);
     int             Polling(int timeout = 10);
+    ChannelMessageDispatcher *  GetDispatcher(){return pDispatcher;}
 private:
     int             RemoveChannel(int id);
 private:
@@ -27,6 +28,7 @@ private:
     ChannelAgentMap m_mpChannelAgent;  
     zmq_pollitem_t* zpollitems;
     int             nzpollitem;
+    ChannelMessageDispatcher * pDispatcher;
 };
 
 

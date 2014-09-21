@@ -8,6 +8,7 @@
 #include "net/UdpSocket.h"
 #include "net/UdpDriver.h"
 #include "utility/Daemon.h"
+#include "ChannelProxy.h"
 #include "AppContext.h"
 
 class App
@@ -35,21 +36,26 @@ public:
     {
         return ctx;
     }
+    inline ChannelProxy & GetChannelProxy()
+    {
+        return proxy;
+    }
 public:
     int     Poll(int iRecommendPollNum = 1);
     int     Closing(int closingReason);
     //ms
     int     Tick(int64_t lElapseTime);
     int     Destroy();
-    int     Init(AppContext * ctx);    
+    int     Init(AppContext * _ctx);    
 public:
-    App():ctx(NULL){}
-    virtual    ~App(){}  
+    App();
+    virtual    ~App();
 private:
     AppContext * ctx;
     UdpDriver  m_consoleDrv;
-    UdpSocketHandlerSharedPtr   ptrConsoleHandler;
-//////////////////////////////////////////////////////////////////////////////////
+    UdpSocketHandlerSharedPtr   ptrConsoleHandler;    
+    ChannelProxy                proxy;
+    //////////////////////////////////////////////////////////////////////////////////
 public:    
     template<class AppContextType ,
              class AppType >

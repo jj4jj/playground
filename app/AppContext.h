@@ -2,11 +2,22 @@
 #include "component/IniConfigParser.h"
 #include "base/stdinc.h"
 
+
+struct GateChannel
+{
+    //id = 0 is local listen channel , otherwise connecting channel
+    int     id;
+    string  channelAddr;
+    bool    listener;
+};
+
 class AppContext
 {
 public:
     IniConfigParser     parser;
     //////////////////////////////////////////////
+    string                   channelName;
+    std::vector<GateChannel> channels;
     bool      closing;
     int       tickCountUs;
     int       tickPollCount;

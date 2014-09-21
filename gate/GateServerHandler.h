@@ -1,12 +1,11 @@
 #pragma once
 #include "net/TcpServerHandler.h"
 #include "proto/gate/gate.pb.h"
+#include "app/ChannelProxy.h"
 //gate server report connection event to agent
 //msg
 //
-
 struct GateFrame;
-class GateChannelProxy;
 class GateServerHandler: public TcpServerHandler
 {
 public:
@@ -15,7 +14,7 @@ public:
     int     OnConnectionClosed( TcpSocket &  client);
 public:
     virtual ~GateServerHandler();
-    GateServerHandler(GateChannelProxy * p,int iMaxConnections);
+    GateServerHandler(ChannelProxy * p,int iMaxConnections);
 
 private:
     int     GetNextIdx();
@@ -58,6 +57,6 @@ private:
     int     m_iMaxConnection;
     int     m_iAlivedConnections;    
     int     m_iLastFreeIdx ;
-    GateChannelProxy * m_pChannelProxy;
+    ChannelProxy * m_pChannelProxy;
 }; 
 

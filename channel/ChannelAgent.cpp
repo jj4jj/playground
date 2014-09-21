@@ -5,9 +5,9 @@
 #include "ChannelMessageHandler.h"
 #include "ChannelAgent.h"
 #if 1
-ChannelAgent::ChannelAgent()
+ChannelAgent::ChannelAgent(int _id)
 {
-
+    id = _id;
 }
 ChannelAgent::~ChannelAgent()
 {
@@ -16,7 +16,7 @@ ChannelAgent::~ChannelAgent()
 #endif
 
 #if 1
-int        ChannelAgent::Init(void * ctx,int mode,const char * pszName,const char* pszAddr,ChannelMessageHandlerPtr p)
+int        ChannelAgent::Init(void * ctx,int mode,const char * pszName,const char* pszAddr)
 {
     int iRet = channel.Create(mode, ctx, pszAddr,pszName);
     if(iRet)
@@ -24,8 +24,6 @@ int        ChannelAgent::Init(void * ctx,int mode,const char * pszName,const cha
         LOG_ERROR("channel create error = %d",iRet);
         return -1;
     }
-    ptrHandler = p;
-    ptrHandler->SetAgent(this);
     return 0;
 }
 
@@ -48,10 +46,6 @@ int ChannelAgent::PostMessage(const ChannelMessage & msg)
     //post the message to channel    
     Buffer buff((char*)msg.pData,msg.dwSize);
     return channel.Write(buff);
-}
-int ChannelAgent::DispatchMessage(const ChannelMessage & msg)
-{
-    return ptrHandler->OnRecvMessage(msg);
 }
 #endif
 

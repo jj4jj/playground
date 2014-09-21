@@ -51,10 +51,12 @@ ADD_EXECUTABLE(test_app
 target_link_libraries(test_app
 	playground_app
 	playground_component
-	iniparser
+	channel
 	ssukits_utility
 	ssukits_net
 	ssukits_base
+	zmq
+	iniparser
 )
 INSTALL(TARGETS  test_app DESTINATION test/)
 

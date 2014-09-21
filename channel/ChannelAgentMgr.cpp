@@ -21,7 +21,7 @@ ChannelAgentMgr::~ChannelAgentMgr()
 #endif
 
 #if 1
-int             ChannelAgentMgr::Init(int iMaxChannel)
+int             ChannelAgentMgr::Init(int iMaxChannel,ChannelMessageDispatcher*  _pDispatcher)
 {
     assert(NULL == zmq_context && iMaxChannel > 0 && zpollitems == NULL);
     zmq_context = zmq_ctx_new();
@@ -32,6 +32,7 @@ int             ChannelAgentMgr::Init(int iMaxChannel)
     }            
     nzpollitem = iMaxChannel;
     zpollitems = (zmq_pollitem_t*)malloc(iMaxChannel*sizeof(zmq_pollitem_t));
+    pDispatcher = _pDispatcher;
     assert(zpollitems != NULL);
     return 0;
 }
@@ -46,7 +47,7 @@ void            ChannelAgentMgr::Destroy()
     nzpollitem = 0;
 }
 
-int             ChannelAgentMgr::AddChannel(int id,bool bRemote,const char * pszName,const char* pszAddr,ChannelMessageHandlerPtr pHandler)
+int             ChannelAgentMgr::AddChannel(int id,bool bRemote,const char * pszName,const char* pszAddr)
 {
     if(m_mpChannelAgent.find(id) != m_mpChannelAgent.end())
     {
@@ -56,12 +57,12 @@ int             ChannelAgentMgr::AddChannel(int id,bool bRemote,const char * psz
     }
     LOG_INFO("add channel id = %d remote = %d name = %s addr = %s ",
         id,bRemote,pszName,pszAddr);
-    ChannelAgentPtr p(new ChannelAgent());
+    ChannelAgentPtr p(new ChannelAgent(id));
     char channelName[32];
     assert(strlen(pszName) < 20);
     SNPRINTF(channelName,sizeof(channelName),"%s#%d",pszName,id);
     int chnMode = bRemote?Channel::CHANNEL_MODE_REMOTE:Channel::CHANNEL_MODE_LOCAL;
-    int iRet = p->Init(zmq_context,chnMode,channelName,pszAddr,pHandler);
+    int iRet = p->Init(zmq_context,chnMode,channelName,pszAddr);
     if(iRet)
     {
         LOG_ERROR("create channell error = %d",iRet);
@@ -78,7 +79,7 @@ int             ChannelAgentMgr::AddChannel(int id,bool bRemote,const char * psz
 }
 ChannelAgent* ChannelAgentMgr::GetChannel(int id)
 {
-    if(m_mpChannelAgent.find(id)!= m_mpChannelAgent.end())
+    if(m_mpChannelAgent.find(id) != m_mpChannelAgent.end())
     {
         return m_mpChannelAgent[id].get();
     }
@@ -125,8 +126,9 @@ int             ChannelAgentMgr::Polling(int timeout)
             {
                 continue;
             }
-            it->second->DispatchMessage(msg);            
-            ///////////////////////////////////
+            ///////////////////////////////////////////////////////
+            pDispatcher->DispatchMessage(*(it->second.get()),msg);            
+            ////////////////////////////////////////////////////////
             ++ievnnts;
         }
     }

@@ -37,9 +37,9 @@ void     ConfigParser::VisualConfig(string & s,ConfigValue & v,int level,const c
             s+= prefix;
         }
         s+=v.key;
-        s+=":";
+        s+=" <- [";
         s+=v.value;
-        s+="\n";
+        s+="]\n";
         return ;
     }
     else
@@ -49,8 +49,8 @@ void     ConfigParser::VisualConfig(string & s,ConfigValue & v,int level,const c
             s+= prefix;
         }
         s+=v.key;
-        s+=":";
-        s+="\n";
+        s+=" <- [";
+        s+="]\n";
         for(int i = 0;i < (int)v.dic.size() ; ++i)
         {
             VisualConfig(s,v.dic[i],level+1,prefix);

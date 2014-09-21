@@ -1,7 +1,6 @@
 #include <stdint.h>
 #include "base/Log.h"
 #include "proto/gate/gate.pb.h"
-#include "GateChannelProxy.h"
 #include "GateFrame.h"
 /////////////////////////////////////////////////////////////////////////////////////
 #include "GateServerHandler.h"
@@ -64,7 +63,7 @@ GateServerHandler::~GateServerHandler()
         }
     }
 }
-GateServerHandler::GateServerHandler(GateChannelProxy * p,int iMaxConnections)
+GateServerHandler::GateServerHandler(ChannelProxy * p,int iMaxConnections)
 {
     m_iMaxConnection = iMaxConnections;
     m_iAlivedConnections = 0;        

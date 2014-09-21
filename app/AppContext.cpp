@@ -1,5 +1,7 @@
 #include "base/File.h"
 #include "base/Log.h"
+#include "base/CommonMacro.h"
+
 #include "AppContext.h"
 
 //read config and init the common attr
@@ -16,9 +18,42 @@ int     AppContext::Init(const char * pszConfigFile)
     /////////////////////////common config/////////////////////////
     tickCountUs = parser.GetConfigInt("tick_count_us",100);//10000
     tickPollCount = parser.GetConfigInt("tick_poll_num",1);//
-    
+
+    //channel
+    int ichnlNum = parser.GetConfigInt("channel:num",-1);
+    GateChannel      chnl;
+    char keyBuffer[64];
+    channels.clear();
+    channelName  = parser.GetConfigString("channel:name");
+    for(int i = 0;i < ichnlNum ; ++i)
+    {
+        SNPRINTF(keyBuffer,sizeof(keyBuffer),"channel:info#%d:id",i+1);
+        chnl.id = parser.GetConfigInt(keyBuffer,-1);
+        if(chnl.id < 0)
+        {
+            LOG_ERROR("get config key = %s error !",keyBuffer);
+            return -1;
+        }
 
 
+        SNPRINTF(keyBuffer,sizeof(keyBuffer),"channel:info#%d:listener",i+1);        
+        int listen = parser.GetConfigInt(keyBuffer,-1);
+        if(listen < 0)
+        {
+            LOG_ERROR("get config key = %s error !",keyBuffer);
+            return -1;
+        }
+        chnl.listener = (listen > 0 );
+        SNPRINTF(keyBuffer,sizeof(keyBuffer),"channel:info#%d:addr",i+1);
+        chnl.channelAddr = parser.GetConfigString(keyBuffer);
+        if(strlen(chnl.channelAddr.c_str()) < 1)
+        {
+            LOG_ERROR("get config key = %s error !",keyBuffer);
+            return -1;
+        }
+
+        channels.push_back(chnl);
+    }
 
 
 
@@ -55,6 +90,12 @@ void    AppContext::GenerateDefaultConfig(const char* pszConfigFile)
     //console
     {"console:ip","127.0.0.1"},
     {"console:port","58810"},
+    //channel
+    {"channel:name","ch"},
+    {"channel:num","1"},
+    {"channel:info#1:id","1"},//connect other channel
+    {"channel:info#1:addr","tcp://127.0.0.1:58880"},
+    {"channel:info#1:listener","0"},
 
     /////////////add default config above////////////////
     {NULL,NULL}};

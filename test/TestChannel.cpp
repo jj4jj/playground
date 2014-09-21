@@ -5,10 +5,10 @@
 #include "channel/ChannelAgentMgr.h"
 #include "base/Log.h"
 static int channel_id = 0;
-class TestChannelHandler : public  ChannelMessageHandler
+class TestChannelHandler : public  ChannelMessageDispatcher
 {
 public:    
-    virtual   int OnRecvMessage(const ChannelMessage & msg)
+    virtual   int DispatchMessage(ChannelAgent & agent,const ChannelMessage & msg)
     {
         printf("recv channel message size = %u\n",msg.dwSize);
         return 0;
@@ -16,11 +16,11 @@ public:
 };
 void connect()
 {
-    ChannelAgentMgr::Instance().AddChannel(channel_id,true,"test","tcp://127.0.0.1:58850",ChannelMessageHandlerPtr(new TestChannelHandler));
+    ChannelAgentMgr::Instance().AddChannel(channel_id,true,"test","tcp://127.0.0.1:58850");
 }
 void listen()
 {
-    ChannelAgentMgr::Instance().AddChannel(channel_id,false,"test","tcp://127.0.0.1:58850",ChannelMessageHandlerPtr(new TestChannelHandler));
+    ChannelAgentMgr::Instance().AddChannel(channel_id,false,"test","tcp://127.0.0.1:58850");
 }
 void close()
 {
@@ -69,8 +69,8 @@ int main(int argc , char* argv[])
         {"write",write},
         {"read",read},
     };
-
-    if(ChannelAgentMgr::Instance().Init())
+    TestChannelHandler hdr;
+    if(ChannelAgentMgr::Instance().Init(5,&hdr))
     {
         return -1;
     }    

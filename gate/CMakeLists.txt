@@ -29,16 +29,16 @@ ADD_EXECUTABLE(gate
 
 #assign custrom link lib
 target_link_libraries(gate
-	ssukits_net.a	
-	protobuf.a
-	channel.a
-	zmq.a
-	rt
-	playground_component
-	iniparser
 	playground_app
+	playground_component
+	channel
+	ssukits_net
 	ssukits_utility
-	ssukits_base.a
+	ssukits_base
+	zmq
+	rt
+	iniparser
+	protobuf
 )
 
 

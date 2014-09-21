@@ -1,6 +1,5 @@
 #include "GateServerHandler.h"
 #include "net/TcpServer.h"
-#include "GateChannelProxy.h"
 #include "base/Log.h"
 #include "component/IniConfigParser.h"
 #include "utility/Daemon.h"
@@ -17,8 +16,8 @@ public:
     //return 0 is ok , otherwise exit prcess
     virtual int     OnInit()
     {
-        GateServerContext & ctx  = *(GateServerContext*)GetContext();
-        IniConfigParser & parser = ctx.parser;
+        GateServerContext * ctx  = (GateServerContext*)GetContext();
+        IniConfigParser & parser = ctx->parser;
         /////////////////////////////////////////////////////////////
         string sGateListenIP = parser.GetConfigString("gate:ip");        
         int port = parser.GetConfigInt("gate:port");    
@@ -29,7 +28,7 @@ public:
         //////////////////////////////////////////////////////////////
         int ret = 0;
         
-        TcpServer &  server = ctx.gateServer;
+        TcpServer &  server = ctx->gateServer;
         //port is 1234
         SockAddress addr(port,pszIP);
         LOG_INFO("gate server will listen on %s\n",addr.ToString());
@@ -38,16 +37,9 @@ public:
         {
             LOG_FATAL("tcp server init error = %d",ret);
             return -1;
-        }
-        GateChannelProxy & proxy  = ctx.proxy;
-        ret = proxy.Init(&ctx);
-        if(ret)
-        {
-            LOG_FATAL("proxy init error = %d",ret);
-            return -1;
-        }
+        }       
         
-        TcpServerHandlerPtr  ptrHandler = TcpServerHandlerPtr(new GateServerHandler(&proxy,iMaxClient));
+        TcpServerHandlerPtr  ptrHandler = TcpServerHandlerPtr(new GateServerHandler(&GetChannelProxy(),iMaxClient));
         server.SetServerHandler(ptrHandler.get());
         ret = server.Start();
         if(ret !=0 )
@@ -92,6 +84,9 @@ public:
 };
 
 
+
+
+/////////////////////////////////////////////////////////////
 int main(int argc , char * argv[])
 {
     return App::main<GateServerContext,GateServer>(argc,argv);    

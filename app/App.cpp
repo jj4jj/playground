@@ -48,7 +48,11 @@ private:
 
 
 #if 1
+App::App():ctx(NULL){}
+App::~App(){}  
+#endif
 
+#if 1
 //return 0 is ok , otherwise exit prcess
 int     App::OnInit()
 {
@@ -107,8 +111,9 @@ int     App::Destroy()
 {
     return OnDestroy();
 }
-int     App::Init(AppContext * ctx)
+int     App::Init(AppContext * _ctx)
 {
+    ctx = _ctx;
     IniConfigParser & parser = ctx->parser;
 
     //common option
@@ -164,10 +169,20 @@ int     App::Init(AppContext * ctx)
     m_consoleDrv.AddSocket(console.GetFD());    
     ptrConsoleHandler = pHdlr;        
     /////////////////////////////////////////////////////////////////
-    int iRet = OnInit();
-    if(iRet)
+    int ret = proxy.Init(ctx);
+    if(ret)
     {
-        LOG_FATAL("App init resutl error = %d ! ",iRet);
+        LOG_FATAL("proxy init error = %d",ret);
+        return -1;
+    }
+
+
+
+    //////////////////////////////////////////////////////////////////
+    ret = OnInit();
+    if(ret)
+    {
+        LOG_FATAL("App init resutl error = %d ! ",ret);
         return -1;
     }           
     Time::now(ctx->curTime);    

@@ -1,4 +1,6 @@
 
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR} playground_app_SRCS)
+
 #base dir depend on itself and some other lib
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
@@ -9,10 +11,7 @@ include_directories(
 
 #it will generate a static lib for comiling faster
 add_library(playground_app STATIC
-	${CMAKE_CURRENT_SOURCE_DIR}/App.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/App.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/AppContext.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/AppContext.h
+	${playground_app_SRCS}
 )
 
 INSTALL(TARGETS playground_app DESTINATION  lib)
