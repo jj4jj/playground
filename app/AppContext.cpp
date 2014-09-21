@@ -29,7 +29,6 @@ int     AppContext::Init(const char * pszConfigFile)
 void    AppContext::GenerateDefaultConfig(const char* pszConfigFile)
 {
     assert(pszConfigFile);
-    char szFileName[32];
     string sConfFile = pszConfigFile;
     string sLogFile = pszConfigFile;
     if(sConfFile.find(".cfg") == string::npos)
@@ -41,7 +40,7 @@ void    AppContext::GenerateDefaultConfig(const char* pszConfigFile)
     {
         sLogFile += ".log";
     }
-    LOG_INFO("config file  %s is not exist , so create it use default option root = %s final cfg file = %s\n",pszConfigFile,szFileName,sConfFile.c_str());        
+    LOG_INFO("config file  %s is not exist , so create it use default option \n final cfg file = %s\n",pszConfigFile,sConfFile.c_str());        
     parser.Create();
 
     static const char * kv[][2] = {
