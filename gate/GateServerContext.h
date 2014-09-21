@@ -1,17 +1,26 @@
 #pragma once
 #include "base/stdinc.h"
-class TcpServer ;
-class IniConfigParser;
-class GateChannelProxy;
-struct GateServerContext
+#include "app/AppContext.h"
+#include "GateChannelProxy.h"
+#include "net/TcpServer.h"
+
+struct GateChannel
 {
-    TcpServer *          gateServer;
-    shared_ptr<IniConfigParser>     parser;
-    GateChannelProxy *   proxy;
-    ///////////////////////
+    //id = 0 is local listen channel , otherwise connecting channel
+    int     id;
+    string  channelAddr;
+    bool    listener;
+};
+
+struct GateServerContext : AppContext
+{
+    TcpServer            gateServer;
+    GateChannelProxy     proxy;
+    ////////////////////////////////////////
+    std::vector<GateChannel> channels;
 public:
-    int    Init(const char * pszConfigFile);
-    int    SetServer(TcpServer* pServer);           
+    virtual void    OnGenerateDefaultConfig();
+    virtual int     OnInit();
 };
 
 

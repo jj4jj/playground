@@ -1,15 +1,14 @@
 #pragma once
 #include "base/Buffer.h"
-
 //just wrap channel 
 //send dst id to a channel 
 //init all channels
 
-
+struct GateServerContext;
 class GateChannelProxy
 {
 public:
-    int      Init();
+    int      Init(GateServerContext * pCtx);
     int      SendToAgent(int iDst,const std::vector<Buffer>  &  vBuff);
     int      SendToAgent(int iDst,const Buffer &  buff);
 public:
@@ -17,6 +16,7 @@ public:
     virtual ~GateChannelProxy();
 
 private:
+    GateServerContext * m_pServerCtx;
     Buffer chnMsgSendBuffer;
     enum
     {

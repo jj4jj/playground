@@ -37,6 +37,7 @@ target_link_libraries(gate
 	rt
 	playground_component
 	iniparser
+	playground_app
 	ssukits_utility
 )
 

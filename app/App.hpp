@@ -30,7 +30,11 @@ public:
     inline  timeval &   Getime()
     {
         return  ctx->curTime;
-    }    
+    }  
+    inline AppContext * GetContext()
+    {
+        return ctx;
+    }
 public:
     int     Poll(int iRecommendPollNum = 1);
     int     Closing(int closingReason);
@@ -45,10 +49,6 @@ private:
     AppContext * ctx;
     UdpDriver  m_consoleDrv;
     UdpSocketHandlerSharedPtr   ptrConsoleHandler;
-
-
-
-
 //////////////////////////////////////////////////////////////////////////////////
 public:    
     template<class AppContextType ,
@@ -64,19 +64,19 @@ template<class AppContextType ,
          class AppType >
 int App::main(int argc , char* argv [])
 {
-    shared_ptr<AppContext> ctx(new AppContextType());
+    AppContextType ctx;
     if(argc < 2)
     {
-        ctx->GenerateDefaultConfig(argv[0]);
+        ctx.GenerateDefaultConfig(argv[0]);
         return -1;
     }
-    if(ctx->Init(argv[1]))
+    if(ctx.Init(argv[1]))
     {
         printf("server context init error !\n");
         return -1;
     }    
     AppType app;
-    if(app.Init(ctx.get()))
+    if(app.Init(&ctx))
     {
         return -1;
     }
@@ -89,14 +89,14 @@ int App::main(int argc , char* argv [])
     {
         
         Time::now(now);
-        lElapseTime = Time::uspast(now,ctx->curTickStart);
-        Time::usappend(ctx->curTime,lElapseTime);
-        ctx->curTickStart = now;
+        lElapseTime = Time::uspast(now,ctx.curTickStart);
+        Time::usappend(ctx.curTime,lElapseTime);
+        ctx.curTickStart = now;
         ///////////////////////////////////////////////////////////////////////        
-        if(ctx->closing)
+        if(ctx.closing)
         {
             //there is no sth todo
-            if(0 == app.Closing(ctx->closing))
+            if(0 == app.Closing(ctx.closing))
             {
                 break;
             }
@@ -108,8 +108,8 @@ int App::main(int argc , char* argv [])
         }
 
         Time::now(now);
-        lElapseTime =  Time::uspast(now,ctx->curTickStart);
-        lRemainTime = ctx->tickCountUs - lElapseTime ;
+        lElapseTime =  Time::uspast(now,ctx.curTickStart);
+        lRemainTime = ctx.tickCountUs - lElapseTime ;
         if(lRemainTime > 0 && 0 == proc )
         {
             LOG_DEBUG("sleep lremain=%d proc = %d elapse = %d",

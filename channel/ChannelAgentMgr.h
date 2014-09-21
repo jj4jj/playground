@@ -1,9 +1,10 @@
 #pragma once
 #include "base/stdinc.h"
 #include "base/Singleton.hpp"
+#include "ChannelMessageHandler.h"
+#include "ChannelAgent.h"
 
-class ChannelMessageHandler;
-class ChannelAgent;
+
 class ChannelAgentMgr : public Singleton<ChannelAgentMgr>
 {
 public:
@@ -16,7 +17,7 @@ public:
 public:
     int             Init(int iMaxChannel = 5);
     void            Destroy();
-    int             AddChannel(int id,bool bRemote,const char * pszName,const char* pszAddr,ChannelMessageHandler* pHandler);
+    int             AddChannel(int id,bool bRemote,const char * pszName,const char* pszAddr,ChannelMessageHandlerPtr pHandler);
     ChannelAgent*   GetChannel(int id);
     int             Polling(int timeout = 10);
 private:

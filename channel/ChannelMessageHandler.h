@@ -13,4 +13,5 @@ public:
 public:
     ChannelAgent*   m_pAgent;        
 };
+typedef shared_ptr<ChannelMessageHandler>   ChannelMessageHandlerPtr;
 

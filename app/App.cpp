@@ -108,8 +108,7 @@ int     App::Destroy()
 }
 int     App::Init(AppContext * ctx)
 {
-    IniConfigParser & parser = *(ctx->parser);
-
+    IniConfigParser & parser = ctx->parser;
 
     //common option
     /////////////////////////////////////////////////////

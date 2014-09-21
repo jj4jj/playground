@@ -16,11 +16,11 @@ public:
 };
 void connect()
 {
-    ChannelAgentMgr::Instance().AddChannel(channel_id,true,"test","tcp://127.0.0.1:58850",new TestChannelHandler);
+    ChannelAgentMgr::Instance().AddChannel(channel_id,true,"test","tcp://127.0.0.1:58850",ChannelMessageHandlerPtr(new TestChannelHandler));
 }
 void listen()
 {
-    ChannelAgentMgr::Instance().AddChannel(channel_id,false,"test","tcp://127.0.0.1:58850",new TestChannelHandler);
+    ChannelAgentMgr::Instance().AddChannel(channel_id,false,"test","tcp://127.0.0.1:58850",ChannelMessageHandlerPtr(new TestChannelHandler));
 }
 void close()
 {

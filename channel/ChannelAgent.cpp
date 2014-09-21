@@ -16,7 +16,7 @@ ChannelAgent::~ChannelAgent()
 #endif
 
 #if 1
-int        ChannelAgent::Init(void * ctx,int mode,const char * pszName,const char* pszAddr,ChannelMessageHandler * p)
+int        ChannelAgent::Init(void * ctx,int mode,const char * pszName,const char* pszAddr,ChannelMessageHandlerPtr p)
 {
     int iRet = channel.Create(mode, ctx, pszAddr,pszName);
     if(iRet)
@@ -24,7 +24,8 @@ int        ChannelAgent::Init(void * ctx,int mode,const char * pszName,const cha
         LOG_ERROR("channel create error = %d",iRet);
         return -1;
     }
-    pHandler = p;
+    ptrHandler = p;
+    ptrHandler->SetAgent(this);
     return 0;
 }
 
@@ -50,7 +51,7 @@ int ChannelAgent::PostMessage(const ChannelMessage & msg)
 }
 int ChannelAgent::DispatchMessage(const ChannelMessage & msg)
 {
-    return pHandler->OnRecvMessage(msg);
+    return ptrHandler->OnRecvMessage(msg);
 }
 #endif
 

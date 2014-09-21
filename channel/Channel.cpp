@@ -69,6 +69,7 @@ int Channel::Create(int mode,void* ctx,const char* pszAddr,const char* name,int 
 {
     char senderName[32];
     char receiverName[32];
+    assert(strlen(name) < 24);
     SNPRINTF(senderName,sizeof(senderName),"%s:snd:%d",name,mode);
     SNPRINTF(receiverName,sizeof(senderName),"%s:rcv:%d",name,mode);
     sender = receiver = NULL;

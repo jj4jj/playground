@@ -7,114 +7,93 @@
 #include "GateConsoleHandler.h"
 #include "net/UdpDriver.h"
 #include "GateServerContext.h"
+#include "channel/ChannelAgentMgr.h"
+
+#include "app/App.hpp"
+
+class GateServer : public App
+{
+public:
+    //return 0 is ok , otherwise exit prcess
+    virtual int     OnInit()
+    {
+        GateServerContext & ctx  = *(GateServerContext*)GetContext();
+        IniConfigParser & parser = ctx.parser;
+        /////////////////////////////////////////////////////////////
+        string sGateListenIP = parser.GetConfigString("gate:ip");        
+        int port = parser.GetConfigInt("gate:port");    
+        int iMaxClient = parser.GetConfigInt("gate:max_clients");
+        bool bUseNagle = parser.GetConfigInt("gate:use_nagle")>0 ? true:false;
+        
+        const char* pszIP = sGateListenIP.c_str();
+        //////////////////////////////////////////////////////////////
+        int ret = 0;
+        
+        TcpServer &  server = ctx.gateServer;
+        //port is 1234
+        SockAddress addr(port,pszIP);
+        LOG_INFO("gate server will listen on %s\n",addr.ToString());
+        ret = server.Init(addr,bUseNagle,iMaxClient);
+        if(ret)
+        {
+            LOG_FATAL("tcp server init error = %d",ret);
+            return -1;
+        }
+        GateChannelProxy & proxy  = ctx.proxy;
+        ret = proxy.Init(&ctx);
+        if(ret)
+        {
+            LOG_FATAL("proxy init error = %d",ret);
+            return -1;
+        }
+        
+        TcpServerHandlerPtr  ptrHandler = TcpServerHandlerPtr(new GateServerHandler(&proxy,iMaxClient));
+        server.SetServerHandler(ptrHandler.get());
+        ret = server.Start();
+        if(ret !=0 )
+        {
+            LOG_FATAL("tcp server start error  = %d!",ret);
+            return -1;  
+        }        
+        return 0;
+    }
+    //control command process
+    virtual string     OnCtrl(const std::vector<string> & cmdLine)
+    {
+        return "cmd";
+    }
+    //tick 
+    virtual int     OnTick(int64_t lElapseTime)
+    {
+        return 0;
+    }
+    //poll system
+    virtual int     OnPoll(int iRecommendPollNum = 1)
+    { 
+        //check server
+        GateServerContext & ctx  = *(GateServerContext*)GetContext();
+        int iProcMsg = ctx.gateServer.Loop(iRecommendPollNum);        
+        if(!ctx.channels.empty())
+        {
+            iProcMsg |= ChannelAgentMgr::Instance().Polling(0);
+        }
+        return iProcMsg;
+    }
+    //system will close for closing Reason
+    virtual int     OnClosing(int closingReason)
+    {
+        return 0;
+    }
+    //destroy sth uninitializing
+    virtual int     OnDestroy()
+    {
+        return 0;
+    }
+};
 
 
 int main(int argc , char * argv[])
 {
-    GateServerContext ctx;
-    if(argc < 2)
-    {
-        ctx.Init(NULL);
-        return -1;
-    }
-    if(ctx.Init(argv[1]))
-    {
-        printf("gate server context init error !\n");
-        return -1;
-    }    
-    IniConfigParser & parser = *(ctx.parser);
-
-    //////////////////////////////////////////
-    string sIP = parser.GetConfigString("ip");
-    string sLogFileName = parser.GetConfigString("logfile");
-    string sConsoleIP = parser.GetConfigString("console:ip");
-    
-    int port = parser.GetConfigInt("port");    
-    int iMaxClient = parser.GetConfigInt("max_clients");
-    int daemon = parser.GetConfigInt("daemon");    
-    int console_port = parser.GetConfigInt("console:port");
-
-    const char* pszLogFileName = sLogFileName.c_str();
-    const char* pszIP = sIP.c_str();
-    const char* pszConsoleIP = sConsoleIP.c_str();
-
-    
-    string configString;
-    parser.VisualConfig(configString);
-    LOG_INFO("gate config :\n%s",configString.c_str());
-
-
-    if(pszLogFileName)  
-    {
-        Log::Instance().Init( pszLogFileName, Log::LOG_LV_DEBUG, 1024000);
-    }
-    if(daemon)
-    {
-        //daemonlize
-        Daemon::Instance().Create();
-    }    
-    
-
-    ////////////////////////////////////////////////////////////////////////
-    UdpDriver  consoleDrv;
-    consoleDrv.Init(10);
-    UdpSocketHandlerSharedPtr pHdlr(new GateConsoleHandler(&ctx));
-    consoleDrv.SetHandler(pHdlr);
-    UdpSocket console;
-    if(console.Init())
-    {
-        return -1;
-    }
-    SockAddress consoleAddr(console_port,pszConsoleIP);
-    LOG_INFO("gate console will listen on %s\n",consoleAddr.ToString());
-    if(console.Bind(consoleAddr))
-    {
-        return -1;
-    }
-    consoleDrv.AddSocket(console.GetFD());    
-    /////////////////////////////////////////////////////////////////
-
-    
-    TcpServer   server;
-    //port is 1234
-    SockAddress addr(port,pszIP);
-    LOG_INFO("gate server will listen on %s\n",addr.ToString());
-    if(server.Init(addr,true,iMaxClient))
-    {
-        return -1;
-    }
-    GateChannelProxy proxy;
-    if(proxy.Init())
-    {
-        return -1;
-    }
-    TcpServerHandlerPtr  ptrHandler = TcpServerHandlerPtr(new GateServerHandler(&proxy,iMaxClient));
-
-    server.SetServerHandler(ptrHandler.get());
-    if(server.Start()!=0)
-    {
-        return -1;  
-    }
-
-    ///////////////////////////////////////////////////
-    int iProcMsg = 0;
-    while(true)
-    {
-        //check console
-        consoleDrv.Loop(1,0);
-
-        //check server
-        iProcMsg = server.Loop();
-        if(iProcMsg < 0)
-        {
-            break;
-        }
-        else if(0 == iProcMsg)
-        {
-            //1ms
-            usleep(1000);
-        }
-    }
-
-    return 0;
+    return App::main<GateServerContext,GateServer>(argc,argv);    
 }
+

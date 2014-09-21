@@ -5,7 +5,7 @@
 class AppContext
 {
 public:
-    shared_ptr<IniConfigParser>     parser;
+    IniConfigParser     parser;
     //////////////////////////////////////////////
     bool      closing;
     int       tickCountUs;
@@ -17,6 +17,7 @@ public:
     int     Init(const char * pszConfigFile);
     //common generate 
     void    GenerateDefaultConfig(const char* pszConfigFile);
+
 public:
     virtual void    OnGenerateDefaultConfig();
     virtual int     OnInit();

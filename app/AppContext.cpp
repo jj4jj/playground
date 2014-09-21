@@ -5,18 +5,17 @@
 //read config and init the common attr
 int     AppContext::Init(const char * pszConfigFile)
 {
-    parser = shared_ptr<IniConfigParser>(new IniConfigParser());    
     if(!pszConfigFile)
     {
         return -1;
     }
-    if(parser->ReadConfigFile(pszConfigFile))
+    if(parser.ReadConfigFile(pszConfigFile))
     {        
         return -2;
     }
     /////////////////////////common config/////////////////////////
-    tickCountUs = parser->GetConfigInt("tick_count_us",100);//10000
-    tickPollCount = parser->GetConfigInt("tick_poll_num",1);//
+    tickCountUs = parser.GetConfigInt("tick_count_us",100);//10000
+    tickPollCount = parser.GetConfigInt("tick_poll_num",1);//
     
 
 
@@ -29,8 +28,6 @@ int     AppContext::Init(const char * pszConfigFile)
 //common generate 
 void    AppContext::GenerateDefaultConfig(const char* pszConfigFile)
 {
-    parser = shared_ptr<IniConfigParser>(new IniConfigParser());
-
     assert(pszConfigFile);
     char szFileName[32];
     string sConfFile = pszConfigFile;
@@ -45,7 +42,7 @@ void    AppContext::GenerateDefaultConfig(const char* pszConfigFile)
         sLogFile += ".log";
     }
     LOG_INFO("config file  %s is not exist , so create it use default option root = %s final cfg file = %s\n",pszConfigFile,szFileName,sConfFile.c_str());        
-    parser->Create();
+    parser.Create();
 
     static const char * kv[][2] = {
     //root
@@ -68,12 +65,12 @@ void    AppContext::GenerateDefaultConfig(const char* pszConfigFile)
     {
         v.key  = kv[i][0];
         v.value  = kv[i][1];
-        parser->CreateConfig(v);
+        parser.CreateConfig(v);
         ++i;
     }
     ///////////////////////////////////////////////////////
     OnGenerateDefaultConfig();                
-    parser->DumpConfig(sConfFile.c_str());
+    parser.DumpConfig(sConfFile.c_str());
     LOG_INFO("create default config ok !\n");
 }
 void    AppContext::OnGenerateDefaultConfig()

@@ -46,7 +46,7 @@ void            ChannelAgentMgr::Destroy()
     nzpollitem = 0;
 }
 
-int             ChannelAgentMgr::AddChannel(int id,bool bRemote,const char * pszName,const char* pszAddr,ChannelMessageHandler* pHandler)
+int             ChannelAgentMgr::AddChannel(int id,bool bRemote,const char * pszName,const char* pszAddr,ChannelMessageHandlerPtr pHandler)
 {
     if(m_mpChannelAgent.find(id) != m_mpChannelAgent.end())
     {
@@ -54,9 +54,14 @@ int             ChannelAgentMgr::AddChannel(int id,bool bRemote,const char * psz
         LOG_ERROR("register channel repeatly id = %d",id);
         return -1;
     }
+    LOG_INFO("add channel id = %d remote = %d name = %s addr = %s ",
+        id,bRemote,pszName,pszAddr);
     ChannelAgentPtr p(new ChannelAgent());
+    char channelName[32];
+    assert(strlen(pszName) < 20);
+    SNPRINTF(channelName,sizeof(channelName),"%s#%d",pszName,id);
     int chnMode = bRemote?Channel::CHANNEL_MODE_REMOTE:Channel::CHANNEL_MODE_LOCAL;
-    int iRet = p->Init(zmq_context,chnMode,pszName,pszAddr,pHandler);
+    int iRet = p->Init(zmq_context,chnMode,channelName,pszAddr,pHandler);
     if(iRet)
     {
         LOG_ERROR("create channell error = %d",iRet);
@@ -89,7 +94,7 @@ int             ChannelAgentMgr::RemoveChannel(int id)
     {
         return -1;
     }
-    LOG_DEBUG("remove channel agent = %d",id);
+    LOG_INFO("remove channel agent = %d",id);
     m_mpChannelAgent.erase(id);
 
     return 0;
