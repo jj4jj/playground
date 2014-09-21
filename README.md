@@ -15,7 +15,7 @@ a simple online game svr demo for exersise
 * benchmark of channel and gate
 * redis and level db data persistence solution
 * agent server framework
-* lbs , rank , pay , oss 
+* lbs , rank , pay , oss , auth , session keep
 * agent server logic dev
 * bugfixing
 * optimal
