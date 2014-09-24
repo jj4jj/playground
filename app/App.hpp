@@ -43,15 +43,20 @@ public:
         return proxy;
     }
 public:
-    int     Poll(int iRecommendPollNum = 1);
-    int     Closing(int closingReason);
-    //ms
-    int     Tick(int64_t lElapseTime);
-    int     Destroy();
     int     Init(AppContext * _ctx);   
+    //
+    int     Poll(int iRecommendPollNum = 1);
+    //us
+    int     Tick(int64_t lElapseTime);
     string  Ctrl(const std::vector<string> & cmdLine);
+    int     Closing(int closingReason);
+    int     Destroy();
+
 private:
     void    InitSignal();
+    int     InitLockFile();
+    int     InitLog();
+    int     InitConsole();
     static  void    UpdateTick(struct timeval & tvNow, int64_t lElapseTime);
 public:
     App();

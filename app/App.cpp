@@ -151,17 +151,25 @@ string  App::Ctrl(const std::vector<string> & cmdLine)
         ctx->closing = 1;
         return "system is closing ...";
     }
+    if(mainCMD == "test")
+    {
+        if(cmdLine[1] == "lock-read")
+        {
+            m_lockFile.Seek();
+            char buffer[32];
+            m_lockFile.GetLine(buffer,sizeof(buffer));
+            return string(buffer);
+        }
+        else
+        {
+            return string("not support test:")+cmdLine[1];
+        }
+    }
 
     return OnCtrl(cmdLine);
 }
-
-int     App::Init(AppContext * _ctx)
+int    App::InitLockFile()
 {
-    ctx = _ctx;
-    IniConfigParser & parser = ctx->parser;
-
-    //common option
-    /////////////////////////////////////////////////////
     if(ctx->uniq_process)
     {
         LOG_INFO("uniq process checking file path = [%s] ...",ctx->lockFilePath.c_str());
@@ -169,8 +177,8 @@ int     App::Init(AppContext * _ctx)
         char pidBuffer[32];
         while( m_lockFile.ExcluLock())
         {
+            
             fprintf(stderr,"lock file = %s error , pls be sure there is no another process running !",ctx->lockFilePath.c_str());
-
             //send signal
             m_lockFile.GetLine(pidBuffer,sizeof(pidBuffer));  
             if(strlen(pidBuffer) == 0)
@@ -183,42 +191,27 @@ int     App::Init(AppContext * _ctx)
             int pid = atoi(pidBuffer);
             SignalHelper::SendProcessSignal(SIGUSR1,pid);
         }
+        m_lockFile.Seek();//begin
+        pid_t pid = getpid();
+        SNPRINTF(pidBuffer,sizeof(pidBuffer),"%u",pid);        
+        LOG_INFO("write lock file pid = %u",pid);
+        if(m_lockFile.Write(pidBuffer,strlen(pidBuffer)+1) < 0)
+        {
+            LOG_ERROR("warnning write lock file pid = %u error for errstr = %s",
+                    pid,strerror( errno));
+        }
+        m_lockFile.Flush();
     }
-
+    return 0;
+}
+int     App::InitConsole()
+{
+    IniConfigParser & parser = ctx->parser;
     //console
     string sConsoleIP = parser.GetConfigString("console:ip");        
     int console_port = parser.GetConfigInt("console:port");
-
-    //daemon
-    int daemon = parser.GetConfigInt("daemon");    
-
-    //log
-    string sLogFileName = parser.GetConfigString("log_file");
-    int logFileSize = parser.GetConfigInt("log_file_size",1024);
-    int maxLogFileNum = parser.GetConfigInt("log_max_file_num",20);
-    int loglevel = parser.GetConfigInt("log_min_level",2);
-
-    const char* pszLogFileName = sLogFileName.c_str();
     const char* pszConsoleIP = sConsoleIP.c_str();
-       
 
-    string configString;
-    parser.VisualConfig(configString);
-    LOG_INFO("config :\n%s",configString.c_str());
-
-    LOG_INFO("init log info file = %s level = %d size = %d num = %d",
-        pszLogFileName,loglevel,logFileSize,maxLogFileNum);
-    if(pszLogFileName)  
-    {
-        Log::Instance().Init( pszLogFileName,(Log::LogLevel)loglevel,logFileSize,maxLogFileNum);
-    }
-    if(daemon)
-    {
-        //daemonlize
-        Daemon::Instance().Create();
-    }    
-    InitSignal();     
-    ////////////////////////////////////////////////////////////////////////
     m_consoleDrv.Init(10);
     m_consoleDrv.SetHandler(UdpSocketHandlerSharedPtr(new AppConsoletHandler(this)));
     UdpSocket console;
@@ -232,8 +225,71 @@ int     App::Init(AppContext * _ctx)
     {
         return -1;
     }
-    m_consoleDrv.AddSocket(console.GetFD());    
-    /////////////////////////////////////////////////////////////////
+    m_consoleDrv.AddSocket(console.GetFD());  
+    return 0;
+}
+int     App::InitLog()
+{
+    IniConfigParser & parser = ctx->parser;    
+    //log
+    string sLogFileName = parser.GetConfigString("log_file");
+    int logFileSize = parser.GetConfigInt("log_file_size",1024);
+    int maxLogFileNum = parser.GetConfigInt("log_max_file_num",20);
+    int loglevel = parser.GetConfigInt("log_min_level",2);
+    const char* pszLogFileName = sLogFileName.c_str();
+    LOG_INFO("init log info file = %s level = %d size = %d num = %d",
+        pszLogFileName,loglevel,logFileSize,maxLogFileNum);
+    if(pszLogFileName)  
+    {
+        Log::Instance().Init( pszLogFileName,(Log::LogLevel)loglevel,logFileSize,maxLogFileNum);
+    }
+    return 0;
+}
+int     App::Init(AppContext * _ctx)
+{
+    ctx = _ctx;
+    IniConfigParser & parser = ctx->parser;
+    /////////////////////  log  ///////////////////////////////
+    if(InitLog())
+    {
+        LOG_FATAL("Log init error !");
+        return -1;
+    }
+
+    //////////////////////////////////////////////////////////
+    string configString;
+    parser.VisualConfig(configString);
+    LOG_INFO("server config :\n%s",configString.c_str());
+    //////////////////////////////////////////////////////////
+
+    //common option
+
+    ///////////////////daemon ////////////////////////////////////
+    int daemon = parser.GetConfigInt("daemon");    
+    if(daemon)
+    {
+        //daemonlize
+        Daemon::Instance().Create();
+    }    
+
+    ////////////////////////lock file ////////////////////////////
+    if(InitLockFile())
+    {
+        LOG_ERROR("inti lock file error !");
+        return -1;
+    }
+
+    ////////////////////// signal  ///////////////////////////////
+    InitSignal();    
+
+    ////////////////////// console //////////////////////////////
+    if(InitConsole())
+    {
+        LOG_FATAL("console init error !");
+        return -1;
+    }
+  
+    /////////////////// channel proxy ///////////////////////////
     int ret = proxy.Init(ctx);
     if(ret)
     {
@@ -241,8 +297,7 @@ int     App::Init(AppContext * _ctx)
         return -1;
     }
 
-
-    /////////////////////////////////////////////////////////////////
+    ///////////////////// timer //////////////////////////////////
     if(TimerMgr::Instance().Init(ctx->tickCountUs,UpdateTick))
     {
         LOG_FATAL("timer mgr init error !");
@@ -251,7 +306,7 @@ int     App::Init(AppContext * _ctx)
     ctx->curTime = TimerMgr::Instance().GetCurTime();
 
 
-    //////////////////////////////////////////////////////////////////
+    ////////////////////// app  /////////////////////////////////
     ret = OnInit();
     if(ret)
     {
@@ -259,19 +314,6 @@ int     App::Init(AppContext * _ctx)
         return -1;
     }  
     
-    if(ctx->uniq_process)
-    {
-        pid_t pid = getpid();
-        char pidBuffer[32];
-        SNPRINTF(pidBuffer,sizeof(pidBuffer),"%u",pid);        
-        LOG_INFO("write lock file pid = %u",pid);
-        if(m_lockFile.Write(pidBuffer,strlen(pidBuffer)+1) < 0)
-        {
-            LOG_ERROR("warnning write lock file pid = %u error for errstr = %s",
-                    pid,strerror( errno));
-        }
-        m_lockFile.Flush();
-    }
     return 0;
 }   
 #endif
