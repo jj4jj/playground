@@ -2,6 +2,7 @@
 
 #include "base/Singleton.hpp"
 #include "base/stdinc.h"
+#include "base/File.h"
 #include "base/Log.h"
 #include "base/Buffer.h"
 #include "base/DateTime.h"
@@ -47,7 +48,8 @@ public:
     //ms
     int     Tick(int64_t lElapseTime);
     int     Destroy();
-    int     Init(AppContext * _ctx);    
+    int     Init(AppContext * _ctx);   
+    string  Ctrl(const std::vector<string> & cmdLine);
 private:
     void    InitSignal();
     static  void    UpdateTick(struct timeval & tvNow, int64_t lElapseTime);
@@ -58,6 +60,7 @@ private:
     AppContext * ctx;
     UdpDriver  m_consoleDrv;
     ChannelProxy                proxy;
+    File                        m_lockFile;
     //////////////////////////////////////////////////////////////////////////////////
 public:    
     template<class AppContextType ,
@@ -103,7 +106,7 @@ int App::main(int argc , char* argv [])
         }
         else
         {            
-            proc = app.Poll();
+            proc = app.Poll(ctx.tickPollCount);
         }
         if( 0 == proc )
         {

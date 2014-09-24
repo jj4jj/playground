@@ -44,8 +44,10 @@ public:
         p[recvBuffer.iUsed] = 0;
         vector<string> sCMDLine;
         string line = p;
+        LOG_DEBUG("recv command req = [%s]",recvBuffer.pBuffer);
         SplitCMDLine(line,sCMDLine," ");
-        string result = app->OnCtrl(sCMDLine);
+        string result = app->Ctrl(sCMDLine);
+        LOG_DEBUG("send command rsp = [%s]",result.c_str());            
         return udpSock.SendTo(Buffer(result.c_str()),addr);
     }
 private:
@@ -69,8 +71,7 @@ int     App::OnInit()
 //control command process
 string     App::OnCtrl(const std::vector<string> & cmdLine)
 {
-    LOG_DEBUG("OnCtrl");
-    return "onctrl";
+    return "not support !";
 }
 
 //tick 
@@ -120,6 +121,8 @@ int     App::Destroy()
 {    
     int ret = OnDestroy();
     ctx = NULL;
+    m_lockFile.Unlock();
+    m_lockFile.Close();
     return ret;
 }
 
@@ -137,8 +140,21 @@ void  App::UpdateTick(timeval & tvNow,int64_t lElapseTime)
     {
         app.ctx->curTime = tvNow;
         app.Tick(lElapseTime);
-    }
+    }    
 }
+string  App::Ctrl(const std::vector<string> & cmdLine)
+{
+    string mainCMD = cmdLine[0];
+    LOG_DEBUG("recv command control = [%s]",cmdLine[0].c_str());    
+    if(mainCMD == "quit")
+    {
+        ctx->closing = 1;
+        return "system is closing ...";
+    }
+
+    return OnCtrl(cmdLine);
+}
+
 int     App::Init(AppContext * _ctx)
 {
     ctx = _ctx;
@@ -146,6 +162,29 @@ int     App::Init(AppContext * _ctx)
 
     //common option
     /////////////////////////////////////////////////////
+    if(ctx->uniq_process)
+    {
+        LOG_INFO("uniq process checking file path = [%s] ...",ctx->lockFilePath.c_str());
+        m_lockFile.Open(ctx->lockFilePath.c_str(),"w+");
+        char pidBuffer[32];
+        while( m_lockFile.ExcluLock())
+        {
+            fprintf(stderr,"lock file = %s error , pls be sure there is no another process running !",ctx->lockFilePath.c_str());
+
+            //send signal
+            m_lockFile.GetLine(pidBuffer,sizeof(pidBuffer));  
+            if(strlen(pidBuffer) == 0)
+            {
+                fprintf(stderr,"read pid from lock file error ! maybe u need kill another program manually");
+                return -1;
+            }
+            
+            pidBuffer[sizeof(pidBuffer)-1] = '\0';            
+            int pid = atoi(pidBuffer);
+            SignalHelper::SendProcessSignal(SIGUSR1,pid);
+        }
+    }
+
     //console
     string sConsoleIP = parser.GetConfigString("console:ip");        
     int console_port = parser.GetConfigInt("console:port");
@@ -218,7 +257,21 @@ int     App::Init(AppContext * _ctx)
     {
         LOG_FATAL("App init resutl error = %d ! ",ret);
         return -1;
-    }           
+    }  
+    
+    if(ctx->uniq_process)
+    {
+        pid_t pid = getpid();
+        char pidBuffer[32];
+        SNPRINTF(pidBuffer,sizeof(pidBuffer),"%u",pid);        
+        LOG_INFO("write lock file pid = %u",pid);
+        if(m_lockFile.Write(pidBuffer,strlen(pidBuffer)+1) < 0)
+        {
+            LOG_ERROR("warnning write lock file pid = %u error for errstr = %s",
+                    pid,strerror( errno));
+        }
+        m_lockFile.Flush();
+    }
     return 0;
 }   
 #endif

@@ -19,6 +19,9 @@ int     AppContext::Init(const char * pszConfigFile)
     tickCountUs = parser.GetConfigInt("tick_count_us",100);//10000
     tickPollCount = parser.GetConfigInt("tick_poll_num",1);//
 
+    uniq_process = parser.GetConfigInt("uniq_process",0);
+    lockFilePath = parser.GetConfigString("file_lock_path","./lock.file");;
+
     //channel
     int ichnlNum = parser.GetConfigInt("channel:num",-1);
     GateChannel      chnl;
@@ -66,15 +69,21 @@ void    AppContext::GenerateDefaultConfig(const char* pszConfigFile)
     assert(pszConfigFile);
     string sConfFile = pszConfigFile;
     string sLogFile = pszConfigFile;
-    if(sConfFile.find(".cfg") == string::npos)
+    string sLockFile = pszConfigFile;
+    if(sConfFile.find(".conf") == string::npos)
     {
-        sConfFile += ".cfg";
+        sConfFile += ".conf";
     }
     sConfFile += ".default";
     if(sLogFile.find(".log") == string::npos)
     {
         sLogFile += ".log";
     }
+    if(sLockFile.find(".lock") == string::npos)
+    {
+        sLockFile += ".lock";
+    }
+    
     LOG_INFO("config file %s is not exist , so create it use default option \nfinal cfg file = %s",pszConfigFile,sConfFile.c_str());        
     parser.Create();
 
@@ -87,6 +96,8 @@ void    AppContext::GenerateDefaultConfig(const char* pszConfigFile)
     {"daemon","0"},
     {"tick_count_us","100"},
     {"tick_poll_num","1"},
+    {"uniq_process","0"},//support path system none
+    {"file_lock_path",sLockFile.c_str()},
     //console
     {"console:ip","127.0.0.1"},
     {"console:port","58810"},

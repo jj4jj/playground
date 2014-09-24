@@ -52,7 +52,7 @@ public:
     //control command process
     virtual string     OnCtrl(const std::vector<string> & cmdLine)
     {
-        return "cmd";
+        return "not supported !";
     }
     //tick 
     virtual int     OnTick(int64_t lElapseTime)

@@ -22,6 +22,8 @@ public:
     int       tickCountUs;
     int       tickPollCount;
     struct timeval  curTime;   //this tick time        
+    int       uniq_process;
+    string    lockFilePath;
 public:
     //read config and init the common attr
     int     Init(const char * pszConfigFile);
