@@ -52,6 +52,7 @@ target_link_libraries(test_app
 	playground_app
 	playground_component
 	channel
+	ssukits_ipc
 	ssukits_utility
 	ssukits_net
 	ssukits_base

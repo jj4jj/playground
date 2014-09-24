@@ -1,0 +1,57 @@
+
+DBTableHandler
+		OnGet
+		OnMGet
+		OnRemove
+		OnUpdate
+		OnInsert
+		OnGetKeyRank(key)
+		OnGetRankKey(rank)
+		OnCount
+
+DBTable
+		name
+		type
+		handle
+		handler
+
+DBAgent
+		//no scheme
+		RegisterTable(table_name,type,DBHandler); // return handle
+		Init(proxy addr list);	//proxy list 
+		Polling();	//
+		--------------------------
+		int		Get(handle,key,cb)
+		MGet(handle,keylist,cb)
+		Remove(handle,key,cb)	
+		Update(handle,key,value,cb)
+		Insert(handle,key,value,cb)
+		GetKeyRank(handle,key,cb)
+		GetRankKey(handle,rank,cb)
+		Count(handle,cb)		
+		-----------------
+		OnGet(hanlde,ret,key,value,cb)
+		OnMGet(handle,ret,keylist,valuelist,cb,more)
+		OnRemove(handle,ret,key,cb)
+		OnUpdate(handle,ret,key,cb)
+		OnInsert(handle,ret,key,cb)
+		OnGetKeyRank(handle,key,cb)
+		OnGetRankKey(handle,rank,cb)
+		OnCount(handle,cb)
+
+-----------------------------------------------------
+usage:
+	GetAccount()
+		CB	cb
+		DBAgent.Get(handle,key,cb);
+	OnGetAccount(key,ret,key,value,cb)
+
+
+
+
+
+
+
+
+
+

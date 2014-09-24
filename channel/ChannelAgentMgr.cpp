@@ -31,9 +31,10 @@ int             ChannelAgentMgr::Init(int iMaxChannel,ChannelMessageDispatcher* 
         return -1;
     }            
     nzpollitem = iMaxChannel;
-    zpollitems = (zmq_pollitem_t*)malloc(iMaxChannel*sizeof(zmq_pollitem_t));
-    pDispatcher = _pDispatcher;
+    zpollitems = (zmq_pollitem_t*)malloc(iMaxChannel*sizeof(zmq_pollitem_t));    
     assert(zpollitems != NULL);
+    pDispatcher = _pDispatcher;
+    bzero(zpollitems,iMaxChannel*sizeof(zmq_pollitem_t));
     return 0;
 }
 void            ChannelAgentMgr::Destroy()
@@ -104,12 +105,17 @@ int             ChannelAgentMgr::Polling(int timeout)
 {
 
     int n = zmq_poll(zpollitems, nzpollitem,timeout);
-    if( n < 0)
+    if( n < 0 )
     {
-        LOG_ERROR("zmq poll error !");
-        return -1;
+        if(zmq_errno() != EINTR)
+        {
+            LOG_ERROR("zmq poll error errno = %d for str = %s!",zmq_errno(),
+                    zmq_strerror(zmq_errno()) );
+            return -1;
+        }
+        return 0;
     }
-    int ievnnts = 0;
+    int ievnts = 0;
     ChannelMessage msg;
     int iRet = 0;
     for(int i = 0 ;i < nzpollitem; ++i)
@@ -129,10 +135,10 @@ int             ChannelAgentMgr::Polling(int timeout)
             ///////////////////////////////////////////////////////
             pDispatcher->DispatchMessage(*(it->second.get()),msg);            
             ////////////////////////////////////////////////////////
-            ++ievnnts;
+            ++ievnts;
         }
     }
-    return ievnnts;
+    return ievnts;
 }
 
 #endif

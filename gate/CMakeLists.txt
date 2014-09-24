@@ -34,6 +34,7 @@ target_link_libraries(gate
 	channel
 	ssukits_net
 	ssukits_utility
+	ssukits_ipc
 	ssukits_base
 	zmq
 	rt

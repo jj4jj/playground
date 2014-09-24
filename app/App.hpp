@@ -1,5 +1,6 @@
 #pragma once
 
+#include "base/Singleton.hpp"
 #include "base/stdinc.h"
 #include "base/Log.h"
 #include "base/Buffer.h"
@@ -11,13 +12,13 @@
 #include "ChannelProxy.h"
 #include "AppContext.h"
 
-class App
+class App : public Singleton<App>
 {
 public:
     //return 0 is ok , otherwise exit prcess
     virtual int     OnInit();
     //control command process
-    virtual string     OnCtrl(const std::vector<string> & cmdLine);
+    virtual string  OnCtrl(const std::vector<string> & cmdLine);
     //tick 
     virtual int     OnTick(int64_t lElapseTime);
     //poll system
@@ -47,13 +48,15 @@ public:
     int     Tick(int64_t lElapseTime);
     int     Destroy();
     int     Init(AppContext * _ctx);    
+private:
+    void    InitSignal();
+    static  void    UpdateTick(struct timeval & tvNow, int64_t lElapseTime);
 public:
     App();
     virtual    ~App();
 private:
     AppContext * ctx;
     UdpDriver  m_consoleDrv;
-    UdpSocketHandlerSharedPtr   ptrConsoleHandler;    
     ChannelProxy                proxy;
     //////////////////////////////////////////////////////////////////////////////////
 public:    
@@ -87,18 +90,9 @@ int App::main(int argc , char* argv [])
         return -1;
     }
     /////////////////////////////////////////////////////////
-    timeval now ;    
     int proc = 0;
-    int64_t lElapseTime = 0L; 
-    int64_t lRemainTime = 0L;
     while(true)
-    {
-        
-        Time::now(now);
-        lElapseTime = Time::uspast(now,ctx.curTickStart);
-        Time::usappend(ctx.curTime,lElapseTime);
-        ctx.curTickStart = now;
-        ///////////////////////////////////////////////////////////////////////        
+    {        
         if(ctx.closing)
         {
             //there is no sth todo
@@ -110,17 +104,10 @@ int App::main(int argc , char* argv [])
         else
         {            
             proc = app.Poll();
-            app.Tick(lElapseTime);
         }
-
-        Time::now(now);
-        lElapseTime =  Time::uspast(now,ctx.curTickStart);
-        lRemainTime = ctx.tickCountUs - lElapseTime ;
-        if(lRemainTime > 0 && 0 == proc )
+        if( 0 == proc )
         {
-            LOG_DEBUG("sleep lremain=%d proc = %d elapse = %d",
-                lRemainTime,proc,lElapseTime);
-            usleep(lRemainTime);
+            usleep(ctx.tickCountUs);
         }
     }
     return app.Destroy();

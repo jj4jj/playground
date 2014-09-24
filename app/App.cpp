@@ -1,12 +1,19 @@
 
 #include "net/UdpSocketHandler.h"
+#include "ipc/SignalHelper.h"
+#include "component/TimerMgr.h"
 #include "App.hpp"
+
+
+
+
+
 #if 1
 class AppConsoletHandler : public UdpSocketHandler
 {
 public :
     AppConsoletHandler(App * _app):app(_app){}
-    virtual  ~AppConsoletHandler(){}
+    virtual  ~AppConsoletHandler(){app = NULL;}
 public:
     int    SplitCMDLine(string & line,vector<string> & list,const char* pszDeli = " ")
     {
@@ -49,7 +56,7 @@ private:
 
 #if 1
 App::App():ctx(NULL){}
-App::~App(){}  
+App::~App(){ctx = NULL;}  
 #endif
 
 #if 1
@@ -90,7 +97,9 @@ int     App::OnDestroy()
     LOG_DEBUG("OnDestroy");
     return 0;
 }
+#endif
 
+#if 1
 int     App::Poll(int iRecommendPollNum )
 {
     //console
@@ -104,12 +113,31 @@ int     App::Closing(int closingReason)
 }
 //ms
 int     App::Tick(int64_t lElapseTime)
-{
+{    
     return OnTick(lElapseTime);
 }
 int     App::Destroy()
+{    
+    int ret = OnDestroy();
+    ctx = NULL;
+    return ret;
+}
+
+void    App::InitSignal()
 {
-    return OnDestroy();
+    SignalHelper::IgnoreSignal(SIGPIPE);
+    SignalHelper::IgnoreSignal(SIGTERM);
+    ///////////////////////////////////
+    //SignalHelper::IgnoreSignal(SIGINT);
+}
+void  App::UpdateTick(timeval & tvNow,int64_t lElapseTime)
+{
+    App & app =  App::Instance();
+    if(app.ctx)
+    {
+        app.ctx->curTime = tvNow;
+        app.Tick(lElapseTime);
+    }
 }
 int     App::Init(AppContext * _ctx)
 {
@@ -150,11 +178,10 @@ int     App::Init(AppContext * _ctx)
         //daemonlize
         Daemon::Instance().Create();
     }    
-    
+    InitSignal();     
     ////////////////////////////////////////////////////////////////////////
     m_consoleDrv.Init(10);
-    UdpSocketHandlerSharedPtr pHdlr(new AppConsoletHandler(this));
-    m_consoleDrv.SetHandler(pHdlr);
+    m_consoleDrv.SetHandler(UdpSocketHandlerSharedPtr(new AppConsoletHandler(this)));
     UdpSocket console;
     if(console.Init())
     {
@@ -167,7 +194,6 @@ int     App::Init(AppContext * _ctx)
         return -1;
     }
     m_consoleDrv.AddSocket(console.GetFD());    
-    ptrConsoleHandler = pHdlr;        
     /////////////////////////////////////////////////////////////////
     int ret = proxy.Init(ctx);
     if(ret)
@@ -177,6 +203,14 @@ int     App::Init(AppContext * _ctx)
     }
 
 
+    /////////////////////////////////////////////////////////////////
+    if(TimerMgr::Instance().Init(ctx->tickCountUs,UpdateTick))
+    {
+        LOG_FATAL("timer mgr init error !");
+        return -1;
+    }
+    ctx->curTime = TimerMgr::Instance().GetCurTime();
+
 
     //////////////////////////////////////////////////////////////////
     ret = OnInit();
@@ -185,8 +219,6 @@ int     App::Init(AppContext * _ctx)
         LOG_FATAL("App init resutl error = %d ! ",ret);
         return -1;
     }           
-    Time::now(ctx->curTime);    
-    ctx->curTickStart = ctx->curTime;
     return 0;
 }   
 #endif

@@ -7,3 +7,9 @@
 [submodule "dep/protobuf"]
 	path = dep/protobuf
 	url = https://github.com/jj4jj/protobuf.git
+[submodule "dep/ssdb"]
+	path = dep/ssdb
+	url = https://github.com/jj4jj/ssdb.git
+[submodule "dep/twemproxy"]
+	path = dep/twemproxy
+	url = https://github.com/jj4jj/twemproxy.git

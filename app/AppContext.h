@@ -21,7 +21,6 @@ public:
     bool      closing;
     int       tickCountUs;
     int       tickPollCount;
-    struct timeval  curTickStart;//tick start time
     struct timeval  curTime;   //this tick time        
 public:
     //read config and init the common attr
