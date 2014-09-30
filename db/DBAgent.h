@@ -164,6 +164,53 @@ public:
 };
 
 
+class DBProxy
+{
+public:
+    int     Init(const std::vector<DBTableMeta> & metas);
+    int     Connect(const DBProxyOption & opt);
+    int     SelectDB(const string & name);
+    int     CreateDB(const string & name);
+    int     CreateTable(DBTableMeta & meta);
+    int     DispatchReq(const DBTableOpReq & req);
+    int     Select(const string & tblname,const vector<DBTableField> & pks,
+                    const vector<string> & selCols, vector<DBTableField> & cols);
+    int     Insert(const string & table,const std::vector<DBTableField> & data);
+    int     Update(const string & table,const std::vector<DBTableField> & pks,const std::vector<DBTableField> & data);
+    int     Delete(const string &  table,const std::vector<DBTableField> & pks);
+    int     ExecuteSQL(const string & sql);
+    void    Destroy();
+    inline  int   GetLastErrNo(){if(conn) return mysql_errno(conn);return 0;}
+    inline  const char* GetLastErrStr(){if(conn)return mysql_error(conn);return NULL;}
+    inline  DBTableOpRsp & GetRsp(){return rsp;}
+    inline  SetState(int ist){state = ist;}    
+protected:
+    DBTableMeta*   GetTableMeta(const string & name);
+public:
+    DBProxy(){}
+    ~DBProxy(){Destroy();}
+public:
+    enum{
+        PROXY_STATE_INVALID = 0,
+        PROXY_STATE_CONNECTING = 1,
+        PROXY_STATE_READY = 2,
+        PROXY_STATE_DOING = 3,
+        PROXY_STATE_DONE = 4,
+    };
+private:
+    int     state;//
+    //socket ? connector ?
+    MYSQL   *conn;
+    DBProxyOption   m_opt;
+    std::map<string,DBTableMeta>   tableMetas;
+    DBTableOpReq    req;
+    DBTableOpRsp    rsp;
+};
+typedef shared_ptr<DBProxy>    DBProxyPtr;    
+
+
+////////////////////////////////////////////////////////////
+
 //it represents a connector to db server
 //worker thread
 
@@ -196,63 +243,114 @@ worker thread
 
 */
 //req - > sql
-class DBProxy
-{
-public:
-    int     Init(const std::vector<DBTableMeta> & metas);
-    int     Connect(const DBProxyOption & opt);
-    int     SelectDB(const string & name);
-    int     CreateDB(const string & name);
-    int     CreateTable(DBTableMeta & meta);
-    int     DispatchReq(const DBTableOpReq & req);
-    int     Select(const string & tblname,const vector<DBTableField> & pks,
-                    const vector<string> & selCols, vector<DBTableField> & cols);
-    int     Insert(const string & table,const std::vector<DBTableField> & data);
-    int     Update(const string & table,const std::vector<DBTableField> & pks,const std::vector<DBTableField> & data);
-    int     Delete(const string &  table,const std::vector<DBTableField> & pks);
-    int     ExecuteSQL(const string & sql);
-    void    Destroy();
-    inline  int   GetLastErrNo(){if(conn) return mysql_errno(conn);return 0;}
-    inline  const char* GetLastErrStr(){if(conn)return mysql_error(conn);return NULL;}
-protected:
-    DBTableMeta*   GetTableMeta(const string & name);
-public:
-    DBProxy(){}
-    ~DBProxy(){Destroy();}
-public:
-    enum{
-        PROXY_STATE_INVALID = 0,
-        PROXY_STATE_CONNECTING = 1,
-        PROXY_STATE_READY = 2,
-        PROXY_STATE_DOING = 3,
-        PROXY_STATE_DONE = 4,
-    };
-private:
-    int     state;//
-    //socket ? connector ?
-    MYSQL   *conn;
-    DBProxyOption   m_opt;
-    std::map<string,DBTableMeta>   tableMetas;
-    DBTableOpReq    req;
-    DBTableOpRsp    rsp;
-};
-typedef shared_ptr<DBProxy>    DBProxyPtr;    
-
-
-////////////////////////////////////////////////////////////
-
 class DBAgent
 {
 public:
     DBAgent();
     ~DBAgent();
-protected:
-    static uint32_t Hash(const char* pszTableName);    
 public:
-    //return the handle
-    int     RegisterTable(const DBTable &   table);
-    int     Init(const std::vector<DBProxyOption> & proxyList);	//proxy list
-	int     Polling(long lTimeOutUs);	
+    //return 0 
+    int     RegisterTableHandler(const string & name,DBTableHandlerPtr handler)
+    {
+        //
+        //todo
+
+
+        return 0;
+        
+    }
+    int     Init(const std::vector<DBProxyOption> & proxyList,const std::vector<DBTableMeta> metas)
+    {
+        clientProxyList.clear();
+        for(uint i = 0;i < proxyList.size(); ++i)
+        {
+            DBProxyPtr  ptr(new DBProxy(this));
+            if(ptr->Init(metas))
+            {
+                LOG_FATAL("init proxy error !");
+                return -1;
+            }
+            if(ptr->Connect(proxyList[i]))
+            {
+                LOG_FATAL("connect proxy error !");
+                return -1;
+            }            
+            clientProxyList.push_back(ptr);            
+        }    
+    }
+	int     Polling(int iProcNumPerTick)
+	{
+        //check ready queue
+        pthread_mutext_lock(&readyLock);
+        DBProxy *  p = NULL;
+        while(!readyQueue.empty() && iProcNumPerTick > 0)
+        {
+            p = readyQueue.pop_front();
+            HandleRsp(p->GetRsp()); 
+            p->SetState(DBProxy::PROXY_STATE_READY);
+            --iProcNumPerTick;
+        }        
+        pthread_mutext_unlock(&readyLock);
+        pthread_cond_broadcast(&stateChg);
+    }
+    void     ReqDone(DBProxy * proxy)
+    {
+        pthread_mutext_lock(&readyLock);
+        proxy->SetState(DBProxy::PROXY_STATE_DONE));
+        readyQueue.push_back(proxy);            
+        pthread_mutext_unlock(&readylock);
+        while(proxy->GetState() != DBProxy::PROXY_STATE_READY)
+        {
+            WaitReady(proxy);
+        }
+        pthread_mutext_lock(&freeLock);
+        freeQueue.push_back(proxy);                
+        pthread_mutext_unlock(&freeLock);
+    }
+    void    WaitReady(DBProxy* proxy)
+    {
+        pthread_cond_wait(&stateChg,&stateChgMutext);
+    }
+    DBTableHandler * GetHandler(string & tblname)
+    {
+        if(handlerMap.find(tblname) != handlerMap.end())
+        {
+            return handlerMap[tblname].get();
+        }
+        return NULL;
+    }
+    void     HandleRsp(DBTableOpRsp & rsp)
+    {
+        //find table
+        DBTableHandler * pHandler = GetHandler(rsp.tblname);
+        if(!pHandler)
+        {
+            LOG_FATAL("not found handler table = %s",rsp.tblname.c_str());
+            return ;
+        }
+        //dispatch op resp --- todo
+        switch(rsp.op)
+        {
+            case 0:
+            break;
+        }
+
+        
+    }
+    int    DipsatchReq(const DBTableOpReq & req)
+    {
+        if(freeQueue.empty())
+        {
+            LOG_ERROR("no free queue !");
+            return -1;
+        }
+        //selet free
+        pthread_mutext_lock(&freeLock);
+        DBProxy * p = freeQueue.pop_front();
+        pthread_mutext_unlock(&freeLock);   
+        p->DispatchReq(req);
+        return 0;
+    }
     void    Destroy();
 	//-------------------------------------------------------------------------
 	int		Get(const char* pszTableName,const Buffer & key,const Buffer & cb);
@@ -278,11 +376,16 @@ public:
 
 private:
     //name hash -> table
-    unordered_map<uint32_t,DBTable>  handlerMap;
+    unordered_map<string,DBTable>  handlerMap;
     std::vector<DBProxyOption>       proxyAddrList;
-    //ssdb handle 
-    //map with -> proxy
+
     std::vector<DBProxyPtr>   clientProxyList;
+    std::list<DBProxy*>       readyQueue;
+    pthread_mutext_t          readyLock;
+    std::list<DBProxy*>       freeQueue;
+    pthread_mutext_t          freeLock;
+    pthread_cond_t            stateChg;
+    pthread_mutext_t          stateChgMutext;
 };
 
 
