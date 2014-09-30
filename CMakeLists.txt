@@ -50,7 +50,7 @@ set(SSUKITS_HOME ${CMAKE_SOURCE_DIR}/dep/ssukits)
 set(PROTOBUF_HOME ${CMAKE_SOURCE_DIR}/dep/protobuf)
 set(INIPARSER_HOME ${CMAKE_SOURCE_DIR}/dep/iniparser)
 set(ZEROMQ_HOME ${CMAKE_SOURCE_DIR}/dep/zeromq)
-
+set(MYSQLCLI_C_HOME	${CMAKE_SOURCE_DIR}/dep/mysqlcconn)
 
 
 # install dir
@@ -65,4 +65,5 @@ add_subdirectory(benchmark)
 add_subdirectory(component)
 add_subdirectory(test)
 add_subdirectory(app)
+add_subdirectory(db)
 

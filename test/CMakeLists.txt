@@ -5,6 +5,7 @@ include_directories(
   ${PROJECT_SOURCE_DIR}
   ${SSUKITS_HOME}
   ${PROJECT_SOURCE_DIR}/dep/iniparser/src
+  ${MYSQLCLI_C_HOME}/include
 )
 
 #base dir linked lib dir
@@ -14,6 +15,7 @@ link_directories(
 	${SSUKITS_HOME}/bin
 	/usr/lib
 	${PROJECT_SOURCE_DIR}/dep/iniparser	
+	${MYSQLCLI_C_HOME}/lib
 )
 
 #it will generate a exe
@@ -62,5 +64,17 @@ target_link_libraries(test_app
 INSTALL(TARGETS  test_app DESTINATION test/)
 
 
+###################################
+ADD_EXECUTABLE(test_mysql
+	${CMAKE_CURRENT_SOURCE_DIR}/TestMysql.cpp
+)
+target_link_libraries(test_mysql
+	dbagent
+	ssukits_base
+	libmysqlclient.a
+	rt
+	dl
+)
+INSTALL(TARGETS  test_mysql DESTINATION test/)
 
 

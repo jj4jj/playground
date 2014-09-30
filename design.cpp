@@ -13,28 +13,32 @@ wirting a good server .
 ------------------------------------------------
 
 
-  1-2    2-2     3-3
+ 1-2     2-2     3-3
 client  client  client  ____
- |_______|       |          |_________GLB_______DIR_______VER______CDN
+ |_______|       |          |_________GLB_______DIR_______VER[CDN]
  |       |       |
 _|_      |       |
  |       |       |
  1       2       3
-gate    gate    gate  ------------------- open platform
-                            \                     /\
- \      / \      /           Auth ________________||             
+gate    gate    gate  ------------------------ open platform
+                            \                           /\
+ \      / \      /           Auth _______Account________||             
 
    \  /    \   /
      1       2 
-   agent    agent    TASK   BATTLE  ACHIEVEMENT   
-  |____|   |____|    VER    ACCOUNT ANTI CHEAT
+   agent    agent    TASK   BATTLE  ACHIEVEMENT   FAMILY
+  |____|   |____|    VER    ACCOUNT ANTI CHEAT    OFFLINE
      |      |           
-      \    /      LBS    SNS     RANK     OSS
-       \  /_______|______|________|________|
+      \    /      LBS    SNS     RANK     OSS(IDIP)   LOG     Global   etc
+       \  /_______|______|________|________|___________|_______|_______|__
         -
-       Redis --- Redis
+      [DBAgent] - lib
         |
- level DB/mysql DB  ---------- OLAP 
+      DBCacheProxy [group]
+        |
+        |------ Redis --- Redis -- Redis
+        |
+     DBInst (mysql / leveldb / ssdb)  ---------- OLAP 
 
 
 
