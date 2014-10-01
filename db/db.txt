@@ -15,7 +15,7 @@ DBTable
 		handle
 		handler
 
-DBAgent
+MysqlAgent
 		//no scheme
 		RegisterTable(table_name,type,DBHandler); // return handle
 		Init(proxy addr list);	//proxy list 
@@ -43,7 +43,7 @@ DBAgent
 usage:
 	GetAccount()
 		CB	cb
-		DBAgent.Get(handle,key,cb);
+		MysqlAgent.Get(handle,key,cb);
 	OnGetAccount(key,ret,key,value,cb)
 
 

@@ -71,7 +71,8 @@ ADD_EXECUTABLE(test_mysql
 target_link_libraries(test_mysql
 	dbagent
 	ssukits_base
-	libmysqlclient.a
+	ssukits_thread
+	libmysqlclient.a	
 	rt
 	dl
 )

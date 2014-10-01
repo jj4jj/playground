@@ -32,7 +32,7 @@ gate    gate    gate  ------------------------ open platform
       \    /      LBS    SNS     RANK     OSS(IDIP)   LOG     Global   etc
        \  /_______|______|________|________|___________|_______|_______|__
         -
-      [DBAgent] - lib
+      [MysqlAgent] - lib
         |
       DBCacheProxy [group]
         |
