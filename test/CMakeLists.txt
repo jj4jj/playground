@@ -79,3 +79,17 @@ target_link_libraries(test_mysql
 INSTALL(TARGETS  test_mysql DESTINATION test/)
 
 
+###################################
+ADD_EXECUTABLE(test_shm
+	${CMAKE_CURRENT_SOURCE_DIR}/TestShm.cpp
+)
+target_link_libraries(test_shm
+	dataagent
+ 	ssukits_ipc
+	ssukits_base
+	rt
+	dl
+)
+INSTALL(TARGETS  test_shm DESTINATION test/)
+
+
