@@ -70,6 +70,9 @@ public:
     int         Check();
     int         AddModule(const char* pszName);
     RecoveryShareMemReg * FindReg(const string & name);
+public:
+    //don't call it generally , unless you know what you are doing !!
+    void         DeleteSHM();
 private:
     MemSerializer * m_pSerializer;
     ShareMemory     m_shm;

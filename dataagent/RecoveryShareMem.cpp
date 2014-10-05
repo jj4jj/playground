@@ -1,6 +1,8 @@
 #include "RecoveryShareMem.h"
 #include "base/Log.h"
 #include "base/CommonMacro.h"
+
+#define SHM_MAGIC   ("RSHM")
 #if 1
 int     RecoveryShareMem::Register(const RecoveryShareMemReg & reg)
 {
@@ -11,9 +13,14 @@ int     RecoveryShareMem::Register(const RecoveryShareMemReg & reg)
     }
     m_vecModules.push_back(reg);
     m_zTotalSize += reg.zSize;
-    LOG_FATAL("register sbm sub module name = $s size = %Zu",reg.name.c_str(),reg.zSize);
+    LOG_INFO("register sbm sub module name = %s size = %zu",reg.name.c_str(),reg.zSize);
     return 0;
 }    
+void    RecoveryShareMem::DeleteSHM()
+{
+    LOG_WARN("recovery share mem delete shm !");
+    m_shm.Destroy(m_shm.GetShmID());
+}
 int     RecoveryShareMem::Init(const char* pszShmKeyPath)
 {
     //if get a valid old size
@@ -26,20 +33,38 @@ int     RecoveryShareMem::Init(const char* pszShmKeyPath)
     m_zTotalSize += sizeof(RecoveryShmFmt);
     int shmKey = ShareMemory::PathToKey(pszShmKeyPath);
     int ret = m_shm.Attach(shmKey,m_zTotalSize);
+
+    m_pDataBase = (char*)m_shm.GetData();
+    m_pFmtBase = (RecoveryShmFmt*)m_pDataBase;
+
     if(ret)
     {
-        LOG_ERROR("there is no old shm found ! it will create a new memory block !");
-        if(m_shm.Create(shmKey,m_zTotalSize,0))
+        if(1 == ret)
         {
-            LOG_ERROR("shm create error !");
+            LOG_ERROR("there is no old shm found ! it will create a new memory block !");
+            if(m_shm.Create(shmKey,m_zTotalSize))
+            {
+                LOG_ERROR("shm create error !");
+                return -1;
+            }
+            //
+            m_pDataBase = (char*)m_shm.GetData();
+            m_pFmtBase = (RecoveryShmFmt*)m_pDataBase;
+            InitRegModules();
+        }
+        else
+        {
+            LOG_FATAL("attach shm error = %d ! for = %s",ret,strerror(errno));
             return -1;
         }
-        m_pDataBase = (char*)m_shm.GetData();
-        m_pFmtBase = (RecoveryShmFmt*)m_pDataBase;
-        InitRegModules();
     }
     else
-    {
+    {        
+        if(Check())
+        {
+            LOG_FATAL("attach memory but mem magic chck error !");
+            return -1;
+        }
         size_t zOldShmSize = GetOldShmSize();
         if(zOldShmSize != m_zTotalSize)
         {
@@ -54,7 +79,7 @@ int     RecoveryShareMem::Init(const char* pszShmKeyPath)
 void     RecoveryShareMem::InitRegModules()
 {
     bzero(m_pFmtBase,m_zTotalSize);
-    memcpy(m_pFmtBase->magic,"RSHM",4);
+    memcpy(m_pFmtBase->magic,SHM_MAGIC,strlen(SHM_MAGIC));
     m_pFmtBase->dataOffset = sizeof(RecoveryShmFmt);
     AppendRegModules();
 }
@@ -98,7 +123,7 @@ int     RecoveryShareMem::AttachAllModules()
 }
 int     RecoveryShareMem::Check()
 {
-    return memcmp(m_pFmtBase->magic,"RSHM",sizeof(m_pFmtBase->magic));
+    return memcmp(m_pFmtBase->magic,SHM_MAGIC,strlen(SHM_MAGIC));
 }
 ShmModule*  RecoveryShareMem::FindModule(const char* pszName)
 {

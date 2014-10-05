@@ -52,10 +52,13 @@ int main(int argc,char* argv[])
     if(!File::Exist("test.shm"))
     {
         File    file("test.shm","w+");
-    }
-    if(rsm.Init("test.shm"))
+    } 
+    if(rsm.Init("test.shm")) 
     {
-        LOG_ERROR("init erro !");   
+        LOG_ERROR("init erro !");           
+
+        //for test 
+        rsm.DeleteSHM();
         return -1;
     }
     ////////////////////////////////
