@@ -23,6 +23,7 @@
 #include <google/protobuf/message.h>
 #include <google/protobuf/repeated_field.h>
 #include <google/protobuf/extension_set.h>
+#include <google/protobuf/generated_enum_reflection.h>
 #include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
 
@@ -44,6 +45,25 @@ class RoleExt;
 class Role;
 class meta;
 
+enum RoleBase_Gender {
+  RoleBase_Gender_MALE = 0,
+  RoleBase_Gender_FEMALE = 1
+};
+bool RoleBase_Gender_IsValid(int value);
+const RoleBase_Gender RoleBase_Gender_Gender_MIN = RoleBase_Gender_MALE;
+const RoleBase_Gender RoleBase_Gender_Gender_MAX = RoleBase_Gender_FEMALE;
+const int RoleBase_Gender_Gender_ARRAYSIZE = RoleBase_Gender_Gender_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* RoleBase_Gender_descriptor();
+inline const ::std::string& RoleBase_Gender_Name(RoleBase_Gender value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    RoleBase_Gender_descriptor(), value);
+}
+inline bool RoleBase_Gender_Parse(
+    const ::std::string& name, RoleBase_Gender* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<RoleBase_Gender>(
+    RoleBase_Gender_descriptor(), name, value);
+}
 // ===================================================================
 
 class RoleBase : public ::google::protobuf::Message {
@@ -97,14 +117,38 @@ class RoleBase : public ::google::protobuf::Message {
 
   // nested types ----------------------------------------------------
 
+  typedef RoleBase_Gender Gender;
+  static const Gender MALE = RoleBase_Gender_MALE;
+  static const Gender FEMALE = RoleBase_Gender_FEMALE;
+  static inline bool Gender_IsValid(int value) {
+    return RoleBase_Gender_IsValid(value);
+  }
+  static const Gender Gender_MIN =
+    RoleBase_Gender_Gender_MIN;
+  static const Gender Gender_MAX =
+    RoleBase_Gender_Gender_MAX;
+  static const int Gender_ARRAYSIZE =
+    RoleBase_Gender_Gender_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  Gender_descriptor() {
+    return RoleBase_Gender_descriptor();
+  }
+  static inline const ::std::string& Gender_Name(Gender value) {
+    return RoleBase_Gender_Name(value);
+  }
+  static inline bool Gender_Parse(const ::std::string& name,
+      Gender* value) {
+    return RoleBase_Gender_Parse(name, value);
+  }
+
   // accessors -------------------------------------------------------
 
-  // required uint32 gendor = 1;
+  // required .meta.RoleBase.Gender gendor = 1 [default = MALE];
   inline bool has_gendor() const;
   inline void clear_gendor();
   static const int kGendorFieldNumber = 1;
-  inline ::google::protobuf::uint32 gendor() const;
-  inline void set_gendor(::google::protobuf::uint32 value);
+  inline ::meta::RoleBase_Gender gendor() const;
+  inline void set_gendor(::meta::RoleBase_Gender value);
 
   // @@protoc_insertion_point(class_scope:meta.RoleBase)
  private:
@@ -115,7 +159,7 @@ class RoleBase : public ::google::protobuf::Message {
 
   ::google::protobuf::uint32 _has_bits_[1];
   mutable int _cached_size_;
-  ::google::protobuf::uint32 gendor_;
+  int gendor_;
   friend void  protobuf_AddDesc_meta_2eproto();
   friend void protobuf_AssignDesc_meta_2eproto();
   friend void protobuf_ShutdownFile_meta_2eproto();
@@ -178,7 +222,7 @@ class RoleHero : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required uint32 id = 1;
+  // required uint32 id = 1 [default = 0];
   inline bool has_id() const;
   inline void clear_id();
   static const int kIdFieldNumber = 1;
@@ -339,7 +383,7 @@ class RolePackage : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required uint32 maxGrid = 1;
+  // required uint32 maxGrid = 1 [default = 0];
   inline bool has_maxgrid() const;
   inline void clear_maxgrid();
   static const int kMaxGridFieldNumber = 1;
@@ -418,14 +462,14 @@ class RoleGrowth : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required uint32 level = 1;
+  // required uint32 level = 1 [default = 1];
   inline bool has_level() const;
   inline void clear_level();
   static const int kLevelFieldNumber = 1;
   inline ::google::protobuf::uint32 level() const;
   inline void set_level(::google::protobuf::uint32 value);
 
-  // required uint32 exp = 2;
+  // required uint32 exp = 2 [default = 0];
   inline bool has_exp() const;
   inline void clear_exp();
   static const int kExpFieldNumber = 2;
@@ -507,7 +551,7 @@ class RoleStage : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required uint32 curStage = 1;
+  // required uint32 curStage = 1 [default = 0];
   inline bool has_curstage() const;
   inline void clear_curstage();
   static const int kCurStageFieldNumber = 1;
@@ -586,7 +630,7 @@ class RoleSNS : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required uint32 maxfrinds = 1;
+  // required uint32 maxfrinds = 1 [default = 5];
   inline bool has_maxfrinds() const;
   inline void clear_maxfrinds();
   static const int kMaxfrindsFieldNumber = 1;
@@ -665,7 +709,7 @@ class RoleExt : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required uint32 fightcap = 1;
+  // required uint32 fightcap = 1 [default = 0];
   inline bool has_fightcap() const;
   inline void clear_fightcap();
   static const int kFightcapFieldNumber = 1;
@@ -970,7 +1014,7 @@ class meta : public ::google::protobuf::Message {
 
 // RoleBase
 
-// required uint32 gendor = 1;
+// required .meta.RoleBase.Gender gendor = 1 [default = MALE];
 inline bool RoleBase::has_gendor() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -981,14 +1025,15 @@ inline void RoleBase::clear_has_gendor() {
   _has_bits_[0] &= ~0x00000001u;
 }
 inline void RoleBase::clear_gendor() {
-  gendor_ = 0u;
+  gendor_ = 0;
   clear_has_gendor();
 }
-inline ::google::protobuf::uint32 RoleBase::gendor() const {
+inline ::meta::RoleBase_Gender RoleBase::gendor() const {
   // @@protoc_insertion_point(field_get:meta.RoleBase.gendor)
-  return gendor_;
+  return static_cast< ::meta::RoleBase_Gender >(gendor_);
 }
-inline void RoleBase::set_gendor(::google::protobuf::uint32 value) {
+inline void RoleBase::set_gendor(::meta::RoleBase_Gender value) {
+  assert(::meta::RoleBase_Gender_IsValid(value));
   set_has_gendor();
   gendor_ = value;
   // @@protoc_insertion_point(field_set:meta.RoleBase.gendor)
@@ -998,7 +1043,7 @@ inline void RoleBase::set_gendor(::google::protobuf::uint32 value) {
 
 // RoleHero
 
-// required uint32 id = 1;
+// required uint32 id = 1 [default = 0];
 inline bool RoleHero::has_id() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -1060,7 +1105,7 @@ RoleHeroInfo::mutable_heros() {
 
 // RolePackage
 
-// required uint32 maxGrid = 1;
+// required uint32 maxGrid = 1 [default = 0];
 inline bool RolePackage::has_maxgrid() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -1088,7 +1133,7 @@ inline void RolePackage::set_maxgrid(::google::protobuf::uint32 value) {
 
 // RoleGrowth
 
-// required uint32 level = 1;
+// required uint32 level = 1 [default = 1];
 inline bool RoleGrowth::has_level() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -1099,7 +1144,7 @@ inline void RoleGrowth::clear_has_level() {
   _has_bits_[0] &= ~0x00000001u;
 }
 inline void RoleGrowth::clear_level() {
-  level_ = 0u;
+  level_ = 1u;
   clear_has_level();
 }
 inline ::google::protobuf::uint32 RoleGrowth::level() const {
@@ -1112,7 +1157,7 @@ inline void RoleGrowth::set_level(::google::protobuf::uint32 value) {
   // @@protoc_insertion_point(field_set:meta.RoleGrowth.level)
 }
 
-// required uint32 exp = 2;
+// required uint32 exp = 2 [default = 0];
 inline bool RoleGrowth::has_exp() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
@@ -1140,7 +1185,7 @@ inline void RoleGrowth::set_exp(::google::protobuf::uint32 value) {
 
 // RoleStage
 
-// required uint32 curStage = 1;
+// required uint32 curStage = 1 [default = 0];
 inline bool RoleStage::has_curstage() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -1168,7 +1213,7 @@ inline void RoleStage::set_curstage(::google::protobuf::uint32 value) {
 
 // RoleSNS
 
-// required uint32 maxfrinds = 1;
+// required uint32 maxfrinds = 1 [default = 5];
 inline bool RoleSNS::has_maxfrinds() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -1179,7 +1224,7 @@ inline void RoleSNS::clear_has_maxfrinds() {
   _has_bits_[0] &= ~0x00000001u;
 }
 inline void RoleSNS::clear_maxfrinds() {
-  maxfrinds_ = 0u;
+  maxfrinds_ = 5u;
   clear_has_maxfrinds();
 }
 inline ::google::protobuf::uint32 RoleSNS::maxfrinds() const {
@@ -1196,7 +1241,7 @@ inline void RoleSNS::set_maxfrinds(::google::protobuf::uint32 value) {
 
 // RoleExt
 
-// required uint32 fightcap = 1;
+// required uint32 fightcap = 1 [default = 0];
 inline bool RoleExt::has_fightcap() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -1741,6 +1786,11 @@ inline void meta::set_allocated_role(::meta::Role* role) {
 namespace google {
 namespace protobuf {
 
+template <> struct is_proto_enum< ::meta::RoleBase_Gender> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::meta::RoleBase_Gender>() {
+  return ::meta::RoleBase_Gender_descriptor();
+}
 
 }  // namespace google
 }  // namespace protobuf

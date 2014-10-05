@@ -2,11 +2,16 @@ package	meta;
 
 message	RoleBase
 {
-	required	uint32	gendor	=	1;
+	enum Gender
+	{
+		MALE	=	0;
+		FEMALE	=	1;
+	};
+	required	Gender	gendor	=	1 [default = MALE ] ;
 };
 message RoleHero
 {
-	required	uint32	id		=	1;
+	required	uint32	id		=	1 [default = 0];
 };
 message	RoleHeroInfo
 {
@@ -14,24 +19,24 @@ message	RoleHeroInfo
 };
 message	RolePackage
 {
-	required	uint32		maxGrid		=	1;	
+	required	uint32		maxGrid		=	1 [default = 0];	
 };
 message	RoleGrowth
 {
-	required	uint32		level	=	1;
-	required	uint32		exp		=	2;
+	required	uint32		level	=	1 [default = 1];
+	required	uint32		exp		=	2 [default = 0];
 };
 message	RoleStage
 {
-	required	uint32		curStage	=	1;
+	required	uint32		curStage	=	1 [default = 0];
 };
 message	RoleSNS
 {
-	required	uint32		maxfrinds	=	1;
+	required	uint32		maxfrinds	=	1 [default = 5];
 };
 message	RoleExt
 {
-	required	uint32		fightcap	=	1;
+	required	uint32		fightcap	=	1 [default = 0];
 };
 
 message Role

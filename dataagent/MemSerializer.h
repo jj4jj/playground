@@ -2,14 +2,25 @@
 #include "base/stdinc.h"
 #include "base/Buffer.h"
 
+#include "google/protobuf/descriptor.h"
+#include "google/protobuf/message.h"
+
+
 class MemSerializer
 {
 public:
     int     Init(const char* pszMetaFileName);
-    int     GetPackSize(const char* pszMetaName,void* obj);
-    int     Pack(const char* pszMetaName,void* obj,Buffer & buffer);
+    int     GetPackSize(void* obj);
+    int     Pack(void* obj,Buffer & buffer);
     int     UnPack(const char* pszMetaName,Buffer & buffer,void * * ppObj);
-    void    FreeObj(void * pObj);
-    void    Visual(const char* pszMetaName,void* pObj,string & s);
+    void    Visual(void* pObj,string & s);
+
+public:
+    template<class T>
+    void    FreeObj(T* pObj){delete pObj;}
+
+private:
+    google::protobuf::DescriptorPool* m_pDescriptorPool;
+    google::protobuf::MessageFactory*       m_pObjFactory;
 };
 

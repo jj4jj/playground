@@ -23,6 +23,7 @@ namespace {
 const ::google::protobuf::Descriptor* RoleBase_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   RoleBase_reflection_ = NULL;
+const ::google::protobuf::EnumDescriptor* RoleBase_Gender_descriptor_ = NULL;
 const ::google::protobuf::Descriptor* RoleHero_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   RoleHero_reflection_ = NULL;
@@ -75,6 +76,7 @@ void protobuf_AssignDesc_meta_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(RoleBase));
+  RoleBase_Gender_descriptor_ = RoleBase_descriptor_->enum_type(0);
   RoleHero_descriptor_ = file->message_type(1);
   static const int RoleHero_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RoleHero, id_),
@@ -286,21 +288,23 @@ void protobuf_AddDesc_meta_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\nmeta.proto\022\004meta\"\032\n\010RoleBase\022\016\n\006gendor"
-    "\030\001 \002(\r\"\026\n\010RoleHero\022\n\n\002id\030\001 \002(\r\"-\n\014RoleHe"
-    "roInfo\022\035\n\005heros\030\001 \003(\0132\016.meta.RoleHero\"\036\n"
-    "\013RolePackage\022\017\n\007maxGrid\030\001 \002(\r\"(\n\nRoleGro"
-    "wth\022\r\n\005level\030\001 \002(\r\022\013\n\003exp\030\002 \002(\r\"\035\n\tRoleS"
-    "tage\022\020\n\010curStage\030\001 \002(\r\"\034\n\007RoleSNS\022\021\n\tmax"
-    "frinds\030\001 \002(\r\"\033\n\007RoleExt\022\020\n\010fightcap\030\001 \002("
-    "\r\"\372\001\n\004Role\022\013\n\003rid\030\001 \002(\004\022\014\n\004name\030\002 \002(\t\022\034\n"
-    "\004base\030\003 \002(\0132\016.meta.RoleBase\022 \n\004hero\030\004 \002("
-    "\0132\022.meta.RoleHeroInfo\022\037\n\004pack\030\005 \002(\0132\021.me"
-    "ta.RolePackage\022\036\n\004grow\030\006 \002(\0132\020.meta.Role"
-    "Growth\022\036\n\005stage\030\007 \002(\0132\017.meta.RoleStage\022\032"
-    "\n\003sns\030\010 \002(\0132\r.meta.RoleSNS\022\032\n\003ext\030\t \002(\0132"
-    "\r.meta.RoleExt\"1\n\004meta\022\017\n\007version\030\001 \002(\t\022"
-    "\030\n\004role\030\002 \001(\0132\n.meta.Role", 585);
+    "\n\nmeta.proto\022\004meta\"W\n\010RoleBase\022+\n\006gendor"
+    "\030\001 \002(\0162\025.meta.RoleBase.Gender:\004MALE\"\036\n\006G"
+    "ender\022\010\n\004MALE\020\000\022\n\n\006FEMALE\020\001\"\031\n\010RoleHero\022"
+    "\r\n\002id\030\001 \002(\r:\0010\"-\n\014RoleHeroInfo\022\035\n\005heros\030"
+    "\001 \003(\0132\016.meta.RoleHero\"!\n\013RolePackage\022\022\n\007"
+    "maxGrid\030\001 \002(\r:\0010\".\n\nRoleGrowth\022\020\n\005level\030"
+    "\001 \002(\r:\0011\022\016\n\003exp\030\002 \002(\r:\0010\" \n\tRoleStage\022\023\n"
+    "\010curStage\030\001 \002(\r:\0010\"\037\n\007RoleSNS\022\024\n\tmaxfrin"
+    "ds\030\001 \002(\r:\0015\"\036\n\007RoleExt\022\023\n\010fightcap\030\001 \002(\r"
+    ":\0010\"\372\001\n\004Role\022\013\n\003rid\030\001 \002(\004\022\014\n\004name\030\002 \002(\t\022"
+    "\034\n\004base\030\003 \002(\0132\016.meta.RoleBase\022 \n\004hero\030\004 "
+    "\002(\0132\022.meta.RoleHeroInfo\022\037\n\004pack\030\005 \002(\0132\021."
+    "meta.RolePackage\022\036\n\004grow\030\006 \002(\0132\020.meta.Ro"
+    "leGrowth\022\036\n\005stage\030\007 \002(\0132\017.meta.RoleStage"
+    "\022\032\n\003sns\030\010 \002(\0132\r.meta.RoleSNS\022\032\n\003ext\030\t \002("
+    "\0132\r.meta.RoleExt\"1\n\004meta\022\017\n\007version\030\001 \002("
+    "\t\022\030\n\004role\030\002 \001(\0132\n.meta.Role", 667);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "meta.proto", &protobuf_RegisterTypes);
   RoleBase::default_instance_ = new RoleBase();
@@ -335,6 +339,27 @@ struct StaticDescriptorInitializer_meta_2eproto {
 
 // ===================================================================
 
+const ::google::protobuf::EnumDescriptor* RoleBase_Gender_descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return RoleBase_Gender_descriptor_;
+}
+bool RoleBase_Gender_IsValid(int value) {
+  switch(value) {
+    case 0:
+    case 1:
+      return true;
+    default:
+      return false;
+  }
+}
+
+#ifndef _MSC_VER
+const RoleBase_Gender RoleBase::MALE;
+const RoleBase_Gender RoleBase::FEMALE;
+const RoleBase_Gender RoleBase::Gender_MIN;
+const RoleBase_Gender RoleBase::Gender_MAX;
+const int RoleBase::Gender_ARRAYSIZE;
+#endif  // _MSC_VER
 #ifndef _MSC_VER
 const int RoleBase::kGendorFieldNumber;
 #endif  // !_MSC_VER
@@ -357,7 +382,7 @@ RoleBase::RoleBase(const RoleBase& from)
 
 void RoleBase::SharedCtor() {
   _cached_size_ = 0;
-  gendor_ = 0u;
+  gendor_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -393,7 +418,7 @@ RoleBase* RoleBase::New() const {
 }
 
 void RoleBase::Clear() {
-  gendor_ = 0u;
+  gendor_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -408,13 +433,18 @@ bool RoleBase::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required uint32 gendor = 1;
+      // required .meta.RoleBase.Gender gendor = 1 [default = MALE];
       case 1: {
         if (tag == 8) {
+          int value;
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &gendor_)));
-          set_has_gendor();
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (::meta::RoleBase_Gender_IsValid(value)) {
+            set_gendor(static_cast< ::meta::RoleBase_Gender >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(1, value);
+          }
         } else {
           goto handle_unusual;
         }
@@ -447,9 +477,10 @@ failure:
 void RoleBase::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:meta.RoleBase)
-  // required uint32 gendor = 1;
+  // required .meta.RoleBase.Gender gendor = 1 [default = MALE];
   if (has_gendor()) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->gendor(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      1, this->gendor(), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -462,9 +493,10 @@ void RoleBase::SerializeWithCachedSizes(
 ::google::protobuf::uint8* RoleBase::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // @@protoc_insertion_point(serialize_to_array_start:meta.RoleBase)
-  // required uint32 gendor = 1;
+  // required .meta.RoleBase.Gender gendor = 1 [default = MALE];
   if (has_gendor()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->gendor(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      1, this->gendor(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -479,11 +511,10 @@ int RoleBase::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required uint32 gendor = 1;
+    // required .meta.RoleBase.Gender gendor = 1 [default = MALE];
     if (has_gendor()) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->gendor());
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->gendor());
     }
 
   }
@@ -631,7 +662,7 @@ bool RoleHero::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required uint32 id = 1;
+      // required uint32 id = 1 [default = 0];
       case 1: {
         if (tag == 8) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
@@ -670,7 +701,7 @@ failure:
 void RoleHero::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:meta.RoleHero)
-  // required uint32 id = 1;
+  // required uint32 id = 1 [default = 0];
   if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->id(), output);
   }
@@ -685,7 +716,7 @@ void RoleHero::SerializeWithCachedSizes(
 ::google::protobuf::uint8* RoleHero::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // @@protoc_insertion_point(serialize_to_array_start:meta.RoleHero)
-  // required uint32 id = 1;
+  // required uint32 id = 1 [default = 0];
   if (has_id()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->id(), target);
   }
@@ -702,7 +733,7 @@ int RoleHero::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required uint32 id = 1;
+    // required uint32 id = 1 [default = 0];
     if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt32Size(
@@ -1074,7 +1105,7 @@ bool RolePackage::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required uint32 maxGrid = 1;
+      // required uint32 maxGrid = 1 [default = 0];
       case 1: {
         if (tag == 8) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
@@ -1113,7 +1144,7 @@ failure:
 void RolePackage::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:meta.RolePackage)
-  // required uint32 maxGrid = 1;
+  // required uint32 maxGrid = 1 [default = 0];
   if (has_maxgrid()) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->maxgrid(), output);
   }
@@ -1128,7 +1159,7 @@ void RolePackage::SerializeWithCachedSizes(
 ::google::protobuf::uint8* RolePackage::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // @@protoc_insertion_point(serialize_to_array_start:meta.RolePackage)
-  // required uint32 maxGrid = 1;
+  // required uint32 maxGrid = 1 [default = 0];
   if (has_maxgrid()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->maxgrid(), target);
   }
@@ -1145,7 +1176,7 @@ int RolePackage::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required uint32 maxGrid = 1;
+    // required uint32 maxGrid = 1 [default = 0];
     if (has_maxgrid()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt32Size(
@@ -1247,7 +1278,7 @@ RoleGrowth::RoleGrowth(const RoleGrowth& from)
 
 void RoleGrowth::SharedCtor() {
   _cached_size_ = 0;
-  level_ = 0u;
+  level_ = 1u;
   exp_ = 0u;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -1284,21 +1315,10 @@ RoleGrowth* RoleGrowth::New() const {
 }
 
 void RoleGrowth::Clear() {
-#define OFFSET_OF_FIELD_(f) (reinterpret_cast<char*>(      \
-  &reinterpret_cast<RoleGrowth*>(16)->f) - \
-   reinterpret_cast<char*>(16))
-
-#define ZR_(first, last) do {                              \
-    size_t f = OFFSET_OF_FIELD_(first);                    \
-    size_t n = OFFSET_OF_FIELD_(last) - f + sizeof(last);  \
-    ::memset(&first, 0, n);                                \
-  } while (0)
-
-  ZR_(level_, exp_);
-
-#undef OFFSET_OF_FIELD_
-#undef ZR_
-
+  if (_has_bits_[0 / 32] & 3) {
+    level_ = 1u;
+    exp_ = 0u;
+  }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -1313,7 +1333,7 @@ bool RoleGrowth::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required uint32 level = 1;
+      // required uint32 level = 1 [default = 1];
       case 1: {
         if (tag == 8) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
@@ -1327,7 +1347,7 @@ bool RoleGrowth::MergePartialFromCodedStream(
         break;
       }
 
-      // required uint32 exp = 2;
+      // required uint32 exp = 2 [default = 0];
       case 2: {
         if (tag == 16) {
          parse_exp:
@@ -1367,12 +1387,12 @@ failure:
 void RoleGrowth::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:meta.RoleGrowth)
-  // required uint32 level = 1;
+  // required uint32 level = 1 [default = 1];
   if (has_level()) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->level(), output);
   }
 
-  // required uint32 exp = 2;
+  // required uint32 exp = 2 [default = 0];
   if (has_exp()) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->exp(), output);
   }
@@ -1387,12 +1407,12 @@ void RoleGrowth::SerializeWithCachedSizes(
 ::google::protobuf::uint8* RoleGrowth::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // @@protoc_insertion_point(serialize_to_array_start:meta.RoleGrowth)
-  // required uint32 level = 1;
+  // required uint32 level = 1 [default = 1];
   if (has_level()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->level(), target);
   }
 
-  // required uint32 exp = 2;
+  // required uint32 exp = 2 [default = 0];
   if (has_exp()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->exp(), target);
   }
@@ -1409,14 +1429,14 @@ int RoleGrowth::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required uint32 level = 1;
+    // required uint32 level = 1 [default = 1];
     if (has_level()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt32Size(
           this->level());
     }
 
-    // required uint32 exp = 2;
+    // required uint32 exp = 2 [default = 0];
     if (has_exp()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt32Size(
@@ -1572,7 +1592,7 @@ bool RoleStage::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required uint32 curStage = 1;
+      // required uint32 curStage = 1 [default = 0];
       case 1: {
         if (tag == 8) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
@@ -1611,7 +1631,7 @@ failure:
 void RoleStage::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:meta.RoleStage)
-  // required uint32 curStage = 1;
+  // required uint32 curStage = 1 [default = 0];
   if (has_curstage()) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->curstage(), output);
   }
@@ -1626,7 +1646,7 @@ void RoleStage::SerializeWithCachedSizes(
 ::google::protobuf::uint8* RoleStage::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // @@protoc_insertion_point(serialize_to_array_start:meta.RoleStage)
-  // required uint32 curStage = 1;
+  // required uint32 curStage = 1 [default = 0];
   if (has_curstage()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->curstage(), target);
   }
@@ -1643,7 +1663,7 @@ int RoleStage::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required uint32 curStage = 1;
+    // required uint32 curStage = 1 [default = 0];
     if (has_curstage()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt32Size(
@@ -1744,7 +1764,7 @@ RoleSNS::RoleSNS(const RoleSNS& from)
 
 void RoleSNS::SharedCtor() {
   _cached_size_ = 0;
-  maxfrinds_ = 0u;
+  maxfrinds_ = 5u;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1780,7 +1800,7 @@ RoleSNS* RoleSNS::New() const {
 }
 
 void RoleSNS::Clear() {
-  maxfrinds_ = 0u;
+  maxfrinds_ = 5u;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -1795,7 +1815,7 @@ bool RoleSNS::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required uint32 maxfrinds = 1;
+      // required uint32 maxfrinds = 1 [default = 5];
       case 1: {
         if (tag == 8) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
@@ -1834,7 +1854,7 @@ failure:
 void RoleSNS::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:meta.RoleSNS)
-  // required uint32 maxfrinds = 1;
+  // required uint32 maxfrinds = 1 [default = 5];
   if (has_maxfrinds()) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->maxfrinds(), output);
   }
@@ -1849,7 +1869,7 @@ void RoleSNS::SerializeWithCachedSizes(
 ::google::protobuf::uint8* RoleSNS::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // @@protoc_insertion_point(serialize_to_array_start:meta.RoleSNS)
-  // required uint32 maxfrinds = 1;
+  // required uint32 maxfrinds = 1 [default = 5];
   if (has_maxfrinds()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->maxfrinds(), target);
   }
@@ -1866,7 +1886,7 @@ int RoleSNS::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required uint32 maxfrinds = 1;
+    // required uint32 maxfrinds = 1 [default = 5];
     if (has_maxfrinds()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt32Size(
@@ -2018,7 +2038,7 @@ bool RoleExt::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required uint32 fightcap = 1;
+      // required uint32 fightcap = 1 [default = 0];
       case 1: {
         if (tag == 8) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
@@ -2057,7 +2077,7 @@ failure:
 void RoleExt::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:meta.RoleExt)
-  // required uint32 fightcap = 1;
+  // required uint32 fightcap = 1 [default = 0];
   if (has_fightcap()) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->fightcap(), output);
   }
@@ -2072,7 +2092,7 @@ void RoleExt::SerializeWithCachedSizes(
 ::google::protobuf::uint8* RoleExt::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // @@protoc_insertion_point(serialize_to_array_start:meta.RoleExt)
-  // required uint32 fightcap = 1;
+  // required uint32 fightcap = 1 [default = 0];
   if (has_fightcap()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->fightcap(), target);
   }
@@ -2089,7 +2109,7 @@ int RoleExt::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required uint32 fightcap = 1;
+    // required uint32 fightcap = 1 [default = 0];
     if (has_fightcap()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt32Size(
