@@ -1,0 +1,56 @@
+package	meta;
+
+message	RoleBase
+{
+	required	uint32	gendor	=	1;
+};
+message RoleHero
+{
+	required	uint32	id		=	1;
+};
+message	RoleHeroInfo
+{
+	repeated	RoleHero	heros		=	1;
+};
+message	RolePackage
+{
+	required	uint32		maxGrid		=	1;	
+};
+message	RoleGrowth
+{
+	required	uint32		level	=	1;
+	required	uint32		exp		=	2;
+};
+message	RoleStage
+{
+	required	uint32		curStage	=	1;
+};
+message	RoleSNS
+{
+	required	uint32		maxfrinds	=	1;
+};
+message	RoleExt
+{
+	required	uint32		fightcap	=	1;
+};
+
+message Role
+{
+	required	uint64			rid	 		 =	1;
+	required	string			name	  	 =	2;
+	required	RoleBase		base		 =	3;
+	required	RoleHeroInfo	hero	 	 =  4;
+	required	RolePackage		pack		 =	5;
+	required	RoleGrowth		grow		 = 	6;//task and achieve
+	required	RoleStage		stage	 	 =	7;
+	required	RoleSNS			sns			 = 	8;	
+	required	RoleExt			ext			 =  9;
+};
+
+
+message meta	
+{
+		required	string		version		 =	1;
+		optional	Role		role		 =	2;		
+};
+

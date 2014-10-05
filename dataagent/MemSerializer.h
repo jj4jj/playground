@@ -10,5 +10,6 @@ public:
     int     Pack(const char* pszMetaName,void* obj,Buffer & buffer);
     int     UnPack(const char* pszMetaName,Buffer & buffer,void * * ppObj);
     void    FreeObj(void * pObj);
+    void    Visual(const char* pszMetaName,void* pObj,string & s);
 };
 

@@ -93,3 +93,58 @@ target_link_libraries(test_shm
 INSTALL(TARGETS  test_shm DESTINATION test/)
 
 
+###################################
+ADD_EXECUTABLE(test_cache
+	${CMAKE_CURRENT_SOURCE_DIR}/TestCache.cpp
+)
+target_link_libraries(test_cache
+	dataagent
+ 	ssukits_ipc
+	ssukits_base
+	rt
+	dl
+)
+INSTALL(TARGETS  test_cache DESTINATION test/)
+
+###################################
+ADD_EXECUTABLE(test_db
+	${CMAKE_CURRENT_SOURCE_DIR}/TestDB.cpp
+)
+target_link_libraries(test_db
+	dataagent
+ 	ssukits_ipc
+	ssukits_base
+	rt
+	dl
+)
+INSTALL(TARGETS  test_db DESTINATION test/)
+
+###################################
+ADD_EXECUTABLE(test_dataagent
+	${CMAKE_CURRENT_SOURCE_DIR}/TestDataAgent.cpp
+)
+target_link_libraries(test_dataagent
+	dataagent
+ 	ssukits_ipc
+	ssukits_base
+	rt
+	dl
+)
+INSTALL(TARGETS  test_dataagent DESTINATION test/)
+
+
+###################################
+ADD_EXECUTABLE(test_seri
+	${CMAKE_CURRENT_SOURCE_DIR}/TestMemSeri.cpp
+)
+target_link_libraries(test_seri
+	dataagent
+ 	ssukits_ipc
+	ssukits_base
+	playground_proto
+	protobuf
+	rt
+	dl
+)
+INSTALL(TARGETS  test_seri DESTINATION test/)
+
