@@ -104,7 +104,7 @@ vector<string> & MemSerializer::GetTypePrimaryKey(const Descriptor* desc)
         fd = pk->field(i);
         if(fd)
         {
-            LOG_DEBUG("add meta name = %s pk = %s",pk->name().c_str(),fd->name().c_str());
+            LOG_DEBUG("add meta name = %s pk = %s",desc->name().c_str(),fd->name().c_str());
             m_mpDescPrimaryKey[desc].push_back(fd->name());
         }
     }
