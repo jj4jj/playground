@@ -13,3 +13,6 @@
 [submodule "dep/twemproxy"]
 	path = dep/twemproxy
 	url = https://github.com/jj4jj/twemproxy.git
+[submodule "dep/hiredis"]
+	path = dep/hiredis
+	url = https://github.com/jj4jj/hiredis.git

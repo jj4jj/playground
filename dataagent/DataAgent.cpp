@@ -36,7 +36,7 @@ int     DataSet::Insert(void* entry,const Buffer & cb)
        DATA_TYPE_REMOTE_CACHE_AND_DB == option.setType )
     {
         //find in remote cache
-        if(cacheAgent->Insert(option.setName,entry,cb))
+        if(cacheAgent->Insert(entry,cb))
         {
             LOG_ERROR("cache get error !");
             return -2;
@@ -46,7 +46,7 @@ int     DataSet::Insert(void* entry,const Buffer & cb)
     else
     if(DATA_TYPE_PURE_DB == option.setType)
     {
-        if(dbAgent->Insert(option.setName,entry,cb))
+        if(dbAgent->Insert(entry,cb))
         {
             return -2;
         }
@@ -71,14 +71,14 @@ int     DataSet::Remove(void* entry,const Buffer & cb)
        DATA_TYPE_REMOTE_CACHE_AND_DB == option.setType )
     {
         //find in remote cache
-        if(cacheAgent->Get(option.setName,entry,cb))
+        if(cacheAgent->Get(entry,cb))
         {
             LOG_ERROR("cache get error !");
             return -2;
         }
         if(DATA_TYPE_REMOTE_CACHE_AND_DB == option.setType)
         {
-            if(dbAgent->Remove(option.setName,entry,cb))
+            if(dbAgent->Remove(entry,cb))
             {
                 LOG_ERROR("cache get error !");
                 return -2;
@@ -89,7 +89,7 @@ int     DataSet::Remove(void* entry,const Buffer & cb)
     else
     if(DATA_TYPE_PURE_DB == option.setType)
     {
-        if(dbAgent->Remove(option.setName,entry,cb))
+        if(dbAgent->Remove(entry,cb))
         {
             LOG_ERROR("cache get error !");
             return -2;
@@ -128,14 +128,14 @@ int     DataSet::Update(void* entry ,const Buffer & cb)
        DATA_TYPE_REMOTE_CACHE_AND_DB == option.setType )
     {
         //find in remote cache
-        if(cacheAgent->Update(option.setName,entry,cb))
+        if(cacheAgent->Update(entry,cb))
         {
             LOG_ERROR("cache get error !");
             return -2;
         }
         if(DATA_TYPE_REMOTE_CACHE_AND_DB == option.setType)
         {
-            if(dbAgent->Update(option.setName,entry,cb))
+            if(dbAgent->Update(entry,cb))
             {
                 return -2;
             }
@@ -145,7 +145,7 @@ int     DataSet::Update(void* entry ,const Buffer & cb)
     else
     if(DATA_TYPE_PURE_DB == option.setType)
     {
-        if(dbAgent->Update(option.setName,entry,cb))
+        if(dbAgent->Update(entry,cb))
         {
             return -2;
         }
@@ -176,14 +176,14 @@ void*   DataSet::Find(void* entry , const Buffer & cb,bool justFindLocal )
        DATA_TYPE_REMOTE_CACHE_AND_DB == option.setType )
     {
         //find in remote cache
-        if(cacheAgent->Get(option.setName,entry,cb))
+        if(cacheAgent->Get(entry,cb))
         {
             LOG_ERROR("cache get error !");
             return NULL;
         }
         if(DATA_TYPE_REMOTE_CACHE_AND_DB == option.setType)
         {
-            if(dbAgent->Update(option.setName,entry,cb))
+            if(dbAgent->Update(entry,cb))
             {
                 return NULL;
             }
@@ -195,7 +195,7 @@ void*   DataSet::Find(void* entry , const Buffer & cb,bool justFindLocal )
     else
     if(DATA_TYPE_PURE_DB == option.setType)
     {
-        if(dbAgent->Get(option.setName,entry,cb))
+        if(dbAgent->Get(entry,cb))
         {
             //todo return error
             return NULL;

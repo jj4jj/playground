@@ -5,5 +5,8 @@
 	* iniparser from https://github.com/ndevilla/iniparser.git
 	* protothread from http://dunkels.com/adam/pt/download.html - remove
 	* mysql connector c/c++
+	* redis c client - hiredis from https://github.com/jj4jj/hiredis.git
+	* redis-2.8.17 from http://redis.io/download
+	
 
 	

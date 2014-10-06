@@ -1,7 +1,7 @@
 #pragma once
-
 #include "base/stdinc.h"
 #include "base/Buffer.h"
+#include "DataListener.h"
 
 struct CacheAgentOption
 {
@@ -15,13 +15,22 @@ class CacheAgent
 {
 public:
     int  Init(const CacheAgentOption  & cao,MemSerializer * seri);
+    int  Polling(int    iProcPerTick);
+    int  Destroy();
+    int  AddCacheListener(string typeName,DataListenerPtr ptr);
 public:
-    int  Get(string setName,void * obj,const Buffer & cb);
-    int  Remove(string setName,void * obj,const Buffer & cb);
-    int  Insert(string setName,void * obj,const Buffer &  cb);       
-    int  Update(string setName,void * obj,const Buffer &  cb);   
+    int  Get(void * obj,const Buffer & cb);
+    int  Remove(void * obj,const Buffer & cb);
+    int  Insert(void * obj,const Buffer &  cb);       
+    int  Update(void * obj,const Buffer &  cb);   
+protected:
+    int  GetKey(void* obj,string & key);
+public:
+    CacheAgent():serializer(NULL){}
 private:
     MemSerializer   *   serializer;
+    std::map<string,DataListenerPtr>  m_mpCacheListener;
     //redis batch client
+    
     
 };

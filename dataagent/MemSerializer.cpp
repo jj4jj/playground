@@ -78,3 +78,35 @@ void    MemSerializer::Visual(void* pObj,string & s)
     s = msg->DebugString();
 }
 
+vector<string> & MemSerializer::GetTypePrimaryKey(const Descriptor* desc)
+{    
+    if(!desc)
+    {
+        LOG_ERROR("descriptor not found !");
+        return m_mpDescPrimaryKey[desc];
+    }
+    
+    if(!m_mpDescPrimaryKey[desc].empty())
+    {
+        return  m_mpDescPrimaryKey[desc];
+    }
+
+    //GET TYPE#KEY1&KEY2    VALUE
+    const Descriptor  * pk = desc->FindNestedTypeByName(string("_PrimaryKey"));
+    if(!pk)
+    {
+        LOG_ERROR("msg name = %s pk not found !",desc->name().c_str());
+        return  m_mpDescPrimaryKey[desc];
+    }
+    const FieldDescriptor* fd = NULL;
+    for(int i = 0 ;i < pk->field_count(); ++i)
+    {
+        fd = pk->field(i);
+        if(fd)
+        {
+            LOG_DEBUG("add meta name = %s pk = %s",pk->name().c_str(),fd->name().c_str());
+            m_mpDescPrimaryKey[desc].push_back(fd->name());
+        }
+    }
+    return m_mpDescPrimaryKey[desc]; 
+} 

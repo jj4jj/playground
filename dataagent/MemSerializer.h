@@ -19,8 +19,12 @@ public:
     template<class T>
     void    FreeObj(T* pObj){delete pObj;}
 
+public:
+    vector<string> & GetTypePrimaryKey(const google::protobuf::Descriptor* desc);
+
 private:
-    google::protobuf::DescriptorPool* m_pDescriptorPool;
+    google::protobuf::DescriptorPool*       m_pDescriptorPool;
     google::protobuf::MessageFactory*       m_pObjFactory;
+    std::map<const google::protobuf::Descriptor*,std::vector<string> >                   m_mpDescPrimaryKey;
 };
 

@@ -2,8 +2,6 @@
 #include "base/stdinc.h"
 #include "base/Buffer.h"
 
-
-
 class DataListener
 {
 public:
@@ -16,3 +14,6 @@ public :
     virtual   int   OnFind(int ret,void* entry,const Buffer & cb);
     virtual   int   OnUpdate(int ret,const Buffer & cb);
 };
+typedef shared_ptr<DataListener>    DataListenerPtr;
+
+

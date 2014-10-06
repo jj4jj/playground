@@ -1,0 +1,15 @@
+package meta;
+//key is name
+
+message Cache
+{
+		message	_PrimaryKey
+		{
+			optional	string	name	= 1;
+			optional	string	area	= 2;
+		};
+		required	string		name		 =	1;
+		required	uint32		area		 =	2;
+		required	uint64		gid			 =  3;		
+};
+

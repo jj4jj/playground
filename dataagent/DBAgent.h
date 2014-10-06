@@ -6,8 +6,8 @@
 class DBAgent
 {
 public:
-    int  Get(string setName,void * obj,const Buffer & cb);
-    int  Remove(string setName,void * obj,const Buffer & cb);
-    int  Insert(string setName,void * obj,const Buffer &  cb);        
-    int  Update(string setName,void * obj,const Buffer &  cb);   
+    int  Get(void * obj,const Buffer & cb);
+    int  Remove(void * obj,const Buffer & cb);
+    int  Insert(void * obj,const Buffer &  cb);        
+    int  Update(void * obj,const Buffer &  cb);   
 };

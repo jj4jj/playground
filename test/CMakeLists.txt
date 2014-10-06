@@ -18,19 +18,22 @@ link_directories(
 	${MYSQLCLI_C_HOME}/lib
 )
 
+
+
+
 #it will generate a exe
-ADD_EXECUTABLE(test_config
+ADD_EXECUTABLE(config_test
 	${CMAKE_CURRENT_SOURCE_DIR}/TestConfig.cpp
 )
 
 #assign custrom link lib
-target_link_libraries(test_config
+target_link_libraries(config_test
 	playground_component
 	libssukits_base.a
 	libiniparser.a
 )
 #installing
-INSTALL(TARGETS  test_config DESTINATION test/)
+INSTALL(TARGETS  config_test DESTINATION test/)
 
 
 
@@ -47,10 +50,10 @@ INSTALL(TARGETS  channel_test DESTINATION test/)
 
 
 ###################################
-ADD_EXECUTABLE(test_app
+ADD_EXECUTABLE(app_test
 	${CMAKE_CURRENT_SOURCE_DIR}/TestApp.cpp
 )
-target_link_libraries(test_app
+target_link_libraries(app_test
 	playground_app
 	playground_component
 	channel
@@ -61,14 +64,14 @@ target_link_libraries(test_app
 	zmq
 	iniparser
 )
-INSTALL(TARGETS  test_app DESTINATION test/)
+INSTALL(TARGETS  app_test DESTINATION test/)
 
 
 ###################################
-ADD_EXECUTABLE(test_mysql
+ADD_EXECUTABLE(mysql_test
 	${CMAKE_CURRENT_SOURCE_DIR}/TestMysql.cpp
 )
-target_link_libraries(test_mysql
+target_link_libraries(mysql_test
 	dbagent
 	ssukits_base
 	ssukits_thread
@@ -76,68 +79,28 @@ target_link_libraries(test_mysql
 	rt
 	dl
 )
-INSTALL(TARGETS  test_mysql DESTINATION test/)
+INSTALL(TARGETS  mysql_test DESTINATION test/)
 
 
 ###################################
-ADD_EXECUTABLE(test_shm
+ADD_EXECUTABLE(shm_test
 	${CMAKE_CURRENT_SOURCE_DIR}/TestShm.cpp
 )
-target_link_libraries(test_shm
+target_link_libraries(shm_test
 	dataagent
  	ssukits_ipc
 	ssukits_base
 	rt
 	dl
 )
-INSTALL(TARGETS  test_shm DESTINATION test/)
+INSTALL(TARGETS  shm_test DESTINATION test/)
 
 
 ###################################
-ADD_EXECUTABLE(test_cache
-	${CMAKE_CURRENT_SOURCE_DIR}/TestCache.cpp
-)
-target_link_libraries(test_cache
-	dataagent
- 	ssukits_ipc
-	ssukits_base
-	rt
-	dl
-)
-INSTALL(TARGETS  test_cache DESTINATION test/)
-
-###################################
-ADD_EXECUTABLE(test_db
-	${CMAKE_CURRENT_SOURCE_DIR}/TestDB.cpp
-)
-target_link_libraries(test_db
-	dataagent
- 	ssukits_ipc
-	ssukits_base
-	rt
-	dl
-)
-INSTALL(TARGETS  test_db DESTINATION test/)
-
-###################################
-ADD_EXECUTABLE(test_dataagent
-	${CMAKE_CURRENT_SOURCE_DIR}/TestDataAgent.cpp
-)
-target_link_libraries(test_dataagent
-	dataagent
- 	ssukits_ipc
-	ssukits_base
-	rt
-	dl
-)
-INSTALL(TARGETS  test_dataagent DESTINATION test/)
-
-
-###################################
-ADD_EXECUTABLE(test_seri
+ADD_EXECUTABLE(seri_test
 	${CMAKE_CURRENT_SOURCE_DIR}/TestMemSeri.cpp
 )
-target_link_libraries(test_seri
+target_link_libraries(seri_test
 	dataagent
  	ssukits_ipc
 	ssukits_base
@@ -146,5 +109,63 @@ target_link_libraries(test_seri
 	rt
 	dl
 )
-INSTALL(TARGETS  test_seri DESTINATION test/)
+INSTALL(TARGETS  seri_test DESTINATION test/)
+
+
+###################################
+ADD_EXECUTABLE(cache_test
+	${CMAKE_CURRENT_SOURCE_DIR}/TestCache.cpp
+)
+target_link_libraries(cache_test
+	dataagent
+ 	ssukits_ipc
+	ssukits_base
+	playground_proto
+	protobuf
+	rt
+	dl
+)
+INSTALL(TARGETS  cache_test DESTINATION test/)
+
+###################################
+ADD_EXECUTABLE(db_test
+	${CMAKE_CURRENT_SOURCE_DIR}/TestDB.cpp
+)
+target_link_libraries(db_test
+	dataagent
+ 	ssukits_ipc
+	ssukits_base
+	rt
+	dl
+)
+INSTALL(TARGETS  db_test DESTINATION test/)
+
+###################################
+ADD_EXECUTABLE(dataagent_test
+	${CMAKE_CURRENT_SOURCE_DIR}/TestDataAgent.cpp
+)
+target_link_libraries(dataagent_test
+	dataagent
+ 	ssukits_ipc
+	ssukits_base
+	rt
+	dl
+)
+INSTALL(TARGETS  dataagent_test DESTINATION test/)
+
+
+###################################
+ADD_EXECUTABLE(pb_test
+	${CMAKE_CURRENT_SOURCE_DIR}/TestProtoBuf.cpp
+)
+target_link_libraries(pb_test
+	ssukits_base
+	playground_proto
+	protobuf
+	rt
+	dl
+)
+INSTALL(TARGETS  pb_test DESTINATION test/)
+
+
 
