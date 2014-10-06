@@ -21,7 +21,7 @@ void SetRole(meta::Role * pR)
 int main(int argc,char* argv[])
 {
     MemSerializer   seri;
-    if(seri.Init("meta.proto"))
+    if(seri.Init())
     {
         LOG_ERROR("meta proto init error !");
         return -1;

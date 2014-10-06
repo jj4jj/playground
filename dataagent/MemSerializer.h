@@ -9,7 +9,7 @@
 class MemSerializer
 {
 public:
-    int     Init(const char* pszMetaFileName);
+    int     Init(const char* pszMetaFileName = NULL);
     int     GetPackSize(void* obj);
     int     Pack(void* obj,Buffer & buffer);
     int     UnPack(const char* pszMetaName,Buffer & buffer,void * * ppObj);

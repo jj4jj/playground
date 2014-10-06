@@ -6,16 +6,20 @@ using namespace ::google::protobuf;
 int     MemSerializer::Init(const char* pszMetaFileName)
 {
     //loading meta
-    const DescriptorPool * root =  DescriptorPool::generated_pool();
-    assert(root);
-    const FileDescriptor * fileDescriptor = root->FindFileByName(string(pszMetaFileName));
-    if(!fileDescriptor)
+    m_pDescriptorPool = const_cast<DescriptorPool*>(DescriptorPool::generated_pool());
+    if(pszMetaFileName)
     {
-        LOG_FATAL("file descriptor = %s not found !",pszMetaFileName);
-        return -1;
+        //importer todo
+        /*
+        const FileDescriptor * fileDescriptor = ;
+        if(!fileDescriptor)
+        {
+            LOG_FATAL("file descriptor = %s not found !",pszMetaFileName);
+            return -1;
+        }
+        */
     }
-    m_pDescriptorPool = const_cast<DescriptorPool*>(fileDescriptor->pool());
-    assert(m_pDescriptorPool);
+    assert(m_pDescriptorPool);    
     m_pObjFactory = MessageFactory::generated_factory();
     assert(m_pObjFactory);
     //////////////////////////////////////////////////////////////
