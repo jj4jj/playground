@@ -5,6 +5,7 @@ include_directories(
   ${PROJECT_SOURCE_DIR}
   ${SSUKITS_HOME}
   ${MYSQLCLI_C_HOME}/include
+  ${HIREDIS_HOME}
 )
 add_library(dataagent STATIC
 	${data_agent_SRCS}

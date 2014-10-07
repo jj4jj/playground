@@ -16,6 +16,7 @@ link_directories(
 	/usr/lib
 	${PROJECT_SOURCE_DIR}/dep/iniparser	
 	${MYSQLCLI_C_HOME}/lib
+	${HIREDIS_HOME}
 )
 
 
@@ -122,6 +123,8 @@ target_link_libraries(cache_test
 	ssukits_base
 	playground_proto
 	protobuf
+	libhiredis.a
+	libev.a
 	rt
 	dl
 )

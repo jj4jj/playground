@@ -11,3 +11,5 @@ public:
     int  Insert(void * obj,const Buffer &  cb);        
     int  Update(void * obj,const Buffer &  cb);   
 };
+
+

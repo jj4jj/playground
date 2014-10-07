@@ -2,11 +2,11 @@
 #include "base/stdinc.h"
 #include "base/Buffer.h"
 #include "DataListener.h"
+#include "RedisAgent.h"
 
 struct CacheAgentOption
 {
-
-
+    vector<RedisAddr>   addrList;
 };
 
 class MemSerializer;
@@ -23,6 +23,10 @@ public:
     int  Remove(void * obj,const Buffer & cb);
     int  Insert(void * obj,const Buffer &  cb);       
     int  Update(void * obj,const Buffer &  cb);   
+    int  Exists(void*  obj,const Buffer &  cb);
+public:
+    int  DispatchResult(string & cmd,string & type,string & key,
+                    redisReply* reply,Buffer & cb,bool timeout); 
 protected:
     int  GetKey(void* obj,string & key);
 public:
@@ -30,7 +34,5 @@ public:
 private:
     MemSerializer   *   serializer;
     std::map<string,DataListenerPtr>  m_mpCacheListener;
-    //redis batch client
-    
-    
+    RedisAgent  *       redis;
 };

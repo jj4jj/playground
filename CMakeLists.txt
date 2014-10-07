@@ -51,7 +51,7 @@ set(PROTOBUF_HOME ${CMAKE_SOURCE_DIR}/dep/protobuf)
 set(INIPARSER_HOME ${CMAKE_SOURCE_DIR}/dep/iniparser)
 set(ZEROMQ_HOME ${CMAKE_SOURCE_DIR}/dep/zeromq)
 set(MYSQLCLI_C_HOME	${CMAKE_SOURCE_DIR}/dep/mysqlcconn)
-
+set(HIREDIS_HOME ${CMAKE_SOURCE_DIR}/dep/hiredis)
 
 # install dir
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/bin)

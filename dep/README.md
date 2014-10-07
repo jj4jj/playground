@@ -7,6 +7,6 @@
 	* mysql connector c/c++
 	* redis c client - hiredis from https://github.com/jj4jj/hiredis.git
 	* redis-2.8.17 from http://redis.io/download
-	
+	* libev4 (maybe replace by libuv from github in future) 	
 
 	
