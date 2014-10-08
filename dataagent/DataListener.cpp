@@ -7,54 +7,24 @@
 
 
 //////////////////////////////////////////////////////////////////
-int   DataListener::OnGet(redisReply* reply,Buffer & cb,bool timeout)
+int   DataListener::OnGet(int ret,void* obj,Buffer & cb)
 {
-    if(reply)
-    {
-        LOG_DEBUG("on get reply type = %d",reply->type);
-    }
-    else
-    {
-        LOG_DEBUG("on get reply timeout = %d",reply->type,timeout?1:0);
-    }
+    LOG_DEBUG("on get reply type = %d",ret);
     return 0;
 }
-int   DataListener::OnInsert(redisReply* reply,Buffer & cb,bool timeout)
+int   DataListener::OnInsert(int ret,Buffer & cb)
 {
-    if(reply)
-    {
-        LOG_DEBUG("on insert reply type = %d",reply->type);
-    }
-    else
-    {
-        LOG_DEBUG("on insert reply timeout = %d",reply->type,timeout?1:0);
-    }
+    LOG_DEBUG("on insert reply type = %d",ret);
     return 0;
-
 }
-int   DataListener::OnRemove(redisReply* reply,Buffer & cb,bool timeout)
+int   DataListener::OnRemove(int ret,Buffer & cb)
 {
-    if(reply)
-    {
-        LOG_DEBUG("on remove reply type = %d",reply->type);
-    }
-    else
-    {
-        LOG_DEBUG("on remove reply timeout = %d",reply->type,timeout?1:0);
-    }
+    LOG_DEBUG("on remove reply type = %d",ret);
     return 0;
-
 }
-int   DataListener::OnUpdate(redisReply* reply,Buffer & cb,bool timeout)
+int   DataListener::OnUpdate(int ret,Buffer & cb)
 {
-    if(reply)
-    {
-        LOG_DEBUG("on update reply type = %d",reply->type);
-    }
-    else
-    {
-        LOG_DEBUG("on update reply timeout = %d",reply->type,timeout?1:0);
-    }
+    LOG_DEBUG("on update reply type = %d",ret);
     return 0;
 
 }    

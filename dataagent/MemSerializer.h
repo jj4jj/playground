@@ -9,7 +9,7 @@
 class MemSerializer
 {
 public:
-    int     Init(const char* pszMetaFileName = NULL);
+    int     Init(const char* pszNameSpace,const char* pszMetaFileName = NULL);
     int     GetPackSize(void* obj);
     int     Pack(void* obj,Buffer & buffer);
     int     UnPack(const char* pszMetaName,Buffer & buffer,void * * ppObj);
@@ -23,6 +23,7 @@ public:
     vector<string> & GetTypePrimaryKey(const google::protobuf::Descriptor* desc);
 
 private:
+    string                                  m_strNameSpace;
     google::protobuf::DescriptorPool*       m_pDescriptorPool;
     google::protobuf::MessageFactory*       m_pObjFactory;
     std::map<const google::protobuf::Descriptor*,std::vector<string> >                   m_mpDescPrimaryKey;

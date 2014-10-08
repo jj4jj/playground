@@ -10,10 +10,10 @@ public:
 public :  
     //DataSetListener
     //////////////////////////////////////////////////////////////////
-    virtual   int   OnGet(redisReply* reply,Buffer & cb,bool timeout);
-    virtual   int   OnInsert(redisReply* reply,Buffer & cb,bool timeout);
-    virtual   int   OnRemove(redisReply* reply,Buffer & cb,bool timeout);
-    virtual   int   OnUpdate(redisReply* reply,Buffer & cb,bool timeout);
+    virtual   int   OnGet(int ret,void* obj,Buffer & cb);
+    virtual   int   OnInsert(int ret,Buffer & cb);
+    virtual   int   OnRemove(int ret,Buffer & cb);
+    virtual   int   OnUpdate(int ret,Buffer & cb);
  };
 typedef shared_ptr<DataListener>    DataListenerPtr;
 

@@ -3,9 +3,11 @@
 
 using namespace ::google::protobuf;
 
-int     MemSerializer::Init(const char* pszMetaFileName)
+int     MemSerializer::Init(const char* pszNameSpace,const char* pszMetaFileName)
 {
+    assert(pszNameSpace);
     //loading meta
+    m_strNameSpace = pszNameSpace;
     m_pDescriptorPool = const_cast<DescriptorPool*>(DescriptorPool::generated_pool());
     if(pszMetaFileName)
     {
@@ -48,27 +50,28 @@ int     MemSerializer::Pack(void* obj,Buffer & buffer)
 int     MemSerializer::UnPack(const char* pszMetaName,Buffer & buffer,void * * ppObj)
 {
     *ppObj = NULL;
-    const Descriptor  *   meta = m_pDescriptorPool->FindMessageTypeByName(string(pszMetaName));
+    string metaName = m_strNameSpace+"."+pszMetaName;
+    const Descriptor  *   meta = m_pDescriptorPool->FindMessageTypeByName(metaName);
     if(!meta)
     {
-        LOG_ERROR("meta name = %s not found !",pszMetaName);
+        LOG_ERROR("meta name = %s not found !",metaName.c_str());
         return -1;
     }
     const Message * prototype = m_pObjFactory->GetPrototype(meta);
     if(!prototype)
     {
-        LOG_ERROR("meta name = %s proto not found !",pszMetaName);
+        LOG_ERROR("meta name = %s proto not found !",metaName.c_str());
         return -1;
     }
     Message * msg = prototype->New();
     if(!msg)
     {
-        LOG_ERROR("meta name = %s new fail !",pszMetaName);
+        LOG_ERROR("meta name = %s new fail !",metaName.c_str());
         return -1;
     }
     if(!msg->ParseFromArray(buffer.pBuffer,buffer.iUsed))
     {
-        LOG_ERROR("meta name = %s unpack error ! buffer sz = %d",pszMetaName,buffer.iUsed);
+        LOG_ERROR("meta name = %s unpack error ! buffer sz = %d",metaName.c_str(),buffer.iUsed);
         
         
         return -1;

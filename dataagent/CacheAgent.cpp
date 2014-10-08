@@ -10,13 +10,13 @@ using namespace google::protobuf;
 
 #define INSERT_CMD  ("INSERT")
 #define GET_CMD     ("GET")
-#define REMOVE_CMD  ("DELETE")
+#define REMOVE_CMD  ("DEL")
 #define UPDATE_CMD  ("SET")
 #define DELIM1       (string(" "))
 #define DELIM2       (string(":"))
 #define DELIM3       (string("&"))
 
-
+#if 1
 class CachAgentRedisCommandListener : public RedisCommandListener
 {
 private :
@@ -55,32 +55,72 @@ public :
         return 0;
     }
 };
+#endif
 
+
+#if 1
 int  CacheAgent::DispatchResult(string & cmd,string & type,string & key,
                     redisReply* reply,Buffer & cb,bool timeout)
 {
-    if(reply->type == REDIS_REPLY_ERROR)
+    int ret = CACHE_OK;
+    if(!reply)
+    {
+        ret = timeout?CACHE_TIME_OUT:ret;
+    }
+    else if(reply->type == REDIS_REPLY_ERROR)
     {
         LOG_ERROR("redis exec cmd = %s type = %s key = %s error for = %s",
                    cmd.c_str(),type.c_str(),key.c_str(),(char*)reply->str);
+        ret = CACHE_REDIS_ERROR;
+    }  
+    else if(reply->type == REDIS_REPLY_NIL)
+    {
+        ret = CACHE_NO_EXISTS;
     }
     if(m_mpCacheListener.find(type) != m_mpCacheListener.end())
     {
         if(cmd == GET_CMD)
-        {
-            return m_mpCacheListener[type]->OnGet(reply,cb,timeout);
+        {          
+            if(ret)
+            {
+                return m_mpCacheListener[type]->OnGet(ret,NULL,cb);
+            }
+            if(reply->type == REDIS_REPLY_STRING)
+            {
+                //
+                int ret = CACHE_OK;
+                Buffer  buff(reply->str,reply->len);
+                MetaObject* obj = NULL;
+                if(serializer->UnPack(type.c_str(),buff,(void**)&obj))
+                {
+                    LOG_FATAL("message unpack error !");
+                    ret = CACHE_UNPACK_ERROR;
+                }
+                else
+                {
+                    string key = "";
+                    assert(0 == GetKey(obj,key));
+                    m_mpGetObjects[key] = shared_ptr<MetaObject>(obj);
+                }
+                return m_mpCacheListener[type]->OnGet(ret,obj,cb);
+            }
+            else
+            {   
+                LOG_ERROR("get cache reply not support type = %d",reply->type);
+                return m_mpCacheListener[type]->OnGet(CACHE_INTERNAL_ERR,NULL,cb);
+            }
         }
         else if(cmd == UPDATE_CMD)
         {
-            return m_mpCacheListener[type]->OnUpdate(reply,cb,timeout);
+            return m_mpCacheListener[type]->OnUpdate(ret,cb);
         }
         else if(cmd == INSERT_CMD)
         {
-            return m_mpCacheListener[type]->OnInsert(reply,cb,timeout);
+            return m_mpCacheListener[type]->OnInsert(ret,cb);
         }
         else if(cmd == REMOVE_CMD)
         {
-            return m_mpCacheListener[type]->OnRemove(reply,cb,timeout);
+            return m_mpCacheListener[type]->OnRemove(ret,cb);
         }
         else
         {
@@ -140,7 +180,9 @@ int  CacheAgent::AddCacheListener(string typeName,DataListenerPtr ptr)
     m_mpCacheListener[typeName] = ptr;
     return 0;
 }
+#endif
 
+#if 1
 int  CacheAgent::GetKey(void* obj,string & key)
 {
     Message * msg = (Message*) obj;
@@ -217,6 +259,27 @@ int  CacheAgent::GetKey(void* obj,string & key)
     }
     return 0;
 }
+CacheAgent::MetaObject*    CacheAgent::FindObject(const string & key)
+{
+    if(m_mpGetObjects.find(key) != m_mpGetObjects.end())
+    {
+        return m_mpGetObjects[key].get();
+    }
+    return NULL;
+}
+void        CacheAgent::FreeObject(const string & key)
+{
+    m_mpGetObjects.erase(key);
+}
+CacheAgent::MetaObject*    CacheAgent::FindObject(CacheAgent::MetaObject * obj)
+{
+    string key;
+    if(GetKey(obj,key))
+    {
+        return NULL;
+    }
+    return FindObject(key);    
+}
 int  CacheAgent::Get(void * obj,const Buffer & cb)
 {
     //gen key
@@ -225,16 +288,21 @@ int  CacheAgent::Get(void * obj,const Buffer & cb)
     {
         return -1;
     }
-    string cmd = GET_CMD+DELIM1+key;
+    string cmdhdr = GET_CMD+DELIM1+key;
     Buffer ccb;
-    ccb.Create(cb.iUsed + cmd.length() + 1 );
-    memcpy(ccb.pBuffer,cmd.c_str(),cmd.length()+1);
-    memcpy(ccb.pBuffer + cmd.length() + 1,cb.pBuffer,cb.iUsed);
+    ccb.Create(cb.iUsed + cmdhdr.length() + 1 );
+    memcpy(ccb.pBuffer,cmdhdr.c_str(),cmdhdr.length()+1);
+    memcpy(ccb.pBuffer + cmdhdr.length() + 1,cb.pBuffer,cb.iUsed);
     ccb.iUsed = ccb.iCap;
-    LOG_INFO("cache exec cmd = %s",cmd.c_str());
     //
     /////////////////////////////////////////
-    return redis->Command(cmd.c_str(),ccb);
+    int ret = redis->Get(key,ccb);
+    if(ret)
+    {
+        ccb.Destroy();
+        return -1;
+    }
+    return 0;
 }
 int  CacheAgent::Remove(void * obj,const Buffer & cb)
 {
@@ -244,32 +312,19 @@ int  CacheAgent::Remove(void * obj,const Buffer & cb)
     {
         return -1;
     }
-    string cmd = REMOVE_CMD+DELIM1+key;
+    string cmdhdr = REMOVE_CMD+DELIM1+key;
     Buffer ccb;
-    ccb.Create(cb.iUsed + cmd.length() + 1 );
-    memcpy(ccb.pBuffer,cmd.c_str(),cmd.length()+1);
-    memcpy(ccb.pBuffer + cmd.length() + 1,cb.pBuffer,cb.iUsed);
+    ccb.Create(cb.iUsed + cmdhdr.length() + 1 );
+    memcpy(ccb.pBuffer,cmdhdr.c_str(),cmdhdr.length()+1);
+    memcpy(ccb.pBuffer + cmdhdr.length() + 1,cb.pBuffer,cb.iUsed);
     ccb.iUsed = ccb.iCap;
-    LOG_INFO("cache exec cmd = %s",cmd.c_str());
-    return redis->Command(cmd.c_str(),ccb);
-}
-int  CacheAgent::Insert(void * obj,const Buffer &  cb)
-{
-    //gen key
-    string key ;
-    if(GetKey(obj,key))
+    int ret = redis->Remove(key,ccb);
+    if(ret)
     {
+        ccb.Destroy();
         return -1;
     }
-    string cmd = INSERT_CMD+DELIM1+key;
-    Buffer ccb;
-    ccb.Create(cb.iUsed + cmd.length() + 1 );
-    memcpy(ccb.pBuffer,cmd.c_str(),cmd.length()+1);
-    memcpy(ccb.pBuffer + cmd.length() + 1,cb.pBuffer,cb.iUsed);
-    ccb.iUsed = ccb.iCap;
-    //buffer to string.       
-    LOG_INFO("cache exec cmd = %s",cmd.c_str());
-    return redis->Command(cmd.c_str(), ccb);
+    return 0;
 }
 int  CacheAgent::Update(void * obj,const Buffer &  cb)
 {
@@ -279,17 +334,36 @@ int  CacheAgent::Update(void * obj,const Buffer &  cb)
     {
         return -1;
     }
-    string cmd = UPDATE_CMD+DELIM1+key;
+    Buffer buffer;
+    if(buffer.Create(serializer->GetPackSize(obj)))
+    {
+        LOG_ERROR("get pack size  %d alloc error !",serializer->GetPackSize(obj));
+        return -1;
+    }
+    if(serializer->Pack(obj,buffer))
+    {
+        LOG_ERROR("pack obj error !");
+        return -1;
+    }    
+    string cmdhdr = UPDATE_CMD+DELIM1+key;
     Buffer ccb;
-    ccb.Create(cb.iUsed + cmd.length() + 1 );
-    memcpy(ccb.pBuffer,cmd.c_str(),cmd.length()+1);
-    memcpy(ccb.pBuffer + cmd.length() + 1,cb.pBuffer,cb.iUsed);
+    if(ccb.Create(cb.iUsed + cmdhdr.length() + 1 ))
+    {
+        LOG_ERROR("callback create buffer error !");
+        buffer.Destroy();
+        return -1;
+    }
+    memcpy(ccb.pBuffer,cmdhdr.c_str(),cmdhdr.length()+1);
+    memcpy(ccb.pBuffer + cmdhdr.length() + 1,cb.pBuffer,cb.iUsed);
     ccb.iUsed = ccb.iCap;
-    //buffer to string.    
-    Buffer buffer(serializer->GetPackSize(obj));
-    cmd += 
-        serializer->Pack(obj,buffer);
-    LOG_INFO("cache exec cmd = %s",cmd.c_str());
-    return redis->Command(cmd.c_str(),ccb);
+    int ret = redis->Update(key,buffer,ccb);
+    buffer.Destroy();
+    if(ret)
+    {
+        LOG_ERROR("update redis error = %d !",ret);
+        ccb.Destroy();
+        return -1;
+    }
+    return ret;
 }
-
+#endif

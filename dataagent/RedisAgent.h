@@ -43,7 +43,11 @@ public:
     int      Init(const vector<RedisAddr> & addrList,RedisCommandListenerPtr lisener_);
     void     Stop();
     int      Polling(int chkPerTick);
-    int      Command(const char* pszCMD,const Buffer & cb);
+public:
+    int      Get(string & key,const Buffer & cb);
+    int      Update(string & key,const Buffer & obj,const Buffer & cb);
+    int      Remove(string & key,const Buffer & cb);
+    int      Command(const Buffer & cb,const char * pszFormat,...);
 protected:
     void     CheckTimeOut(int iChkNum    =   10);
 private:
