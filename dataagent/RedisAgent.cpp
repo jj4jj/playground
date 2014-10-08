@@ -2,9 +2,13 @@
 #include "hiredis.h"
 #include "async.h"
 #include "adapters/libev.h"
-#include "RedisAgent.h"
 #include "base/Log.h"
 #include "base/DateTime.h"
+#include "RedisAgent.h"
+
+
+#define SELECTDB_CB   ("$SELECTDB")
+
 #if 1
 RedisAgent::RedisAgent()
 {
@@ -37,7 +41,16 @@ void    RedisAgent::OnCommand(redisAsyncContext *c,redisReply *reply,uint32_t cb
         LOG_ERROR("not found cb id = %u",cbid);
         return ;
     }
-    m_listener->OnCommand(reply,pcb->cb);
+
+    //internal cmd
+    if(strstr((char*)pcb->cb.pBuffer,SELECTDB_CB))
+    {
+        OnSelectDB(c,reply,pcb->cb);
+    }
+    else
+    {
+        m_listener->OnCommand(reply,pcb->cb);
+    }
     m_mpCallBackPool.erase(cbid);
 }
 void RedisAgent::CommandCallback(redisAsyncContext *c, void *r, void *privdata)
@@ -50,6 +63,9 @@ void RedisAgent::ConnectCallback(const redisAsyncContext *c, int status)
     if(status == REDIS_OK)
     {
         ++RedisAgent::Instance().m_iConnected;
+        //select db
+        RedisClientContext * ctx =  RedisAgent::Instance().FindContext(c);
+        RedisAgent::Instance().SelectDB(ctx->addr.dbidx);
     }
     LOG_INFO("redis connection is connected ! status = %d cnx = %d",
         status,RedisAgent::Instance().m_iConnected);
@@ -67,9 +83,27 @@ void RedisAgent::DisConnectCallback(const redisAsyncContext *c, int status)
     
 }
 
-bool     RedisAgent::AllContextConnected()
+bool     RedisAgent::AllContextReady()
 {
-    return      (m_chkTimeOut >= redisCtxList.size());
+    for(uint i = 0; i < redisCtxList.size(); ++i)
+    {
+        if(!redisCtxList[i].db_selected)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+RedisClientContext* RedisAgent::FindContext(const redisAsyncContext *c)
+{
+    for(uint i = 0;i < redisCtxList.size(); ++i)
+    {
+        if(c == redisCtxList[i].ctx)
+        {
+            return &(redisCtxList[i]);
+        }
+    }
+    return NULL;
 }
 int     RedisAgent::Init(const vector<RedisAddr> & addrList,RedisCommandListenerPtr lisener_)
 {
@@ -82,6 +116,7 @@ int     RedisAgent::Init(const vector<RedisAddr> & addrList,RedisCommandListener
     {
         return -1;
     }
+    RedisClientContext  rcc;
     for(uint i = 0;i < addrList.size(); ++i)
     {            
         redisAsyncContext *c = redisAsyncConnect(addrList[i].ip.c_str(), addrList[i].port);
@@ -93,14 +128,23 @@ int     RedisAgent::Init(const vector<RedisAddr> & addrList,RedisCommandListener
         redisLibevAttach(EV_DEFAULT_ c);
         redisAsyncSetConnectCallback(c,ConnectCallback);
         redisAsyncSetDisconnectCallback(c,DisConnectCallback);   
-        redisCtxList.push_back(c);
+        rcc.addr  = addrList[i];
+        rcc.ctx   = c;
+        redisCtxList.push_back(rcc);
     }
     ev_loop(EV_DEFAULT_ EVRUN_ONCE);
-    if(!AllContextConnected())
+    int time_out = 3000000;
+    while(!AllContextReady() && time_out > 0)
     {
-        LOG_ERROR("not all context connected  !");
-        return -1;
+        ev_loop(EV_DEFAULT_ EVRUN_NOWAIT);
+        usleep(3000);
+        time_out -= 3000;
     }        
+    if(!AllContextReady())
+    {
+        LOG_FATAL("not all redis context is ready !");
+        return -1;
+    }
     m_listener = lisener_;
     m_closing = false;
     return 0;
@@ -111,7 +155,7 @@ void     RedisAgent::Stop()
     {
         for(uint i = 0; i < redisCtxList.size(); ++i)
         {
-            redisAsyncDisconnect(redisCtxList[i]);
+            redisAsyncDisconnect(redisCtxList[i].ctx);
         }            
         m_closing   =   true;
     }
@@ -168,6 +212,38 @@ void    RedisAgent::CheckTimeOut(int iChkNum  )
         }
     }
 }
+void     RedisAgent::OnSelectDB(redisAsyncContext *c,redisReply *reply,Buffer & cb)
+{
+    RedisClientContext * ctx = FindContext(c);
+    cb.Destroy();
+    if(!ctx)
+    {
+        LOG_FATAL("can't find redis agent context !");
+        return ;
+    }    
+    if(0 == reply->integer && reply->type == REDIS_REPLY_STATUS)
+    {
+        ctx->db_selected = true;
+    }
+    else
+    {
+        LOG_ERROR("select db error for = %s!",reply->str);
+    }
+    LOG_INFO("context dbidx = %d select type = %d int = %ld!",
+        ctx->addr.dbidx,reply->type,reply->integer);
+}
+void     RedisAgent::SelectDB(int dbidx)
+{
+    assert(dbidx >= 0);
+    Buffer cb;
+    cb.Create(strlen(SELECTDB_CB)+1);
+    memcpy(cb.pBuffer,SELECTDB_CB,cb.iCap);
+    if(Command(cb,"SELECT %d",dbidx))
+    {
+        LOG_FATAL("select db error !");
+    }
+}
+
 #endif
 
 
@@ -198,7 +274,7 @@ int     RedisAgent::Command(const Buffer & cb,const char * pszFormat,...)
     ptrdiff_t  vp = m_dwCallBackSeq;
 
     va_start(ap,pszFormat);
-    int r = redisvAsyncCommand(redisCtxList[select], CommandCallback,(void*)vp,pszFormat,ap);
+    int r = redisvAsyncCommand(redisCtxList[select].ctx, CommandCallback,(void*)vp,pszFormat,ap);
     va_end(ap);
     if( r != REDIS_OK)
     {
