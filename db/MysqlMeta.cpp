@@ -1,9 +1,9 @@
-#include "MysqlDBMeta.h"
+#include "MysqlMeta.h"
 #include "base/Log.h"
 #include "base/DateTime.h"
 
 #if 1
-const char* DBTableMeta::GetTypeString(uint8_t type)
+const char* MysqlMeta::GetTypeString(uint8_t type)
 {        
     static const char* type2str[] = {
     "INVALID",
@@ -18,10 +18,10 @@ const char* DBTableMeta::GetTypeString(uint8_t type)
     "BLOB"       ,//64K
     "DATETIME"   ,//TIME
     };
-    assert(type < DBTableFieldMeta::VAL_TYPE_MAX);
+    assert(type < MysqlFieldMeta::VAL_TYPE_MAX);
     return type2str[type];
 }
-int DBTableMeta::GetCreateTableSQL(string & sql)
+int MysqlMeta::GetCreateTableSQL(string & sql)
 {
 /*
 eg.
@@ -41,7 +41,7 @@ register_date DATE NOT NULL
     for(uint i = 0;i < cols.size(); ++i)
     {
         sql += cols[i].name + " "+ GetTypeString(cols[i].type);
-        if(cols[i].maxlen > 0 && cols[i].type == DBTableFieldMeta::VAL_TYPE_VARCHAR)
+        if(cols[i].maxlen > 0 && cols[i].type == MysqlFieldMeta::VAL_TYPE_VARCHAR)
         {
             snprintf(tmpBuffer,sizeof(tmpBuffer),"(%d)",cols[i].maxlen);
             sql += tmpBuffer;
@@ -59,10 +59,10 @@ register_date DATE NOT NULL
     sql += " )ENGINE=InnoDB DEFAULT CHARSET utf8 COLLATE utf8_general_ci";
     return 0;
 }
-int DBTableMeta::Init(vector<DBTableField> & colvs)
+int MysqlMeta::Init(vector<MysqlField> & colvs)
 {
     colvs.clear();
-    DBTableField ec;
+    MysqlField ec;
     for(uint i = 0;i < cols.size(); ++i)
     {
         ec.name = cols[i].name;
@@ -71,7 +71,7 @@ int DBTableMeta::Init(vector<DBTableField> & colvs)
     }
     return 0;
 }
-int DBTableMeta::GetUpdateTableSQL(const vector<DBTableField> & pks,const vector<DBTableField> & data,string & sql,MYSQL   *conn)
+int MysqlMeta::GetUpdateTableSQL(const vector<MysqlField> & pks,const vector<MysqlField> & data,string & sql,MYSQL   *conn)
 {
     //eg. UPDATE <TABLE> SET C1=V1,C2=V2 WHERE 
     sql = "UPDATE ";
@@ -98,7 +98,7 @@ int DBTableMeta::GetUpdateTableSQL(const vector<DBTableField> & pks,const vector
     }  
     return 0;
 }
-int DBTableMeta::GetInsertTableSQL(const vector<DBTableField> & cols,string & sql,MYSQL   *conn)
+int MysqlMeta::GetInsertTableSQL(const vector<MysqlField> & cols,string & sql,MYSQL   *conn)
 {
     //sql inject checking
     sql = "INSERT INTO ";
@@ -123,7 +123,7 @@ int DBTableMeta::GetInsertTableSQL(const vector<DBTableField> & cols,string & sq
     sql += ")";//blabla
     return 0;
 }
-int DBTableMeta::GetDeleteTableSQL(const vector<DBTableField> & pks,string & sql,MYSQL   *conn)
+int MysqlMeta::GetDeleteTableSQL(const vector<MysqlField> & pks,string & sql,MYSQL   *conn)
 {
     //eg. DELETE FROM TABLE WHERE X=X
     sql = "DELETE FROM ";
@@ -131,7 +131,7 @@ int DBTableMeta::GetDeleteTableSQL(const vector<DBTableField> & pks,string & sql
     sql += " WHERE ";
     for(uint i = 0;i < pks.size(); ++i)
     {   
-        if(pks[i].type == DBTableFieldMeta::VAL_TYPE_DATETIME)
+        if(pks[i].type == MysqlFieldMeta::VAL_TYPE_DATETIME)
         {
             sql += "FROM_UNIXTIME(";
             sql += pks[i].name;
@@ -150,7 +150,7 @@ int DBTableMeta::GetDeleteTableSQL(const vector<DBTableField> & pks,string & sql
     }
     return 0;
 }
-int DBTableMeta::GetSelectTableSQL(const vector<DBTableField> & pks,const vector<string> & selCols,string & sql,MYSQL   *conn)
+int MysqlMeta::GetSelectTableSQL(const vector<MysqlField> & pks,const vector<string> & selCols,string & sql,MYSQL   *conn)
 {
     //eg. SELECT FROM TABLE WHERE X=X
     sql = "SELECT ";
@@ -174,7 +174,7 @@ int DBTableMeta::GetSelectTableSQL(const vector<DBTableField> & pks,const vector
     sql += " WHERE ";
     for(uint i = 0;i < pks.size(); ++i)
     {   
-        if(pks[i].type == DBTableFieldMeta::VAL_TYPE_DATETIME)
+        if(pks[i].type == MysqlFieldMeta::VAL_TYPE_DATETIME)
         {
             sql += "FROM_UNIXTIME(";
             sql += pks[i].name;
@@ -193,35 +193,35 @@ int DBTableMeta::GetSelectTableSQL(const vector<DBTableField> & pks,const vector
     }
     return 0;        
 }
-string   DBTableMeta::GetFieldValueSQL(const DBTableField & col,MYSQL   *conn )
+string   MysqlMeta::GetFieldValueSQL(const MysqlField & col,MYSQL   *conn )
 {
     //todo check string for prevent sql injection
     string sqlv = "";//"'";
     char digitbuffer[20];
-    DBTableFieldMeta * fieldMeta = GetFieldMeta(*this,col.name);
+    MysqlFieldMeta * fieldMeta = GetFieldMeta(*this,col.name);
     assert(fieldMeta);
     switch(fieldMeta->type)
     {
-       case  DBTableFieldMeta::VAL_TYPE_INT32      :
+       case  MysqlFieldMeta::VAL_TYPE_INT32      :
            snprintf(digitbuffer,sizeof(digitbuffer),"%d",col.u_data.i32);
            break;
-       case  DBTableFieldMeta::VAL_TYPE_INT64      :
+       case  MysqlFieldMeta::VAL_TYPE_INT64      :
            snprintf(digitbuffer,sizeof(digitbuffer),"%ld",col.u_data.i64);
            break;
-       case  DBTableFieldMeta::VAL_TYPE_UINT32     :
+       case  MysqlFieldMeta::VAL_TYPE_UINT32     :
            snprintf(digitbuffer,sizeof(digitbuffer),"%u",col.u_data.u32);
            break;
-       case  DBTableFieldMeta::VAL_TYPE_UINT64     :
+       case  MysqlFieldMeta::VAL_TYPE_UINT64     :
            snprintf(digitbuffer,sizeof(digitbuffer),"%lu",col.u_data.u64);
            break;
-       case  DBTableFieldMeta::VAL_TYPE_REAL32     :
+       case  MysqlFieldMeta::VAL_TYPE_REAL32     :
            snprintf(digitbuffer,sizeof(digitbuffer),"%f",col.u_data.r32);
            break;
-       case  DBTableFieldMeta::VAL_TYPE_REAL64     :
+       case  MysqlFieldMeta::VAL_TYPE_REAL64     :
            snprintf(digitbuffer,sizeof(digitbuffer),"%lf",col.u_data.r64);
            break;
-       case  DBTableFieldMeta::VAL_TYPE_VARCHAR    ://255
-       case  DBTableFieldMeta::VAL_TYPE_TEXT       ://64K
+       case  MysqlFieldMeta::VAL_TYPE_VARCHAR    ://255
+       case  MysqlFieldMeta::VAL_TYPE_TEXT       ://64K
        {
             const char * psz = &(col.buffer.at(0));
             uint len = strlen(psz);
@@ -248,7 +248,7 @@ string   DBTableMeta::GetFieldValueSQL(const DBTableField & col,MYSQL   *conn )
             sqlv += "'";
             return sqlv;
        }
-       case  DBTableFieldMeta::VAL_TYPE_BLOB       ://64K
+       case  MysqlFieldMeta::VAL_TYPE_BLOB       ://64K
        {
             sqlv = "'";
             //blob to string
@@ -271,7 +271,7 @@ string   DBTableMeta::GetFieldValueSQL(const DBTableField & col,MYSQL   *conn )
            return sqlv;
        }
            break;
-       case  DBTableFieldMeta::VAL_TYPE_DATETIME   ://TIME
+       case  MysqlFieldMeta::VAL_TYPE_DATETIME   ://TIME
        {
            snprintf(digitbuffer,sizeof(digitbuffer),"%u",col.u_data.time);
            sqlv = "FROM_UNIXTIME(";
@@ -289,12 +289,12 @@ string   DBTableMeta::GetFieldValueSQL(const DBTableField & col,MYSQL   *conn )
     sqlv += "";//"'";
     return sqlv;
 }
-int DBTableMeta::SetFieldValue(DBTableField & field,char* data,uint64_t datalen)
+int MysqlMeta::SetFieldValue(MysqlField & field,char* data,uint64_t datalen)
 {
     //LOG_DEBUG("set field value name = %s type = %d data = [%s] len = %lu",
     //         field.name.c_str(),field.type,data,datalen);
 
-    DBTableFieldMeta * fieldMeta = GetFieldMeta(*this,field.name);
+    MysqlFieldMeta * fieldMeta = GetFieldMeta(*this,field.name);
     if(!fieldMeta)
     {
         LOG_ERROR("no field = %s meta found !",field.name.c_str());
@@ -311,35 +311,35 @@ int DBTableMeta::SetFieldValue(DBTableField & field,char* data,uint64_t datalen)
     
     switch(field.type)
     {
-       case  DBTableFieldMeta::VAL_TYPE_INT32      :
-       case  DBTableFieldMeta::VAL_TYPE_INT64      :
+       case  MysqlFieldMeta::VAL_TYPE_INT32      :
+       case  MysqlFieldMeta::VAL_TYPE_INT64      :
            field.u_data.i64 = strtol(numberBuffer,NULL,10);
            break;
-       case  DBTableFieldMeta::VAL_TYPE_UINT32     :
-       case  DBTableFieldMeta::VAL_TYPE_UINT64     :
+       case  MysqlFieldMeta::VAL_TYPE_UINT32     :
+       case  MysqlFieldMeta::VAL_TYPE_UINT64     :
            field.u_data.i64 = strtoul(numberBuffer,NULL,10);
            break;
-       case  DBTableFieldMeta::VAL_TYPE_REAL32     :
+       case  MysqlFieldMeta::VAL_TYPE_REAL32     :
            field.u_data.r32 = atof(numberBuffer);
            break;
-       case  DBTableFieldMeta::VAL_TYPE_REAL64     :
+       case  MysqlFieldMeta::VAL_TYPE_REAL64     :
            field.u_data.r64 = atof(numberBuffer);
            break;
-       case  DBTableFieldMeta::VAL_TYPE_VARCHAR    ://255
-       case  DBTableFieldMeta::VAL_TYPE_TEXT       ://64K
+       case  MysqlFieldMeta::VAL_TYPE_VARCHAR    ://255
+       case  MysqlFieldMeta::VAL_TYPE_TEXT       ://64K
        {
             field.buffer.resize(datalen + 1);
             memcpy(&field.buffer[0],data,datalen);
             field.buffer[datalen] = 0;
             break;
        }
-       case  DBTableFieldMeta::VAL_TYPE_BLOB       ://64K
+       case  MysqlFieldMeta::VAL_TYPE_BLOB       ://64K
        {
             field.buffer.resize(datalen);
             memcpy(&field.buffer[0],data,datalen);
             break;
        }
-       case  DBTableFieldMeta::VAL_TYPE_DATETIME   ://TIME
+       case  MysqlFieldMeta::VAL_TYPE_DATETIME   ://TIME
        {
             string datetimes = data;
             field.u_data.time = Time::mkTimeStamp(datetimes.c_str());
@@ -351,7 +351,7 @@ int DBTableMeta::SetFieldValue(DBTableField & field,char* data,uint64_t datalen)
     }   
     return 0;
 }
-string    DBTableMeta::Visual(const std::vector<DBTableField>   & vc)
+string    MysqlMeta::Visual(const std::vector<MysqlField>   & vc)
 {
     string vs = "";
     for(uint i = 0;i < vc.size(); ++i)
@@ -367,7 +367,7 @@ string    DBTableMeta::Visual(const std::vector<DBTableField>   & vc)
     vs += "\n";
     return vs;
 }
-DBTableFieldMeta *   DBTableMeta::GetFieldMeta(DBTableMeta & table,const string & fieldName)
+MysqlFieldMeta *   MysqlMeta::GetFieldMeta(MysqlMeta & table,const string & fieldName)
 {
     for(uint i = 0;i < table.cols.size(); ++i)
     {
@@ -379,7 +379,7 @@ DBTableFieldMeta *   DBTableMeta::GetFieldMeta(DBTableMeta & table,const string 
     return NULL;
 }
 
-DBTableField * DBTableMeta::GetField(std::vector<DBTableField> & fields,const char* pszFieldName)
+MysqlField * MysqlMeta::GetField(std::vector<MysqlField> & fields,const char* pszFieldName)
 {
     for(uint i = 0;i < fields.size(); ++i)
     {

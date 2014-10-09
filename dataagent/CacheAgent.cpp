@@ -77,20 +77,20 @@ int  CacheAgent::DispatchResult(string & cmd,string & type,string & key,
     {
         ret = CACHE_NO_EXISTS;
     }
-    if(m_mpCacheListener.find(type) != m_mpCacheListener.end())
+    if(m_mpListener.find(type) != m_mpListener.end())
     {
         if(cmd == GET_CMD)
         {          
             if(ret)
             {
-                return m_mpCacheListener[type]->OnGet(ret,NULL,cb);
+                return m_mpListener[type]->OnGet(ret,NULL,cb);
             }
             if(reply->type == REDIS_REPLY_STRING)
             {
                 //
                 int ret = CACHE_OK;
                 Buffer  buff(reply->str,reply->len);
-                MetaObject* obj = NULL;
+                MemSerializer::MetaObject* obj = NULL;
                 if(serializer->UnPack(type.c_str(),buff,(void**)&obj))
                 {
                     LOG_FATAL("message unpack error !");
@@ -100,27 +100,27 @@ int  CacheAgent::DispatchResult(string & cmd,string & type,string & key,
                 {
                     string key = "";
                     assert(0 == GetKey(obj,key));
-                    m_mpGetObjects[key] = shared_ptr<MetaObject>(obj);
+                    m_mpGetObjects[key] = shared_ptr<MemSerializer::MetaObject>(obj);
                 }
-                return m_mpCacheListener[type]->OnGet(ret,obj,cb);
+                return m_mpListener[type]->OnGet(ret,obj,cb);
             }
             else
             {   
                 LOG_ERROR("get cache reply not support type = %d",reply->type);
-                return m_mpCacheListener[type]->OnGet(CACHE_INTERNAL_ERR,NULL,cb);
+                return m_mpListener[type]->OnGet(CACHE_INTERNAL_ERR,NULL,cb);
             }
         }
         else if(cmd == UPDATE_CMD)
         {
-            return m_mpCacheListener[type]->OnUpdate(ret,cb);
+            return m_mpListener[type]->OnUpdate(ret,cb);
         }
         else if(cmd == INSERT_CMD)
         {
-            return m_mpCacheListener[type]->OnInsert(ret,cb);
+            return m_mpListener[type]->OnInsert(ret,cb);
         }
         else if(cmd == REMOVE_CMD)
         {
-            return m_mpCacheListener[type]->OnRemove(ret,cb);
+            return m_mpListener[type]->OnRemove(ret,cb);
         }
         else
         {
@@ -170,14 +170,14 @@ int  CacheAgent::Destroy()
     return 0;
 }
 
-int  CacheAgent::AddCacheListener(string typeName,DataListenerPtr ptr)
+int  CacheAgent::AddListener(string typeName,DataListenerPtr ptr)
 {
-    if(m_mpCacheListener[typeName])
+    if(m_mpListener[typeName])
     {
         LOG_FATAL("repeat add cache listener = %s",typeName.c_str());
         return -1;
     }
-    m_mpCacheListener[typeName] = ptr;
+    m_mpListener[typeName] = ptr;
     return 0;
 }
 #endif
@@ -259,7 +259,7 @@ int  CacheAgent::GetKey(void* obj,string & key)
     }
     return 0;
 }
-CacheAgent::MetaObject*    CacheAgent::FindObject(const string & key)
+MemSerializer::MetaObject*    CacheAgent::FindObject(const string & key)
 {
     if(m_mpGetObjects.find(key) != m_mpGetObjects.end())
     {
@@ -271,7 +271,7 @@ void        CacheAgent::FreeObject(const string & key)
 {
     m_mpGetObjects.erase(key);
 }
-CacheAgent::MetaObject*    CacheAgent::FindObject(CacheAgent::MetaObject * obj)
+MemSerializer::MetaObject*    CacheAgent::FindObject(MemSerializer::MetaObject * obj)
 {
     string key;
     if(GetKey(obj,key))

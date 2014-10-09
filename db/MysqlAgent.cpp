@@ -19,7 +19,7 @@ MysqlAgent::~MysqlAgent()
 #endif
 #if 1
 
-int    MysqlAgent::Request(const DBTableOpReq & req)
+int    MysqlAgent::Request(const MysqlRequest & req)
 {
     if(reqQueue.size() >=(size_t)max_req_queue_size )
     {
@@ -27,7 +27,7 @@ int    MysqlAgent::Request(const DBTableOpReq & req)
         return -1;
     }
     reqlock.Lock();
-    reqQueue.push_back(DBTableOpReqPtr(new DBTableOpReq(req)));
+    reqQueue.push_back(MysqlRequestPtr(new MysqlRequest(req)));
     reqlock.Unlock();
     statechg.NotifyAll();
     return 0;
@@ -38,21 +38,13 @@ int    MysqlAgent::Request(const DBTableOpReq & req)
 ////////////////////////////////////////////////////////////
 
 #if 1
-//return 0 
-int     MysqlAgent::RegisterTableHandler(const string & name,DBTableHandlerPtr handler)
+void     MysqlAgent::SetListener(MysqlCommandListenerPtr listener)
 {
-    size_t hashid = StringUtil::Hash(name);
-    if(handlerMap.find(hashid) != handlerMap.end())
-    {
-        LOG_FATAL("repeat register hnalder = %s hashid = %u",name.c_str(),hashid);
-        return -1;
-    }
-    LOG_INFO("register table handler = %s hash = %u",name.c_str(),hashid);
-    handlerMap[hashid] = handler;
-    return 0;        
+    m_ptrListener = listener;
 }
-int     MysqlAgent::Init(const std::vector<DBProxyOption> & proxyList,
-                         const std::vector<DBTableMeta> & metas,
+
+int     MysqlAgent::Init(const std::vector<MysqlProxyOption> & proxyList,
+                         const std::vector<MysqlMeta> & metas,
                          int iMaxRequestQueueSize )
 {
     close = true;
@@ -86,7 +78,7 @@ void           MysqlAgent::WaitRequest()
     statechglock.Unlock();
     //pthread_cond_wait(&stateChg,&stateChgMutext);
 }
-DBTableOpReq * MysqlAgent::GetRequest(DBTableOpReq & req)
+MysqlRequest * MysqlAgent::GetRequest(MysqlRequest & req)
 {
     if(reqQueue.empty())
     {
@@ -101,11 +93,11 @@ DBTableOpReq * MysqlAgent::GetRequest(DBTableOpReq & req)
     return &req;;
 }
 
-void    MysqlAgent::Response(const DBTableOpRsp & rsp)
+void    MysqlAgent::Response(const MysqlResponse & rsp)
 {
     rsplock.Lock();
     //pthread_mutext_lock();
-    rspQueue.push_back(DBTableOpRspPtr(new DBTableOpRsp(rsp)));
+    rspQueue.push_back(MysqlResponsePtr(new MysqlResponse(rsp)));
     rsplock.Unlock();
     //pthread_mutext_unlock();        
 }
@@ -114,13 +106,13 @@ void * MysqlAgent::Working(void*  p)
     LOG_DEBUG("create worker ok , it is working ...");
     MysqlProxy * proxy = (MysqlProxy*)p;
     MysqlAgent * agent = proxy->GetAgent();
-    DBTableOpReq req;
+    MysqlRequest req;
 #define CHECK_CLOSE \
-       if(!r && agent->close)\
-       {\
-           break;\
-       }
-    DBTableOpReq * r;
+    if(!r && agent->close)\
+    {\
+       break;\
+    }
+    MysqlRequest * r;
     while(!agent->close)
     {
         while(!(r = agent->GetRequest(req)))
@@ -175,7 +167,7 @@ int     MysqlAgent::Polling(int iProcNumPerTick)
     //pthread_mutext_lock(&rsplock);        
     while(!rspQueue.empty() && iProcNumPerTick > 0)
     {
-        DBTableOpRsp * rsp = rspQueue.front().get();            
+        MysqlResponse * rsp = rspQueue.front().get();            
         HandleRsp(*rsp); 
         rspQueue.pop_front();
         --iProcNumPerTick;
@@ -183,46 +175,16 @@ int     MysqlAgent::Polling(int iProcNumPerTick)
     rsplock.Unlock();
     return iProcNumPerTick;
 }
-DBTableHandler * MysqlAgent::GetHandler(string & tblname)
-{
-    size_t hashid = StringUtil::Hash(tblname);
-    if(handlerMap.find(hashid) != handlerMap.end())
-    {
-        return handlerMap[hashid].get();
-    }
-    return NULL;
-}
-void     MysqlAgent::HandleRsp(DBTableOpRsp & rsp)
+void     MysqlAgent::HandleRsp(MysqlResponse & rsp)
 {
     //find table
-    DBTableHandler * pHandler = GetHandler(rsp.tblname);
-    if(!pHandler)
+    if(!m_ptrListener)
     {
-        LOG_FATAL("not found handler table = %s",rsp.tblname.c_str());
+        LOG_FATAL("not found handler table = %s ret = %d op = %d",
+            rsp.tblname.c_str(),rsp.ret,rsp.op);
         return ;
     }
-    //dispatch op resp
-    switch(rsp.op)
-    {
-        case OP_SELECT:
-            pHandler->OnGet(rsp.ret,rsp.data,rsp.cb);
-        break;
-        case OP_INSERT:
-            pHandler->OnInsert(rsp.ret,rsp.cb);
-        break;
-        case OP_UPDATE:
-            pHandler->OnUpdate(rsp.ret,rsp.cb);
-        break;
-        case OP_DELETE:
-            pHandler->OnRemove(rsp.ret,rsp.cb);
-        break; 
-        case OP_CREATE_TB:
-            pHandler->OnCreateTable(rsp.ret,rsp.cb);
-        break;
-        default:
-            LOG_ERROR("not support op = %d",rsp.op);
-        break;
-    }
+    m_ptrListener->OnResponse(rsp);
     //
 }
 void    MysqlAgent::Destroy()
@@ -232,7 +194,7 @@ void    MysqlAgent::Destroy()
         Stop();
     }
 }
-DBTableMeta* MysqlAgent::GetTableMeta(const string & name)
+MysqlMeta* MysqlAgent::GetTableMeta(const string & name)
 {
     for(uint i = 0;i < tableMetas.size(); ++i)
     {

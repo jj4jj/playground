@@ -4,7 +4,7 @@
 #include "mysqld_error.h"
 #include "base/Buffer.h"
 
-struct DBTableField
+struct MysqlField
 {
     string name;
     int type ;
@@ -19,7 +19,7 @@ struct DBTableField
         double   r64;
     } u_data;
     vector<char>   buffer;
-    DBTableField()
+    MysqlField()
     {
         Init();
     }
@@ -32,7 +32,7 @@ struct DBTableField
 
 
 
-struct DBTableFieldMeta
+struct MysqlFieldMeta
 {
     enum
     {
@@ -50,29 +50,30 @@ struct DBTableFieldMeta
         VAL_TYPE_MAX        ,
     };
     string  name;
-    int     type; 
+    int     type;
+    string  typeName;
     int     maxlen;
     bool    ispk;
 };
-struct DBTableMeta
+struct MysqlMeta
 {
     string tblname;
-    std::vector<DBTableFieldMeta>   cols;
+    std::vector<MysqlFieldMeta>   cols;
 public:
     const char*  GetTypeString(uint8_t type);
     int GetCreateTableSQL(string & sql);
-    int Init(vector<DBTableField> & colvs);
-    int GetSelectTableSQL(const vector<DBTableField> & pks,const vector<string> & selCols,string & sql,MYSQL   *conn);
-    int GetUpdateTableSQL(const vector<DBTableField> & pks,const vector<DBTableField> & data,string & sql,MYSQL   *conn );
-    int GetInsertTableSQL(const vector<DBTableField> & cols,string & sql,MYSQL   *conn);
-    int GetDeleteTableSQL(const vector<DBTableField> & pks,string & sql,MYSQL   *conn);
-    string GetFieldValueSQL(const DBTableField & field,MYSQL   *conn);
-    int SetFieldValue(DBTableField & col,char* data,uint64_t datalen);
-    string    Visual(const std::vector<DBTableField>   & vc);
+    int Init(vector<MysqlField> & colvs);
+    int GetSelectTableSQL(const vector<MysqlField> & pks,const vector<string> & selCols,string & sql,MYSQL   *conn);
+    int GetUpdateTableSQL(const vector<MysqlField> & pks,const vector<MysqlField> & data,string & sql,MYSQL   *conn );
+    int GetInsertTableSQL(const vector<MysqlField> & cols,string & sql,MYSQL   *conn);
+    int GetDeleteTableSQL(const vector<MysqlField> & pks,string & sql,MYSQL   *conn);
+    string GetFieldValueSQL(const MysqlField & field,MYSQL   *conn);
+    int SetFieldValue(MysqlField & col,char* data,uint64_t datalen);
+    string    Visual(const std::vector<MysqlField>   & vc);
 
 public:
-    static    DBTableFieldMeta * GetFieldMeta(DBTableMeta & table,const string & fieldName);
-    static    DBTableField * GetField(std::vector<DBTableField> & fields,const char* pszFieldName);
+    static    MysqlFieldMeta * GetFieldMeta(MysqlMeta & table,const string & fieldName);
+    static    MysqlField * GetField(std::vector<MysqlField> & fields,const char* pszFieldName);
 };
 
 

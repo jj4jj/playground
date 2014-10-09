@@ -103,8 +103,13 @@ int     DataSet::Remove(void* entry,const Buffer & cb)
     }
     return -1000;
 }
-int     DataSet::Update(void* entry ,const Buffer & cb)
+int     DataSet::Update(void* entry ,const Buffer & cb,vector<string> * pFields )
 {
+    vector<string> fields ;
+    if(pFields)
+    {
+       fields = *pFields;
+    }
 
     if(DATA_TYPE_PURE_LOCAL_CACHE == option.setType)
     {
@@ -135,7 +140,7 @@ int     DataSet::Update(void* entry ,const Buffer & cb)
         }
         if(DATA_TYPE_REMOTE_CACHE_AND_DB == option.setType)
         {
-            if(dbAgent->Update(entry,cb))
+            if(dbAgent->Update(entry,fields,cb))
             {
                 return -2;
             }
@@ -145,7 +150,7 @@ int     DataSet::Update(void* entry ,const Buffer & cb)
     else
     if(DATA_TYPE_PURE_DB == option.setType)
     {
-        if(dbAgent->Update(entry,cb))
+        if(dbAgent->Update(entry,fields,cb))
         {
             return -2;
         }
@@ -183,7 +188,8 @@ void*   DataSet::Find(void* entry , const Buffer & cb,bool justFindLocal )
         }
         if(DATA_TYPE_REMOTE_CACHE_AND_DB == option.setType)
         {
-            if(dbAgent->Update(entry,cb))
+            vector<string>  fields;
+            if(dbAgent->Get(entry,fields,cb))
             {
                 return NULL;
             }
@@ -195,7 +201,8 @@ void*   DataSet::Find(void* entry , const Buffer & cb,bool justFindLocal )
     else
     if(DATA_TYPE_PURE_DB == option.setType)
     {
-        if(dbAgent->Get(entry,cb))
+        vector<string>  fields;
+        if(dbAgent->Get(entry,fields,cb))
         {
             //todo return error
             return NULL;

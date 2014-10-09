@@ -4,7 +4,7 @@
 #include "thread/Thread.h"
 #include "thread/ThreadSync.h"
 #include "MysqlProxy.h"
-#include "DBTableHandler.h"
+#include "MysqlCommandListener.h"
 ////////////////////////////////////////////////////////////
 
 /*
@@ -28,42 +28,40 @@ public:
     MysqlAgent();
     ~MysqlAgent();
 public:
-    int            Request(const DBTableOpReq & req);    
+    int            Request(const MysqlRequest & req);    
 public:
     //return 0 
-    int            RegisterTableHandler(const string & name,DBTableHandlerPtr handler);
-    int            Init(const std::vector<DBProxyOption> & proxyList,
-                        const std::vector<DBTableMeta> & metas,
+    void           SetListener(MysqlCommandListenerPtr listener);
+    int            Init(const std::vector<MysqlProxyOption> & proxyList,
+                        const std::vector<MysqlMeta> & metas,
                         int iMaxRequestQueueSize = 32);
     void           WaitRequest();
-    DBTableOpReq * GetRequest(DBTableOpReq & req);
-    void    Response(const DBTableOpRsp & rsp);
+    MysqlRequest * GetRequest(MysqlRequest & req);
+    void    Response(const MysqlResponse & rsp);
     static  void * Working(void*  p);
     int     Start();
     int     Stop();
  	int     Polling(int iProcNumPerTick);
-    DBTableHandler * GetHandler(string & tblname);
-    void    HandleRsp(DBTableOpRsp & rsp);
+    void    HandleRsp(MysqlResponse & rsp);
     void    Destroy();
 public:
-    DBTableMeta* GetTableMeta(const string & name);
+    MysqlMeta* GetTableMeta(const string & name);
 	//-------------------------------------------------------------------------
 private:
-    //name hash -> table
-    unordered_map<size_t,DBTableHandlerPtr>  handlerMap;
-    std::vector<DBProxyOption>     proxyAddrList;
+    std::vector<MysqlProxyOption>     proxyAddrList;
     bool    close;
-    std::vector<DBTableMeta>       tableMetas;
+    std::vector<MysqlMeta>       tableMetas;
     vector<Thread>                 worker; 
     std::vector<MysqlProxyPtr>   clientProxyList;
     int                     max_req_queue_size  ;
 
-    std::list<DBTableOpReqPtr>       reqQueue;
+    std::list<MysqlRequestPtr>       reqQueue;
     Mutex                            reqlock;
-    std::list<DBTableOpRspPtr>       rspQueue;
+    std::list<MysqlResponsePtr>      rspQueue;
     Mutex                            rsplock;
     Condition                        statechg;
     Mutex                            statechglock;
+    MysqlCommandListenerPtr          m_ptrListener;
     
 };
 

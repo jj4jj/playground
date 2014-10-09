@@ -75,7 +75,7 @@ public:
     //otherwise return error code
     int     Insert(void* entry,const Buffer & cb);
     int     Remove(void* entry,const Buffer & cb);
-    int     Update(void* entry ,const Buffer & cb);
+    int     Update(void* entry ,const Buffer & cb,vector<string> * pFields = NULL);
     
     //if local cache (pure)
     //if finded return addr

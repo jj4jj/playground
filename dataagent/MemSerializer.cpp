@@ -3,6 +3,7 @@
 
 using namespace ::google::protobuf;
 
+#if 1
 int     MemSerializer::Init(const char* pszNameSpace,const char* pszMetaFileName)
 {
     assert(pszNameSpace);
@@ -50,30 +51,17 @@ int     MemSerializer::Pack(void* obj,Buffer & buffer)
 int     MemSerializer::UnPack(const char* pszMetaName,Buffer & buffer,void * * ppObj)
 {
     *ppObj = NULL;
-    string metaName = m_strNameSpace+"."+pszMetaName;
-    const Descriptor  *   meta = m_pDescriptorPool->FindMessageTypeByName(metaName);
-    if(!meta)
-    {
-        LOG_ERROR("meta name = %s not found !",metaName.c_str());
-        return -1;
-    }
-    const Message * prototype = m_pObjFactory->GetPrototype(meta);
-    if(!prototype)
-    {
-        LOG_ERROR("meta name = %s proto not found !",metaName.c_str());
-        return -1;
-    }
-    Message * msg = prototype->New();
+    string typeName = string(pszMetaName);
+    MetaObject* msg =  NewObject(typeName);
     if(!msg)
     {
-        LOG_ERROR("meta name = %s new fail !",metaName.c_str());
+        LOG_ERROR("meta name = %s new fail !",typeName.c_str());
         return -1;
     }
     if(!msg->ParseFromArray(buffer.pBuffer,buffer.iUsed))
     {
-        LOG_ERROR("meta name = %s unpack error ! buffer sz = %d",metaName.c_str(),buffer.iUsed);
-        
-        
+        LOG_ERROR("meta name = %s unpack error ! buffer sz = %d",typeName.c_str(),buffer.iUsed);
+        FreeObj(msg);        
         return -1;
     }    
     *ppObj = msg;
@@ -83,6 +71,16 @@ void    MemSerializer::Visual(void* pObj,string & s)
 {
     Message*  msg = (Message*)pObj;
     s = msg->DebugString();
+}
+const   Descriptor*    MemSerializer::GetDescriptor(const string & typeName)
+{
+    string fullName = m_strNameSpace+"."+typeName;
+    return m_pDescriptorPool->FindMessageTypeByName(fullName);
+}
+string     MemSerializer::GetTypeName(void* obj)
+{
+    MetaObject * msg = (MetaObject*)obj;
+    return msg->GetTypeName();
 }
 
 vector<string> & MemSerializer::GetTypePrimaryKey(const Descriptor* desc)
@@ -117,3 +115,27 @@ vector<string> & MemSerializer::GetTypePrimaryKey(const Descriptor* desc)
     }
     return m_mpDescPrimaryKey[desc]; 
 } 
+#endif
+
+#if 1
+MemSerializer::MetaObject * MemSerializer::NewObject(string & typeName)
+{
+    string metaName = m_strNameSpace+"."+typeName;
+    const Descriptor  *   meta = m_pDescriptorPool->FindMessageTypeByName(metaName);
+    if(!meta)
+    {
+        LOG_ERROR("meta name = %s not found !",metaName.c_str());
+        return NULL;
+    }
+    const Message * prototype = m_pObjFactory->GetPrototype(meta);
+    if(!prototype)
+    {
+        LOG_ERROR("meta name = %s proto not found !",metaName.c_str());
+        return NULL;
+    }
+    Message * msg = prototype->New();
+    return msg;
+}
+#endif
+
+

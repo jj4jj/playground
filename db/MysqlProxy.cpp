@@ -10,7 +10,7 @@
 
 
 #if 1
-int     MysqlProxy::Init(const std::vector<DBTableMeta> & metas)
+int     MysqlProxy::Init(const std::vector<MysqlMeta> & metas)
 {
     tableMetas.clear();
     for(uint i = 0;i < metas.size(); ++i)
@@ -20,7 +20,7 @@ int     MysqlProxy::Init(const std::vector<DBTableMeta> & metas)
     /////////////////////////////////////////////
     return 0;
 }
-int     MysqlProxy::Connect(const DBProxyOption & opt)
+int     MysqlProxy::Connect(const MysqlProxyOption & opt)
 {        
     m_opt = opt;
     conn = mysql_init(NULL);
@@ -96,37 +96,37 @@ int     MysqlProxy::CreateDB(const string & name)
     sql += " DEFAULT CHARSET utf8 COLLATE utf8_general_ci";
     return ExecuteSQL(sql);
 }
-int     MysqlProxy::CreateTable(DBTableMeta & meta)
+int     MysqlProxy::CreateTable(MysqlMeta & meta)
 {                
     string sql = "";
     meta.GetCreateTableSQL(sql);
     return ExecuteSQL(sql);
 }
-int     MysqlProxy::DispatchReq(const DBTableOpReq & req)
+int     MysqlProxy::DispatchReq(const MysqlRequest & req)
 {
     rsp.tblname = req.tblname;
     rsp.op = req.op;
     rsp.cb = req.cb;
-    rsp.ret = OP_RESULT_UNKOWN;
+    rsp.ret = MYSQL_RESULT_UNKOWN;
     
     switch(req.op)
     {
-        case OP_SELECT:
+        case MYSQL_REQ_SELECT:
             //
             rsp.ret =  Select(req.tblname,req.data,req.fields,rsp.data);
             break;
-        case OP_INSERT:
+        case MYSQL_REQ_INSERT:
             rsp.ret =  Insert(req.tblname,req.data);
             break;
-        case OP_UPDATE:
+        case MYSQL_REQ_UPDATE:
             rsp.ret =  Update(req.tblname,req.data,req.data);
             break;
-        case OP_DELETE:
+        case MYSQL_REQ_DELETE:
             rsp.ret =  Delete(req.tblname,req.data);
             break;
-        case OP_CREATE_TB:
+        case MYSQL_REQ_CREATE_TB:
         {
-            DBTableMeta * p = GetTableMeta(req.tblname);
+            MysqlMeta * p = GetTableMeta(req.tblname);
             if(!p)
             {
                 LOG_ERROR("get table meta = %s error !",req.tblname.c_str());
@@ -149,7 +149,7 @@ int     MysqlProxy::DispatchReq(const DBTableOpReq & req)
     return 0;
 }
 
-DBTableMeta*   MysqlProxy::GetTableMeta(const string & name)
+MysqlMeta*   MysqlProxy::GetTableMeta(const string & name)
 {        
     if( tableMetas.find(name) != tableMetas.end())
     {
@@ -157,28 +157,28 @@ DBTableMeta*   MysqlProxy::GetTableMeta(const string & name)
     }
     return NULL;
 }
-int     MysqlProxy::Select(const string & tblname,const vector<DBTableField> & pks,
-                    const vector<string> & selCols, vector<DBTableField> & cols )
+int     MysqlProxy::Select(const string & tblname,const vector<MysqlField> & pks,
+                    const vector<string> & selCols, vector<MysqlField> & cols )
 {
-    DBTableMeta* meta = GetTableMeta(tblname);
+    MysqlMeta* meta = GetTableMeta(tblname);
     if(!meta)
     {
-        return     OP_RESULT_NO_META;
+        return     MYSQL_RESULT_NO_META;
     }
     if(pks.empty())
     {
-        return     OP_RESULT_GET_NO_PK;
+        return     MYSQL_RESULT_GET_NO_PK;
     }
     string sql ;        
     int ret = meta->GetSelectTableSQL(pks,selCols,sql,conn);
     if(ret)
     {
-        return OP_RESUTL_SQL_GEN_ERR;
+        return MYSQL_RESULT_SQL_GEN_ERR;
     }
     ret = ExecuteSQL(sql);
     if(ret)
     {
-        return OP_RESULT_SQL_EXE_ERR ;
+        return MYSQL_RESULT_SQL_EXE_ERR ;
     }
     //fetch role
     MYSQL_RES *res_set;
@@ -188,7 +188,7 @@ int     MysqlProxy::Select(const string & tblname,const vector<DBTableField> & p
     {
         LOG_ERROR("mysql_store_result failed %d for %s",
             mysql_errno(conn),mysql_error(conn));
-        return OP_RESULT_STORE_RESULT_ERR;
+        return MYSQL_RESULT_STORE_RESULT_ERR;
     }        
     //get 
     int nfields = mysql_num_fields(res_set);
@@ -197,7 +197,7 @@ int     MysqlProxy::Select(const string & tblname,const vector<DBTableField> & p
     //meta->Init(cols);
     cols.clear();
     ////////////////////////////////////////
-    DBTableField col;
+    MysqlField col;
     if(row)
     {
         MYSQL_FIELD * field = NULL;
@@ -210,92 +210,92 @@ int     MysqlProxy::Select(const string & tblname,const vector<DBTableField> & p
             meta->SetFieldValue(col,row[i],lens[i]);
             cols.push_back(col);
         }
-        ret = OP_RESULT_OK;
+        ret = MYSQL_RESULT_OK;
     }
     else
     {
-        ret =  OP_RESULT_NO_DATA;
+        ret =  MYSQL_RESULT_NO_DATA;
     }
     
     mysql_free_result(res_set);        
     return ret;        
 }
 
-int     MysqlProxy::Insert(const string & table,const std::vector<DBTableField> & data)
+int     MysqlProxy::Insert(const string & table,const std::vector<MysqlField> & data)
 {
 
-    DBTableMeta * meta = GetTableMeta(table);
+    MysqlMeta * meta = GetTableMeta(table);
     if(!meta)
     {
         LOG_ERROR("meta not found!");
-        return OP_RESULT_NO_META;
+        return MYSQL_RESULT_NO_META;
     }
     //INSERT INTO <TABLE> (C1,C2)   VALUES(V1,V2);
     string sql = "";
     int ret = meta->GetInsertTableSQL(data,sql,conn);
     if(ret)
     {
-        return OP_RESUTL_SQL_GEN_ERR;
+        return MYSQL_RESULT_SQL_GEN_ERR;
     }
     ret = ExecuteSQL(sql); 
     if(ret)
     {
         if(GetLastErrNo() == ER_DUP_ENTRY)
         {
-            return OP_RESULT_ALREADY_EXIST;
+            return MYSQL_RESULT_ALREADY_EXIST;
         }
         else
         {
-            return OP_RESULT_SQL_EXE_ERR + GetLastErrNo();
+            return MYSQL_RESULT_SQL_EXE_ERR + GetLastErrNo();
         }
     }
-    return OP_RESULT_OK;        
+    return MYSQL_RESULT_OK;        
 }
-int     MysqlProxy::Update(const  string &  table,const std::vector<DBTableField> & pks,const std::vector<DBTableField> & data)
+int     MysqlProxy::Update(const  string &  table,const std::vector<MysqlField> & pks,const std::vector<MysqlField> & data)
 {
-    DBTableMeta * meta = GetTableMeta(table);
+    MysqlMeta * meta = GetTableMeta(table);
     if(!meta)
     {
         LOG_ERROR("meta not found!");
-        return OP_RESULT_NO_META;
+        return MYSQL_RESULT_NO_META;
     }
     string sql = "";
     int ret = meta->GetUpdateTableSQL(pks, data,sql,conn);
     if(ret)
     {
-        return OP_RESUTL_SQL_GEN_ERR;
+        return MYSQL_RESULT_SQL_GEN_ERR;
     }
     ret = ExecuteSQL(sql);
     if(ret)
     {
-        return OP_RESULT_SQL_EXE_ERR;
+        return MYSQL_RESULT_SQL_EXE_ERR;
     }
 
     
-    return OP_RESULT_OK;        
+    return MYSQL_RESULT_OK;        
 }
-int     MysqlProxy::Delete(const string & table,const std::vector<DBTableField> & pks)
+int     MysqlProxy::Delete(const string & table,const std::vector<MysqlField> & pks)
 {
     //delete from <table> where pk
-    DBTableMeta * meta = GetTableMeta(table);
+    MysqlMeta * meta = GetTableMeta(table);
     if(!meta)
     {
         LOG_ERROR("meta not found!");
-        return OP_RESULT_NO_META;
+        return MYSQL_RESULT_NO_META;
     }
     //eg. DELETE FROM <TABLE> WHERE  PKS
     string sql = "";
     int ret = meta->GetDeleteTableSQL(pks,sql,conn);
     if(ret)
     {
-        return OP_RESUTL_SQL_GEN_ERR;
+        return MYSQL_RESULT_SQL_GEN_ERR;
     }
     ret = ExecuteSQL(sql); 
     if(ret)
     {
-        return OP_RESULT_SQL_EXE_ERR;
+        return MYSQL_RESULT_SQL_EXE_ERR;
     }
-    return OP_RESULT_OK;        
+    return MYSQL_RESULT_OK;        
 }
 int     MysqlProxy::ExecuteSQL(const string & sql)
 {

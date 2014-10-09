@@ -5,67 +5,50 @@ using std::cin;
 using std::endl;
 string tblname = "mtest";
 
-class MTest1TableHandler:public DBTableHandler
+class MTest1TableHandler:public MysqlCommandListener
 {
 public:
-    MTest1TableHandler(const DBTableMeta * m)
+    MTest1TableHandler(const MysqlMeta * m)
     {
-        meta = (DBTableMeta*) m;
+        meta = (MysqlMeta*) m;
     }
-	virtual int 	OnGet(int ret,vector<DBTableField> & data,vector<uint8_t>  & cb)
-	{
-        LOG_DEBUG("on get cb size = %u = [%s] ret = %d",cb.size(),(char*)&cb[0],ret);
-        if(!ret)
-        {
-            LOG_INFO("get result :\n%s",meta->Visual(data).c_str());            
-        }
-        else
-        {
-            LOG_FATAL("error = %d when get !",ret);
-        }
+    virtual  int     OnResponse(MysqlResponse & rsp)
+    {
+        LOG_DEBUG("test1 on get cb size = %u = [%s] ret = %d",rsp.cb.iUsed,(char*)rsp.cb.pBuffer,rsp.ret);
         return 0;
     }
 private:
-    DBTableMeta* meta;
+    MysqlMeta* meta;
 };
 
-class MTest2TableHandler:public DBTableHandler
+class MTest2TableHandler:public MysqlCommandListener
 {
 public:
-    MTest2TableHandler(const DBTableMeta * m)
+    MTest2TableHandler(const MysqlMeta * m)
     {
-        meta = (DBTableMeta*)m;
+        meta = (MysqlMeta*)m;
     }
-	virtual int 	OnGet(int ret,vector<DBTableField> & data,vector<uint8_t>  & cb)
-	{
-        LOG_DEBUG("on get cb size = %u cb = %s ",cb.size(),(char*)&cb[0]);
-        if(!ret)
-        {
-            LOG_INFO("get result :\n%s",meta->Visual(data).c_str());            
-        }
-        else
-        {
-            LOG_FATAL("error = %d when get !",ret);
-        }
+    virtual  int     OnResponse(MysqlResponse & rsp)
+    {
+        LOG_DEBUG("test2 on get cb size = %u = [%s] ret = %d",rsp.cb.iUsed,(char*)rsp.cb.pBuffer,rsp.ret);
         return 0;
     }
 private:
-    DBTableMeta* meta;
+    MysqlMeta* meta;
 };
 
 
-int TestAgent(const  vector < DBProxyOption > & proxyList, 
-        const std :: vector < DBTableMeta > & metas,
-        std::vector<DBTableField> & data,vector < DBTableField > & pks)
+int TestAgent(const  vector < MysqlProxyOption > & proxyList, 
+        const std :: vector < MysqlMeta > & metas,
+        std::vector<MysqlField> & data,vector < MysqlField > & pks)
 {
     MysqlAgent  agent;
     if(agent.Init(proxyList,metas))
     {
         LOG_ERROR("init error !");
         return -1;
-    }    
-    agent.RegisterTableHandler("mtest1", DBTableHandlerPtr(new MTest1TableHandler(&(metas[0]))));
-    agent.RegisterTableHandler("mtest2", DBTableHandlerPtr(new MTest2TableHandler(&(metas[1]))));
+    }
+    agent.SetListener(MysqlCommandListenerPtr(new MTest1TableHandler(&(metas[0]))));
     if(agent.Start())
     {
         LOG_ERROR("start agent error !");
@@ -73,11 +56,11 @@ int TestAgent(const  vector < DBProxyOption > & proxyList,
     }
     char line[512];
     string sline;
-    DBTableOpReq  req;
+    MysqlRequest  req;
 
-    vector<uint8_t> cb;
-    cb.resize(20);
-    strncpy((char*)&(cb[0]),"this is a cb",cb.size()-1);
+    Buffer cb;
+    cb.Create(20);
+    strncpy((char*)&(cb.pBuffer[0]),"this is a cb",cb.iUsed-1);
     while(true)
     {
         agent.Polling(2);
@@ -104,14 +87,14 @@ int TestAgent(const  vector < DBProxyOption > & proxyList,
         }
         if(sline == "create")
         {
-            req.op = OP_CREATE_TB;
+            req.op = MYSQL_REQ_CREATE_TB;
             req.tblname = tblname;
             ret = agent.Request(req);
         }
         if(sline == "get")
         {
             req.Init();
-            req.op = OP_SELECT;
+            req.op = MYSQL_REQ_SELECT;
             req.tblname = tblname;
             req.cb = cb;
             req.data = pks;
@@ -125,7 +108,7 @@ int TestAgent(const  vector < DBProxyOption > & proxyList,
             req.data = data;
             data[1].u_data.i32 = 80000;
             req.Init();
-            req.op = OP_INSERT;
+            req.op = MYSQL_REQ_INSERT;
             req.cb = cb;
             req.tblname = tblname;
             req.data = data;
@@ -135,7 +118,7 @@ int TestAgent(const  vector < DBProxyOption > & proxyList,
         {            
             data[1].u_data.i32 = -1273 + rand();
             req.Init();
-            req.op = OP_UPDATE;
+            req.op = MYSQL_REQ_UPDATE;
             req.tblname = tblname;            
             req.cb = cb;
             req.data = data;
@@ -145,14 +128,13 @@ int TestAgent(const  vector < DBProxyOption > & proxyList,
         if(sline == "delete" )
         {
             req.Init();
-            req.op = OP_DELETE;
+            req.op = MYSQL_REQ_DELETE;
             req.tblname = tblname;            
             req.data = pks;
             req.cb = cb;
             ret = agent.Request(req);
         }
         LOG_DEBUG("request ret = %d",ret);
-
     }
     agent.Destroy();    
     //get 
@@ -161,12 +143,12 @@ int TestAgent(const  vector < DBProxyOption > & proxyList,
     //insert
     return 0;
 }
-int TestProxy(const DBProxyOption & option, vector < DBTableMeta > & v,
-             std::vector<DBTableField> & data,vector < DBTableField > & pks,
+int TestProxy(const MysqlProxyOption & option, vector < MysqlMeta > & v,
+             std::vector<MysqlField> & data,vector < MysqlField > & pks,
              vector < string > & selCols)
 {
     MysqlProxy proxy(NULL);
-    DBTableMeta & meta = v[0];
+    MysqlMeta & meta = v[0];
     if(proxy.Init(v))
     {
         LOG_FATAL("proxy init error !");
@@ -193,7 +175,7 @@ int TestProxy(const DBProxyOption & option, vector < DBTableMeta > & v,
         
         if(sline == "get")
         {
-            vector < DBTableField > res;
+            vector < MysqlField > res;
             if(proxy.Select(tblname,pks,selCols,res))
             {
                 LOG_FATAL("select errror !");
@@ -244,38 +226,38 @@ int main(int argc , char* argv[])
         LOG_ERROR("usage:%s agent|proxy",argv[0]);
         return -1;
     }
-    DBTableMeta meta;
+    MysqlMeta meta;
     meta.tblname = tblname;
-    DBTableFieldMeta field;
+    MysqlFieldMeta field;
     field.ispk = true;
     field.name = "gid";
-    field.type = DBTableFieldMeta::VAL_TYPE_UINT64;
+    field.type = MysqlFieldMeta::VAL_TYPE_UINT64;
     meta.cols.push_back(field);
     field.ispk = false;
 
     field.name = "field_int";
-    field.type = DBTableFieldMeta::VAL_TYPE_INT32;
+    field.type = MysqlFieldMeta::VAL_TYPE_INT32;
     meta.cols.push_back(field);
     
     field.name = "field_blob";
-    field.type = DBTableFieldMeta::VAL_TYPE_BLOB;
+    field.type = MysqlFieldMeta::VAL_TYPE_BLOB;
     meta.cols.push_back(field);
 
     field.name = "field_varchar";
-    field.type = DBTableFieldMeta::VAL_TYPE_VARCHAR;
+    field.type = MysqlFieldMeta::VAL_TYPE_VARCHAR;
     field.maxlen = 32;
     meta.cols.push_back(field);
 
     field.maxlen = 0;
     field.name = "field_text";
-    field.type = DBTableFieldMeta::VAL_TYPE_TEXT;
+    field.type = MysqlFieldMeta::VAL_TYPE_TEXT;
     meta.cols.push_back(field);
 
     field.name = "field_time";
-    field.type = DBTableFieldMeta::VAL_TYPE_DATETIME;
+    field.type = MysqlFieldMeta::VAL_TYPE_DATETIME;
     meta.cols.push_back(field);
     
-    vector < DBTableMeta >  tableMetas;
+    vector < MysqlMeta >  tableMetas;
     tableMetas.push_back(meta);
 
     /////////////////////////////////////
@@ -283,7 +265,7 @@ int main(int argc , char* argv[])
 
 
 
-    DBProxyOption option;
+    MysqlProxyOption option;
     option.cliflag = 0;
     option.dbname = "mtest";
     option.ip = "127.0.0.1";
@@ -292,14 +274,14 @@ int main(int argc , char* argv[])
     option.passwd = "123456";
     option.unisock = "";
 
-    std::vector<DBProxyOption>  proxyList;
+    std::vector<MysqlProxyOption>  proxyList;
     proxyList.push_back(option);
     /////////////////////////////////////
 
 
     
-    DBTableField col;
-    vector < DBTableField > pks;
+    MysqlField col;
+    vector < MysqlField > pks;
     col.name = "gid";
     col.u_data.u64 = 12345678;
     pks.push_back(col);
@@ -313,8 +295,8 @@ int main(int argc , char* argv[])
 
 
 
-    std::vector<DBTableField> data;
-    DBTableField d;
+    std::vector<MysqlField> data;
+    MysqlField d;
     d.name = "gid";
     d.u_data.u64 = 12345678;
     data.push_back(d);
@@ -323,28 +305,28 @@ int main(int argc , char* argv[])
 
     d.name = "field_int";
     d.u_data.i64 = -1234;
-    d.type = DBTableFieldMeta::VAL_TYPE_INT32;
+    d.type = MysqlFieldMeta::VAL_TYPE_INT32;
     data.push_back(d);
     
     d.name = "field_blob";
-    d.type = DBTableFieldMeta::VAL_TYPE_BLOB;
+    d.type = MysqlFieldMeta::VAL_TYPE_BLOB;
     memcpy(&d.buffer[0],"text blob",strlen("text block"));
 
     data.push_back(d);
 
     d.name = "field_varchar";
-    d.type = DBTableFieldMeta::VAL_TYPE_VARCHAR;
+    d.type = MysqlFieldMeta::VAL_TYPE_VARCHAR;
     strncpy(&d.buffer[0],"varchar test",d.buffer.size());
     data.push_back(d);
 
     d.name = "field_text";
-    d.type = DBTableFieldMeta::VAL_TYPE_TEXT;
+    d.type = MysqlFieldMeta::VAL_TYPE_TEXT;
     strncpy(&d.buffer[0],"text test",d.buffer.size());
 
     data.push_back(d);
 
     d.name = "field_time";
-    d.type = DBTableFieldMeta::VAL_TYPE_DATETIME;
+    d.type = MysqlFieldMeta::VAL_TYPE_DATETIME;
     d.u_data.time = time(NULL);
     data.push_back(d);
     /////////////////////////////////////

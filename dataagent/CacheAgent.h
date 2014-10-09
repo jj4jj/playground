@@ -27,13 +27,11 @@ class MemSerializer;
 
 class CacheAgent
 {
-public:    
-    typedef     typename google::protobuf::Message   MetaObject;
 public:
     int  Init(const CacheAgentOption  & cao,MemSerializer * seri);
     int  Polling(int    iProcPerTick);
     int  Destroy();
-    int  AddCacheListener(string typeName,DataListenerPtr ptr);
+    int  AddListener(string typeName,DataListenerPtr ptr);
 public:
     int  Get(void * obj,const Buffer & cb);
     int  Remove(void * obj,const Buffer & cb);
@@ -43,16 +41,16 @@ public:
 public:
     int  DispatchResult(string & cmd,string & type,string & key,
                     redisReply* reply,Buffer & cb,bool timeout); 
-    MetaObject*    FindObject(const string & key);
+    MemSerializer::MetaObject*    FindObject(const string & key);
     void           FreeObject(const string & key);
 protected:
     int  GetKey(void* obj,string & key);
-    MetaObject*    FindObject(MetaObject * obj);
+    MemSerializer::MetaObject*    FindObject(MemSerializer::MetaObject * obj);
 public:
     CacheAgent():serializer(NULL){}
 private:
     MemSerializer   *   serializer;
-    std::map<string,DataListenerPtr>  m_mpCacheListener;
+    std::map<string,DataListenerPtr>  m_mpListener;
     RedisAgent  *       redis;
-    unordered_map<string,shared_ptr<MetaObject> >  m_mpGetObjects;
+    unordered_map<string,MemSerializer::MetaObjectPtr>  m_mpGetObjects;
 };

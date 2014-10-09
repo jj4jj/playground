@@ -13,7 +13,7 @@ public:
         LOG_DEBUG("Cache Test");
         if(ret == CACHE_OK)
         {
-            CacheAgent::MetaObject*  mobj = (CacheAgent::MetaObject*)obj;
+            MemSerializer::MetaObject*  mobj = (MemSerializer::MetaObject*)obj;
             LOG_DEBUG(mobj->DebugString().c_str());
         }
         else if(ret == CACHE_NO_EXISTS)
@@ -60,7 +60,7 @@ int main(int argc,char* argv[])
     addr.port = 6379;
     cao.addrList.push_back(addr);
     cao.addrList.push_back(addr);    
-    ca.AddCacheListener(string("Cache"), DataListenerPtr(new TestCacheListener()));
+    ca.AddListener(string("Cache"), DataListenerPtr(new TestCacheListener()));
     if(ca.Init(cao,&seri))
     {
         LOG_ERROR("cache agent init error !");
