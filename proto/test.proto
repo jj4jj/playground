@@ -8,6 +8,11 @@ message Cache
 			optional	string	name	= 1;
 			optional	string	area	= 2;
 		};
+		message	_MaxLength
+		{
+			optional	uint32	name	= 1 [default=32];
+			optional	uint32	area	= 2	[default=5];
+		};
 		required	string		name		 =	1;
 		required	uint32		area		 =	2;
 		required	uint64		gid			 =  3;		

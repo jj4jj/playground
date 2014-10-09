@@ -3,7 +3,7 @@
 #include "base/stdinc.h"
 #include "base/Buffer.h"
 #include "algorithm/HashTable.h"
-#include "MemSerializer.h"
+#include "MetaSerializer.h"
 #include "DataListener.h"
 #include "RecoveryShareMem.h"
 #include "CacheAgent.h"
@@ -91,7 +91,7 @@ private:
     PFNHashCode     hashCode;
     PFNHashCompare  hashCmp;
     //remote cache
-    MemSerializer * memSerializer;
+    MetaSerializer * memSerializer;
     CacheAgent*     cacheAgent;
     DBAgent*        dbAgent;
     //
@@ -119,7 +119,7 @@ public:
     
 public:    
     std::map<string,DataSet>    datasets;
-    MemSerializer               memSerializer;
+    MetaSerializer               memSerializer;
     RecoveryShareMem            recoveryShareMem;
     CacheAgent                  cacheAgent;
     DBAgent                     dbAgent;    

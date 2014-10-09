@@ -54,7 +54,7 @@ struct  RecoveryShmFmt
 #pragma pack()
 
 
-class MemSerializer;
+class MetaSerializer;
 class RecoveryShareMem
 {
 public:
@@ -74,7 +74,7 @@ public:
     //don't call it generally , unless you know what you are doing !!
     void         DeleteSHM();
 private:
-    MemSerializer * m_pSerializer;
+    MetaSerializer * m_pSerializer;
     ShareMemory     m_shm;
     vector<RecoveryShareMemReg>     m_vecModules;
     RecoveryShmFmt* m_pFmtBase;

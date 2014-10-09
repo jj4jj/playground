@@ -3,7 +3,7 @@
 #include "base/Buffer.h"
 #include "DataListener.h"
 #include "db/MysqlAgent.h"
-#include "MemSerializer.h"
+#include "MetaSerializer.h"
 
 struct DBAgentOption
 {
@@ -26,7 +26,7 @@ class DBAgent
 {
 public:
     int  AddListener(string typeName,DataListenerPtr ptr);
-    int  Init(const DBAgentOption  & cao,MemSerializer * seri);
+    int  Init(const DBAgentOption  & cao,MetaSerializer * seri);
     int  GenerateMysqlMetas(vector<MysqlMeta> & metas,const vector<string> & tables);
     int  Polling(int    iProcPerTick);
     int  Destroy();
@@ -36,22 +36,23 @@ public:
     int  Insert(void * obj,const Buffer &  cb);       
     int  Update(void * obj,vector<string> & fields,const Buffer &  cb);   
     int  Exists(void*  obj,const Buffer &  cb);
+    int  CreateTable(const char* pszName);
 public:
     int  DispatchResult(MysqlResponse & rsp); 
-    MemSerializer::MetaObject*    FindObject(const string & key);
+    MetaSerializer::MetaObject*    FindObject(const string & key);
     void           FreeObject(const string & key);
 protected:
     int            GetPrimaryKey(void* obj,string & key);
     int            CreateObjectFromMysql(MysqlResponse & rsp,void ** ppObj);
     int            GenerateMysqlFields(vector<MysqlField> & data,void* obj,vector<string> * fields);
-    MemSerializer::MetaObject*    FindObject(MemSerializer::MetaObject * obj);
+    MetaSerializer::MetaObject*    FindObject(MetaSerializer::MetaObject * obj);
 public:
     DBAgent():serializer(NULL){}
 private:
-    MemSerializer   *   serializer;
+    MetaSerializer   *   serializer;
     MysqlAgent          mysql;
-    unordered_map<string,MemSerializer::MetaObjectPtr >  m_mpGetObjects;
-    MemSerializer::MetaObjectPtr                         m_ptrTmpObj;
+    unordered_map<string,MetaSerializer::MetaObjectPtr >  m_mpGetObjects;
+    MetaSerializer::MetaObjectPtr                         m_ptrTmpObj;
     std::map<string,DataListenerPtr>      m_mpListener;
 };
 

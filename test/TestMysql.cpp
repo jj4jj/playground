@@ -176,7 +176,7 @@ int TestProxy(const MysqlProxyOption & option, vector < MysqlMeta > & v,
         if(sline == "get")
         {
             vector < MysqlField > res;
-            if(proxy.Select(tblname,pks,selCols,res))
+            if(proxy.Select(tblname,string("where 1"),selCols,res))
             {
                 LOG_FATAL("select errror !");
             }
@@ -195,11 +195,11 @@ int TestProxy(const MysqlProxyOption & option, vector < MysqlMeta > & v,
         {
             data[1].u_data.i32 = -1273 + rand();
             
-            ret = proxy.Update(tblname,pks,data);
+            ret = proxy.Update(tblname,string("where 1"),data);
         }
         if(sline == "delete" )
         {
-            ret = proxy.Delete(tblname,pks);
+            ret = proxy.Delete(tblname,string("where 1"));
         }
         if(sline == "createdb" )
         {

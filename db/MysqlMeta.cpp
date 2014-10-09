@@ -26,18 +26,20 @@ int MysqlMeta::GetCreateTableSQL(string & sql)
 /*
 eg.
 CREATE TABLE IF NOT EXISTS company_user(     
-id int(10) UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,     
+id int(10) UNSIGNED AUTO_INCREMENT NOT NULL,     
 username VARCHAR(24) NOT NULL UNIQUE,     
 password VARCHAR(8) NOT NULL,     
 company_name VARCHAR(250) NOT NULL UNIQUE,     
 company_type VARCHAR(30) NOT NULL,     
 company_intro TEXT,     
 office_image TEXT,     
-register_date DATE NOT NULL
+register_date DATE NOT NULL,
+PRIMARY KEY()
 )ENGINE=InnoDB DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
 */
     sql = "CREATE TABLE IF NOT EXISTS "+tblname + " (";
     char tmpBuffer[128];
+    string pks = "";
     for(uint i = 0;i < cols.size(); ++i)
     {
         sql += cols[i].name + " "+ GetTypeString(cols[i].type);
@@ -47,16 +49,22 @@ register_date DATE NOT NULL
             sql += tmpBuffer;
         }
         sql += " NOT NULL";
+        sql += ",\n";
+    }
+    for(uint i = 0;i < cols.size(); ++i)
+    {
         if(cols[i].ispk)
         {
-            sql += " PRIMARY KEY ";
-        }
-        if(i + 1 < cols.size())
-        {
-            sql += ",\n";
+            if(i > 0)
+            {
+                pks += ",";
+            }
+            pks += cols[i].name;
         }
     }
-    sql += " )ENGINE=InnoDB DEFAULT CHARSET utf8 COLLATE utf8_general_ci";
+    sql += "PRIMARY KEY (";
+    sql += pks + ")\n";
+    sql += ")ENGINE=InnoDB DEFAULT CHARSET utf8 COLLATE utf8_general_ci";
     return 0;
 }
 int MysqlMeta::Init(vector<MysqlField> & colvs)
@@ -71,22 +79,31 @@ int MysqlMeta::Init(vector<MysqlField> & colvs)
     }
     return 0;
 }
-int MysqlMeta::GetUpdateTableSQL(const vector<MysqlField> & pks,const vector<MysqlField> & data,string & sql,MYSQL   *conn)
+int MysqlMeta::GetUpdateTableSQL(const string & where,const vector<MysqlField> & data,string & sql,MYSQL   *conn)
 {
     //eg. UPDATE <TABLE> SET C1=V1,C2=V2 WHERE 
     sql = "UPDATE ";
     sql += tblname + " SET ";
+    int first = 0;
     for(uint i = 0; i < data.size(); ++i)
     {
-        if(i != 0)
+        MysqlFieldMeta * field = GetFieldMeta(*this,data[i].name);
+        if(field->ispk)
+        {
+            continue;
+        }
+        if(first != 0)
         {
             sql += ",";
         }
         sql += data[i].name ;
         sql += "=";        
         sql += GetFieldValueSQL(data[i],conn);
+        ++first;
     }        
     sql += " WHERE ";
+    sql += where;
+    /*
     for(uint i = 0; i < pks.size(); ++i)
     {
         sql += pks[i].name + "=";
@@ -95,7 +112,8 @@ int MysqlMeta::GetUpdateTableSQL(const vector<MysqlField> & pks,const vector<Mys
         {
             sql += " AND ";
         }
-    }  
+    } 
+    */
     return 0;
 }
 int MysqlMeta::GetInsertTableSQL(const vector<MysqlField> & cols,string & sql,MYSQL   *conn)
@@ -105,30 +123,32 @@ int MysqlMeta::GetInsertTableSQL(const vector<MysqlField> & cols,string & sql,MY
     sql += tblname + "(";
     for(uint i = 0; i < cols.size(); ++i)
     {
-        sql += cols[i].name ;
-        if(i + 1 < cols.size())
+        if(i > 0)
         {
-            sql += ", ";
+            sql += ",";
         }
+        sql += cols[i].name ;
     }        
     sql += ") VALUES(";
     for(uint i = 0; i < cols.size(); ++i)
     {
-        sql += GetFieldValueSQL(cols[i],conn);
-        if(i + 1 < cols.size())
+        if(i > 0)
         {
-            sql += ", ";
+            sql += ",";
         }
+        sql += GetFieldValueSQL(cols[i],conn);
     }        
     sql += ")";//blabla
     return 0;
 }
-int MysqlMeta::GetDeleteTableSQL(const vector<MysqlField> & pks,string & sql,MYSQL   *conn)
+int MysqlMeta::GetDeleteTableSQL(const string & where,string & sql,MYSQL   *conn)
 {
     //eg. DELETE FROM TABLE WHERE X=X
     sql = "DELETE FROM ";
     sql += tblname;
     sql += " WHERE ";
+    sql += where;
+    /*
     for(uint i = 0;i < pks.size(); ++i)
     {   
         if(pks[i].type == MysqlFieldMeta::VAL_TYPE_DATETIME)
@@ -148,30 +168,46 @@ int MysqlMeta::GetDeleteTableSQL(const vector<MysqlField> & pks,string & sql,MYS
             sql += " AND ";
         }        
     }
+    */
     return 0;
 }
-int MysqlMeta::GetSelectTableSQL(const vector<MysqlField> & pks,const vector<string> & selCols,string & sql,MYSQL   *conn)
+int MysqlMeta::GetSelectTableSQL(const string & where,const vector<string> & selCols,string & sql,MYSQL   *conn)
 {
     //eg. SELECT FROM TABLE WHERE X=X
     sql = "SELECT ";
+    vector<string>  realFieldSels;        
     if(selCols.empty())
     {
-        sql += "* ";
+        sql += "*";
     }
     else
     {
-        for(uint i = 0 ;i < selCols.size(); ++i)
+        for(uint i = 0 ;i < cols.size(); ++i)
         {
-            sql += selCols[i];
-            if(i + 1 < selCols.size())
+            if(cols[i].ispk)
             {
-                sql +=  ", ";
-            }    
+                realFieldSels.push_back(cols[i].name);
+            }
+            else if(std::find(selCols.begin(),selCols.end(),cols[i].name) != selCols.end())
+            {
+                realFieldSels.push_back(cols[i].name);
+            }
+        }
+        // --------------------------------------------------------------------------
+        for(uint i = 0 ;i < realFieldSels.size(); ++i)
+        {
+            if(i > 0)
+            {
+                sql += ",";
+            }
+            sql += realFieldSels[i];
         }
     }
     sql += " FROM ";
     sql += tblname;
     sql += " WHERE ";
+    sql += where;
+    /*
     for(uint i = 0;i < pks.size(); ++i)
     {   
         if(pks[i].type == MysqlFieldMeta::VAL_TYPE_DATETIME)
@@ -191,6 +227,7 @@ int MysqlMeta::GetSelectTableSQL(const vector<MysqlField> & pks,const vector<str
             sql += " AND ";
         }        
     }
+    */
     return 0;        
 }
 string   MysqlMeta::GetFieldValueSQL(const MysqlField & col,MYSQL   *conn )

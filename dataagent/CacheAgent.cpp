@@ -1,5 +1,5 @@
 #include "base/Log.h"
-#include "MemSerializer.h"
+#include "MetaSerializer.h"
 #include "RedisAgent.h"
 #include "hiredis.h"
 #include "CacheAgent.h"
@@ -90,7 +90,7 @@ int  CacheAgent::DispatchResult(string & cmd,string & type,string & key,
                 //
                 int ret = CACHE_OK;
                 Buffer  buff(reply->str,reply->len);
-                MemSerializer::MetaObject* obj = NULL;
+                MetaSerializer::MetaObject* obj = NULL;
                 if(serializer->UnPack(type.c_str(),buff,(void**)&obj))
                 {
                     LOG_FATAL("message unpack error !");
@@ -100,7 +100,7 @@ int  CacheAgent::DispatchResult(string & cmd,string & type,string & key,
                 {
                     string key = "";
                     assert(0 == GetKey(obj,key));
-                    m_mpGetObjects[key] = shared_ptr<MemSerializer::MetaObject>(obj);
+                    m_mpGetObjects[key] = shared_ptr<MetaSerializer::MetaObject>(obj);
                 }
                 return m_mpListener[type]->OnGet(ret,obj,cb);
             }
@@ -136,7 +136,7 @@ int  CacheAgent::DispatchResult(string & cmd,string & type,string & key,
     return 0;
 }
 
-int  CacheAgent::Init(const CacheAgentOption  & cao,MemSerializer * seri)
+int  CacheAgent::Init(const CacheAgentOption  & cao,MetaSerializer * seri)
 {
     if(RedisAgent::Instance().Init(cao.addrList,
             RedisCommandListenerPtr(new CachAgentRedisCommandListener(this)) ) ) 
@@ -259,7 +259,7 @@ int  CacheAgent::GetKey(void* obj,string & key)
     }
     return 0;
 }
-MemSerializer::MetaObject*    CacheAgent::FindObject(const string & key)
+MetaSerializer::MetaObject*    CacheAgent::FindObject(const string & key)
 {
     if(m_mpGetObjects.find(key) != m_mpGetObjects.end())
     {
@@ -271,7 +271,7 @@ void        CacheAgent::FreeObject(const string & key)
 {
     m_mpGetObjects.erase(key);
 }
-MemSerializer::MetaObject*    CacheAgent::FindObject(MemSerializer::MetaObject * obj)
+MetaSerializer::MetaObject*    CacheAgent::FindObject(MetaSerializer::MetaObject * obj)
 {
     string key;
     if(GetKey(obj,key))

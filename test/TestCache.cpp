@@ -1,6 +1,6 @@
 #include "base/Log.h"
 #include "base/Buffer.h"
-#include "dataagent/MemSerializer.h"
+#include "dataagent/MetaSerializer.h"
 #include "dataagent/CacheAgent.h"
 #include "proto/meta/meta.pb.h"
 #include "proto/meta/test.pb.h"
@@ -13,7 +13,7 @@ public:
         LOG_DEBUG("Cache Test");
         if(ret == CACHE_OK)
         {
-            MemSerializer::MetaObject*  mobj = (MemSerializer::MetaObject*)obj;
+            MetaSerializer::MetaObject*  mobj = (MetaSerializer::MetaObject*)obj;
             LOG_DEBUG(mobj->DebugString().c_str());
         }
         else if(ret == CACHE_NO_EXISTS)
@@ -41,7 +41,7 @@ public:
 
 int main(int argc,char* argv[])
 {
-    MemSerializer   seri;
+    MetaSerializer   seri;
     
     if(seri.Init("meta"))
     {

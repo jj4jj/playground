@@ -1,4 +1,4 @@
-#include "dataagent/MemSerializer.h"
+#include "dataagent/MetaSerializer.h"
 #include "proto/meta/meta.pb.h"
 #include "base/Log.h"
 
@@ -20,7 +20,7 @@ void SetRole(meta::Role * pR)
 
 int main(int argc,char* argv[])
 {
-    MemSerializer   seri;
+    MetaSerializer   seri;
     if(seri.Init("meta"))
     {
         LOG_ERROR("meta proto init error !");

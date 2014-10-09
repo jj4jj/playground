@@ -1,10 +1,10 @@
 #include "base/Log.h"
-#include "MemSerializer.h"
+#include "MetaSerializer.h"
 
 using namespace ::google::protobuf;
 
 #if 1
-int     MemSerializer::Init(const char* pszNameSpace,const char* pszMetaFileName)
+int     MetaSerializer::Init(const char* pszNameSpace,const char* pszMetaFileName)
 {
     assert(pszNameSpace);
     //loading meta
@@ -29,12 +29,12 @@ int     MemSerializer::Init(const char* pszNameSpace,const char* pszMetaFileName
     
     return 0;
 }
-int     MemSerializer::GetPackSize(void* obj)
+int     MetaSerializer::GetPackSize(void* obj)
 {
     Message*    msg  =  (Message*)obj;//m_pObjFactory->GetPrototype(meta);
     return    msg->ByteSize();
 }
-int     MemSerializer::Pack(void* obj,Buffer & buffer)
+int     MetaSerializer::Pack(void* obj,Buffer & buffer)
 {
     Message*    msg  =  (Message*)obj;//m_pObjFactory->GetPrototype(meta);
     //const Descriptor* meta =  msg->GetDescriptor();
@@ -48,7 +48,7 @@ int     MemSerializer::Pack(void* obj,Buffer & buffer)
     buffer.iUsed = msg->ByteSize();
     return 0;
 }
-int     MemSerializer::UnPack(const char* pszMetaName,Buffer & buffer,void * * ppObj)
+int     MetaSerializer::UnPack(const char* pszMetaName,Buffer & buffer,void * * ppObj)
 {
     *ppObj = NULL;
     string typeName = string(pszMetaName);
@@ -67,22 +67,23 @@ int     MemSerializer::UnPack(const char* pszMetaName,Buffer & buffer,void * * p
     *ppObj = msg;
     return 0;
 }
-void    MemSerializer::Visual(void* pObj,string & s)
+void    MetaSerializer::Visual(void* pObj,string & s)
 {
     Message*  msg = (Message*)pObj;
     s = msg->DebugString();
 }
-const   Descriptor*    MemSerializer::GetDescriptor(const string & typeName)
+const   Descriptor*    MetaSerializer::GetDescriptor(const string & typeName)
 {
     string fullName = m_strNameSpace+"."+typeName;
     return m_pDescriptorPool->FindMessageTypeByName(fullName);
 }
-string     MemSerializer::GetTypeName(void* obj)
+string     MetaSerializer::GetTypeName(void* obj)
 {
     MetaObject * msg = (MetaObject*)obj;
-    return msg->GetTypeName();
+    return    msg->GetDescriptor()->name();
+    //return msg->GetTypeName();
 }
-vector<string> & MemSerializer::GetTypePrimaryKey(const Descriptor* desc)
+vector<string> & MetaSerializer::GetTypePrimaryKey(const Descriptor* desc)
 {    
     if(!desc)
     {
@@ -114,10 +115,38 @@ vector<string> & MemSerializer::GetTypePrimaryKey(const Descriptor* desc)
     }
     return m_mpDescPrimaryKey[desc]; 
 } 
+int    MetaSerializer::GetFieldMaxLength(const google::protobuf::Descriptor* desc,const string & fieldName)
+{
+    if(!desc)
+    {
+        LOG_ERROR("descriptor not found !");
+        return 0;
+    }    
+    //GET TYPE#KEY1&KEY2    VALUE
+    const Descriptor  * pk = desc->FindNestedTypeByName(string("_MaxLength"));
+    if(!pk)
+    {
+        LOG_ERROR("msg name = %s pk not found !",desc->name().c_str());
+        return 0;
+    }
+    
+    const FieldDescriptor* fd = NULL;
+    for(int i = 0 ;i < pk->field_count(); ++i)
+    {
+        fd = pk->field(i);
+        if(fd->name() == fieldName)
+        {
+            //default value
+            return fd->default_value_uint32();
+        }
+    }
+    return 0;
+}
+
 #endif
 
 #if 1
-MemSerializer::MetaObject * MemSerializer::NewObject(string & typeName)
+MetaSerializer::MetaObject * MetaSerializer::NewObject(string & typeName)
 {
     string metaName = m_strNameSpace+"."+typeName;
     const Descriptor  *   meta = m_pDescriptorPool->FindMessageTypeByName(metaName);
@@ -147,50 +176,50 @@ if(!field)\
 }
 #endif
 
-int     MemSerializer::SetObjectFieldI32(MetaObject* obj,string & fieldName,int32_t val)
+int     MetaSerializer::SetObjectFieldI32(MetaObject* obj,string & fieldName,int32_t val)
 {
     GET_FIELD(obj,fieldName)
     obj->GetReflection()->SetInt32(obj,field,val);
     return  0;
 }
-int     MemSerializer::SetObjectFieldI64(MetaObject* obj,string & fieldName,int64_t val)
+int     MetaSerializer::SetObjectFieldI64(MetaObject* obj,string & fieldName,int64_t val)
 {
     GET_FIELD(obj,fieldName)
     obj->GetReflection()->SetInt64(obj,field,val);
     return  0;
 }
 
-int     MemSerializer::SetObjectFieldU32(MetaObject* obj,string & fieldName,uint32_t val)
+int     MetaSerializer::SetObjectFieldU32(MetaObject* obj,string & fieldName,uint32_t val)
 {
     GET_FIELD(obj,fieldName)
     obj->GetReflection()->SetUInt32(obj,field,val);
     return  0;
 }
-int     MemSerializer::SetObjectFieldU64(MetaObject* obj,string & fieldName,uint64_t val)
+int     MetaSerializer::SetObjectFieldU64(MetaObject* obj,string & fieldName,uint64_t val)
 {
     GET_FIELD(obj,fieldName)
     obj->GetReflection()->SetUInt64(obj,field,val);
     return  0;
 }
-int     MemSerializer::SetObjectFieldR32(MetaObject* obj,string & fieldName,float val)
+int     MetaSerializer::SetObjectFieldR32(MetaObject* obj,string & fieldName,float val)
 {
     GET_FIELD(obj,fieldName)
     obj->GetReflection()->SetFloat(obj,field,val);
     return  0;
 }
-int     MemSerializer::SetObjectFieldR64(MetaObject* obj,string & fieldName,double val)
+int     MetaSerializer::SetObjectFieldR64(MetaObject* obj,string & fieldName,double val)
 {
     GET_FIELD(obj,fieldName)
     obj->GetReflection()->SetDouble(obj,field,val);
     return  0;
 }
-int     MemSerializer::SetObjectFieldSTR(MetaObject* obj,string & fieldName,string & val)
+int     MetaSerializer::SetObjectFieldSTR(MetaObject* obj,string & fieldName,string & val)
 {
     GET_FIELD(obj,fieldName)
     obj->GetReflection()->SetString(obj,field,val);
     return  0;
 }
-int     MemSerializer::SetObjectFieldOBJ(MetaObject* obj,string & fieldName,MetaObject * val)
+int     MetaSerializer::SetObjectFieldOBJ(MetaObject* obj,string & fieldName,MetaObject * val)
 {
     GET_FIELD(obj,fieldName)
     obj->GetReflection()->SetAllocatedMessage(obj,val,field);
@@ -199,49 +228,49 @@ int     MemSerializer::SetObjectFieldOBJ(MetaObject* obj,string & fieldName,Meta
 
 //----------------------------------------------------------------------------------------
 
-int     MemSerializer::GetObjectFieldI32(MetaObject* obj,string & fieldName,int32_t & val)
+int     MetaSerializer::GetObjectFieldI32(MetaObject* obj,string & fieldName,int32_t & val)
 {
     GET_FIELD(obj,fieldName)
     val = obj->GetReflection()->GetInt32(*obj,field);
     return 0;
 }
-int     MemSerializer::GetObjectFieldI64(MetaObject* obj,string & fieldName,int64_t & val)
+int     MetaSerializer::GetObjectFieldI64(MetaObject* obj,string & fieldName,int64_t & val)
 {
     GET_FIELD(obj,fieldName)
     val = obj->GetReflection()->GetInt64(*obj,field);
     return 0;
 }
-int     MemSerializer::GetObjectFieldU32(MetaObject* obj,string & fieldName,uint32_t & val)
+int     MetaSerializer::GetObjectFieldU32(MetaObject* obj,string & fieldName,uint32_t & val)
 {
     GET_FIELD(obj,fieldName)
     val = obj->GetReflection()->GetUInt32(*obj,field);
     return 0;
 }
-int     MemSerializer::GetObjectFieldU64(MetaObject* obj,string & fieldName,uint64_t & val)
+int     MetaSerializer::GetObjectFieldU64(MetaObject* obj,string & fieldName,uint64_t & val)
 {
     GET_FIELD(obj,fieldName)
     val = obj->GetReflection()->GetUInt64(*obj,field);
     return 0;
 }
-int     MemSerializer::GetObjectFieldR32(MetaObject* obj,string & fieldName,float & val)
+int     MetaSerializer::GetObjectFieldR32(MetaObject* obj,string & fieldName,float & val)
 {
     GET_FIELD(obj,fieldName)
     val = obj->GetReflection()->GetFloat(*obj,field);
     return 0;
 }
-int     MemSerializer::GetObjectFieldR64(MetaObject* obj,string & fieldName,double & val)
+int     MetaSerializer::GetObjectFieldR64(MetaObject* obj,string & fieldName,double & val)
 {
     GET_FIELD(obj,fieldName)
     val = obj->GetReflection()->GetDouble(*obj,field);
     return 0;
 }
-int     MemSerializer::GetObjectFieldSTR(MetaObject* obj,string & fieldName,string  & val)
+int     MetaSerializer::GetObjectFieldSTR(MetaObject* obj,string & fieldName,string  & val)
 {
     GET_FIELD(obj,fieldName)
     val = obj->GetReflection()->GetString(*obj,field);
     return 0;
 }
-int     MemSerializer::GetObjectFieldOBJ(MetaObject* obj,string & fieldName,MetaObject * * val)
+int     MetaSerializer::GetObjectFieldOBJ(MetaObject* obj,string & fieldName,MetaObject * * val)
 {
     GET_FIELD(obj,fieldName)
     *val = const_cast<MetaObject*>( &(obj->GetReflection()->GetMessage(*obj,field)) );

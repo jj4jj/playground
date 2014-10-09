@@ -8,7 +8,7 @@
 using google::protobuf::Descriptor;
 using google::protobuf::FieldDescriptor;
 
-class MemSerializer
+class MetaSerializer
 {
 public:
     typedef     typename google::protobuf::Message   MetaObject;
@@ -55,7 +55,7 @@ public:
 
 public:
     vector<string> & GetTypePrimaryKey(const google::protobuf::Descriptor* desc);
-
+    int    GetFieldMaxLength(const google::protobuf::Descriptor* desc,const string & fieldName);
 private:
     string                                  m_strNameSpace;
     google::protobuf::DescriptorPool*       m_pDescriptorPool;

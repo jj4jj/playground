@@ -113,16 +113,16 @@ int     MysqlProxy::DispatchReq(const MysqlRequest & req)
     {
         case MYSQL_REQ_SELECT:
             //
-            rsp.ret =  Select(req.tblname,req.data,req.fields,rsp.data);
+            rsp.ret =  Select(req.tblname,req.where,req.fields,rsp.data);
             break;
         case MYSQL_REQ_INSERT:
             rsp.ret =  Insert(req.tblname,req.data);
             break;
         case MYSQL_REQ_UPDATE:
-            rsp.ret =  Update(req.tblname,req.data,req.data);
+            rsp.ret =  Update(req.tblname,req.where,req.data);
             break;
         case MYSQL_REQ_DELETE:
-            rsp.ret =  Delete(req.tblname,req.data);
+            rsp.ret =  Delete(req.tblname,req.where);
             break;
         case MYSQL_REQ_CREATE_TB:
         {
@@ -157,20 +157,20 @@ MysqlMeta*   MysqlProxy::GetTableMeta(const string & name)
     }
     return NULL;
 }
-int     MysqlProxy::Select(const string & tblname,const vector<MysqlField> & pks,
-                    const vector<string> & selCols, vector<MysqlField> & cols )
+int     MysqlProxy::Select(const string & tblname,const string & where,
+                    const vector<string> & selCols, vector<MysqlField> & cols)
 {
     MysqlMeta* meta = GetTableMeta(tblname);
     if(!meta)
     {
         return     MYSQL_RESULT_NO_META;
     }
-    if(pks.empty())
+    if(where.length() <= 0)
     {
         return     MYSQL_RESULT_GET_NO_PK;
     }
     string sql ;        
-    int ret = meta->GetSelectTableSQL(pks,selCols,sql,conn);
+    int ret = meta->GetSelectTableSQL(where,selCols,sql,conn);
     if(ret)
     {
         return MYSQL_RESULT_SQL_GEN_ERR;
@@ -251,7 +251,7 @@ int     MysqlProxy::Insert(const string & table,const std::vector<MysqlField> & 
     }
     return MYSQL_RESULT_OK;        
 }
-int     MysqlProxy::Update(const  string &  table,const std::vector<MysqlField> & pks,const std::vector<MysqlField> & data)
+int     MysqlProxy::Update(const  string &  table,const string & where,const std::vector<MysqlField> & data)
 {
     MysqlMeta * meta = GetTableMeta(table);
     if(!meta)
@@ -260,7 +260,7 @@ int     MysqlProxy::Update(const  string &  table,const std::vector<MysqlField> 
         return MYSQL_RESULT_NO_META;
     }
     string sql = "";
-    int ret = meta->GetUpdateTableSQL(pks, data,sql,conn);
+    int ret = meta->GetUpdateTableSQL(where, data,sql,conn);
     if(ret)
     {
         return MYSQL_RESULT_SQL_GEN_ERR;
@@ -274,7 +274,7 @@ int     MysqlProxy::Update(const  string &  table,const std::vector<MysqlField> 
     
     return MYSQL_RESULT_OK;        
 }
-int     MysqlProxy::Delete(const string & table,const std::vector<MysqlField> & pks)
+int     MysqlProxy::Delete(const string & table,const string & where)
 {
     //delete from <table> where pk
     MysqlMeta * meta = GetTableMeta(table);
@@ -285,7 +285,7 @@ int     MysqlProxy::Delete(const string & table,const std::vector<MysqlField> & 
     }
     //eg. DELETE FROM <TABLE> WHERE  PKS
     string sql = "";
-    int ret = meta->GetDeleteTableSQL(pks,sql,conn);
+    int ret = meta->GetDeleteTableSQL(where,sql,conn);
     if(ret)
     {
         return MYSQL_RESULT_SQL_GEN_ERR;

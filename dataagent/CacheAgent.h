@@ -3,7 +3,7 @@
 #include "base/Buffer.h"
 #include "DataListener.h"
 #include "RedisAgent.h"
-#include "MemSerializer.h"
+#include "MetaSerializer.h"
 
 
 
@@ -23,12 +23,12 @@ enum    CacheResult
 };
 
 
-class MemSerializer;
+class MetaSerializer;
 
 class CacheAgent
 {
 public:
-    int  Init(const CacheAgentOption  & cao,MemSerializer * seri);
+    int  Init(const CacheAgentOption  & cao,MetaSerializer * seri);
     int  Polling(int    iProcPerTick);
     int  Destroy();
     int  AddListener(string typeName,DataListenerPtr ptr);
@@ -41,16 +41,16 @@ public:
 public:
     int  DispatchResult(string & cmd,string & type,string & key,
                     redisReply* reply,Buffer & cb,bool timeout); 
-    MemSerializer::MetaObject*    FindObject(const string & key);
+    MetaSerializer::MetaObject*    FindObject(const string & key);
     void           FreeObject(const string & key);
 protected:
     int  GetKey(void* obj,string & key);
-    MemSerializer::MetaObject*    FindObject(MemSerializer::MetaObject * obj);
+    MetaSerializer::MetaObject*    FindObject(MetaSerializer::MetaObject * obj);
 public:
     CacheAgent():serializer(NULL){}
 private:
-    MemSerializer   *   serializer;
+    MetaSerializer   *   serializer;
     std::map<string,DataListenerPtr>  m_mpListener;
     RedisAgent  *       redis;
-    unordered_map<string,MemSerializer::MetaObjectPtr>  m_mpGetObjects;
+    unordered_map<string,MetaSerializer::MetaObjectPtr>  m_mpGetObjects;
 };

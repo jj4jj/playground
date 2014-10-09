@@ -54,6 +54,18 @@ struct MysqlFieldMeta
     string  typeName;
     int     maxlen;
     bool    ispk;
+public:
+    MysqlFieldMeta()
+    {
+        Init();
+    }
+    void    Init()
+    {
+        ispk = false;
+        maxlen = 0;
+        type = 0;
+        name = typeName = "";
+    }
 };
 struct MysqlMeta
 {
@@ -63,10 +75,10 @@ public:
     const char*  GetTypeString(uint8_t type);
     int GetCreateTableSQL(string & sql);
     int Init(vector<MysqlField> & colvs);
-    int GetSelectTableSQL(const vector<MysqlField> & pks,const vector<string> & selCols,string & sql,MYSQL   *conn);
-    int GetUpdateTableSQL(const vector<MysqlField> & pks,const vector<MysqlField> & data,string & sql,MYSQL   *conn );
-    int GetInsertTableSQL(const vector<MysqlField> & cols,string & sql,MYSQL   *conn);
-    int GetDeleteTableSQL(const vector<MysqlField> & pks,string & sql,MYSQL   *conn);
+    int GetSelectTableSQL(const string & where,const vector<string> & selCols,string & sql,MYSQL   *conn);
+    int GetUpdateTableSQL(const string & where,const vector<MysqlField> & data,string & sql,MYSQL   *conn );
+    int GetInsertTableSQL(const vector<MysqlField> & data,string & sql,MYSQL   *conn);
+    int GetDeleteTableSQL(const string & where,string & sql,MYSQL   *conn);
     string GetFieldValueSQL(const MysqlField & field,MYSQL   *conn);
     int SetFieldValue(MysqlField & col,char* data,uint64_t datalen);
     string    Visual(const std::vector<MysqlField>   & vc);

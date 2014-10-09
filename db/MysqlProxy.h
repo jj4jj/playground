@@ -59,7 +59,7 @@ struct MysqlRequest
     string tblname;
     int op;//op type : select insert update delete    
     string                where;
-    vector<MysqlField>  data;
+    vector<MysqlField>    data;
     vector<string>        fields;
     Buffer                cb;
     void Init()
@@ -94,11 +94,11 @@ public:
     int     CreateDB(const string & name);
     int     CreateTable(MysqlMeta & meta);
     int     DispatchReq(const MysqlRequest & req);
-    int     Select(const string & tblname,const vector<MysqlField> & pks,
+    int     Select(const string & tblname,const string & where,
                     const vector<string> & selCols, vector<MysqlField> & cols);
     int     Insert(const string & table,const std::vector<MysqlField> & data);
-    int     Update(const string & table,const std::vector<MysqlField> & pks,const std::vector<MysqlField> & data);
-    int     Delete(const string &  table,const std::vector<MysqlField> & pks);
+    int     Update(const string & table,const string & where,const std::vector<MysqlField> & data);
+    int     Delete(const string &  table,const string & where);
     int     ExecuteSQL(const string & sql);
     void    Destroy();
     inline  int   GetLastErrNo(){if(conn) return mysql_errno(conn);return 0;}

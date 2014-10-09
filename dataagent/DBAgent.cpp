@@ -1,5 +1,5 @@
 #include "base/Log.h"
-#include "MemSerializer.h"
+#include "MetaSerializer.h"
 #include "RedisAgent.h"
 #include "hiredis.h"
 #include "DataAgent.h"
@@ -28,6 +28,10 @@ public :
 public :
     virtual  int     OnResponse(MysqlResponse & rsp)
     {
+        if(rsp.ret >= DATA_MYSQL_ERR_START )
+        {
+            LOG_ERROR("mysql error = %d",rsp.ret-DATA_MYSQL_ERR_START);
+        }
         return agent->DispatchResult(rsp);
     }
 };
@@ -121,6 +125,7 @@ int DBAgent::GenerateMysqlMetas(vector<MysqlMeta> & metas,const vector<string> &
             LOG_FATAL("not found table = %s descriptor !",tables[i].c_str());
             return -1;
         }
+        
         vector<string>  pks = serializer->GetTypePrimaryKey(desc);
         if(pks.empty())
         {
@@ -129,15 +134,17 @@ int DBAgent::GenerateMysqlMetas(vector<MysqlMeta> & metas,const vector<string> &
         }
         for(int j = 0;j < desc->field_count(); ++j)
         {
-            MysqlFieldMeta  fieldMeta;     
+            MysqlFieldMeta  fieldMeta;   
+            fieldMeta.Init();
             const FieldDescriptor * field = desc->field(j);
             fieldMeta.name = field->name();
             fieldMeta.maxlen = 0;
-            fieldMeta.typeName = field->type_name();
+            fieldMeta.typeName = desc->name()+"."+field->type_name();
             if(std::find(pks.begin(),pks.end(),fieldMeta.name) != pks.end())
             {
-                fieldMeta.ispk = 1;
+                fieldMeta.ispk = true;
             }
+            fieldMeta.maxlen = serializer->GetFieldMaxLength(desc,fieldMeta.name);            
             switch(field->cpp_type())
             {
                 case FieldDescriptor::CPPTYPE_BOOL:
@@ -177,7 +184,7 @@ int DBAgent::GenerateMysqlMetas(vector<MysqlMeta> & metas,const vector<string> &
     }//end for table meta    
     return 0;
 }
-int  DBAgent::Init(const DBAgentOption  & cao,MemSerializer * seri)
+int  DBAgent::Init(const DBAgentOption  & cao,MetaSerializer * seri)
 {
     vector<MysqlMeta>    metas;
     serializer = seri;
@@ -186,11 +193,17 @@ int  DBAgent::Init(const DBAgentOption  & cao,MemSerializer * seri)
         LOG_ERROR("generate db table metas error !");
         return -1;
     }
+    mysql.SetListener(MysqlCommandListenerPtr(new DBAgentCommandListener(this)));
     if(mysql.Init(cao.addrList,metas) ) 
     {
         LOG_ERROR("redis agent init error !");
         return -1;
     }            
+    if(mysql.Start())
+    {
+        LOG_ERROR("mysql thread start !");
+        return -1;
+    }
     return 0;
 }
 int  DBAgent::Polling(int    iProcPerTick)
@@ -208,7 +221,7 @@ int  DBAgent::Destroy()
 #if 1
 int  DBAgent::GenerateMysqlFields(vector<MysqlField> & data,void* obj,vector<string> * fields)
 {
-    MemSerializer::MetaObject * metaObj = (MemSerializer::MetaObject*)obj;
+    MetaSerializer::MetaObject * metaObj = (MetaSerializer::MetaObject*)obj;
     int count = metaObj->GetDescriptor()->field_count();
     MysqlField    dbfield;
     for(int i = 0 ;i < count ; ++i)
@@ -292,6 +305,7 @@ int  DBAgent::GenerateMysqlFields(vector<MysqlField> & data,void* obj,vector<str
         {
             continue;        
         }
+        data.push_back(dbfield);
     }
     return 0;
 }
@@ -304,8 +318,8 @@ int  DBAgent::CreateObjectFromMysql(MysqlResponse & rsp,void ** ppObj)
         return DATA_INTERNAL_ERR;
     }
     /////////////////////////////////    
-    MemSerializer::MetaObject* obj = serializer->NewObject(rsp.tblname);    
-    MemSerializer::MetaObjectPtr   ptrObj = MemSerializer::MetaObjectPtr(obj);
+    MetaSerializer::MetaObject* obj = serializer->NewObject(rsp.tblname);    
+    MetaSerializer::MetaObjectPtr   ptrObj = MetaSerializer::MetaObjectPtr(obj);
     for(uint i = 0;i < rsp.data.size(); ++i)
     {
         MysqlField & mf = rsp.data[i];
@@ -323,7 +337,7 @@ int  DBAgent::CreateObjectFromMysql(MysqlResponse & rsp,void ** ppObj)
             return DATA_UNPACK_ERROR;
         }
                
-        MemSerializer::MetaObject * fieldObj = NULL;        
+        MetaSerializer::MetaObject * fieldObj = NULL;        
         if(MysqlFieldMeta::VAL_TYPE_BLOB == mf.type)
         {
             Buffer buffer(&(mf.buffer[0]),mf.buffer.size());
@@ -398,8 +412,7 @@ int  DBAgent::GetPrimaryKey(void* obj,string & key)
     {
         return -1;
     }
-    //key:type#key&key
-    key = desc->name()+DELIM2;
+    key = "";
     for(uint i = 0; i < pks.size(); ++i)
     {
         if(i > 0)
@@ -465,7 +478,7 @@ int  DBAgent::GetPrimaryKey(void* obj,string & key)
     }
     return 0;
 }
-MemSerializer::MetaObject*    DBAgent::FindObject(const string & key)
+MetaSerializer::MetaObject*    DBAgent::FindObject(const string & key)
 {
     if(m_mpGetObjects.find(key) != m_mpGetObjects.end())
     {
@@ -477,7 +490,7 @@ void        DBAgent::FreeObject(const string & key)
 {
     m_mpGetObjects.erase(key);
 }
-MemSerializer::MetaObject*    DBAgent::FindObject(MemSerializer::MetaObject * obj)
+MetaSerializer::MetaObject*    DBAgent::FindObject(MetaSerializer::MetaObject * obj)
 {
     string key;
     if(GetPrimaryKey(obj,key))
@@ -485,6 +498,14 @@ MemSerializer::MetaObject*    DBAgent::FindObject(MemSerializer::MetaObject * ob
         return NULL;
     }
     return FindObject(key);    
+}
+int  DBAgent::CreateTable(const char* pszName)
+{
+    MysqlRequest    req;
+    req.Init();
+    req.tblname = pszName;
+    req.op = MYSQL_REQ_CREATE_TB;
+    return mysql.Request(req);
 }
 int  DBAgent::Get(void * obj,vector<string> & fields,const Buffer & cb,const char* pszWhereCond)
 {
