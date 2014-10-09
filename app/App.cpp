@@ -75,7 +75,7 @@ string     App::OnCtrl(const std::vector<string> & cmdLine)
 }
 
 //tick 
-int     App::OnTick(int64_t lElapseTime)
+int     App::OnTick(int64_t lElapseUsTime)
 {
     LOG_DEBUG("OnTick");
     return 0;
@@ -112,10 +112,10 @@ int     App::Closing(int closingReason)
 {
     return OnClosing(closingReason);
 }
-//ms
-int     App::Tick(int64_t lElapseTime)
+//us
+int     App::Tick(int64_t lElapseUsTime)
 {    
-    return OnTick(lElapseTime);
+    return OnTick(lElapseUsTime);
 }
 int     App::Destroy()
 {    
@@ -135,7 +135,7 @@ void    App::InitSignal()
 }
 void  App::UpdateTick(timeval & tvNow,int64_t lElapseTime)
 {
-    App & app =  App::Instance();
+    App & app =  *GetApp();
     if(app.ctx)
     {
         app.ctx->curTime = tvNow;

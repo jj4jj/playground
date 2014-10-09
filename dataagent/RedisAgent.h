@@ -14,7 +14,6 @@ struct  RedisAddr
     uint    dbidx;
 };
 
-
 struct RedisClientContext
 {
     RedisAddr   addr;
@@ -28,7 +27,6 @@ struct RedisClientContext
     }
 };
 
-
 class RedisCommandListener
 {
 public:
@@ -36,8 +34,6 @@ public:
 };
 typedef shared_ptr<RedisCommandListener>    RedisCommandListenerPtr;
 //////////////////////////////////////////////////////////////////////////////////
-
-
 
 struct RedisAgentCallBack
 {

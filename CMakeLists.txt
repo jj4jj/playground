@@ -67,5 +67,6 @@ add_subdirectory(app)
 add_subdirectory(db)
 add_subdirectory(proto)
 add_subdirectory(dataagent)
+add_subdirectory(agent)
 add_subdirectory(test)
 

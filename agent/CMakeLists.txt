@@ -1,0 +1,53 @@
+#the compiling files
+file(GLOB_RECURSE playground_agent_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp *.cc *.h)
+SET_SOURCE_FILES_PROPERTIES(${playground_gate_SRCS} PROPERTIES LANGUAGE CXX )
+
+
+#base dir depend on itself and some other lib
+include_directories(
+  ${CMAKE_CURRENT_SOURCE_DIR}
+  ${PROJECT_SOURCE_DIR}
+  ${SSUKITS_HOME}
+  ${INIPARSER_HOME}/src
+  ${MYSQLCLI_C_HOME}/include
+)
+
+#base dir linked lib dir
+#
+link_directories(
+	${SSUKITS_HOME}/bin
+	${PROJECT_SOURCE_DIR}/lib
+	/usr/lib
+	${INIPARSER_HOME}	
+	${MYSQLCLI_C_HOME}/lib
+	${HIREDIS_HOME})
+
+#it will generate a exe
+ADD_EXECUTABLE(agent
+		${playground_agent_SRCS}
+)
+
+#assign custrom link lib
+target_link_libraries(agent
+	playground_app
+	playground_component
+	dbagent
+	dataagent
+	playground_proto
+	libmysqlclient.a
+	libhiredis.a
+	libev.a
+	channel
+	ssukits_net
+	ssukits_utility
+	ssukits_ipc
+	ssukits_base
+	zmq
+	rt
+	iniparser
+	protobuf
+)
+
+
+#installing
+INSTALL(TARGETS  agent DESTINATION agent/)

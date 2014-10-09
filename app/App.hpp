@@ -13,20 +13,27 @@
 #include "ChannelProxy.h"
 #include "AppContext.h"
 
-class App : public Singleton<App>
+class App
 {
 public:
     //return 0 is ok , otherwise exit prcess
     virtual int     OnInit();
-    //control command process
+    //control command process return msg to controler
     virtual string  OnCtrl(const std::vector<string> & cmdLine);
     //tick 
     virtual int     OnTick(int64_t lElapseTime);
     //poll system
+    //is return 0 or less than 0 , system will sleep a while
+    //if return > 0 , system will be busying .
     virtual int     OnPoll(int iRecommendPollNum = 1);
+
     //system will close for closing Reason
+    //return <= 0 , will close finish .
+    //return > 0 , will be busying .
     virtual int     OnClosing(int closingReason);
-    //destroy sth uninitializing
+
+    //destroy sth uninitializing   
+    //eg. print some profileing info
     virtual int     OnDestroy();
 /////////////////////////////////////////////////////////////////////////////////
 public:
@@ -44,10 +51,8 @@ public:
     }
 public:
     int     Init(AppContext * _ctx);   
-    //
     int     Poll(int iRecommendPollNum = 1);
-    //us
-    int     Tick(int64_t lElapseTime);
+    int     Tick(int64_t lElapseUsTime);
     string  Ctrl(const std::vector<string> & cmdLine);
     int     Closing(int closingReason);
     int     Destroy();
@@ -58,9 +63,10 @@ private:
     int     InitLog();
     int     InitConsole();
     static  void    UpdateTick(struct timeval & tvNow, int64_t lElapseTime);
-public:
+protected :
     App();
     virtual    ~App();
+    DeclareSingltonSupport(App)
 private:
     AppContext * ctx;
     UdpDriver  m_consoleDrv;
@@ -68,20 +74,18 @@ private:
     File                        m_lockFile;
     //////////////////////////////////////////////////////////////////////////////////
 public:    
-    template<class AppContextType ,
-             class AppType >
-    static int main(int argc , char* argv []);
-     
+    template<class AppContextType>
+    static int main(int argc , char* argv []);     
 };
-
-
-
+//--------------------------------------------------------------------------------
+extern App* GetApp();
 //////////////////////////////////////////////////////////////////////////////////
-template<class AppContextType ,
-         class AppType >
+template<class AppContextType>
 int App::main(int argc , char* argv [])
 {
     AppContextType ctx;
+    App *  pApp = GetApp();
+    assert(pApp);
     if(argc < 2)
     {
         ctx.GenerateDefaultConfig(argv[0]);
@@ -92,8 +96,8 @@ int App::main(int argc , char* argv [])
         printf("server context init error !\n");
         return -1;
     }    
-    AppType app;
-    if(app.Init(&ctx))
+    /////////////////////////////////////////////////////////
+    if(pApp->Init(&ctx))
     {
         return -1;
     }
@@ -104,20 +108,36 @@ int App::main(int argc , char* argv [])
         if(ctx.closing)
         {
             //there is no sth todo
-            if(0 == app.Closing(ctx.closing))
+            proc = pApp->Closing(ctx.closing);
+            if( proc <= 0 )
             {
                 break;
             }
         }
         else
         {            
-            proc = app.Poll(ctx.tickPollCount);
+            proc = pApp->Poll(ctx.tickPollCount);
         }
-        if( 0 == proc )
+        if( proc <= 0 )
         {
             usleep(ctx.tickCountUs);
         }
     }
-    return app.Destroy();
+    return pApp->Destroy();
 } 
+////////////////////////////////////////////////////////
+
+#define DeclareAppMain(AppCtxName,AppName) \
+App* GetApp()\
+{\
+    return Singleton<AppName>::instance();\
+};\
+int main(int argc , char * argv[])\
+{\
+    return App::main<AppCtxName>(argc,argv);\
+}// 
+//////////////////////////////////////////////////////
+
+
+
 
