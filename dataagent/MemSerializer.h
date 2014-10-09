@@ -31,7 +31,7 @@ public:
     int     SetObjectFieldU64(MetaObject* obj,string & fieldName,uint64_t val);
     int     SetObjectFieldR32(MetaObject* obj,string & fieldName,float val);
     int     SetObjectFieldR64(MetaObject* obj,string & fieldName,double val);
-    int     SetObjectFieldSTR(MetaObject* obj,string & fieldName,const char*  val);
+    int     SetObjectFieldSTR(MetaObject* obj,string & fieldName,string & val);
     int     SetObjectFieldOBJ(MetaObject* obj,string & fieldName,MetaObject * val);
 
     //-------------------------------------------------------------------------------
@@ -42,8 +42,8 @@ public:
     int     GetObjectFieldU64(MetaObject* obj,string & fieldName,uint64_t & val);
     int     GetObjectFieldR32(MetaObject* obj,string & fieldName,float & val);
     int     GetObjectFieldR64(MetaObject* obj,string & fieldName,double & val);
-    int     GetObjectFieldSTR(MetaObject* obj,string & fieldName,const char*  & val);
-    int     GetObjectFieldOBJ(MetaObject* obj,string & fieldName,MetaObject * & val);
+    int     GetObjectFieldSTR(MetaObject* obj,string & fieldName,string & val);
+    int     GetObjectFieldOBJ(MetaObject* obj,string & fieldName,MetaObject * * val);
 
     //-------------------------------------------------------------------------------
     const   Descriptor*    GetDescriptor(const string & typeName);

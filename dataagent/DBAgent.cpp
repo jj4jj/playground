@@ -360,13 +360,11 @@ int  DBAgent::CreateObjectFromMysql(MysqlResponse & rsp,void ** ppObj)
         {
             serializer->SetObjectFieldR64(obj,mf.name,mf.u_data.r64);
         }
-        else if(MysqlFieldMeta::VAL_TYPE_VARCHAR == mf.type)
+        else if( MysqlFieldMeta::VAL_TYPE_VARCHAR == mf.type ||
+                 MysqlFieldMeta::VAL_TYPE_TEXT == mf.type)
         {
-            serializer->SetObjectFieldSTR(obj,mf.name,&mf.buffer[0]);
-        }
-        else if(MysqlFieldMeta::VAL_TYPE_TEXT == mf.type)
-        {
-            serializer->SetObjectFieldSTR(obj,mf.name,&mf.buffer[0]);
+            string  svar(&mf.buffer[0]);
+            serializer->SetObjectFieldSTR(obj,mf.name,svar);
         }
         else if(MysqlFieldMeta::VAL_TYPE_DATETIME == mf.type)
         {

@@ -136,8 +136,14 @@ ADD_EXECUTABLE(db_test
 )
 target_link_libraries(db_test
 	dataagent
+	dbagent
  	ssukits_ipc
+	ssukits_thread
 	ssukits_base
+	libmysqlclient.a		
+	libev.a
+	playground_proto
+	protobuf
 	rt
 	dl
 )

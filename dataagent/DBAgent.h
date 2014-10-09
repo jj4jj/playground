@@ -5,25 +5,6 @@
 #include "db/MysqlAgent.h"
 #include "MemSerializer.h"
 
-
-class DBCommandListener
-{
-public:
-	virtual int 	OnGet(int ret,vector<MysqlField> & data,Buffer & cb);
-	virtual int 	OnRemove(string & name,int ret,Buffer & cb);
-	virtual int 	OnUpdate(string & name,int ret,Buffer & cb);
-	virtual int 	OnInsert(string & name,int ret,Buffer & cb);
-    virtual int     OnCreateTable(string & name,int ret,Buffer & cb);
-
-
-    virtual int 	OnGetKeyRank(string & name,int ret,vector<MysqlField> & data,Buffer & cb);
-	virtual int 	OnGetRankKey(string & name,int ret,vector<MysqlField> & data,Buffer & cb);
-	virtual int 	OnCount(string & name,int ret,vector<MysqlField> & data,Buffer & cb);
-	virtual int 	OnMGet(string & name,int ret,vector<MysqlField> & data,Buffer & cb);    
-
-};
-typedef shared_ptr<DBCommandListener>   DBCommandListenerPtr;
-
 struct DBAgentOption
 {
     vector<MysqlProxyOption>   addrList;
@@ -40,9 +21,6 @@ enum    DataResultCode
     DATA_REDIS_ERR_START   =    1000,
     DATA_MYSQL_ERR_START   =    2000,
 };
-
-
-class MemSerializer;
 
 class DBAgent
 {
