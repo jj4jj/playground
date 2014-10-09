@@ -4,6 +4,7 @@
 #include "DataListener.h"
 #include "RedisAgent.h"
 #include "MetaSerializer.h"
+#include "DataCommon.h"
 
 
 
@@ -11,17 +12,6 @@ struct CacheAgentOption
 {
     vector<RedisAddr>   addrList;
 };
-enum    CacheResult
-{
-    CACHE_TIME_OUT      =  -1,
-    CACHE_OK            =   0,
-    CACHE_NO_EXISTS         ,
-    CACHE_ALREADY_EXISTS    ,
-    CACHE_REDIS_ERROR       ,
-    CACHE_UNPACK_ERROR      ,
-    CACHE_INTERNAL_ERR      ,
-};
-
 
 class MetaSerializer;
 

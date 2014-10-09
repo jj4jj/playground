@@ -220,3 +220,15 @@ void*   DataSet::Find(void* entry , const Buffer & cb,bool justFindLocal )
     return NULL;
 }
 
+
+
+
+#if 1
+
+const char* DataAgent::GetErrorString(int err)
+{    
+    return "nil(todo)";
+}
+
+#endif
+

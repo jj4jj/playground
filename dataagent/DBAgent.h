@@ -4,22 +4,12 @@
 #include "DataListener.h"
 #include "db/MysqlAgent.h"
 #include "MetaSerializer.h"
+#include "DataCommon.h"
 
 struct DBAgentOption
 {
     vector<MysqlProxyOption>   addrList;
     vector<string>             tableTypes;
-};
-enum    DataResultCode
-{
-    DATA_TIME_OUT      =  -1,
-    DATA_OK            =   0,
-    DATA_NO_EXISTS         ,
-    DATA_ALREADY_EXISTS    ,
-    DATA_UNPACK_ERROR      ,
-    DATA_INTERNAL_ERR      ,
-    DATA_REDIS_ERR_START   =    1000,
-    DATA_MYSQL_ERR_START   =    2000,
 };
 
 class DBAgent

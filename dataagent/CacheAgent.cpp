@@ -62,20 +62,20 @@ public :
 int  CacheAgent::DispatchResult(string & cmd,string & type,string & key,
                     redisReply* reply,Buffer & cb,bool timeout)
 {
-    int ret = CACHE_OK;
+    int ret = DATA_OK;
     if(!reply)
     {
-        ret = timeout?CACHE_TIME_OUT:ret;
+        ret = timeout?DATA_TIME_OUT:ret;
     }
     else if(reply->type == REDIS_REPLY_ERROR)
     {
         LOG_ERROR("redis exec cmd = %s type = %s key = %s error for = %s",
                    cmd.c_str(),type.c_str(),key.c_str(),(char*)reply->str);
-        ret = CACHE_REDIS_ERROR;
+        ret = DATA_REDIS_ERR_START + reply->type;
     }  
     else if(reply->type == REDIS_REPLY_NIL)
     {
-        ret = CACHE_NO_EXISTS;
+        ret = DATA_NO_EXISTS;
     }
     if(m_mpListener.find(type) != m_mpListener.end())
     {
@@ -88,13 +88,13 @@ int  CacheAgent::DispatchResult(string & cmd,string & type,string & key,
             if(reply->type == REDIS_REPLY_STRING)
             {
                 //
-                int ret = CACHE_OK;
+                int ret = DATA_OK;
                 Buffer  buff(reply->str,reply->len);
                 MetaSerializer::MetaObject* obj = NULL;
                 if(serializer->UnPack(type.c_str(),buff,(void**)&obj))
                 {
                     LOG_FATAL("message unpack error !");
-                    ret = CACHE_UNPACK_ERROR;
+                    ret = DATA_UNPACK_ERROR;
                 }
                 else
                 {
@@ -107,7 +107,7 @@ int  CacheAgent::DispatchResult(string & cmd,string & type,string & key,
             else
             {   
                 LOG_ERROR("get cache reply not support type = %d",reply->type);
-                return m_mpListener[type]->OnGet(CACHE_INTERNAL_ERR,NULL,cb);
+                return m_mpListener[type]->OnGet(DATA_INTERNAL_ERR,NULL,cb);
             }
         }
         else if(cmd == UPDATE_CMD)

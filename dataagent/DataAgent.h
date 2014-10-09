@@ -116,6 +116,8 @@ public:
     //set type
     //register meta set     
     DataSet &  RegisterLocalCache(LocalCacheRegParam & param,DataListener * listener = NULL);
+public:
+    static const char* GetErrorString(int err);
     
 public:    
     std::map<string,DataSet>    datasets;

@@ -11,12 +11,12 @@ public:
     int   OnGet(int ret,void* obj,Buffer & cb)
     {
         LOG_DEBUG("Cache Test");
-        if(ret == CACHE_OK)
+        if(ret == DATA_OK)
         {
             MetaSerializer::MetaObject*  mobj = (MetaSerializer::MetaObject*)obj;
             LOG_DEBUG(mobj->DebugString().c_str());
         }
-        else if(ret == CACHE_NO_EXISTS)
+        else if(ret == DATA_NO_EXISTS)
         {
             LOG_DEBUG("NOT EXIST !");
         }
