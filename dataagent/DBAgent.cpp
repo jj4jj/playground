@@ -8,15 +8,6 @@
 using namespace google::protobuf;
 
 
-#define INSERT_CMD  ("INSERT")
-#define GET_CMD     ("GET")
-#define REMOVE_CMD  ("DEL")
-#define UPDATE_CMD  ("SET")
-#define DELIM1       (string(" "))
-#define DELIM2       (string(":"))
-#define DELIM3       (string("&"))
-#define DELIM4       (string("|"))
-
 #if 1
 class DBAgentCommandListener : public MysqlCommandListener
 {
@@ -523,19 +514,13 @@ int  DBAgent::Get(void * obj,vector<string> & fields,const Buffer & cb,const cha
         }
     }
     string tableName = serializer->GetTypeName(obj);
-    string cmdhdr = GET_CMD+DELIM1+tableName+DELIM2;
-    for(uint i = 0;i < fields.size(); ++i)
-    {
-        if(i > 0)
-        {
-            cmdhdr += DELIM4;
-        }
-        cmdhdr += fields[i];        
-    }
     Buffer ccb;
-    ccb.Create(cb.iUsed + cmdhdr.length() + 1 );
-    memcpy(ccb.pBuffer,cmdhdr.c_str(),cmdhdr.length()+1);
-    memcpy(ccb.pBuffer + cmdhdr.length() + 1,cb.pBuffer,cb.iUsed);
+    if(ccb.Create(cb.iUsed))
+    {
+        LOG_ERROR("callback create buffer error !");
+        return -1;
+    }
+    memcpy(ccb.pBuffer ,cb.pBuffer,cb.iUsed);
     ccb.iUsed = ccb.iCap;
     ////////////////////////////////////////////////////////
     MysqlRequest req;    
@@ -562,11 +547,13 @@ int  DBAgent::Remove(void * obj,const Buffer & cb)
         return -1;
     }
     string tableName = serializer->GetTypeName(obj);
-    string cmdhdr = REMOVE_CMD+tableName+DELIM1+key;
     Buffer ccb;
-    ccb.Create(cb.iUsed + cmdhdr.length() + 1 );
-    memcpy(ccb.pBuffer,cmdhdr.c_str(),cmdhdr.length()+1);
-    memcpy(ccb.pBuffer + cmdhdr.length() + 1,cb.pBuffer,cb.iUsed);
+    if(ccb.Create(cb.iUsed))
+    {
+        LOG_ERROR("callback create buffer error !");
+        return -1;
+    }
+    memcpy(ccb.pBuffer ,cb.pBuffer,cb.iUsed);
     ccb.iUsed = ccb.iCap;
     MysqlRequest req;    
     req.Init();
@@ -591,23 +578,13 @@ int  DBAgent::Update(void * obj,vector<string> & fields,const Buffer &  cb)
         return -1;
     }
     string tableName = serializer->GetTypeName(obj);
-    string cmdhdr = UPDATE_CMD+tableName+DELIM1+key;
-    for(uint i = 0;i < fields.size(); ++i)
-    {
-        if(i > 0)
-        {
-            cmdhdr += DELIM4;
-        }
-        cmdhdr += fields[i];        
-    }
     Buffer ccb;
-    if(ccb.Create(cb.iUsed + cmdhdr.length() + 1 ))
+    if(ccb.Create(cb.iUsed))
     {
         LOG_ERROR("callback create buffer error !");
         return -1;
     }
-    memcpy(ccb.pBuffer,  cmdhdr.c_str(),cmdhdr.length()+1);
-    memcpy(ccb.pBuffer + cmdhdr.length() + 1,cb.pBuffer,cb.iUsed);
+    memcpy(ccb.pBuffer,cb.pBuffer,cb.iUsed);
     ccb.iUsed = ccb.iCap;
     /////////////////////////////////////////////////////////////
     MysqlRequest req;    
@@ -636,15 +613,13 @@ int  DBAgent::Insert(void * obj,const Buffer &  cb)
         return -1;
     }
     string tableName = serializer->GetTypeName(obj);
-    string cmdhdr = INSERT_CMD+tableName+DELIM1+key;
     Buffer ccb;
-    if(ccb.Create(cb.iUsed + cmdhdr.length() + 1 ))
+    if(ccb.Create(cb.iUsed))
     {
         LOG_ERROR("callback create buffer error !");
         return -1;
     }
-    memcpy(ccb.pBuffer,  cmdhdr.c_str(),cmdhdr.length()+1);
-    memcpy(ccb.pBuffer + cmdhdr.length() + 1,cb.pBuffer,cb.iUsed);
+    memcpy(ccb.pBuffer,cb.pBuffer,cb.iUsed);
     ccb.iUsed = ccb.iCap;
     MysqlRequest req;    
     req.Init();

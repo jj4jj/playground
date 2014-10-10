@@ -60,8 +60,10 @@ public:
 public:
     int      Get(string & key,const Buffer & cb);
     int      Update(string & key,const Buffer & obj,const Buffer & cb);
-    int      Remove(string & key,const Buffer & cb);
+    int      Remove(string & key,const Buffer & cb);    
     int      Command(const Buffer & cb,const char * pszFormat,...);    
+    
+    
 protected:
     RedisClientContext*    FindContext(const redisAsyncContext *c);
     void     CheckTimeOut(int iChkNum    =   10);
