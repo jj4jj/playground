@@ -98,12 +98,18 @@ public:
 
 
 public:
-    int  DispatchResult(string & cmd,string & type,string & key,
-                    redisReply* reply,Buffer & cb,bool timeout); 
+    int  DispatchResult(const CacheAgentCallBack & mcb,
+                    redisReply* reply,Buffer & ucb,bool timeout); 
     MetaSerializer::MetaObject*    FindObject(const string & key);
     void           FreeObject(const string & key);
+    int     CreateCallBack(Buffer & resultCB,CacheCollectionType type,
+            CacheCallBackTypeCmd cmd,
+            const string & typeKey,
+            const Buffer * pCustomCB = NULL,const char * pszObjKey  = NULL );
+    void    FreeCallBack(Buffer & cb);    
 protected:
-    int  GetKey(void* obj,string & key);
+    int  GetObjectKey(void* obj,string & key);
+    int  GetTypeKey(void* obj,string & key);
     MetaSerializer::MetaObject*    FindObject(MetaSerializer::MetaObject * obj);
 public:
     CacheAgent():serializer(NULL){}

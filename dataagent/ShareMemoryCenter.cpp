@@ -1,10 +1,10 @@
-#include "RecoveryShareMem.h"
 #include "base/Log.h"
 #include "base/CommonMacro.h"
+#include "ShareMemoryCenter.h"
 
 #define SHM_MAGIC   ("RSHM")
 #if 1
-int     RecoveryShareMem::Register(const RecoveryShareMemReg & reg)
+int     ShareMemoryCenter::Register(const ShareMemoryModuleReg & reg)
 {
     if(FindReg(reg.name))
     {
@@ -16,12 +16,12 @@ int     RecoveryShareMem::Register(const RecoveryShareMemReg & reg)
     LOG_INFO("register sbm sub module name = %s size = %zu",reg.name.c_str(),reg.zSize);
     return 0;
 }    
-void    RecoveryShareMem::DeleteSHM()
+void    ShareMemoryCenter::DeleteSHM()
 {
     LOG_WARN("recovery share mem delete shm !");
     m_shm.Destroy(m_shm.GetShmID());
 }
-int     RecoveryShareMem::Init(const char* pszShmKeyPath)
+int     ShareMemoryCenter::Init(const char* pszShmKeyPath)
 {
     //if get a valid old size
     //check valid
@@ -30,12 +30,12 @@ int     RecoveryShareMem::Init(const char* pszShmKeyPath)
     //then recover it
     //else there is no old shm
     //init it
-    m_zTotalSize += sizeof(RecoveryShmFmt);
+    m_zTotalSize += sizeof(ShareMemoryCenterDataFmt);
     int shmKey = ShareMemory::PathToKey(pszShmKeyPath);
     int ret = m_shm.Attach(shmKey,m_zTotalSize);
 
     m_pDataBase = (char*)m_shm.GetData();
-    m_pFmtBase = (RecoveryShmFmt*)m_pDataBase;
+    m_pFmtBase = (ShareMemoryCenterDataFmt*)m_pDataBase;
 
     if(ret)
     {
@@ -49,7 +49,7 @@ int     RecoveryShareMem::Init(const char* pszShmKeyPath)
             }
             //
             m_pDataBase = (char*)m_shm.GetData();
-            m_pFmtBase = (RecoveryShmFmt*)m_pDataBase;
+            m_pFmtBase = (ShareMemoryCenterDataFmt*)m_pDataBase;
             InitRegModules();
         }
         else
@@ -76,14 +76,14 @@ int     RecoveryShareMem::Init(const char* pszShmKeyPath)
     }  
     return AttachAllModules();
 }
-void     RecoveryShareMem::InitRegModules()
+void     ShareMemoryCenter::InitRegModules()
 {
     bzero(m_pFmtBase,m_zTotalSize);
     memcpy(m_pFmtBase->magic,SHM_MAGIC,strlen(SHM_MAGIC));
-    m_pFmtBase->dataOffset = sizeof(RecoveryShmFmt);
+    m_pFmtBase->dataOffset = sizeof(ShareMemoryCenterDataFmt);
     AppendRegModules();
 }
-void     RecoveryShareMem::AppendRegModules()
+void     ShareMemoryCenter::AppendRegModules()
 {
     for(uint i = 0;i < m_vecModules.size(); ++i)
     {
@@ -95,15 +95,15 @@ void     RecoveryShareMem::AppendRegModules()
         AddModule(m_vecModules[i].name.c_str());
     }
 }
-size_t  RecoveryShareMem::GetOldShmSize()
+size_t  ShareMemoryCenter::GetOldShmSize()
 {
-    return  m_pFmtBase->dataLength + sizeof(RecoveryShmFmt);
+    return  m_pFmtBase->dataLength + sizeof(ShareMemoryCenterDataFmt);
 }
-int     RecoveryShareMem::AttachAllModules()
+int     ShareMemoryCenter::AttachAllModules()
 {
     for(uint i = 0;i < m_pFmtBase->modulesCount; ++i)
     {        
-        RecoveryShareMemReg*   reg = FindReg(string(m_pFmtBase->modules[i].szName));
+        ShareMemoryModuleReg*   reg = FindReg(string(m_pFmtBase->modules[i].szName));
         if(!reg)
         {
             LOG_ERROR("not find reg name = %s ",m_pFmtBase->modules[i].szName);
@@ -121,11 +121,11 @@ int     RecoveryShareMem::AttachAllModules()
     }
     return 0;
 }
-int     RecoveryShareMem::Check()
+int     ShareMemoryCenter::Check()
 {
     return memcmp(m_pFmtBase->magic,SHM_MAGIC,strlen(SHM_MAGIC));
 }
-ShmModule*  RecoveryShareMem::FindModule(const char* pszName)
+ShareMemoryModule*  ShareMemoryCenter::FindModule(const char* pszName)
 {
     for(uint i = 0 ; i < m_pFmtBase->modulesCount; ++i)
     {
@@ -136,10 +136,10 @@ ShmModule*  RecoveryShareMem::FindModule(const char* pszName)
     }
     return NULL;
 }
-Buffer       RecoveryShareMem::GetModleBuffer(const char* pszName)
+Buffer       ShareMemoryCenter::GetModleBuffer(const char* pszName)
 {
     Buffer buffer;
-    ShmModule* mod = FindModule( pszName);
+    ShareMemoryModule* mod = FindModule( pszName);
     if(!mod)
     {
         return buffer;
@@ -148,14 +148,14 @@ Buffer       RecoveryShareMem::GetModleBuffer(const char* pszName)
     buffer.iUsed = buffer.iCap = mod->zSize;
     return buffer;
 }
-int         RecoveryShareMem::AddModule(const char* pszName)
+int         ShareMemoryCenter::AddModule(const char* pszName)
 {
-    RecoveryShareMemReg*   reg = FindReg(string(pszName));
+    ShareMemoryModuleReg*   reg = FindReg(string(pszName));
     if(!reg)
     {
         return -1;
     }
-    if(reg->zSize + m_pFmtBase->dataLength + sizeof(RecoveryShmFmt) > m_zTotalSize)
+    if(reg->zSize + m_pFmtBase->dataLength + sizeof(ShareMemoryCenterDataFmt) > m_zTotalSize)
     {
         LOG_FATAL("shm buffer is not enough !!");
         return -1;
@@ -166,8 +166,8 @@ int         RecoveryShareMem::AddModule(const char* pszName)
         return -1;
     }
 
-    ShmModule & mod = m_pFmtBase->modules[m_pFmtBase->modulesCount];
-    mod.dataOffset = sizeof(RecoveryShmFmt) + m_pFmtBase->dataLength;
+    ShareMemoryModule & mod = m_pFmtBase->modules[m_pFmtBase->modulesCount];
+    mod.dataOffset = sizeof(ShareMemoryCenterDataFmt) + m_pFmtBase->dataLength;
     mod.zSize      = reg->zSize;
     bzero((char*)m_pFmtBase + mod.dataOffset,mod.zSize);
     STRNCPY(mod.szName,sizeof(mod.szName),reg->name.c_str());
@@ -176,7 +176,7 @@ int         RecoveryShareMem::AddModule(const char* pszName)
     ++m_pFmtBase->modulesCount;
     return 0;
 }
-RecoveryShareMemReg * RecoveryShareMem::FindReg(const string & name)
+ShareMemoryModuleReg * ShareMemoryCenter::FindReg(const string & name)
 {
     for(uint i = 0;i < m_vecModules.size(); ++i)
     {

@@ -11,23 +11,23 @@
 //2. what's the type of your shm collection (how to regnize)
 //3. when system is close (before saving them) , what you want to do.
 //4. when system is start (after recovery or fresh memory allocated) , what you want  to do.
-class RecoverShmNotifier
+class ShareMemoryModuleNotifier
 {
 public:
     virtual  int    OnAttach(char* pData,size_t size,char chInited) = 0;
 };
 
 
-struct RecoveryShareMemReg
+struct ShareMemoryModuleReg
 {
     string     name;
     size_t     zSize;
-    RecoverShmNotifier* notifier;
+    ShareMemoryModuleNotifier* notifier;
 };
 
 
 #pragma pack(1)
-struct  ShmModule
+struct  ShareMemoryModule
 {
     char    szName[32];
     char    chInited;//0
@@ -41,26 +41,26 @@ struct  ShmModule
 enum {
     RECOVERYSHM_MAX_MOUDLES     =   256,
 };
-struct  RecoveryShmFmt
+struct  ShareMemoryCenterDataFmt
 {
     char        magic[4];//RSHM
     char        reserve[16];//reserve
     size_t      dataLength;
     uint32_t    dataOffset;//----------------------|      
     uint16_t    modulesCount;
-    ShmModule   modules[RECOVERYSHM_MAX_MOUDLES];
+    ShareMemoryModule   modules[RECOVERYSHM_MAX_MOUDLES];
     //char        data[0];<------------------------|
 };
 #pragma pack()
 
 
 class MetaSerializer;
-class RecoveryShareMem
+class ShareMemoryCenter
 {
 public:
-    int          Register(const RecoveryShareMemReg & reg);
+    int          Register(const ShareMemoryModuleReg & reg);
     int          Init(const char* pszShmKeyPath);
-    ShmModule*   FindModule(const char* pszName);
+    ShareMemoryModule*   FindModule(const char* pszName);
     Buffer       GetModleBuffer(const char* pszName);
  protected:
     void        InitRegModules();
@@ -69,15 +69,15 @@ public:
     int         AttachAllModules();
     int         Check();
     int         AddModule(const char* pszName);
-    RecoveryShareMemReg * FindReg(const string & name);
+    ShareMemoryModuleReg * FindReg(const string & name);
 public:
     //don't call it generally , unless you know what you are doing !!
     void         DeleteSHM();
 private:
     MetaSerializer * m_pSerializer;
     ShareMemory     m_shm;
-    vector<RecoveryShareMemReg>     m_vecModules;
-    RecoveryShmFmt* m_pFmtBase;
+    vector<ShareMemoryModuleReg>     m_vecModules;
+    ShareMemoryCenterDataFmt* m_pFmtBase;
     char*           m_pDataBase;
     size_t          m_zTotalSize;
 };

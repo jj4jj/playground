@@ -15,7 +15,8 @@ class GateServer : public App
 private:
     GateServer(){}
     ~GateServer(){}
-    DeclareSingltonSupport(App)    
+    DeclareSingltonSupport(GateServer)
+
 public:
     //return 0 is ok , otherwise exit prcess
     virtual int     OnInit()
@@ -89,6 +90,7 @@ public:
 
 
 DeclareAppMain(GateServerContext,GateServer)
+
 /*
 App* GetApp()
 {

@@ -1,7 +1,8 @@
-#include "dataagent/RecoveryShareMem.h"
 #include "base/Log.h"
 #include "base/CommonMacro.h"
-class TestShm2Notifier: public RecoverShmNotifier
+#include "dataagent/ShareMemoryCenter.h"
+
+class TestShm2Notifier: public ShareMemoryModuleNotifier
 {
 public:
     virtual  int    OnAttach(char* pData,size_t size,char chInited)
@@ -33,9 +34,9 @@ public:
 
 int main(int argc,char* argv[])
 {
-    RecoveryShareMem    rsm;
-    RecoveryShareMemReg rsmr1;
-    RecoveryShareMemReg rsmr2;
+    ShareMemoryCenter    rsm;
+    ShareMemoryModuleReg rsmr1;
+    ShareMemoryModuleReg rsmr2;
 
     TestShm2Notifier    tsn2;
 
@@ -63,7 +64,7 @@ int main(int argc,char* argv[])
     }
     ////////////////////////////////
     tsn2.print();
-    ShmModule * pMod =   rsm.FindModule("test1");
+    ShareMemoryModule * pMod =   rsm.FindModule("test1");
     assert(pMod);
     Buffer buffer = rsm.GetModleBuffer("test1");
     LOG_INFO("mod buffer = %s size = %d",buffer.pBuffer,buffer.iUsed);  

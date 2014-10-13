@@ -24,21 +24,30 @@ public:
     //return 0 is ok , otherwise exit prcess
     virtual int     OnInit()
     {
-        //log
+        //read config
+        
+        //log (local)
 
         //mysql
 
+        //ssdb(leveldb) (oss)
+
         //redis
+
+        //datacenter
 
         //channel proxy
 
-        //3rd platform service
+        //3rd platform service (sns,lbs)
 
         //rank
         
         //table
 
-        //script
+        //script(listen msg and tick)
+
+        //zone mgr
+
 
         return 0;        
     }
@@ -98,21 +107,8 @@ public:
         return 0;
     }    
 };
-typedef Singleton<AgentApp>  AgentServer;
 ///////////////////////////////////////////////////////////
 
 
 DeclareAppMain(AgentContext,AgentApp)
-/*
-App* GetApp()
-{
-    return AgentServer::instance();
-}
-///////////////////////////////////////////////////////////
-int main(int argc,char* argv[])
-{
-    return    App::main<AgentContext>(argc,argv);
-}
-*/
-
 

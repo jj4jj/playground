@@ -29,15 +29,15 @@ Agent:
 	uninit channel
  	uninit	res
 usage:
-	import DataAgent.h
+	import DataCenter.h
 
-	hLocal = DataAgent.RegisterData(LocalShmCache);
-	hRemote = DataAgent.RegisterData(RemoteShmCache);
-	hRemoteAndPersist = DataAgent.RegisterData(RemoteShmCacheAndPersistence);
-	hPersist = DataAgent.RegisterData(Persistence);
+	hLocal = DataCenter.RegisterData(LocalShmCache);
+	hRemote = DataCenter.RegisterData(RemoteShmCache);
+	hRemoteAndPersist = DataCenter.RegisterData(RemoteShmCacheAndPersistence);
+	hPersist = DataCenter.RegisterData(Persistence);
 	
 	
-	DataAgent.Init();
+	DataCenter.Init();
 		LoadLocalShmCache(Recover)
 		ConnectToRemoteCache
 		ConnectToDB

@@ -1,8 +1,7 @@
 #include "base/Log.h"
 #include "MetaSerializer.h"
-#include "RedisAgent.h"
-#include "hiredis.h"
-#include "DataAgent.h"
+#include "DBAgent.h"
+
 
 //#include "regex.h"
 using namespace google::protobuf;
