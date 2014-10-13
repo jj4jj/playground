@@ -7,9 +7,9 @@ include_directories(
   ${MYSQLCLI_C_HOME}/include
   ${HIREDIS_HOME}
 )
-add_library(dataagent STATIC
+add_library(datacenter STATIC
 	${data_agent_SRCS}
 )
 
-INSTALL(TARGETS dataagent DESTINATION lib/)
+INSTALL(TARGETS datacenter DESTINATION lib/)
 

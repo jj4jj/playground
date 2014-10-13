@@ -31,21 +31,23 @@ ADD_EXECUTABLE(agent
 target_link_libraries(agent
 	playground_app
 	playground_component
+	datacenter
 	dbagent
-	dataagent
 	playground_proto
-	libmysqlclient.a
-	libhiredis.a
-	libev.a
 	channel
 	ssukits_net
 	ssukits_utility
 	ssukits_ipc
+	ssukits_thread
 	ssukits_base
-	zmq
-	rt
+	libmysqlclient.a
+	libhiredis.a
+	libev.a
 	iniparser
 	protobuf
+	zmq
+	rt
+	dl
 )
 
 
