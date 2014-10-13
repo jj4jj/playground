@@ -1,5 +1,5 @@
-#include "dataagent/DBAgent.h"
-#include "proto/meta/test.pb.h"
+#include "datacenter/DBAgent.h"
+#include "proto/gen/test/test.pb.h"
 #include "base/Log.h"
 
 
@@ -72,9 +72,9 @@ int main(int argc,char* argv[])
     }
     db.CreateTable("Cache");
     
-    meta::Cache ch;
+    test::Cache ch;
 
-    meta::Cache cache;
+    test::Cache cache;
     cache.set_name(string("seanpeng"));
     cache.set_area(20);
     cache.set_gid(234526);

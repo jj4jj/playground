@@ -1,9 +1,9 @@
-#include "dataagent/MetaSerializer.h"
-#include "proto/meta/meta.pb.h"
+#include "datacenter/MetaSerializer.h"
+#include "proto/gen/test/meta.pb.h"
 #include "base/Log.h"
 
-using namespace meta;
-void SetRole(meta::Role * pR)
+using namespace test;
+void SetRole(test::Role * pR)
 {
     pR->set_rid(12345678L);
     pR->set_name(string("seanpeng"));
@@ -21,12 +21,12 @@ void SetRole(meta::Role * pR)
 int main(int argc,char* argv[])
 {
     MetaSerializer   seri;
-    if(seri.Init("meta"))
+    if(seri.Init("test"))
     {
         LOG_ERROR("meta proto init error !");
         return -1;
     }
-    meta::Role    role;
+    test::Role    role;
 
     SetRole(&role);
 
@@ -59,7 +59,7 @@ int main(int argc,char* argv[])
     
     void * p = NULL;
     seri.UnPack("Role",buffer,&p);
-    meta::Role* pRole = (meta::Role*)p;
+    test::Role* pRole = (test::Role*)p;
 
     seri.Visual(pRole,s);
     LOG_DEBUG("dump:\n%s",s.c_str());

@@ -1,9 +1,9 @@
 #include "base/Log.h"
 #include "base/Buffer.h"
-#include "dataagent/MetaSerializer.h"
-#include "dataagent/CacheAgent.h"
-#include "proto/meta/meta.pb.h"
-#include "proto/meta/test.pb.h"
+#include "datacenter/MetaSerializer.h"
+#include "datacenter/CacheAgent.h"
+#include "proto/gen/test/meta.pb.h"
+#include "proto/gen/test/test.pb.h"
 
 class TestCacheListener : public DataListener
 {
@@ -43,13 +43,13 @@ int main(int argc,char* argv[])
 {
     MetaSerializer   seri;
     
-    if(seri.Init("meta"))
+    if(seri.Init("test"))
     {
         LOG_ERROR("meta proto init error !");
         return -1;
     }
 
-    meta::Cache cache;
+    test::Cache cache;
     cache.set_name(string("seanpeng"));
     cache.set_area(20);
     cache.set_gid(234526);

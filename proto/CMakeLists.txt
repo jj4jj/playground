@@ -4,6 +4,7 @@ file(GLOB_RECURSE playground_proto_SRCS *.cc *.h)
 
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
+  ${CMAKE_CURRENT_SOURCE_DIR}/gen  
 )
 add_library(playground_proto STATIC
 	${playground_proto_SRCS}

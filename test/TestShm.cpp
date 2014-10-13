@@ -1,6 +1,6 @@
 #include "base/Log.h"
 #include "base/CommonMacro.h"
-#include "dataagent/ShareMemoryCenter.h"
+#include "datacenter/ShareMemoryCenter.h"
 
 class TestShm2Notifier: public ShareMemoryModuleNotifier
 {

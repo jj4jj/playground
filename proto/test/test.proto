@@ -1,4 +1,4 @@
-package meta;
+package test;
 //key is name
 
 message Cache
