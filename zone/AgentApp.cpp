@@ -80,7 +80,7 @@ int     AgentApp::OnInit()
     //read config    
 
     //meta
-    ret = meta.Init("dummy to be modied for interface");
+    ret = meta.Init();
     if(ret)
     {
         LOG_ERROR("meta init error !");

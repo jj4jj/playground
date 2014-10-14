@@ -43,7 +43,7 @@ int main(int argc,char* argv[])
 {
     MetaSerializer   seri;
     
-    if(seri.Init("test"))
+    if(seri.Init())
     {
         LOG_ERROR("meta proto init error !");
         return -1;

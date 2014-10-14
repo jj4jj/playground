@@ -61,7 +61,7 @@ int main(int argc,char* argv[])
     cao.tableTypes.push_back("Cache");
     
     MetaSerializer   ser;
-    if(ser.Init("meta"))
+    if(ser.Init())
     {
         return -1;
     }

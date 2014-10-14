@@ -20,6 +20,7 @@ public:
     int  GenerateMysqlMetas(vector<MysqlMeta> & metas,const vector<string> & tables);
     int  Polling(int    iProcPerTick);
     int  Destroy();
+    string  GetMetaNameSpace(){return string("db");}
 public:
     int  Get(void * obj,vector<string> & fields,const Buffer & cb,const char* pszWhereCond = NULL);
     int  Remove(void * obj,const Buffer & cb);

@@ -21,7 +21,7 @@ void SetRole(test::Role * pR)
 int main(int argc,char* argv[])
 {
     MetaSerializer   seri;
-    if(seri.Init("test"))
+    if(seri.Init())
     {
         LOG_ERROR("meta proto init error !");
         return -1;
@@ -58,7 +58,7 @@ int main(int argc,char* argv[])
     LOG_INFO("read data file size = %d",buffer.iCap);
     
     void * p = NULL;
-    seri.UnPack("Role",buffer,&p);
+    seri.UnPack("test.Role",buffer,&p);
     test::Role* pRole = (test::Role*)p;
 
     seri.Visual(pRole,s);

@@ -88,7 +88,7 @@ ADD_EXECUTABLE(shm_test
 	${CMAKE_CURRENT_SOURCE_DIR}/TestShm.cpp
 )
 target_link_libraries(shm_test
-	dataagent
+	datacenter
  	ssukits_ipc
 	ssukits_base
 	rt
@@ -102,7 +102,7 @@ ADD_EXECUTABLE(seri_test
 	${CMAKE_CURRENT_SOURCE_DIR}/TestMemSeri.cpp
 )
 target_link_libraries(seri_test
-	dataagent
+	datacenter
  	ssukits_ipc
 	ssukits_base
 	playground_proto
@@ -118,7 +118,7 @@ ADD_EXECUTABLE(cache_test
 	${CMAKE_CURRENT_SOURCE_DIR}/TestCache.cpp
 )
 target_link_libraries(cache_test
-	dataagent
+	datacenter
  	ssukits_ipc
 	ssukits_base
 	playground_proto
@@ -135,7 +135,7 @@ ADD_EXECUTABLE(db_test
 	${CMAKE_CURRENT_SOURCE_DIR}/TestDB.cpp
 )
 target_link_libraries(db_test
-	dataagent
+	datacenter
 	dbagent
  	ssukits_ipc
 	ssukits_thread
@@ -154,7 +154,7 @@ ADD_EXECUTABLE(dataagent_test
 	${CMAKE_CURRENT_SOURCE_DIR}/TestDataAgent.cpp
 )
 target_link_libraries(dataagent_test
-	dataagent
+	datacenter
  	ssukits_ipc
 	ssukits_base
 	rt

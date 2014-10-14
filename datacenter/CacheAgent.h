@@ -22,6 +22,7 @@ public:
     int  Polling(int    iProcPerTick);
     int  Destroy();
     int  AddListener(string typeName,DataListenerPtr ptr);
+    string  GetMetaNameSpace(){return string("db");}
 public:
     //key value
     

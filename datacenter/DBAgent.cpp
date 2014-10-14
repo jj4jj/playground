@@ -129,7 +129,7 @@ int DBAgent::GenerateMysqlMetas(vector<MysqlMeta> & metas,const vector<string> &
             const FieldDescriptor * field = desc->field(j);
             fieldMeta.name = field->name();
             fieldMeta.maxlen = 0;
-            fieldMeta.typeName = desc->name()+"."+field->type_name();
+            fieldMeta.typeName = GetMetaNameSpace()+"."+desc->name()+"."+field->type_name();
             if(std::find(pks.begin(),pks.end(),fieldMeta.name) != pks.end())
             {
                 fieldMeta.ispk = true;
@@ -308,7 +308,8 @@ int  DBAgent::CreateObjectFromMysql(MysqlResponse & rsp,void ** ppObj)
         return DATA_INTERNAL_ERR;
     }
     /////////////////////////////////    
-    MetaSerializer::MetaObject* obj = serializer->NewObject(rsp.tblname);    
+    string objTypeName = GetMetaNameSpace()+"."+rsp.tblname;
+    MetaSerializer::MetaObject* obj = serializer->NewObject(objTypeName);    
     MetaSerializer::MetaObjectPtr   ptrObj = MetaSerializer::MetaObjectPtr(obj);
     for(uint i = 0;i < rsp.data.size(); ++i)
     {

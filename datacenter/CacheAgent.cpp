@@ -80,7 +80,8 @@ int  CacheAgent::DispatchResult(const CacheAgentCallBack & mcb,
                 int ret = DATA_OK;
                 Buffer  buff(reply->str,reply->len);
                 MetaSerializer::MetaObject* obj = NULL;
-                if(serializer->UnPack(typeKey.c_str(),buff,(void**)&obj))
+                string objType = GetMetaNameSpace()+"."+typeKey;
+                if(serializer->UnPack(objType.c_str(),buff,(void**)&obj))
                 {
                     LOG_FATAL("message unpack error !");
                     ret = DATA_UNPACK_ERROR;

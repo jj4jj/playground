@@ -4,24 +4,12 @@
 using namespace ::google::protobuf;
 
 #if 1
-int     MetaSerializer::Init(const char* pszNameSpace,const char* pszMetaFileName)
+int     MetaSerializer::Init()
 {
-    assert(pszNameSpace);
+    //assert(pszNameSpace);
     //loading meta
-    m_strNameSpace = pszNameSpace;
+    //m_strNameSpace = pszNameSpace;
     m_pDescriptorPool = const_cast<DescriptorPool*>(DescriptorPool::generated_pool());
-    if(pszMetaFileName)
-    {
-        //importer todo
-        /*
-        const FileDescriptor * fileDescriptor = ;
-        if(!fileDescriptor)
-        {
-            LOG_FATAL("file descriptor = %s not found !",pszMetaFileName);
-            return -1;
-        }
-        */
-    }
     assert(m_pDescriptorPool);    
     m_pObjFactory = MessageFactory::generated_factory();
     assert(m_pObjFactory);
@@ -74,8 +62,8 @@ void    MetaSerializer::Visual(void* pObj,string & s)
 }
 const   Descriptor*    MetaSerializer::GetDescriptor(const string & typeName)
 {
-    string fullName = m_strNameSpace+"."+typeName;
-    return m_pDescriptorPool->FindMessageTypeByName(fullName);
+    //string fullName = m_strNameSpace+"."+typeName;
+    return m_pDescriptorPool->FindMessageTypeByName(typeName);
 }
 string     MetaSerializer::GetTypeName(void* obj)
 {
@@ -148,7 +136,7 @@ int    MetaSerializer::GetFieldMaxLength(const google::protobuf::Descriptor* des
 #if 1
 MetaSerializer::MetaObject * MetaSerializer::NewObject(string & typeName)
 {
-    string metaName = m_strNameSpace+"."+typeName;
+    string metaName = typeName;
     const Descriptor  *   meta = m_pDescriptorPool->FindMessageTypeByName(metaName);
     if(!meta)
     {
