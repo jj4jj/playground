@@ -69,4 +69,5 @@ add_subdirectory(proto)
 add_subdirectory(datacenter)
 add_subdirectory(zone)
 add_subdirectory(test)
+add_subdirectory(tools)
 

@@ -175,6 +175,18 @@ target_link_libraries(pb_test
 	dl
 )
 INSTALL(TARGETS  pb_test DESTINATION test/)
-
+###################################
+ADD_EXECUTABLE(res_test
+	${CMAKE_CURRENT_SOURCE_DIR}/TestRes.cpp
+)
+target_link_libraries(res_test
+	datacenter
+	playground_proto
+	ssukits_base
+	protobuf
+	rt
+	dl
+)
+INSTALL(TARGETS  res_test DESTINATION test/)
 
 

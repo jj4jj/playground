@@ -30,6 +30,7 @@ uint64_t  ResTableAgent::GetResTableEntryKey(const void*   pObj)
 
 int       ResTableAgent::Init(const char* pszResDataDir,MetaSerializer * meta)
 {
+    m_metaSeri = meta;
     m_strResDataDir = pszResDataDir;   
     return ReLoad();
 }
@@ -69,6 +70,7 @@ int       ResTableAgent::ReLoad()
             unpackBuffer.Destroy();
             return -1;
         }
+        unpackBuffer.iUsed = buffLen;
         ////////////////////////////////////
         string  strResTableType =   StringUtil::SplitString(files[i],".")[0];
         File    file(filePath.c_str(),"r");

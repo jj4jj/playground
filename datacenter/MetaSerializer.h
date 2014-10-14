@@ -19,7 +19,7 @@ public:
     int     GetPackSize(void* obj);
     int     Pack(void* obj,Buffer & buffer);
     int     UnPack(const char* pszMetaName,Buffer & buffer,void * * ppObj);
-    void    Visual(void* pObj,string & s);
+    void    Visual(const void* pObj,string & s);
 public:
     MetaObject*    NewObject(string & typeName);
 

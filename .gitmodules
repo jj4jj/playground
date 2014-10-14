@@ -16,3 +16,9 @@
 [submodule "dep/hiredis"]
 	path = dep/hiredis
 	url = https://github.com/jj4jj/hiredis.git
+[submodule "xlsconverter"]
+	path = xlsconverter
+	url = git@github.com:jj4jj/xlsconverter.git
+[submodule "tools/xlsconverter"]
+	path = tools/xlsconverter
+	url = git@github.com:jj4jj/xlsconverter.git

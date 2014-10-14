@@ -6,9 +6,6 @@ using namespace ::google::protobuf;
 #if 1
 int     MetaSerializer::Init()
 {
-    //assert(pszNameSpace);
-    //loading meta
-    //m_strNameSpace = pszNameSpace;
     m_pDescriptorPool = const_cast<DescriptorPool*>(DescriptorPool::generated_pool());
     assert(m_pDescriptorPool);    
     m_pObjFactory = MessageFactory::generated_factory();
@@ -55,7 +52,7 @@ int     MetaSerializer::UnPack(const char* pszMetaName,Buffer & buffer,void * * 
     *ppObj = msg;
     return 0;
 }
-void    MetaSerializer::Visual(void* pObj,string & s)
+void    MetaSerializer::Visual(const void* pObj,string & s)
 {
     Message*  msg = (Message*)pObj;
     s = msg->DebugString();
