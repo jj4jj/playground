@@ -66,6 +66,8 @@ int     AgentApp::InitScript()
 int     AgentApp::InitResTable()
 {
     //todo
+    
+
 
     return 0;
 }

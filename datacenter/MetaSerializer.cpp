@@ -228,7 +228,7 @@ int     MetaSerializer::GetObjectFieldI64(MetaObject* obj,string & fieldName,int
     val = obj->GetReflection()->GetInt64(*obj,field);
     return 0;
 }
-int     MetaSerializer::GetObjectFieldU32(MetaObject* obj,string & fieldName,uint32_t & val)
+int     MetaSerializer::GetObjectFieldU32(const MetaObject* obj,string & fieldName,uint32_t & val)
 {
     GET_FIELD(obj,fieldName)
     val = obj->GetReflection()->GetUInt32(*obj,field);

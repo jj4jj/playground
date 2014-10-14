@@ -38,7 +38,7 @@ public:
 
     int     GetObjectFieldI32(MetaObject* obj,string & fieldName,int32_t & val);
     int     GetObjectFieldI64(MetaObject* obj,string & fieldName,int64_t & val);
-    int     GetObjectFieldU32(MetaObject* obj,string & fieldName,uint32_t & val);
+    int     GetObjectFieldU32(const MetaObject* obj,string & fieldName,uint32_t & val);
     int     GetObjectFieldU64(MetaObject* obj,string & fieldName,uint64_t & val);
     int     GetObjectFieldR32(MetaObject* obj,string & fieldName,float & val);
     int     GetObjectFieldR64(MetaObject* obj,string & fieldName,double & val);
