@@ -54,8 +54,7 @@ int     AgentApp::InitShmCenter()
 }
 int     AgentApp::InitZoneMgr()
 {
-    //todo
-    return 0;
+    return zoneMgr.Init();
 }
 int     AgentApp::InitScript()
 {
@@ -65,11 +64,8 @@ int     AgentApp::InitScript()
 }
 int     AgentApp::InitResTable()
 {
-    //todo
-    
-
-
-    return 0;
+    //"../res" is temporary . should read from config
+    return resTable.Init("../res",&meta);
 }
 #endif
 
@@ -106,8 +102,6 @@ int     AgentApp::OnInit()
     //3rd platform service (sns,lbs)
 
     //rank
-
-
     
     //table
     ret = InitResTable();
@@ -116,9 +110,7 @@ int     AgentApp::OnInit()
         LOG_ERROR("table res init error !");
         return -1;
     }
-    
-    
-
+        
     //script(listen msg and tick)
     ret = InitScript();
     if(ret)
@@ -126,7 +118,6 @@ int     AgentApp::OnInit()
         LOG_ERROR("script init error !");
         return -1;
     }
-
 
     //zone mgr
     ret = InitZoneMgr();
@@ -175,10 +166,9 @@ int     AgentApp::OnTick(int64_t lElapseTime)
 //poll system
 int     AgentApp::OnPoll(int iRecommendPollNum )
 {
-    //datagent
-
-    
-    
+    db.Polling(iRecommendPollNum);
+    cache.Polling(iRecommendPollNum);
+    zoneMgr.Polling();    
     return 0;
 }
 //system will close for closing Reason

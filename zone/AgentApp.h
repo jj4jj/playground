@@ -6,6 +6,8 @@
 #include "datacenter/CacheAgent.h"
 #include "datacenter/ShareMemoryCenter.h"
 #include "datacenter/MetaSerializer.h"
+#include "datacenter/ResTableAgent.h"
+#include "ZoneAgentMgr.h"
 
 
 struct  AgentContext : public AppContext
@@ -47,7 +49,8 @@ private:
     CacheAgent                  cache;
     MetaSerializer              meta;
     ShareMemoryCenter           shmCenter;
-
+    ResTableAgent               resTable;
+    ZoneAgentMgr                zoneMgr;
 private:
     private:
     AgentApp(){}

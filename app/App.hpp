@@ -13,6 +13,16 @@
 #include "ChannelProxy.h"
 #include "AppContext.h"
 
+enum    AppControlCommonCloseReason
+{
+    APP_CTRL_CLOSING_EXCEPTION  = 0,
+    APP_CTRL_CLOSING_RESTART    = 1,
+    APP_CTRL_CLOSING_STOP       = 2,
+    APP_CTRL_CLOSING_COREDUMP   = 3, //todo
+};
+
+
+
 class App
 {
 public:
@@ -35,6 +45,7 @@ public:
     //destroy sth uninitializing   
     //eg. print some profileing info
     virtual int     OnDestroy();
+    virtual void    OnCoreDump();
 /////////////////////////////////////////////////////////////////////////////////
 public:
     inline  timeval &   Getime()

@@ -98,6 +98,14 @@ int     App::OnDestroy()
     LOG_DEBUG("OnDestroy");
     return 0;
 }
+void     App::OnCoreDump()
+{
+    LOG_ERROR("program coredump , closing !!!! ");
+    while(Closing(APP_CTRL_CLOSING_COREDUMP) > 0 )
+    {
+        usleep(10000);
+    }
+}
 #endif
 
 #if 1
@@ -126,11 +134,26 @@ int     App::Destroy()
     return ret;
 }
 
+static  void OnSignalCoreDump(int sign, siginfo_t * siginfo, void * p)
+{
+    App * app =  GetApp();
+    app->OnCoreDump();    
+    ////////////////////////////////////////////
+    SignalHelper::SetSigHandler(SIGSEGV,SIG_DFL);
+    SignalHelper::SendSelfSignal(SIGSEGV);
+}
 void    App::InitSignal()
 {
     SignalHelper::IgnoreSignal(SIGPIPE);
     SignalHelper::IgnoreSignal(SIGTERM);
-    ///////////////////////////////////
+    /////////////////////////////////////////////////////////
+    struct sigaction   sig_segv_action;   
+    bzero(&sig_segv_action,sizeof(sig_segv_action));
+    sig_segv_action.sa_sigaction = OnSignalCoreDump;
+    sig_segv_action.sa_flags = SA_SIGINFO|SA_RESETHAND;
+    SignalHelper::ClearSigSet(&sig_segv_action.sa_mask);
+    SignalHelper::SignalAction(SIGSEGV,&sig_segv_action,NULL);
+    ////////////////////////////////////////////////////////
     //SignalHelper::IgnoreSignal(SIGINT);
 }
 void  App::UpdateTick(timeval & tvNow,int64_t lElapseTime)
