@@ -67,6 +67,14 @@ int     AgentApp::InitResTable()
     //"../res" is temporary . should read from config
     return resTable.Init("../res",&meta);
 }
+int     AgentApp::InitChannel()
+{
+    ChannelProxy & mpxy = GetChannelProxy();
+    //subscribe gate msg 
+    //mpxy.SubscribeSingleMsg();    
+    //subscribe server msg    
+    return 0;    
+}
 #endif
 
 
@@ -99,8 +107,14 @@ int     AgentApp::OnInit()
         return -1;
     }
 
-    //3rd platform service (sns,lbs)
+    ret = InitChannel();
+    if(ret)
+    {
+        LOG_ERROR("channel init error !");
+        return -1;
+    }
 
+    //3rd platform service (sns,lbs)
     //rank
     
     //table
@@ -169,6 +183,7 @@ int     AgentApp::OnPoll(int iRecommendPollNum )
     db.Polling(iRecommendPollNum);
     cache.Polling(iRecommendPollNum);
     zoneMgr.Polling();    
+    //channel
     return 0;
 }
 //system will close for closing Reason

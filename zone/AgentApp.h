@@ -43,7 +43,7 @@ public:
     int     InitZoneMgr();
     int     InitScript();
     int     InitResTable();
-    
+    int     InitChannel();
 private:
     DBAgent                     db;
     CacheAgent                  cache;

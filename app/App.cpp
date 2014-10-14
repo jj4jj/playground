@@ -112,8 +112,7 @@ void     App::OnCoreDump()
 int     App::Poll(int iRecommendPollNum )
 {
     //console
-    m_consoleDrv.Loop(1,0);
-    
+    m_consoleDrv.Loop(1,0);    
     return OnPoll(iRecommendPollNum);
 }
 int     App::Closing(int closingReason)
