@@ -15,6 +15,8 @@ public:
     typedef vector<ChannelProxyMsgHandlerPair> ChannelProxyMsgHandlerTable;
 public:
     int      Init(AppContext * pCtx);
+    int      Polling(int iPollTimeOutMs = 10);
+public:  
     int      SubscribeSingleMsg(int id,ChannelMessageDispatcherPtr hanlder);
     int      SubscribeContinuousMsg(int fromid , int endid,ChannelMessageDispatcherPtr hanlder);
     int      SubscribeScatterMsg(std::vector<int> & ids,ChannelMessageDispatcherPtr hanlder);

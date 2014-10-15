@@ -68,6 +68,13 @@ int     App::OnInit()
     LOG_DEBUG("OnInit");
     return 0;
 }
+//return 0 is ok , otherwise exit process
+int     App::OnStart()
+{
+    LOG_DEBUG("OnInit");
+    return 0;
+}
+
 //control command process
 string     App::OnCtrl(const std::vector<string> & cmdLine)
 {
@@ -338,4 +345,15 @@ int     App::Init(AppContext * _ctx)
     
     return 0;
 }   
+int     App::Start()
+{
+   int ret = OnStart();
+   if(ret)
+   {
+        LOG_FATAL("App Start result error = %d !",ret);
+        return -1;
+   }
+   return 0;
+}
+
 #endif

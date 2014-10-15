@@ -16,6 +16,7 @@ class DBAgent
 {
 public:
     int  AddListener(string typeName,DataListenerPtr ptr);
+    int  RegisterTable(string  tableType);
     int  Init(const DBAgentOption  & cao,MetaSerializer * seri);
     int  GenerateMysqlMetas(vector<MysqlMeta> & metas,const vector<string> & tables);
     int  Polling(int    iProcPerTick);
@@ -45,6 +46,7 @@ private:
     unordered_map<string,MetaSerializer::MetaObjectPtr >  m_mpGetObjects;
     MetaSerializer::MetaObjectPtr                         m_ptrTmpObj;
     std::map<string,DataListenerPtr>      m_mpListener;
+    std::set<string>                      m_setTableType;
 };
 
 

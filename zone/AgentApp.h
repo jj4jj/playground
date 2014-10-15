@@ -24,6 +24,7 @@ class AgentApp : public App
 public:
     //return 0 is ok , otherwise exit prcess
     virtual int     OnInit();    
+    virtual int     OnStart();
     //control command process
     virtual string  OnCtrl(const std::vector<string> & cmdLine);    
     //tick 
@@ -37,14 +38,15 @@ public:
 
 public:
     //helper
-    int     InitDB();
-    int     InitCache();
-    int     InitShmCenter();
+    int     StartDB();
+    int     StartCache();
+    int     StartShmCenter();
     int     InitZoneMgr();
     int     InitScript();
     int     InitResTable();
     int     InitChannel();
-private:
+    /////////////////////////////////////////////////
+public:
     DBAgent                     db;
     CacheAgent                  cache;
     MetaSerializer              meta;
@@ -52,8 +54,12 @@ private:
     ResTableAgent               resTable;
     ZoneAgentMgr                zoneMgr;
 private:
-    private:
-    AgentApp(){}
-    ~AgentApp(){}
+    DeclareDefaultPrivateConstructor(AgentApp)
     DeclareSingltonSupport(AgentApp)
 };
+///////////////////////////////////////////////////
+inline AgentApp & GetAgentServer()
+{
+    return *(AgentApp*)GetApp();
+}
+

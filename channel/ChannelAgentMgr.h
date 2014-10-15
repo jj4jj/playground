@@ -11,7 +11,8 @@ public:
     typedef shared_ptr<ChannelAgent>     ChannelAgentPtr;
     typedef unordered_map<int,ChannelAgentPtr >     ChannelAgentMap;
     typedef ChannelAgentMap::iterator               ChannelAgentMapItr;
-public:
+private :
+    DeclareSingltonSupport(ChannelAgentMgr)
     ChannelAgentMgr();
     ~ChannelAgentMgr();
 public:
@@ -30,6 +31,5 @@ private:
     int             nzpollitem;
     ChannelMessageDispatcher * pDispatcher;
 };
-
 
 

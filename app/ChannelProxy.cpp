@@ -17,6 +17,11 @@ ChannelProxy::~ChannelProxy()
 
 
 #if 1
+int     ChannelProxy::Polling(int iPollTimeOutMs )
+{
+    return  ChannelAgentMgr::Instance().Polling(iPollTimeOutMs);
+}
+
 int     ChannelProxy::Init(AppContext * pCtx)
 {
     assert(NULL == m_pCtx);    

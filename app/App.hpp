@@ -28,6 +28,10 @@ class App
 public:
     //return 0 is ok , otherwise exit prcess
     virtual int     OnInit();
+
+    //return 0 is ok , otherwise exit prcess (after ondestroy)    
+    virtual int     OnStart();
+    
     //control command process return msg to controler
     virtual string  OnCtrl(const std::vector<string> & cmdLine);
     //tick 
@@ -62,6 +66,7 @@ public:
     }
 public:
     int     Init(AppContext * _ctx);   
+    int     Start();
     int     Poll(int iRecommendPollNum = 1);
     int     Tick(int64_t lElapseUsTime);
     string  Ctrl(const std::vector<string> & cmdLine);
@@ -113,25 +118,28 @@ int App::main(int argc , char* argv [])
         return -1;
     }
     /////////////////////////////////////////////////////////
-    int proc = 0;
-    while(true)
-    {        
-        if(ctx.closing)
-        {
-            //there is no sth todo
-            proc = pApp->Closing(ctx.closing);
+    if(0 == pApp->Start())
+    {
+        int proc = 0;
+        while(true)
+        {        
+            if(ctx.closing)
+            {
+                //there is no sth todo
+                proc = pApp->Closing(ctx.closing);
+                if( proc <= 0 )
+                {
+                    break;
+                }
+            }
+            else
+            {            
+                proc = pApp->Poll(ctx.tickPollCount);
+            }
             if( proc <= 0 )
             {
-                break;
+                usleep(ctx.tickCountUs);
             }
-        }
-        else
-        {            
-            proc = pApp->Poll(ctx.tickPollCount);
-        }
-        if( proc <= 0 )
-        {
-            usleep(ctx.tickCountUs);
         }
     }
     return pApp->Destroy();

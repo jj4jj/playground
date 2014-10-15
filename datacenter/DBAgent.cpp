@@ -95,6 +95,7 @@ int  DBAgent::AddListener(string typeName,DataListenerPtr ptr)
         LOG_FATAL("repeat add cache listener = %s",typeName.c_str());
         return -1;
     }
+    RegisterTable(typeName);
     m_mpListener[typeName] = ptr;
     return 0;
 }
@@ -174,11 +175,20 @@ int DBAgent::GenerateMysqlMetas(vector<MysqlMeta> & metas,const vector<string> &
     }//end for table meta    
     return 0;
 }
+int   DBAgent::RegisterTable(string tableType)
+{
+    m_setTableType.insert(tableType);
+    return 0;
+}
+
 int  DBAgent::Init(const DBAgentOption  & cao,MetaSerializer * seri)
 {
     vector<MysqlMeta>    metas;
     serializer = seri;
-    if(GenerateMysqlMetas(metas,cao.tableTypes))
+    ///////////////////////////////////////////
+    vector<string>  tableTypes ;
+    tableTypes.assign(m_setTableType.begin(),m_setTableType.end());
+    if(GenerateMysqlMetas(metas,tableTypes))
     {
         LOG_ERROR("generate db table metas error !");
         return -1;

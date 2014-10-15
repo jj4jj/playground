@@ -13,15 +13,12 @@ int     AgentContext::OnInit()
 
 
 #if 1
-int     AgentApp::InitDB()
+int     AgentApp::StartDB()
 {
     DBAgentOption   cao;
     //AgentContext    * agent_ctx = (AgentContext*)GetContext();
     /////////////////////////////////////////////
     //db - register db tables
-    cao.tableTypes.push_back("Role");
-    cao.tableTypes.push_back("AccountR");
-    cao.tableTypes.push_back("AccountL");
     MysqlProxyOption    mpo;
     // for testing , it should read from config
     mpo.dbname = "mtest";
@@ -34,7 +31,7 @@ int     AgentApp::InitDB()
     
     return db.Init(cao,&meta);
 }
-int     AgentApp::InitCache()
+int     AgentApp::StartCache()
 {
     CacheAgentOption    cao;
 
@@ -47,10 +44,10 @@ int     AgentApp::InitCache()
     cao.addrList.push_back(ra);
     return cache.Init(cao,&meta);
 }
-int     AgentApp::InitShmCenter()
+int     AgentApp::StartShmCenter()
 {
-    //todo
-    return 0;
+    //todo - init with config path
+    return shmCenter.Init("agent.shm");
 }
 int     AgentApp::InitZoneMgr()
 {
@@ -67,14 +64,7 @@ int     AgentApp::InitResTable()
     //"../res" is temporary . should read from config
     return resTable.Init("../res",&meta);
 }
-int     AgentApp::InitChannel()
-{
-    ChannelProxy & mpxy = GetChannelProxy();
-    //subscribe gate msg 
-    //mpxy.SubscribeSingleMsg();    
-    //subscribe server msg    
-    return 0;    
-}
+
 #endif
 
 
@@ -84,33 +74,11 @@ int     AgentApp::OnInit()
 {
     int ret = 0;
     //read config    
-
     //meta
     ret = meta.Init();
     if(ret)
     {
         LOG_ERROR("meta init error !");
-        return -1;
-    }
-
-    //db (mysql)
-    ret = InitDB();
-    if(ret)
-    {
-        LOG_ERROR("db init error !");
-        return -1;
-    }
-    ret = InitCache();
-    if(ret)
-    {
-        LOG_ERROR("cache init error !");
-        return -1;
-    }
-
-    ret = InitChannel();
-    if(ret)
-    {
-        LOG_ERROR("channel init error !");
         return -1;
     }
 
@@ -131,7 +99,7 @@ int     AgentApp::OnInit()
     {
         LOG_ERROR("script init error !");
         return -1;
-    }
+    }    
 
     //zone mgr
     ret = InitZoneMgr();
@@ -141,17 +109,36 @@ int     AgentApp::OnInit()
         return -1;
     }
     
+    return 0;        
+}
+int     AgentApp::OnStart()
+{
+    int ret = 0;
 
     //share memory
-    ret = InitShmCenter();
+    ret = StartShmCenter();
     if(ret)
     {
-        LOG_ERROR("shm init error !");
+        LOG_ERROR("start init error !");
         return -1;
     }
     
-    return 0;        
+    //db (mysql)
+    ret = StartDB();
+    if(ret)
+    {
+        LOG_ERROR("db start error !");
+        return -1;
+    }
+    ret = StartCache();
+    if(ret)
+    {
+        LOG_ERROR("cache start error !");
+        return -1;
+    }    
+    return 0;
 }
+
 //control command process
 string  AgentApp::OnCtrl(const std::vector<string> & cmdLine)
 {
@@ -182,29 +169,37 @@ int     AgentApp::OnPoll(int iRecommendPollNum )
 {
     db.Polling(iRecommendPollNum);
     cache.Polling(iRecommendPollNum);
-    zoneMgr.Polling();    
-    //channel
+    //wait for 2 ms
+    zoneMgr.Polling(2);    
+    //channel    
     return 0;
 }
 //system will close for closing Reason
 int     AgentApp::OnClosing(int closingReason)
 {
     LOG_INFO("agent is closing for reason = %d ...",closingReason);
-    if(closingReason == 1)
+    int iRet = 0;
+    switch(closingReason)
     {
-        //restart 
-        //backup memory 
-        return 0;
+        case APP_CTRL_CLOSING_RESTART:
+            //bakup mem
+            break;
+        case APP_CTRL_CLOSING_STOP:
+            //stop sth
+            break;
+        case APP_CTRL_CLOSING_COREDUMP:
+            //core dump
+            break;
+        case APP_CTRL_CLOSING_EXCEPTION:
+        default:
+            return 0;
     }
-    else
-    {
-        return 0;
-    }
+    return iRet;
 }
 //destroy sth uninitializing
 int     AgentApp::OnDestroy()
 {
-    //sth need close .
+    //sth need destroy .
     return 0;
 }    
 #endif
