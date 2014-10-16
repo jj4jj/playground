@@ -6,7 +6,7 @@
 //init all channels
 
 struct AppContext;
-class ChannelProxy
+class ChannelMsgProxy
 {
 public:
     typedef unordered_map<int,ChannelMessageDispatcherPtr>    ChannelProxyMsgHandlerMap;

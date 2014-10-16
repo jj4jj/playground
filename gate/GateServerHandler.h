@@ -14,7 +14,7 @@ public:
     int     OnConnectionClosed( TcpSocket &  client);
 public:
     virtual ~GateServerHandler();
-    GateServerHandler(ChannelProxy * p,int iMaxConnections);
+    GateServerHandler(ChannelMsgProxy * p,int iMaxConnections);
 
 private:
     int     GetNextIdx();
@@ -57,6 +57,6 @@ private:
     int     m_iMaxConnection;
     int     m_iAlivedConnections;    
     int     m_iLastFreeIdx ;
-    ChannelProxy * m_pChannelProxy;
+    ChannelMsgProxy * m_pChannelProxy;
 }; 
 

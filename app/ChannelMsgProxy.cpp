@@ -2,14 +2,14 @@
 #include "channel/ChannelAgent.h"
 #include "channel/ChannelAgentMgr.h"
 #include "AppContext.h"
-#include "ChannelProxy.h"
+#include "ChannelMsgProxy.h"
 
 
 #if 1
-ChannelProxy::ChannelProxy():m_pCtx(NULL),m_dispatcher(this)
+ChannelMsgProxy::ChannelProxy():m_pCtx(NULL),m_dispatcher(this)
 {
 }
-ChannelProxy::~ChannelProxy()
+ChannelMsgProxy::~ChannelProxy()
 {
     chnMsgSendBuffer.Destroy();
 }
@@ -17,12 +17,12 @@ ChannelProxy::~ChannelProxy()
 
 
 #if 1
-int     ChannelProxy::Polling(int iPollTimeOutMs )
+int     ChannelMsgProxy::Polling(int iPollTimeOutMs )
 {
     return  ChannelAgentMgr::Instance().Polling(iPollTimeOutMs);
 }
 
-int     ChannelProxy::Init(AppContext * pCtx)
+int     ChannelMsgProxy::Init(AppContext * pCtx)
 {
     assert(NULL == m_pCtx);    
     m_pCtx = pCtx;
@@ -54,7 +54,7 @@ int     ChannelProxy::Init(AppContext * pCtx)
     }
     return 0;
 }
-int         ChannelProxy::SendToAgent(int iDst,const std::vector<Buffer>  &  vBuff)
+int         ChannelMsgProxy::SendToAgent(int iDst,const std::vector<Buffer>  &  vBuff)
 {
     int iLength = 0;
     for(int i = 0;i < (int)vBuff.size(); ++i)
@@ -87,14 +87,14 @@ int         ChannelProxy::SendToAgent(int iDst,const std::vector<Buffer>  &  vBu
     }    
     return pChannel->PostMessage(ChannelMessage(chnMsgSendBuffer));
 }
-int      ChannelProxy::SendToAgent(int iDst,const Buffer & buff)
+int      ChannelMsgProxy::SendToAgent(int iDst,const Buffer & buff)
 {
     vector<Buffer>  v;
     v.push_back(buff);
     return SendToAgent(iDst,v);
 }
 
-int      ChannelProxy::SubscribeSingleMsg(int id,ChannelMessageDispatcherPtr hanlder)
+int      ChannelMsgProxy::SubscribeSingleMsg(int id,ChannelMessageDispatcherPtr hanlder)
 {
     if(m_mpHandlerMap.find(id) == m_mpHandlerMap.end())
     {
@@ -104,7 +104,7 @@ int      ChannelProxy::SubscribeSingleMsg(int id,ChannelMessageDispatcherPtr han
     m_mpHandlerMap[id] = hanlder;
     return 0;
 }
-int      ChannelProxy::SubscribeContinuousMsg(int fromid , int endid,ChannelMessageDispatcherPtr hanlder)
+int      ChannelMsgProxy::SubscribeContinuousMsg(int fromid , int endid,ChannelMessageDispatcherPtr hanlder)
 {
     for(uint i = 0; i < m_vecHandlers.size(); ++i)
     {
@@ -121,7 +121,7 @@ int      ChannelProxy::SubscribeContinuousMsg(int fromid , int endid,ChannelMess
     m_vecHandlers.push_back(std::make_pair(sec,hanlder));           
     return 0;    
 }
-bool        ChannelProxy::MatchSegment(ChannelProxyMsgHandlerTableSegment & seg , int id)
+bool        ChannelMsgProxy::MatchSegment(ChannelProxyMsgHandlerTableSegment & seg , int id)
 {
     if( id >=  seg.first  && id <= seg.second )
     {
@@ -129,7 +129,7 @@ bool        ChannelProxy::MatchSegment(ChannelProxyMsgHandlerTableSegment & seg 
     }
     return false;
 }
-ChannelMessageDispatcher *   ChannelProxy::FindHandler(int id)
+ChannelMessageDispatcher *   ChannelMsgProxy::FindHandler(int id)
 {
     if(m_mpHandlerMap.find(id) != m_mpHandlerMap.end())
     {
@@ -145,7 +145,7 @@ ChannelMessageDispatcher *   ChannelProxy::FindHandler(int id)
     return NULL;
 }
 
-int      ChannelProxy::SubscribeScatterMsg(std::vector<int> & ids,ChannelMessageDispatcherPtr hanlder)
+int      ChannelMsgProxy::SubscribeScatterMsg(std::vector<int> & ids,ChannelMessageDispatcherPtr hanlder)
 {
     for(uint i = 0;i < ids.size() ; ++i)
     {

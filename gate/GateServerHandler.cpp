@@ -63,7 +63,7 @@ GateServerHandler::~GateServerHandler()
         }
     }
 }
-GateServerHandler::GateServerHandler(ChannelProxy * p,int iMaxConnections)
+GateServerHandler::GateServerHandler(ChannelMsgProxy * p,int iMaxConnections)
 {
     m_iMaxConnection = iMaxConnections;
     m_iAlivedConnections = 0;        

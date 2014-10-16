@@ -60,7 +60,7 @@ public:
     {
         return ctx;
     }
-    inline ChannelProxy & GetChannelProxy()
+    inline ChannelMsgProxy & GetChannelProxy()
     {
         return proxy;
     }
@@ -86,7 +86,7 @@ protected :
 private:
     AppContext * ctx;
     UdpDriver  m_consoleDrv;
-    ChannelProxy                proxy;
+    ChannelMsgProxy                proxy;
     File                        m_lockFile;
     //////////////////////////////////////////////////////////////////////////////////
 public:    
