@@ -19,7 +19,7 @@ public:
     int             OnServerMessage();
 private:
     unordered_map<uint32_t,ZoneAgentPtr>    m_mpZoneAgent;
-    ChannelMsgProxy *                          m_chnlProxy;
+    ChannelMsgProxy *                       m_chnlProxy;
     DBAgent      *                          m_db;
     CacheAgent   *                          m_cache;
 

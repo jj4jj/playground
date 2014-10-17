@@ -1,0 +1,68 @@
+package	db;
+
+////-----------------------------FOR DB---------------------------------------------
+
+
+message	AccountMisc
+{
+	required	uint32		dummy	=	1 ;	
+};
+
+message Account
+{
+	message	_PrimaryKey
+	{
+		optional	uint32	gid	= 1;
+	};
+	message	_MaxLength
+	{
+		optional	uint32	openid	= 1 [default=32];
+	};
+	message	_Index
+	{
+		optional	string	gid		= 1;
+		optional	string	openid	= 2;
+	};
+	required	uint64			gid	 		 =	1;
+	required	uint32			platform	 =	2;
+	required	string			openid		 =	3;
+	required	uint32			time		 =  4;
+	required	AccountMisc		misc		 =  5;
+};
+
+
+
+
+
+////---------------------------FOR CACHE-------------------------------------------------
+//for cache
+message AccountLR
+{
+	message	_PrimaryKey
+	{
+		optional	uint32	gid	= 1;
+	};
+	required	uint64			gid	 		 =	1;
+	required	uint32			platform	 =	2;
+	required	string			openid		 =	3;
+	required	uint32			time		 =  4;
+	required	AccountMisc		misc		 =  5;
+};
+//for cache
+message AccountRL
+{
+	message	_PrimaryKey
+	{
+		optional	uint32	platform	 	=	1;
+		optional	uint32	openid			= 	2;
+	};
+	required	uint64			gid	 		 =	1;
+	required	uint32			platform	 =	2;
+	required	string			openid		 =	3;
+	required	uint32			time		 =  4;
+	required	AccountMisc		misc		 =  5;
+};
+
+
+
+

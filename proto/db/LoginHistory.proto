@@ -1,0 +1,50 @@
+package db;
+
+///////////////////////FOR DB//////////////////////////////////////
+
+message LoginRecored
+{
+	required	uint32	area;
+	required	uint32	time;	
+};
+
+
+message	PlayerLoginHistory
+{
+	repeated	LoginRecored	latestLogin	=	1;	
+};
+
+message LoginHistory
+{
+	message	_PrimaryKey
+	{
+		optional	uint32	gid	= 1;
+	};
+	message	_MaxLength
+	{
+		optional	uint32	openid	= 1 [default=32];
+	};
+	message	_Index
+	{
+		optional	string	gid		= 1;
+		optional	string	openid	= 2;
+	};
+	required	uint64				gid	 		 =	1;
+	required	uint32				area		 =	2;
+	optional	PlayerLoginHistory	history		 =	3;			
+};
+
+
+///////////////////////FOR CACHE//////////////////////////////////////
+
+message LoginLatest
+{
+	message	_PrimaryKey
+	{
+		optional	uint32	gid	= 1;
+	};
+	required	uint64				gid	 		 =	1;
+	required	uint32				area		 =	2;
+};
+
+

@@ -1,0 +1,111 @@
+package	db;
+
+message	RoleBase
+{
+	enum Gender
+	{
+		MALE	=	0;
+		FEMALE	=	1;
+	};
+	required	Gender	gendor	=	1 [default = MALE ] ;
+	required	uint32	gold	=	2 [default = 0];
+	required	uint32	diamonds =	3 [default = 0];
+	
+};
+message	RoleHeroAttr
+{
+	repeated	int32	attrs = 1;
+};
+message	HeroArm
+{
+	optional	uint32		id	=	1;
+	optional	uint32		lv 	=	2;
+	optional	uint32		pos	=	3;
+};
+message	RoleHeroArm
+{
+	repeated	HeroArm		grids;
+};
+message	HeroSkill
+{
+	optional	uint32		id	=	1;
+	optional	uint32		lv 	=	2;
+};
+message	RoleHeroSkill
+{
+	repeated	HeroSkill	skills;
+};
+
+message RoleHero
+{	
+	required	uint32			id		=	1 [default = 0];	
+	required	RoleHeroGrowth	growth	=	2;//hero growth
+	required	RoleHeroAttr	attr	=	3;//hero attr
+	required	RoleHeroArm		arm		=	4;//hero arm	
+	required	RoleHeroSkill	skill	=	5;//hero skill
+};
+message	HeroStrategy
+{
+	repeated	uint32			joinWarHeroIDs =	1;	
+};
+message	RoleHeroInfo
+{		
+	repeated	RoleHero		heros		=	1;		
+	required	HeroStrategy	strategy	=	2;	
+};
+
+message RolePackGrid
+{
+	required	uint32		pos	=	1;
+	required	uint32		id	=	2;
+	required	uint32		num	=	3 [default = 0];	
+};
+message	RolePackage
+{
+	required	uint32			maxGrid	=	1 [default = 0];
+	repeated	RolePackGrid	grids	=	2 ; //package
+};
+message	RoleGrowth
+{
+	required	uint32		level	=	1 [default = 1];
+	required	uint32		exp		=	2 [default = 0];
+};
+message	RoleStage
+{
+	required	uint32		curStage	=	1 [default = 0];
+};
+message	RoleSNS
+{
+	required	uint32		maxfrinds	=	1 [default = 5];
+};
+
+message	RoleActInfo
+{
+	optional	uint32		dummy		=	1;
+};
+message	RoleExt
+{
+	required	uint32		dummy	=	1 ;	
+};
+
+message Role
+{	
+	message	_PrimaryKey
+	{
+		optional	uint32	rid	= 1;
+	};
+	message	_MaxLength
+	{
+		optional	uint32	name	= 1 [default=32];
+	};
+	required	uint64			rid	 		 =	1;
+	required	string			name	  	 =	2;
+	required	RoleBase		base		 =	3;
+	required	RoleHeroInfo	hero	 	 =  4;
+	required	RolePackage		pack		 =	5;
+	required	RoleGrowth		grow		 = 	6;//task and achieve
+	required	RoleStage		stage	 	 =	7;
+	required	RoleSNS			sns			 = 	8;	
+	required	RoleActInfo		act			 =	9;//activity data
+	required	RoleExt			ext			 =  10;
+};
