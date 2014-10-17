@@ -67,7 +67,7 @@ add_subdirectory(app)
 add_subdirectory(db)
 add_subdirectory(proto)
 add_subdirectory(datacenter)
-add_subdirectory(zone)
 add_subdirectory(test)
 add_subdirectory(tools)
+add_subdirectory(rgtd/zone)
 

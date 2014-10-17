@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ZoneAgent.h"
-#include "app/ChannelProxy.h"
+#include "app/ChannelMsgProxy.h"
 
 class DBAgent;
 class CacheAgent;

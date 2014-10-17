@@ -1,6 +1,6 @@
 #include "base/stdinc.h"
 #include "base/Log.h"
-#include "ChannelProxy.h"
+#include "ChannelMsgProxy.h"
 #include "channel/ChannelAgent.h"
 #include "ChannelProxyDispatcher.h"
 

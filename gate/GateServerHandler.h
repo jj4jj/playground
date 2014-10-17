@@ -1,7 +1,7 @@
 #pragma once
 #include "net/TcpServerHandler.h"
 #include "proto/gate/gate.pb.h"
-#include "app/ChannelProxy.h"
+#include "app/ChannelMsgProxy.h"
 //gate server report connection event to agent
 //msg
 //

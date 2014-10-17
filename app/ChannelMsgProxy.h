@@ -25,8 +25,8 @@ public:
     int      SendToAgent(int iDst,const std::vector<Buffer>  &  vBuff);
     int      SendToAgent(int iDst,const Buffer &  buff);
 public:
-    ChannelProxy();
-    virtual ~ChannelProxy();
+    ChannelMsgProxy();
+    virtual ~ChannelMsgProxy();
 
 private:
     AppContext * m_pCtx;

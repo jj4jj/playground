@@ -10,7 +10,7 @@
 #include "net/UdpSocket.h"
 #include "net/UdpDriver.h"
 #include "utility/Daemon.h"
-#include "ChannelProxy.h"
+#include "ChannelMsgProxy.h"
 #include "AppContext.h"
 
 enum    AppControlCommonCloseReason
@@ -86,7 +86,7 @@ protected :
 private:
     AppContext * ctx;
     UdpDriver  m_consoleDrv;
-    ChannelMsgProxy                proxy;
+    ChannelMsgProxy             proxy;
     File                        m_lockFile;
     //////////////////////////////////////////////////////////////////////////////////
 public:    

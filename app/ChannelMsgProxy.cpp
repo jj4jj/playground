@@ -6,10 +6,10 @@
 
 
 #if 1
-ChannelMsgProxy::ChannelProxy():m_pCtx(NULL),m_dispatcher(this)
+ChannelMsgProxy::ChannelMsgProxy():m_pCtx(NULL),m_dispatcher(this)
 {
 }
-ChannelMsgProxy::~ChannelProxy()
+ChannelMsgProxy::~ChannelMsgProxy()
 {
     chnMsgSendBuffer.Destroy();
 }
