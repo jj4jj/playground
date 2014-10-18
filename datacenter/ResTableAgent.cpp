@@ -53,7 +53,7 @@ int       ResTableAgent::ReLoad()
     string metaNameSpace = "res";
     //12MB
     Buffer  unpackBuffer;
-    #define MAX_TABLE_FILE_SIZE     (12*1024*1024)
+    #define MAX_TABLE_FILE_SIZE     (16*1024*1024)
     ret = unpackBuffer.Create(MAX_TABLE_FILE_SIZE);
     if(ret)
     {

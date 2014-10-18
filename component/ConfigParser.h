@@ -1,7 +1,7 @@
 #pragma once
 
 #include "base/stdinc.h"
-
+#include "base/Log.h"
 //maybe use xml or lua script 
 //pb or lua state parse it
 
@@ -10,6 +10,23 @@ struct ConfigValue
     string key;
     string value;
     std::vector<ConfigValue>    dic;
+    ConfigValue()
+    {
+        key = value = "";
+        dic.clear();
+    }
+    ~ConfigValue()
+    {
+        //LOG_DEBUG("destruct key = %s [%p]",key.c_str(),key.c_str());
+        if(!dic.empty())
+        {
+            //LOG_DEBUG("destruct dic size = %zu",dic.size());
+        }
+        else
+        {
+            //LOG_DEBUG("destruct value = %s [%p]",value.c_str(),value.c_str());
+        }
+    }
 };
 
 //EBNF

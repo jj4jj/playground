@@ -1,4 +1,5 @@
 #include "base/StringUtil.h"
+#include "proto/gen/res/include.h"
 #include "AgentApp.h"
 
 #if 1

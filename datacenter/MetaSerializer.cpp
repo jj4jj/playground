@@ -138,6 +138,7 @@ MetaSerializer::MetaObject * MetaSerializer::NewObject(string & typeName)
     if(!meta)
     {
         LOG_ERROR("meta name = %s not found !",metaName.c_str());
+        
         return NULL;
     }
     const Message * prototype = m_pObjFactory->GetPrototype(meta);

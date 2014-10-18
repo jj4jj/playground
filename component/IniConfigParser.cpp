@@ -36,7 +36,7 @@ int     IniConfigParser::ReadConfigFile(const char* pszFileName)
             continue;
         }
         ConfigValue v;
-        v.key = sec_name;        
+        v.key = string(sec_name);        
         GetConfig(v,true);
         rootValue.dic.push_back(v);
     }
@@ -49,6 +49,9 @@ int     IniConfigParser::GetConfig(ConfigValue & v)
 int     IniConfigParser::GetConfig(ConfigValue  & v,bool bIsSec)
 {
     //insert     
+
+    //has no sesction and is not section
+    //get a real key
     string key = v.key;
     if(v.key != rootValue.key &&
        v.key.find(':') == string::npos &&
@@ -56,7 +59,9 @@ int     IniConfigParser::GetConfig(ConfigValue  & v,bool bIsSec)
     {
         key = rootValue.key + ":" +v.key;
     }
-        
+
+    // it's a section
+    //get all sub entries
     if(v.key.find(':') == string::npos && 
        iniparser_find_entry(dic,v.key.c_str()))
     {
@@ -64,10 +69,10 @@ int     IniConfigParser::GetConfig(ConfigValue  & v,bool bIsSec)
         v.dic.clear();
         char ** pp = iniparser_getseckeys(dic,(char*)v.key.c_str());
         int nk = iniparser_getsecnkeys(dic,(char*)v.key.c_str());
-        ConfigValue cv;
         for(int i = 0;i < nk; ++i)
         {
-            cv.key = pp[i];
+            ConfigValue cv;
+            cv.key = string(pp[i]);
             if(!GetConfig(cv))
             {
                 cv.key = cv.key.substr(v.key.length()+1);
@@ -82,7 +87,7 @@ int     IniConfigParser::GetConfig(ConfigValue  & v,bool bIsSec)
         //not found        
         return -1;
     }
-    v.value = sv;
+    v.value = string(sv);
     return 0;
 }
 int   IniConfigParser::GetConfigInt(const char* pszKey,int defaultValue )

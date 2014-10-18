@@ -98,7 +98,7 @@ int      ChannelMsgProxy::SendToAgent(int iDst,const Buffer & buff)
 
 int      ChannelMsgProxy::SubscribeSingleMsg(int id,ChannelMessageDispatcherPtr hanlder)
 {
-    if(m_mpHandlerMap.find(id) == m_mpHandlerMap.end())
+    if(m_mpHandlerMap.find(id) != m_mpHandlerMap.end())
     {
         LOG_FATAL("subscribe single msg handler repeatly !");        
     }
