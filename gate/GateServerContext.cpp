@@ -18,8 +18,8 @@ void    GateServerContext::OnGenerateDefaultConfig()
     {"gate:test_mode","1"},
     {"gate:need_auth","0"},
     {"gate:agent:num","1"},//agent number
-    {"gate:agent#1:ch:id","1 "}, //agent channel id
-    {"gate:agent#1:areas","1 "}, //agent zone areas
+    {"gate:agent#1:channel","1 "}, //agent channel id
+    {"gate:agent#1:areas","1 2 3 4 5"}, //agent zone areas
 
     /////////////add default config above////////////////
     {NULL,NULL}};

@@ -26,6 +26,8 @@
 #include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
 
+namespace res {
+
 // Internal implementation detail -- do not call these.
 void  protobuf_AddDesc_demo_2eproto();
 void protobuf_AssignDesc_demo_2eproto();
@@ -105,7 +107,7 @@ class ComposeType__CName : public ::google::protobuf::Message {
   inline ::std::string* release_id();
   inline void set_allocated_id(::std::string* id);
 
-  // @@protoc_insertion_point(class_scope:ComposeType._CName)
+  // @@protoc_insertion_point(class_scope:res.ComposeType._CName)
  private:
   inline void set_has_id();
   inline void clear_has_id();
@@ -187,7 +189,7 @@ class ComposeType : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 id() const;
   inline void set_id(::google::protobuf::int32 value);
 
-  // @@protoc_insertion_point(class_scope:ComposeType)
+  // @@protoc_insertion_point(class_scope:res.ComposeType)
  private:
   inline void set_has_id();
   inline void clear_has_id();
@@ -266,7 +268,7 @@ class Meta__PrimaryKey : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 id() const;
   inline void set_id(::google::protobuf::int32 value);
 
-  // @@protoc_insertion_point(class_scope:Meta._PrimaryKey)
+  // @@protoc_insertion_point(class_scope:res.Meta._PrimaryKey)
  private:
   inline void set_has_id();
   inline void clear_has_id();
@@ -386,7 +388,7 @@ class Meta__CName : public ::google::protobuf::Message {
   inline ::std::string* release_arrct();
   inline void set_allocated_arrct(::std::string* arrct);
 
-  // @@protoc_insertion_point(class_scope:Meta._CName)
+  // @@protoc_insertion_point(class_scope:res.Meta._CName)
  private:
   inline void set_has_id();
   inline void clear_has_id();
@@ -481,14 +483,14 @@ class Meta : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 id() const;
   inline void set_id(::google::protobuf::int32 value);
 
-  // optional .ComposeType ct = 2;
+  // optional .res.ComposeType ct = 2;
   inline bool has_ct() const;
   inline void clear_ct();
   static const int kCtFieldNumber = 2;
-  inline const ::ComposeType& ct() const;
-  inline ::ComposeType* mutable_ct();
-  inline ::ComposeType* release_ct();
-  inline void set_allocated_ct(::ComposeType* ct);
+  inline const ::res::ComposeType& ct() const;
+  inline ::res::ComposeType* mutable_ct();
+  inline ::res::ComposeType* release_ct();
+  inline void set_allocated_ct(::res::ComposeType* ct);
 
   // repeated int32 arr = 3;
   inline int arr_size() const;
@@ -502,19 +504,19 @@ class Meta : public ::google::protobuf::Message {
   inline ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
       mutable_arr();
 
-  // repeated .ComposeType arrct = 4;
+  // repeated .res.ComposeType arrct = 4;
   inline int arrct_size() const;
   inline void clear_arrct();
   static const int kArrctFieldNumber = 4;
-  inline const ::ComposeType& arrct(int index) const;
-  inline ::ComposeType* mutable_arrct(int index);
-  inline ::ComposeType* add_arrct();
-  inline const ::google::protobuf::RepeatedPtrField< ::ComposeType >&
+  inline const ::res::ComposeType& arrct(int index) const;
+  inline ::res::ComposeType* mutable_arrct(int index);
+  inline ::res::ComposeType* add_arrct();
+  inline const ::google::protobuf::RepeatedPtrField< ::res::ComposeType >&
       arrct() const;
-  inline ::google::protobuf::RepeatedPtrField< ::ComposeType >*
+  inline ::google::protobuf::RepeatedPtrField< ::res::ComposeType >*
       mutable_arrct();
 
-  // @@protoc_insertion_point(class_scope:Meta)
+  // @@protoc_insertion_point(class_scope:res.Meta)
  private:
   inline void set_has_id();
   inline void clear_has_id();
@@ -525,9 +527,9 @@ class Meta : public ::google::protobuf::Message {
 
   ::google::protobuf::uint32 _has_bits_[1];
   mutable int _cached_size_;
-  ::ComposeType* ct_;
+  ::res::ComposeType* ct_;
   ::google::protobuf::RepeatedField< ::google::protobuf::int32 > arr_;
-  ::google::protobuf::RepeatedPtrField< ::ComposeType > arrct_;
+  ::google::protobuf::RepeatedPtrField< ::res::ComposeType > arrct_;
   ::google::protobuf::int32 id_;
   friend void  protobuf_AddDesc_demo_2eproto();
   friend void protobuf_AssignDesc_demo_2eproto();
@@ -591,26 +593,26 @@ class MetaTable : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // repeated .Meta list = 1;
+  // repeated .res.Meta list = 1;
   inline int list_size() const;
   inline void clear_list();
   static const int kListFieldNumber = 1;
-  inline const ::Meta& list(int index) const;
-  inline ::Meta* mutable_list(int index);
-  inline ::Meta* add_list();
-  inline const ::google::protobuf::RepeatedPtrField< ::Meta >&
+  inline const ::res::Meta& list(int index) const;
+  inline ::res::Meta* mutable_list(int index);
+  inline ::res::Meta* add_list();
+  inline const ::google::protobuf::RepeatedPtrField< ::res::Meta >&
       list() const;
-  inline ::google::protobuf::RepeatedPtrField< ::Meta >*
+  inline ::google::protobuf::RepeatedPtrField< ::res::Meta >*
       mutable_list();
 
-  // @@protoc_insertion_point(class_scope:MetaTable)
+  // @@protoc_insertion_point(class_scope:res.MetaTable)
  private:
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
   ::google::protobuf::uint32 _has_bits_[1];
   mutable int _cached_size_;
-  ::google::protobuf::RepeatedPtrField< ::Meta > list_;
+  ::google::protobuf::RepeatedPtrField< ::res::Meta > list_;
   friend void  protobuf_AddDesc_demo_2eproto();
   friend void protobuf_AssignDesc_demo_2eproto();
   friend void protobuf_ShutdownFile_demo_2eproto();
@@ -642,7 +644,7 @@ inline void ComposeType__CName::clear_id() {
   clear_has_id();
 }
 inline const ::std::string& ComposeType__CName::id() const {
-  // @@protoc_insertion_point(field_get:ComposeType._CName.id)
+  // @@protoc_insertion_point(field_get:res.ComposeType._CName.id)
   return *id_;
 }
 inline void ComposeType__CName::set_id(const ::std::string& value) {
@@ -651,7 +653,7 @@ inline void ComposeType__CName::set_id(const ::std::string& value) {
     id_ = new ::std::string;
   }
   id_->assign(value);
-  // @@protoc_insertion_point(field_set:ComposeType._CName.id)
+  // @@protoc_insertion_point(field_set:res.ComposeType._CName.id)
 }
 inline void ComposeType__CName::set_id(const char* value) {
   set_has_id();
@@ -659,7 +661,7 @@ inline void ComposeType__CName::set_id(const char* value) {
     id_ = new ::std::string;
   }
   id_->assign(value);
-  // @@protoc_insertion_point(field_set_char:ComposeType._CName.id)
+  // @@protoc_insertion_point(field_set_char:res.ComposeType._CName.id)
 }
 inline void ComposeType__CName::set_id(const char* value, size_t size) {
   set_has_id();
@@ -667,14 +669,14 @@ inline void ComposeType__CName::set_id(const char* value, size_t size) {
     id_ = new ::std::string;
   }
   id_->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:ComposeType._CName.id)
+  // @@protoc_insertion_point(field_set_pointer:res.ComposeType._CName.id)
 }
 inline ::std::string* ComposeType__CName::mutable_id() {
   set_has_id();
   if (id_ == _default_id_) {
     id_ = new ::std::string(*_default_id_);
   }
-  // @@protoc_insertion_point(field_mutable:ComposeType._CName.id)
+  // @@protoc_insertion_point(field_mutable:res.ComposeType._CName.id)
   return id_;
 }
 inline ::std::string* ComposeType__CName::release_id() {
@@ -698,7 +700,7 @@ inline void ComposeType__CName::set_allocated_id(::std::string* id) {
     clear_has_id();
     id_ = const_cast< ::std::string*>(_default_id_);
   }
-  // @@protoc_insertion_point(field_set_allocated:ComposeType._CName.id)
+  // @@protoc_insertion_point(field_set_allocated:res.ComposeType._CName.id)
 }
 
 // -------------------------------------------------------------------
@@ -720,13 +722,13 @@ inline void ComposeType::clear_id() {
   clear_has_id();
 }
 inline ::google::protobuf::int32 ComposeType::id() const {
-  // @@protoc_insertion_point(field_get:ComposeType.id)
+  // @@protoc_insertion_point(field_get:res.ComposeType.id)
   return id_;
 }
 inline void ComposeType::set_id(::google::protobuf::int32 value) {
   set_has_id();
   id_ = value;
-  // @@protoc_insertion_point(field_set:ComposeType.id)
+  // @@protoc_insertion_point(field_set:res.ComposeType.id)
 }
 
 // -------------------------------------------------------------------
@@ -748,13 +750,13 @@ inline void Meta__PrimaryKey::clear_id() {
   clear_has_id();
 }
 inline ::google::protobuf::int32 Meta__PrimaryKey::id() const {
-  // @@protoc_insertion_point(field_get:Meta._PrimaryKey.id)
+  // @@protoc_insertion_point(field_get:res.Meta._PrimaryKey.id)
   return id_;
 }
 inline void Meta__PrimaryKey::set_id(::google::protobuf::int32 value) {
   set_has_id();
   id_ = value;
-  // @@protoc_insertion_point(field_set:Meta._PrimaryKey.id)
+  // @@protoc_insertion_point(field_set:res.Meta._PrimaryKey.id)
 }
 
 // -------------------------------------------------------------------
@@ -778,7 +780,7 @@ inline void Meta__CName::clear_id() {
   clear_has_id();
 }
 inline const ::std::string& Meta__CName::id() const {
-  // @@protoc_insertion_point(field_get:Meta._CName.id)
+  // @@protoc_insertion_point(field_get:res.Meta._CName.id)
   return *id_;
 }
 inline void Meta__CName::set_id(const ::std::string& value) {
@@ -787,7 +789,7 @@ inline void Meta__CName::set_id(const ::std::string& value) {
     id_ = new ::std::string;
   }
   id_->assign(value);
-  // @@protoc_insertion_point(field_set:Meta._CName.id)
+  // @@protoc_insertion_point(field_set:res.Meta._CName.id)
 }
 inline void Meta__CName::set_id(const char* value) {
   set_has_id();
@@ -795,7 +797,7 @@ inline void Meta__CName::set_id(const char* value) {
     id_ = new ::std::string;
   }
   id_->assign(value);
-  // @@protoc_insertion_point(field_set_char:Meta._CName.id)
+  // @@protoc_insertion_point(field_set_char:res.Meta._CName.id)
 }
 inline void Meta__CName::set_id(const char* value, size_t size) {
   set_has_id();
@@ -803,14 +805,14 @@ inline void Meta__CName::set_id(const char* value, size_t size) {
     id_ = new ::std::string;
   }
   id_->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:Meta._CName.id)
+  // @@protoc_insertion_point(field_set_pointer:res.Meta._CName.id)
 }
 inline ::std::string* Meta__CName::mutable_id() {
   set_has_id();
   if (id_ == _default_id_) {
     id_ = new ::std::string(*_default_id_);
   }
-  // @@protoc_insertion_point(field_mutable:Meta._CName.id)
+  // @@protoc_insertion_point(field_mutable:res.Meta._CName.id)
   return id_;
 }
 inline ::std::string* Meta__CName::release_id() {
@@ -834,7 +836,7 @@ inline void Meta__CName::set_allocated_id(::std::string* id) {
     clear_has_id();
     id_ = const_cast< ::std::string*>(_default_id_);
   }
-  // @@protoc_insertion_point(field_set_allocated:Meta._CName.id)
+  // @@protoc_insertion_point(field_set_allocated:res.Meta._CName.id)
 }
 
 // optional string ct = 2 [default = "\345\244\215\345\220\210"];
@@ -854,7 +856,7 @@ inline void Meta__CName::clear_ct() {
   clear_has_ct();
 }
 inline const ::std::string& Meta__CName::ct() const {
-  // @@protoc_insertion_point(field_get:Meta._CName.ct)
+  // @@protoc_insertion_point(field_get:res.Meta._CName.ct)
   return *ct_;
 }
 inline void Meta__CName::set_ct(const ::std::string& value) {
@@ -863,7 +865,7 @@ inline void Meta__CName::set_ct(const ::std::string& value) {
     ct_ = new ::std::string;
   }
   ct_->assign(value);
-  // @@protoc_insertion_point(field_set:Meta._CName.ct)
+  // @@protoc_insertion_point(field_set:res.Meta._CName.ct)
 }
 inline void Meta__CName::set_ct(const char* value) {
   set_has_ct();
@@ -871,7 +873,7 @@ inline void Meta__CName::set_ct(const char* value) {
     ct_ = new ::std::string;
   }
   ct_->assign(value);
-  // @@protoc_insertion_point(field_set_char:Meta._CName.ct)
+  // @@protoc_insertion_point(field_set_char:res.Meta._CName.ct)
 }
 inline void Meta__CName::set_ct(const char* value, size_t size) {
   set_has_ct();
@@ -879,14 +881,14 @@ inline void Meta__CName::set_ct(const char* value, size_t size) {
     ct_ = new ::std::string;
   }
   ct_->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:Meta._CName.ct)
+  // @@protoc_insertion_point(field_set_pointer:res.Meta._CName.ct)
 }
 inline ::std::string* Meta__CName::mutable_ct() {
   set_has_ct();
   if (ct_ == _default_ct_) {
     ct_ = new ::std::string(*_default_ct_);
   }
-  // @@protoc_insertion_point(field_mutable:Meta._CName.ct)
+  // @@protoc_insertion_point(field_mutable:res.Meta._CName.ct)
   return ct_;
 }
 inline ::std::string* Meta__CName::release_ct() {
@@ -910,7 +912,7 @@ inline void Meta__CName::set_allocated_ct(::std::string* ct) {
     clear_has_ct();
     ct_ = const_cast< ::std::string*>(_default_ct_);
   }
-  // @@protoc_insertion_point(field_set_allocated:Meta._CName.ct)
+  // @@protoc_insertion_point(field_set_allocated:res.Meta._CName.ct)
 }
 
 // optional string arr = 3 [default = "\346\225\260\347\273\204"];
@@ -930,7 +932,7 @@ inline void Meta__CName::clear_arr() {
   clear_has_arr();
 }
 inline const ::std::string& Meta__CName::arr() const {
-  // @@protoc_insertion_point(field_get:Meta._CName.arr)
+  // @@protoc_insertion_point(field_get:res.Meta._CName.arr)
   return *arr_;
 }
 inline void Meta__CName::set_arr(const ::std::string& value) {
@@ -939,7 +941,7 @@ inline void Meta__CName::set_arr(const ::std::string& value) {
     arr_ = new ::std::string;
   }
   arr_->assign(value);
-  // @@protoc_insertion_point(field_set:Meta._CName.arr)
+  // @@protoc_insertion_point(field_set:res.Meta._CName.arr)
 }
 inline void Meta__CName::set_arr(const char* value) {
   set_has_arr();
@@ -947,7 +949,7 @@ inline void Meta__CName::set_arr(const char* value) {
     arr_ = new ::std::string;
   }
   arr_->assign(value);
-  // @@protoc_insertion_point(field_set_char:Meta._CName.arr)
+  // @@protoc_insertion_point(field_set_char:res.Meta._CName.arr)
 }
 inline void Meta__CName::set_arr(const char* value, size_t size) {
   set_has_arr();
@@ -955,14 +957,14 @@ inline void Meta__CName::set_arr(const char* value, size_t size) {
     arr_ = new ::std::string;
   }
   arr_->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:Meta._CName.arr)
+  // @@protoc_insertion_point(field_set_pointer:res.Meta._CName.arr)
 }
 inline ::std::string* Meta__CName::mutable_arr() {
   set_has_arr();
   if (arr_ == _default_arr_) {
     arr_ = new ::std::string(*_default_arr_);
   }
-  // @@protoc_insertion_point(field_mutable:Meta._CName.arr)
+  // @@protoc_insertion_point(field_mutable:res.Meta._CName.arr)
   return arr_;
 }
 inline ::std::string* Meta__CName::release_arr() {
@@ -986,7 +988,7 @@ inline void Meta__CName::set_allocated_arr(::std::string* arr) {
     clear_has_arr();
     arr_ = const_cast< ::std::string*>(_default_arr_);
   }
-  // @@protoc_insertion_point(field_set_allocated:Meta._CName.arr)
+  // @@protoc_insertion_point(field_set_allocated:res.Meta._CName.arr)
 }
 
 // optional string arrct = 4 [default = "\345\244\215\345\220\210\346\225\260\347\273\204"];
@@ -1006,7 +1008,7 @@ inline void Meta__CName::clear_arrct() {
   clear_has_arrct();
 }
 inline const ::std::string& Meta__CName::arrct() const {
-  // @@protoc_insertion_point(field_get:Meta._CName.arrct)
+  // @@protoc_insertion_point(field_get:res.Meta._CName.arrct)
   return *arrct_;
 }
 inline void Meta__CName::set_arrct(const ::std::string& value) {
@@ -1015,7 +1017,7 @@ inline void Meta__CName::set_arrct(const ::std::string& value) {
     arrct_ = new ::std::string;
   }
   arrct_->assign(value);
-  // @@protoc_insertion_point(field_set:Meta._CName.arrct)
+  // @@protoc_insertion_point(field_set:res.Meta._CName.arrct)
 }
 inline void Meta__CName::set_arrct(const char* value) {
   set_has_arrct();
@@ -1023,7 +1025,7 @@ inline void Meta__CName::set_arrct(const char* value) {
     arrct_ = new ::std::string;
   }
   arrct_->assign(value);
-  // @@protoc_insertion_point(field_set_char:Meta._CName.arrct)
+  // @@protoc_insertion_point(field_set_char:res.Meta._CName.arrct)
 }
 inline void Meta__CName::set_arrct(const char* value, size_t size) {
   set_has_arrct();
@@ -1031,14 +1033,14 @@ inline void Meta__CName::set_arrct(const char* value, size_t size) {
     arrct_ = new ::std::string;
   }
   arrct_->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:Meta._CName.arrct)
+  // @@protoc_insertion_point(field_set_pointer:res.Meta._CName.arrct)
 }
 inline ::std::string* Meta__CName::mutable_arrct() {
   set_has_arrct();
   if (arrct_ == _default_arrct_) {
     arrct_ = new ::std::string(*_default_arrct_);
   }
-  // @@protoc_insertion_point(field_mutable:Meta._CName.arrct)
+  // @@protoc_insertion_point(field_mutable:res.Meta._CName.arrct)
   return arrct_;
 }
 inline ::std::string* Meta__CName::release_arrct() {
@@ -1062,7 +1064,7 @@ inline void Meta__CName::set_allocated_arrct(::std::string* arrct) {
     clear_has_arrct();
     arrct_ = const_cast< ::std::string*>(_default_arrct_);
   }
-  // @@protoc_insertion_point(field_set_allocated:Meta._CName.arrct)
+  // @@protoc_insertion_point(field_set_allocated:res.Meta._CName.arrct)
 }
 
 // -------------------------------------------------------------------
@@ -1084,16 +1086,16 @@ inline void Meta::clear_id() {
   clear_has_id();
 }
 inline ::google::protobuf::int32 Meta::id() const {
-  // @@protoc_insertion_point(field_get:Meta.id)
+  // @@protoc_insertion_point(field_get:res.Meta.id)
   return id_;
 }
 inline void Meta::set_id(::google::protobuf::int32 value) {
   set_has_id();
   id_ = value;
-  // @@protoc_insertion_point(field_set:Meta.id)
+  // @@protoc_insertion_point(field_set:res.Meta.id)
 }
 
-// optional .ComposeType ct = 2;
+// optional .res.ComposeType ct = 2;
 inline bool Meta::has_ct() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
@@ -1104,26 +1106,26 @@ inline void Meta::clear_has_ct() {
   _has_bits_[0] &= ~0x00000002u;
 }
 inline void Meta::clear_ct() {
-  if (ct_ != NULL) ct_->::ComposeType::Clear();
+  if (ct_ != NULL) ct_->::res::ComposeType::Clear();
   clear_has_ct();
 }
-inline const ::ComposeType& Meta::ct() const {
-  // @@protoc_insertion_point(field_get:Meta.ct)
+inline const ::res::ComposeType& Meta::ct() const {
+  // @@protoc_insertion_point(field_get:res.Meta.ct)
   return ct_ != NULL ? *ct_ : *default_instance_->ct_;
 }
-inline ::ComposeType* Meta::mutable_ct() {
+inline ::res::ComposeType* Meta::mutable_ct() {
   set_has_ct();
-  if (ct_ == NULL) ct_ = new ::ComposeType;
-  // @@protoc_insertion_point(field_mutable:Meta.ct)
+  if (ct_ == NULL) ct_ = new ::res::ComposeType;
+  // @@protoc_insertion_point(field_mutable:res.Meta.ct)
   return ct_;
 }
-inline ::ComposeType* Meta::release_ct() {
+inline ::res::ComposeType* Meta::release_ct() {
   clear_has_ct();
-  ::ComposeType* temp = ct_;
+  ::res::ComposeType* temp = ct_;
   ct_ = NULL;
   return temp;
 }
-inline void Meta::set_allocated_ct(::ComposeType* ct) {
+inline void Meta::set_allocated_ct(::res::ComposeType* ct) {
   delete ct_;
   ct_ = ct;
   if (ct) {
@@ -1131,7 +1133,7 @@ inline void Meta::set_allocated_ct(::ComposeType* ct) {
   } else {
     clear_has_ct();
   }
-  // @@protoc_insertion_point(field_set_allocated:Meta.ct)
+  // @@protoc_insertion_point(field_set_allocated:res.Meta.ct)
 }
 
 // repeated int32 arr = 3;
@@ -1142,55 +1144,55 @@ inline void Meta::clear_arr() {
   arr_.Clear();
 }
 inline ::google::protobuf::int32 Meta::arr(int index) const {
-  // @@protoc_insertion_point(field_get:Meta.arr)
+  // @@protoc_insertion_point(field_get:res.Meta.arr)
   return arr_.Get(index);
 }
 inline void Meta::set_arr(int index, ::google::protobuf::int32 value) {
   arr_.Set(index, value);
-  // @@protoc_insertion_point(field_set:Meta.arr)
+  // @@protoc_insertion_point(field_set:res.Meta.arr)
 }
 inline void Meta::add_arr(::google::protobuf::int32 value) {
   arr_.Add(value);
-  // @@protoc_insertion_point(field_add:Meta.arr)
+  // @@protoc_insertion_point(field_add:res.Meta.arr)
 }
 inline const ::google::protobuf::RepeatedField< ::google::protobuf::int32 >&
 Meta::arr() const {
-  // @@protoc_insertion_point(field_list:Meta.arr)
+  // @@protoc_insertion_point(field_list:res.Meta.arr)
   return arr_;
 }
 inline ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
 Meta::mutable_arr() {
-  // @@protoc_insertion_point(field_mutable_list:Meta.arr)
+  // @@protoc_insertion_point(field_mutable_list:res.Meta.arr)
   return &arr_;
 }
 
-// repeated .ComposeType arrct = 4;
+// repeated .res.ComposeType arrct = 4;
 inline int Meta::arrct_size() const {
   return arrct_.size();
 }
 inline void Meta::clear_arrct() {
   arrct_.Clear();
 }
-inline const ::ComposeType& Meta::arrct(int index) const {
-  // @@protoc_insertion_point(field_get:Meta.arrct)
+inline const ::res::ComposeType& Meta::arrct(int index) const {
+  // @@protoc_insertion_point(field_get:res.Meta.arrct)
   return arrct_.Get(index);
 }
-inline ::ComposeType* Meta::mutable_arrct(int index) {
-  // @@protoc_insertion_point(field_mutable:Meta.arrct)
+inline ::res::ComposeType* Meta::mutable_arrct(int index) {
+  // @@protoc_insertion_point(field_mutable:res.Meta.arrct)
   return arrct_.Mutable(index);
 }
-inline ::ComposeType* Meta::add_arrct() {
-  // @@protoc_insertion_point(field_add:Meta.arrct)
+inline ::res::ComposeType* Meta::add_arrct() {
+  // @@protoc_insertion_point(field_add:res.Meta.arrct)
   return arrct_.Add();
 }
-inline const ::google::protobuf::RepeatedPtrField< ::ComposeType >&
+inline const ::google::protobuf::RepeatedPtrField< ::res::ComposeType >&
 Meta::arrct() const {
-  // @@protoc_insertion_point(field_list:Meta.arrct)
+  // @@protoc_insertion_point(field_list:res.Meta.arrct)
   return arrct_;
 }
-inline ::google::protobuf::RepeatedPtrField< ::ComposeType >*
+inline ::google::protobuf::RepeatedPtrField< ::res::ComposeType >*
 Meta::mutable_arrct() {
-  // @@protoc_insertion_point(field_mutable_list:Meta.arrct)
+  // @@protoc_insertion_point(field_mutable_list:res.Meta.arrct)
   return &arrct_;
 }
 
@@ -1198,38 +1200,40 @@ Meta::mutable_arrct() {
 
 // MetaTable
 
-// repeated .Meta list = 1;
+// repeated .res.Meta list = 1;
 inline int MetaTable::list_size() const {
   return list_.size();
 }
 inline void MetaTable::clear_list() {
   list_.Clear();
 }
-inline const ::Meta& MetaTable::list(int index) const {
-  // @@protoc_insertion_point(field_get:MetaTable.list)
+inline const ::res::Meta& MetaTable::list(int index) const {
+  // @@protoc_insertion_point(field_get:res.MetaTable.list)
   return list_.Get(index);
 }
-inline ::Meta* MetaTable::mutable_list(int index) {
-  // @@protoc_insertion_point(field_mutable:MetaTable.list)
+inline ::res::Meta* MetaTable::mutable_list(int index) {
+  // @@protoc_insertion_point(field_mutable:res.MetaTable.list)
   return list_.Mutable(index);
 }
-inline ::Meta* MetaTable::add_list() {
-  // @@protoc_insertion_point(field_add:MetaTable.list)
+inline ::res::Meta* MetaTable::add_list() {
+  // @@protoc_insertion_point(field_add:res.MetaTable.list)
   return list_.Add();
 }
-inline const ::google::protobuf::RepeatedPtrField< ::Meta >&
+inline const ::google::protobuf::RepeatedPtrField< ::res::Meta >&
 MetaTable::list() const {
-  // @@protoc_insertion_point(field_list:MetaTable.list)
+  // @@protoc_insertion_point(field_list:res.MetaTable.list)
   return list_;
 }
-inline ::google::protobuf::RepeatedPtrField< ::Meta >*
+inline ::google::protobuf::RepeatedPtrField< ::res::Meta >*
 MetaTable::mutable_list() {
-  // @@protoc_insertion_point(field_mutable_list:MetaTable.list)
+  // @@protoc_insertion_point(field_mutable_list:res.MetaTable.list)
   return &list_;
 }
 
 
 // @@protoc_insertion_point(namespace_scope)
+
+}  // namespace res
 
 #ifndef SWIG
 namespace google {

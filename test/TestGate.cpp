@@ -46,16 +46,23 @@ public:
 
 int main(int argc,char* argv[])
 {
+    
+    int port = 51800;
+    const char* pszIP = "127.0.0.1";
+    int client_num = 1;
+
     if(argc < 4)
     {
-        printf("usage : port ip client_num\n");
-        return -1;
+        printf("usage : port ip client_num [use default ip = 127.0.0.1 port = 51800 num = 1]\n");
     }
-    int port = atoi(argv[1]);
-    const char* pszIP = argv[2];
-    int client_num = atoi(argv[3]);
-    printf("connect to %s:%d with %d clients\n",
-        pszIP,port,client_num);
+    else
+    {
+        port = atoi(argv[1]);
+        pszIP = argv[2];
+        client_num = atoi(argv[3]);
+        printf("connect to %s:%d with %d clients\n",
+            pszIP,port,client_num);
+    }
 
     const char* pszLogFileName = NULL;
     if(argc > 4)

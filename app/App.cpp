@@ -281,6 +281,7 @@ int     App::Init(AppContext * _ctx)
 {
     ctx = _ctx;
     IniConfigParser & parser = ctx->parser;
+
     /////////////////////  log  ///////////////////////////////
     if(InitLog())
     {
@@ -303,11 +304,10 @@ int     App::Init(AppContext * _ctx)
         //daemonlize
         Daemon::Instance().Create();
     }    
-
     ////////////////////////lock file ////////////////////////////
     if(InitLockFile())
     {
-        LOG_ERROR("inti lock file error !");
+        LOG_ERROR("init lock file error !");
         return -1;
     }
 
@@ -328,6 +328,7 @@ int     App::Init(AppContext * _ctx)
         LOG_FATAL("proxy init error = %d",ret);
         return -1;
     }
+    
 
     ///////////////////// timer //////////////////////////////////
     if(TimerMgr::Instance().Init(ctx->tickCountUs,UpdateTick))

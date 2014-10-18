@@ -16,6 +16,8 @@
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 
+namespace res {
+
 namespace {
 
 const ::google::protobuf::Descriptor* ComposeType_descriptor_ = NULL;
@@ -197,14 +199,15 @@ void protobuf_AddDesc_demo_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\ndemo.proto\"3\n\013ComposeType\022\n\n\002id\030\001 \002(\005\032"
-    "\030\n\006_CName\022\016\n\002id\030\001 \001(\t:\002ID\"\321\001\n\004Meta\022\n\n\002id"
-    "\030\001 \002(\005\022\030\n\002ct\030\002 \001(\0132\014.ComposeType\022\013\n\003arr\030"
-    "\003 \003(\005\022\033\n\005arrct\030\004 \003(\0132\014.ComposeType\032\031\n\013_P"
-    "rimaryKey\022\n\n\002id\030\001 \001(\005\032^\n\006_CName\022\016\n\002id\030\001 "
-    "\001(\t:\002ID\022\022\n\002ct\030\002 \001(\t:\006\345\244\215\345\220\210\022\023\n\003arr\030\003 \001(\t"
-    ":\006\346\225\260\347\273\204\022\033\n\005arrct\030\004 \001(\t:\014\345\244\215\345\220\210\346\225\260\347\273\204\" \n"
-    "\tMetaTable\022\023\n\004list\030\001 \003(\0132\005.Meta", 311);
+    "\n\ndemo.proto\022\003res\"3\n\013ComposeType\022\n\n\002id\030\001"
+    " \002(\005\032\030\n\006_CName\022\016\n\002id\030\001 \001(\t:\002ID\"\331\001\n\004Meta\022"
+    "\n\n\002id\030\001 \002(\005\022\034\n\002ct\030\002 \001(\0132\020.res.ComposeTyp"
+    "e\022\013\n\003arr\030\003 \003(\005\022\037\n\005arrct\030\004 \003(\0132\020.res.Comp"
+    "oseType\032\031\n\013_PrimaryKey\022\n\n\002id\030\001 \001(\005\032^\n\006_C"
+    "Name\022\016\n\002id\030\001 \001(\t:\002ID\022\022\n\002ct\030\002 \001(\t:\006\345\244\215\345\220\210"
+    "\022\023\n\003arr\030\003 \001(\t:\006\346\225\260\347\273\204\022\033\n\005arrct\030\004 \001(\t:\014\345\244"
+    "\215\345\220\210\346\225\260\347\273\204\"$\n\tMetaTable\022\027\n\004list\030\001 \003(\0132\t."
+    "res.Meta", 328);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "demo.proto", &protobuf_RegisterTypes);
   ComposeType::default_instance_ = new ComposeType();
@@ -249,7 +252,7 @@ const int ComposeType__CName::kIdFieldNumber;
 ComposeType__CName::ComposeType__CName()
   : ::google::protobuf::Message() {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:ComposeType._CName)
+  // @@protoc_insertion_point(constructor:res.ComposeType._CName)
 }
 
 void ComposeType__CName::InitAsDefaultInstance() {
@@ -259,7 +262,7 @@ ComposeType__CName::ComposeType__CName(const ComposeType__CName& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
-  // @@protoc_insertion_point(copy_constructor:ComposeType._CName)
+  // @@protoc_insertion_point(copy_constructor:res.ComposeType._CName)
 }
 
 void ComposeType__CName::SharedCtor() {
@@ -270,7 +273,7 @@ void ComposeType__CName::SharedCtor() {
 }
 
 ComposeType__CName::~ComposeType__CName() {
-  // @@protoc_insertion_point(destructor:ComposeType._CName)
+  // @@protoc_insertion_point(destructor:res.ComposeType._CName)
   SharedDtor();
 }
 
@@ -317,7 +320,7 @@ bool ComposeType__CName::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:ComposeType._CName)
+  // @@protoc_insertion_point(parse_start:res.ComposeType._CName)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
     tag = p.first;
@@ -353,17 +356,17 @@ bool ComposeType__CName::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:ComposeType._CName)
+  // @@protoc_insertion_point(parse_success:res.ComposeType._CName)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:ComposeType._CName)
+  // @@protoc_insertion_point(parse_failure:res.ComposeType._CName)
   return false;
 #undef DO_
 }
 
 void ComposeType__CName::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:ComposeType._CName)
+  // @@protoc_insertion_point(serialize_start:res.ComposeType._CName)
   // optional string id = 1 [default = "ID"];
   if (has_id()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
@@ -378,12 +381,12 @@ void ComposeType__CName::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
   }
-  // @@protoc_insertion_point(serialize_end:ComposeType._CName)
+  // @@protoc_insertion_point(serialize_end:res.ComposeType._CName)
 }
 
 ::google::protobuf::uint8* ComposeType__CName::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // @@protoc_insertion_point(serialize_to_array_start:ComposeType._CName)
+  // @@protoc_insertion_point(serialize_to_array_start:res.ComposeType._CName)
   // optional string id = 1 [default = "ID"];
   if (has_id()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
@@ -399,7 +402,7 @@ void ComposeType__CName::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:ComposeType._CName)
+  // @@protoc_insertion_point(serialize_to_array_end:res.ComposeType._CName)
   return target;
 }
 
@@ -492,7 +495,7 @@ const int ComposeType::kIdFieldNumber;
 ComposeType::ComposeType()
   : ::google::protobuf::Message() {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:ComposeType)
+  // @@protoc_insertion_point(constructor:res.ComposeType)
 }
 
 void ComposeType::InitAsDefaultInstance() {
@@ -502,7 +505,7 @@ ComposeType::ComposeType(const ComposeType& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
-  // @@protoc_insertion_point(copy_constructor:ComposeType)
+  // @@protoc_insertion_point(copy_constructor:res.ComposeType)
 }
 
 void ComposeType::SharedCtor() {
@@ -512,7 +515,7 @@ void ComposeType::SharedCtor() {
 }
 
 ComposeType::~ComposeType() {
-  // @@protoc_insertion_point(destructor:ComposeType)
+  // @@protoc_insertion_point(destructor:res.ComposeType)
   SharedDtor();
 }
 
@@ -552,7 +555,7 @@ bool ComposeType::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:ComposeType)
+  // @@protoc_insertion_point(parse_start:res.ComposeType)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
     tag = p.first;
@@ -586,17 +589,17 @@ bool ComposeType::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:ComposeType)
+  // @@protoc_insertion_point(parse_success:res.ComposeType)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:ComposeType)
+  // @@protoc_insertion_point(parse_failure:res.ComposeType)
   return false;
 #undef DO_
 }
 
 void ComposeType::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:ComposeType)
+  // @@protoc_insertion_point(serialize_start:res.ComposeType)
   // required int32 id = 1;
   if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->id(), output);
@@ -606,12 +609,12 @@ void ComposeType::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
   }
-  // @@protoc_insertion_point(serialize_end:ComposeType)
+  // @@protoc_insertion_point(serialize_end:res.ComposeType)
 }
 
 ::google::protobuf::uint8* ComposeType::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // @@protoc_insertion_point(serialize_to_array_start:ComposeType)
+  // @@protoc_insertion_point(serialize_to_array_start:res.ComposeType)
   // required int32 id = 1;
   if (has_id()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->id(), target);
@@ -621,7 +624,7 @@ void ComposeType::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:ComposeType)
+  // @@protoc_insertion_point(serialize_to_array_end:res.ComposeType)
   return target;
 }
 
@@ -715,7 +718,7 @@ const int Meta__PrimaryKey::kIdFieldNumber;
 Meta__PrimaryKey::Meta__PrimaryKey()
   : ::google::protobuf::Message() {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:Meta._PrimaryKey)
+  // @@protoc_insertion_point(constructor:res.Meta._PrimaryKey)
 }
 
 void Meta__PrimaryKey::InitAsDefaultInstance() {
@@ -725,7 +728,7 @@ Meta__PrimaryKey::Meta__PrimaryKey(const Meta__PrimaryKey& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
-  // @@protoc_insertion_point(copy_constructor:Meta._PrimaryKey)
+  // @@protoc_insertion_point(copy_constructor:res.Meta._PrimaryKey)
 }
 
 void Meta__PrimaryKey::SharedCtor() {
@@ -735,7 +738,7 @@ void Meta__PrimaryKey::SharedCtor() {
 }
 
 Meta__PrimaryKey::~Meta__PrimaryKey() {
-  // @@protoc_insertion_point(destructor:Meta._PrimaryKey)
+  // @@protoc_insertion_point(destructor:res.Meta._PrimaryKey)
   SharedDtor();
 }
 
@@ -775,7 +778,7 @@ bool Meta__PrimaryKey::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:Meta._PrimaryKey)
+  // @@protoc_insertion_point(parse_start:res.Meta._PrimaryKey)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
     tag = p.first;
@@ -809,17 +812,17 @@ bool Meta__PrimaryKey::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:Meta._PrimaryKey)
+  // @@protoc_insertion_point(parse_success:res.Meta._PrimaryKey)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:Meta._PrimaryKey)
+  // @@protoc_insertion_point(parse_failure:res.Meta._PrimaryKey)
   return false;
 #undef DO_
 }
 
 void Meta__PrimaryKey::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:Meta._PrimaryKey)
+  // @@protoc_insertion_point(serialize_start:res.Meta._PrimaryKey)
   // optional int32 id = 1;
   if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->id(), output);
@@ -829,12 +832,12 @@ void Meta__PrimaryKey::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
   }
-  // @@protoc_insertion_point(serialize_end:Meta._PrimaryKey)
+  // @@protoc_insertion_point(serialize_end:res.Meta._PrimaryKey)
 }
 
 ::google::protobuf::uint8* Meta__PrimaryKey::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // @@protoc_insertion_point(serialize_to_array_start:Meta._PrimaryKey)
+  // @@protoc_insertion_point(serialize_to_array_start:res.Meta._PrimaryKey)
   // optional int32 id = 1;
   if (has_id()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->id(), target);
@@ -844,7 +847,7 @@ void Meta__PrimaryKey::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:Meta._PrimaryKey)
+  // @@protoc_insertion_point(serialize_to_array_end:res.Meta._PrimaryKey)
   return target;
 }
 
@@ -944,7 +947,7 @@ const int Meta__CName::kArrctFieldNumber;
 Meta__CName::Meta__CName()
   : ::google::protobuf::Message() {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:Meta._CName)
+  // @@protoc_insertion_point(constructor:res.Meta._CName)
 }
 
 void Meta__CName::InitAsDefaultInstance() {
@@ -954,7 +957,7 @@ Meta__CName::Meta__CName(const Meta__CName& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
-  // @@protoc_insertion_point(copy_constructor:Meta._CName)
+  // @@protoc_insertion_point(copy_constructor:res.Meta._CName)
 }
 
 void Meta__CName::SharedCtor() {
@@ -968,7 +971,7 @@ void Meta__CName::SharedCtor() {
 }
 
 Meta__CName::~Meta__CName() {
-  // @@protoc_insertion_point(destructor:Meta._CName)
+  // @@protoc_insertion_point(destructor:res.Meta._CName)
   SharedDtor();
 }
 
@@ -1041,7 +1044,7 @@ bool Meta__CName::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:Meta._CName)
+  // @@protoc_insertion_point(parse_start:res.Meta._CName)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
     tag = p.first;
@@ -1128,17 +1131,17 @@ bool Meta__CName::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:Meta._CName)
+  // @@protoc_insertion_point(parse_success:res.Meta._CName)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:Meta._CName)
+  // @@protoc_insertion_point(parse_failure:res.Meta._CName)
   return false;
 #undef DO_
 }
 
 void Meta__CName::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:Meta._CName)
+  // @@protoc_insertion_point(serialize_start:res.Meta._CName)
   // optional string id = 1 [default = "ID"];
   if (has_id()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
@@ -1183,12 +1186,12 @@ void Meta__CName::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
   }
-  // @@protoc_insertion_point(serialize_end:Meta._CName)
+  // @@protoc_insertion_point(serialize_end:res.Meta._CName)
 }
 
 ::google::protobuf::uint8* Meta__CName::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // @@protoc_insertion_point(serialize_to_array_start:Meta._CName)
+  // @@protoc_insertion_point(serialize_to_array_start:res.Meta._CName)
   // optional string id = 1 [default = "ID"];
   if (has_id()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
@@ -1237,7 +1240,7 @@ void Meta__CName::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:Meta._CName)
+  // @@protoc_insertion_point(serialize_to_array_end:res.Meta._CName)
   return target;
 }
 
@@ -1366,18 +1369,18 @@ const int Meta::kArrctFieldNumber;
 Meta::Meta()
   : ::google::protobuf::Message() {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:Meta)
+  // @@protoc_insertion_point(constructor:res.Meta)
 }
 
 void Meta::InitAsDefaultInstance() {
-  ct_ = const_cast< ::ComposeType*>(&::ComposeType::default_instance());
+  ct_ = const_cast< ::res::ComposeType*>(&::res::ComposeType::default_instance());
 }
 
 Meta::Meta(const Meta& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
-  // @@protoc_insertion_point(copy_constructor:Meta)
+  // @@protoc_insertion_point(copy_constructor:res.Meta)
 }
 
 void Meta::SharedCtor() {
@@ -1388,7 +1391,7 @@ void Meta::SharedCtor() {
 }
 
 Meta::~Meta() {
-  // @@protoc_insertion_point(destructor:Meta)
+  // @@protoc_insertion_point(destructor:res.Meta)
   SharedDtor();
 }
 
@@ -1423,7 +1426,7 @@ void Meta::Clear() {
   if (_has_bits_[0 / 32] & 3) {
     id_ = 0;
     if (has_ct()) {
-      if (ct_ != NULL) ct_->::ComposeType::Clear();
+      if (ct_ != NULL) ct_->::res::ComposeType::Clear();
     }
   }
   arr_.Clear();
@@ -1436,7 +1439,7 @@ bool Meta::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:Meta)
+  // @@protoc_insertion_point(parse_start:res.Meta)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
     tag = p.first;
@@ -1456,7 +1459,7 @@ bool Meta::MergePartialFromCodedStream(
         break;
       }
 
-      // optional .ComposeType ct = 2;
+      // optional .res.ComposeType ct = 2;
       case 2: {
         if (tag == 18) {
          parse_ct:
@@ -1488,7 +1491,7 @@ bool Meta::MergePartialFromCodedStream(
         break;
       }
 
-      // repeated .ComposeType arrct = 4;
+      // repeated .res.ComposeType arrct = 4;
       case 4: {
         if (tag == 34) {
          parse_arrct:
@@ -1516,23 +1519,23 @@ bool Meta::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:Meta)
+  // @@protoc_insertion_point(parse_success:res.Meta)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:Meta)
+  // @@protoc_insertion_point(parse_failure:res.Meta)
   return false;
 #undef DO_
 }
 
 void Meta::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:Meta)
+  // @@protoc_insertion_point(serialize_start:res.Meta)
   // required int32 id = 1;
   if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->id(), output);
   }
 
-  // optional .ComposeType ct = 2;
+  // optional .res.ComposeType ct = 2;
   if (has_ct()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       2, this->ct(), output);
@@ -1544,7 +1547,7 @@ void Meta::SerializeWithCachedSizes(
       3, this->arr(i), output);
   }
 
-  // repeated .ComposeType arrct = 4;
+  // repeated .res.ComposeType arrct = 4;
   for (int i = 0; i < this->arrct_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       4, this->arrct(i), output);
@@ -1554,18 +1557,18 @@ void Meta::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
   }
-  // @@protoc_insertion_point(serialize_end:Meta)
+  // @@protoc_insertion_point(serialize_end:res.Meta)
 }
 
 ::google::protobuf::uint8* Meta::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // @@protoc_insertion_point(serialize_to_array_start:Meta)
+  // @@protoc_insertion_point(serialize_to_array_start:res.Meta)
   // required int32 id = 1;
   if (has_id()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->id(), target);
   }
 
-  // optional .ComposeType ct = 2;
+  // optional .res.ComposeType ct = 2;
   if (has_ct()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
@@ -1578,7 +1581,7 @@ void Meta::SerializeWithCachedSizes(
       WriteInt32ToArray(3, this->arr(i), target);
   }
 
-  // repeated .ComposeType arrct = 4;
+  // repeated .res.ComposeType arrct = 4;
   for (int i = 0; i < this->arrct_size(); i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
@@ -1589,7 +1592,7 @@ void Meta::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:Meta)
+  // @@protoc_insertion_point(serialize_to_array_end:res.Meta)
   return target;
 }
 
@@ -1604,7 +1607,7 @@ int Meta::ByteSize() const {
           this->id());
     }
 
-    // optional .ComposeType ct = 2;
+    // optional .res.ComposeType ct = 2;
     if (has_ct()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -1622,7 +1625,7 @@ int Meta::ByteSize() const {
     total_size += 1 * this->arr_size() + data_size;
   }
 
-  // repeated .ComposeType arrct = 4;
+  // repeated .res.ComposeType arrct = 4;
   total_size += 1 * this->arrct_size();
   for (int i = 0; i < this->arrct_size(); i++) {
     total_size +=
@@ -1662,7 +1665,7 @@ void Meta::MergeFrom(const Meta& from) {
       set_id(from.id());
     }
     if (from.has_ct()) {
-      mutable_ct()->::ComposeType::MergeFrom(from.ct());
+      mutable_ct()->::res::ComposeType::MergeFrom(from.ct());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -1720,7 +1723,7 @@ const int MetaTable::kListFieldNumber;
 MetaTable::MetaTable()
   : ::google::protobuf::Message() {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:MetaTable)
+  // @@protoc_insertion_point(constructor:res.MetaTable)
 }
 
 void MetaTable::InitAsDefaultInstance() {
@@ -1730,7 +1733,7 @@ MetaTable::MetaTable(const MetaTable& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
-  // @@protoc_insertion_point(copy_constructor:MetaTable)
+  // @@protoc_insertion_point(copy_constructor:res.MetaTable)
 }
 
 void MetaTable::SharedCtor() {
@@ -1739,7 +1742,7 @@ void MetaTable::SharedCtor() {
 }
 
 MetaTable::~MetaTable() {
-  // @@protoc_insertion_point(destructor:MetaTable)
+  // @@protoc_insertion_point(destructor:res.MetaTable)
   SharedDtor();
 }
 
@@ -1779,13 +1782,13 @@ bool MetaTable::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:MetaTable)
+  // @@protoc_insertion_point(parse_start:res.MetaTable)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // repeated .Meta list = 1;
+      // repeated .res.Meta list = 1;
       case 1: {
         if (tag == 10) {
          parse_list:
@@ -1813,18 +1816,18 @@ bool MetaTable::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:MetaTable)
+  // @@protoc_insertion_point(parse_success:res.MetaTable)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:MetaTable)
+  // @@protoc_insertion_point(parse_failure:res.MetaTable)
   return false;
 #undef DO_
 }
 
 void MetaTable::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:MetaTable)
-  // repeated .Meta list = 1;
+  // @@protoc_insertion_point(serialize_start:res.MetaTable)
+  // repeated .res.Meta list = 1;
   for (int i = 0; i < this->list_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       1, this->list(i), output);
@@ -1834,13 +1837,13 @@ void MetaTable::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
   }
-  // @@protoc_insertion_point(serialize_end:MetaTable)
+  // @@protoc_insertion_point(serialize_end:res.MetaTable)
 }
 
 ::google::protobuf::uint8* MetaTable::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // @@protoc_insertion_point(serialize_to_array_start:MetaTable)
-  // repeated .Meta list = 1;
+  // @@protoc_insertion_point(serialize_to_array_start:res.MetaTable)
+  // repeated .res.Meta list = 1;
   for (int i = 0; i < this->list_size(); i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
@@ -1851,14 +1854,14 @@ void MetaTable::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:MetaTable)
+  // @@protoc_insertion_point(serialize_to_array_end:res.MetaTable)
   return target;
 }
 
 int MetaTable::ByteSize() const {
   int total_size = 0;
 
-  // repeated .Meta list = 1;
+  // repeated .res.Meta list = 1;
   total_size += 1 * this->list_size();
   for (int i = 0; i < this->list_size(); i++) {
     total_size +=
@@ -1932,5 +1935,7 @@ void MetaTable::Swap(MetaTable* other) {
 
 
 // @@protoc_insertion_point(namespace_scope)
+
+}  // namespace res
 
 // @@protoc_insertion_point(global_scope)

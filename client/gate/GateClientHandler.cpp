@@ -28,6 +28,7 @@ int       GateClientHandler::Authorize(int type,uint64_t uid,const char* pszToke
     req.set_id((int)uid);
     req.set_auth((int)type);
     req.set_token(pszToken);
+    req.set_area(1);
     Buffer buff;
     buff.Create(ga.ByteSize());
     ga.SerializeToArray(buff.pBuffer,buff.iCap);

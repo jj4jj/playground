@@ -42,9 +42,11 @@ int     ChannelMsgProxy::Init(AppContext * pCtx)
         return -1;
     }
     //build all dst chennel , map id . from config file
+    LOG_INFO("add channel count = %d",pCtx->channels.size());
     for(uint i = 0;i < pCtx->channels.size(); ++i)
     {
         GateChannel & chnl = pCtx->channels[i];
+        LOG_INFO("add channel id = %d listen = %d addr = %s",chnl.id,chnl.listener,chnl.channelAddr.c_str());
         if(ChannelAgentMgr::Instance().AddChannel(chnl.id,!chnl.listener,
             pCtx->channelName.c_str(),chnl.channelAddr.c_str()) ) 
         {
@@ -67,9 +69,9 @@ int         ChannelMsgProxy::SendToAgent(int iDst,const std::vector<Buffer>  &  
         return -1;
     }
     ChannelAgent  * pChannel = ChannelAgentMgr::Instance().GetChannel(iDst);
-    if(pChannel)
+    if(!pChannel)
     {
-        LOG_ERROR("channel agent is not ready !");
+        LOG_ERROR("channel agent id = %d is not ready !",iDst);
         return -1;
     }
     //////////////////////////////////////////////

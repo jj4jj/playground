@@ -283,16 +283,16 @@ int     GateServerHandler::NotifyNeedAuth(GateServerHandler::Connection* pConn)
 int         GateServerHandler::Authorizing(GateServerHandler::Connection * pConn,const gate::AuthReq & auth)
 {
     GateServerContext * gsc = (GateServerContext *)GetApp()->GetContext();
-    LOG_INFO("authorizing uid = %d type = %d token = %s ... auth mode = %d !",
-        auth.id(),auth.auth(),auth.token().c_str(),gsc->iNeedAuth);
-    if(gsc->mpAreaID2ChannelID.find(auth.area()) == gsc->mpAreaID2ChannelID.end())
+    LOG_INFO("authorizing uid = %d area = %d type = %d token = %s ... auth mode = %d !",
+        auth.id(),auth.area(),auth.auth(),auth.token().c_str(),gsc->iNeedAuth);
+    if(gsc->mpAreaID2ChannelID.find(auth.area()) != gsc->mpAreaID2ChannelID.end())
     {
         pConn->iArea =  auth.area();
         pConn->iDstChannel = gsc->mpAreaID2ChannelID[auth.area()];
     }
     else
     {
-        LOG_ERROR("area not found !");
+        LOG_ERROR("area = %d not found !",auth.area());
         return -1;
     }
     pConn->ulUid = auth.id();

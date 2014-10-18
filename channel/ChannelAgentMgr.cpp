@@ -75,7 +75,8 @@ int             ChannelAgentMgr::AddChannel(int id,bool bRemote,const char * psz
     item.fd = id;
     item.events = ZMQ_POLLIN;
     item.revents = 0;
-    m_mpChannelAgent[id] = p;    
+    m_mpChannelAgent[id] = p;  
+    LOG_DEBUG("agent id = %d agent ptr = %p ptr agent id = %d ",id,p.get(),p->GetID());
     return 0;
 }
 ChannelAgent* ChannelAgentMgr::GetChannel(int id)

@@ -34,6 +34,7 @@ public:
         int ret = 0;
         
         TcpServer &  server = ctx->gateServer;
+        
         //port is 1234
         SockAddress addr(port,pszIP);
         LOG_INFO("gate server will listen on %s\n",addr.ToString());
@@ -42,10 +43,9 @@ public:
         {
             LOG_FATAL("tcp server init error = %d",ret);
             return -1;
-        }       
-        
-        TcpServerHandlerPtr  ptrHandler = TcpServerHandlerPtr(new GateServerHandler(&GetChannelProxy(),iMaxClient));
-        server.SetServerHandler(ptrHandler.get());
+        }               
+        ctx->ptrHandler = TcpServerHandlerPtr(new GateServerHandler(&GetChannelProxy(),iMaxClient));
+        server.SetServerHandler(ctx->ptrHandler.get());
         ret = server.Start();
         if(ret !=0 )
         {
