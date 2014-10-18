@@ -47,13 +47,10 @@ ZoneAgent &     ZoneAgentMgr::GetAgent(int iZoneID)
     return *m_mpZoneAgent[iZoneID].get();
 }
 int             ZoneAgentMgr::Init()
-{    
-
-    db::AccountLR   alr;
-    db::AccountRL   arl;
-    db::Account   acc;
-    db::Role      role;
-
+{        
+    db::protobuf_AddDesc_db_2fAccount_2eproto();
+    db::protobuf_AddDesc_db_2fLoginHistory_2eproto();
+    db::protobuf_AddDesc_db_2fRole_2eproto();
     
     m_chnlProxy = &GetAgentServer().GetChannelProxy();
     m_db = &GetAgentServer().db;
