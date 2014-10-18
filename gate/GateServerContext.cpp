@@ -7,20 +7,54 @@
 ////////////////////////////////
 #include "GateServerContext.h"
 
+
+/*
+default addr arrangement:
+
+agent
+    51XXX
+    channel listen
+        51010
+        51011
+        51012
+gate
+    52XXX  
+    tcp server listen
+        52010
+        52011
+        52012        
+console
+    XX000
+        XX000
+account
+    56XXX
+platform
+    58XXX
+
+*/
+
+
+
+
 #if 1
 void    GateServerContext::OnGenerateDefaultConfig()
 {
     static const char * kv[][2] = {
     //gate server
     {"gate:ip","127.0.0.1"},
-    {"gate:port","51800"},
-    {"gate:max_clients","5000"},
+    {"gate:port","52010"},
+    {"gate:max_clients","50000"},
     {"gate:test_mode","1"},
     {"gate:need_auth","0"},
     {"gate:agent:num","1"},//agent number
     {"gate:agent#1:channel","1 "}, //agent channel id
     {"gate:agent#1:areas","1 2 3 4 5"}, //agent zone areas
 
+
+    //default agent
+    {"console:port","52000"},
+    {"channel:num","1"}, //agent zone areas
+    {"channel:info#1:addr","tcp://127.0.0.1:51010"}, //agent zone areas
     /////////////add default config above////////////////
     {NULL,NULL}};
     int i = 0;

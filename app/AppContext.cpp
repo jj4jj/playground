@@ -104,7 +104,7 @@ void    AppContext::GenerateDefaultConfig(const char* pszConfigFile)
     {"hook_coredump","0"},        
     {"tick_count_us","100"},
     {"tick_poll_num","1"},
-    {"uniq_process","0"},//support path system none
+    {"uniq_process","1"},//support path system none
     {"file_lock_path",sLockFile.c_str()},
     //console
     {"console:ip","127.0.0.1"},

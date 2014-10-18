@@ -26,7 +26,7 @@ void     ConfigParser::SetRootName(const char* pszRootName )
 
 void     ConfigParser::VisualConfig(string & s)
 {
-    VisualConfig(s,rootValue,0,"\t");
+    VisualConfig(s,rootValue,0,"    ");
 }
 void     ConfigParser::VisualConfig(string & s,ConfigValue & v,int level,const char* prefix)
 {

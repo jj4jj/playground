@@ -133,6 +133,7 @@ int     App::Tick(int64_t lElapseUsTime)
 }
 int     App::Destroy()
 {    
+    LOG_INFO("app is destroying ...");
     int ret = OnDestroy();
     ctx = NULL;
     m_lockFile.Unlock();
@@ -282,21 +283,9 @@ int     App::Init(AppContext * _ctx)
     ctx = _ctx;
     IniConfigParser & parser = ctx->parser;
 
-    /////////////////////  log  ///////////////////////////////
-    if(InitLog())
-    {
-        LOG_FATAL("Log init error !");
-        return -1;
-    }
-
-    //////////////////////////////////////////////////////////
-    string configString;
-    parser.VisualConfig(configString);
-    LOG_INFO("server config :\n%s",configString.c_str());
-    //////////////////////////////////////////////////////////
-
+    
     //common option
-
+    fprintf(stderr,"app is initializing ... \n");
     ///////////////////daemon ////////////////////////////////////
     int daemon = parser.GetConfigInt("daemon");    
     if(daemon)
@@ -310,6 +299,17 @@ int     App::Init(AppContext * _ctx)
         LOG_ERROR("init lock file error !");
         return -1;
     }
+    /////////////////////  log  ///////////////////////////////
+    if(InitLog())
+    {
+        LOG_FATAL("Log init error !");
+        return -1;
+    }
+    //////////////////////////////////////////////////////////
+    string configString;
+    parser.VisualConfig(configString);
+    LOG_INFO("server config :\n%s",configString.c_str());
+    //////////////////////////////////////////////////////////
 
     ////////////////////// signal  ///////////////////////////////
     InitSignal();    

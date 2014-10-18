@@ -2,6 +2,34 @@
 #include "AgentApp.h"
 
 #if 1
+/*
+default addr arrangement:
+
+agent
+    51XXX
+    channel listen
+        51010
+        51011
+        51012
+gate
+    52XXX  
+    tcp server listen
+        52010
+        52011
+        52012        
+console
+    XX000
+        XX000
+        XX001
+        XX002
+account
+    56XXX
+platform
+    58XXX
+
+*/
+
+
 void    AgentContext::OnGenerateDefaultConfig()
 {
     //default
@@ -26,6 +54,11 @@ void    AgentContext::OnGenerateDefaultConfig()
     {"agent:area:ids","1 2 3 4 5"},
 
 
+    //default channel
+    {"console:port","51000"},
+    {"channel:num","1"},
+    {"channel:info#1:addr","tcp://127.0.0.1:51010"},
+    {"channel:info#1:listener","1"},
     /////////////add default config above////////////////
     {NULL,NULL}};
     int i = 0;
