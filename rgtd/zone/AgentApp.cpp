@@ -1,5 +1,10 @@
 #include "base/StringUtil.h"
 #include "proto/gen/res/include.h"
+#include "proto/gen/db/include.h"
+#include "proto/gen/cs/include.h"
+#include "proto/gen/ss/include.h"
+#include "proto/gen/conf/include.h"
+
 #include "AgentApp.h"
 
 #if 1
