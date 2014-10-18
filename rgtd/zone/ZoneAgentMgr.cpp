@@ -6,6 +6,36 @@
 #include "AccountDBListener.h"
 #include "RoleDBListener.h"
 
+class AgentGateMsgDispatcher : public  ChannelMessageDispatcher
+{
+public:
+    AgentGateMsgDispatcher(ZoneAgentMgr* _mgr):mgr(_mgr){}
+    virtual   int DispatchMessage(ChannelAgent & agent , const ChannelMessage & msg)
+    {
+        //GetID
+        int ret = mgr->OnGateMessage(msg);
+        LOG_DEBUG("agent gate msg chnnel id = %d ret = %d",agent.GetID(),ret);
+        return ret;
+    }
+private:
+    ZoneAgentMgr*   mgr;
+};
+class AgentServerMsgDispatcher : public  ChannelMessageDispatcher
+{
+public:
+    AgentServerMsgDispatcher(ZoneAgentMgr* _mgr):mgr(_mgr){}
+    virtual   int DispatchMessage(ChannelAgent & agent , const ChannelMessage & msg)
+    {
+        //GetID
+        int ret = mgr->OnServerMessage(msg);
+        LOG_DEBUG("agent server msg chnnel id = %d ret = %d",agent.GetID(),ret);
+        return ret;
+    }
+private:
+    ZoneAgentMgr*   mgr;
+};
+
+
 #if 1
 int             ZoneAgentMgr::AddZone(int iZoneID,ZoneAgentPtr agent)
 {
@@ -37,14 +67,18 @@ int             ZoneAgentMgr::Init()
 
 
     //init all zone
-
+    //gate msg
+    AgentContext * ctx = ( AgentContext *)GetApp()->GetContext();
+    vector<int>    ids;
+    ids.assign(ctx->gates.begin(),ctx->gates.end());
+    m_chnlProxy->SubscribeScatterMsg(ids,ChannelMessageDispatcherPtr(new AgentGateMsgDispatcher(this)));
+    
     
     return 0;
 }
 int             ZoneAgentMgr::Polling(int iPollTimeOutMs)
 {
     m_chnlProxy->Polling(iPollTimeOutMs);
-    
     return 0;
 }
 int             ZoneAgentMgr::Destroy()
@@ -52,11 +86,13 @@ int             ZoneAgentMgr::Destroy()
     return 0;
 }
 //
-int             ZoneAgentMgr::OnGateMessage()
+int             ZoneAgentMgr::OnGateMessage(const ChannelMessage & msg)
 {
+
+    
     return 0;
 }
-int             ZoneAgentMgr::OnServerMessage()
+int             ZoneAgentMgr::OnServerMessage(const ChannelMessage & msg)
 {
     return 0;
 }

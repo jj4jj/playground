@@ -18,12 +18,18 @@ public:
     //////////////////////////////////////////////
     string                   channelName;
     std::vector<GateChannel> channels;
-    bool      closing;
     int       tickCountUs;
     int       tickPollCount;
     struct timeval  curTime;   //this tick time        
     int       uniq_process;
     string    lockFilePath;
+    int       hook_coredump;
+
+
+
+    ///////////////////////////////////////
+    int       closing;
+
 public:
     //read config and init the common attr
     int     Init(const char * pszConfigFile);

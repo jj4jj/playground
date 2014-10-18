@@ -2,7 +2,7 @@
 #include "base/stdinc.h"
 #include "base/CommonMacro.h"
 #include "base/Log.h"
-#include "ChannelMessageHandler.h"
+#include "ChannelMessageDispatcher.h"
 #include "ChannelAgent.h"
 #if 1
 ChannelAgent::ChannelAgent(int _id)

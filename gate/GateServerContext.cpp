@@ -13,7 +13,7 @@ void    GateServerContext::OnGenerateDefaultConfig()
     static const char * kv[][2] = {
     //gate server
     {"gate:ip","127.0.0.1"},
-    {"gate:port","58800"},
+    {"gate:port","51800"},
     {"gate:max_clients","5000"},
     {"gate:test_mode","1"},
     {"gate:need_auth","0"},
@@ -41,7 +41,7 @@ int     GateServerContext::OnInit()
     //{"gate:need_auth","0"},
     //{"gate:agent:num","1"},//agent number
     //{"gate:agent#1:channel","1 "}, //agent channel id
-    //{"gate:agent#1:areas","1 "}, //agent zone areas
+    //{"gate:agent#1:areas","1 "}  , //agent zone areas
 
     iTestMode = parser.GetConfigInt("gate:test_mode");
     iNeedAuth = parser.GetConfigInt("gate:need_auth");

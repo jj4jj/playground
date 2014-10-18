@@ -15,6 +15,11 @@ struct  AgentContext : public AppContext
 public:    
     virtual void    OnGenerateDefaultConfig();
     virtual int     OnInit();
+public:
+    vector<MysqlProxyOption>    dbs;
+    vector<RedisAddr>           caches;
+    std::set<uint32_t>          areas;
+    std::set<uint32_t>          gates;
 };
 
 //----------------------------------------------------------------------------------

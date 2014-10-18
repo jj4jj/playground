@@ -2,7 +2,6 @@
 #include "base/Buffer.h"
 #include "base/CommonMacro.h"
 #include "ChannelMessage.h"
-#include "ChannelMessageHandler.h"
 #include "Channel.h"
 
 

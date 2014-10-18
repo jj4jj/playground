@@ -15,7 +15,10 @@ int     AppContext::Init(const char * pszConfigFile)
     {        
         return -2;
     }
-    /////////////////////////common config/////////////////////////
+
+    hook_coredump = parser.GetConfigInt("hook_coredump");
+    
+    /////////////////////////common config////////////////////////
     tickCountUs = parser.GetConfigInt("tick_count_us",100);//10000
     tickPollCount = parser.GetConfigInt("tick_poll_num",1);//
 
@@ -59,8 +62,12 @@ int     AppContext::Init(const char * pszConfigFile)
     }
 
 
+    /////////////////////////////////////////////////////////////
+    closing = 0;
+
 
     //custom config            
+
     return OnInit();
 }
 //common generate 
@@ -94,18 +101,19 @@ void    AppContext::GenerateDefaultConfig(const char* pszConfigFile)
     {"log_max_file_num","20"},
     {"log_min_level","2"},
     {"daemon","0"},
+    {"hook_coredump","0"},        
     {"tick_count_us","100"},
     {"tick_poll_num","1"},
     {"uniq_process","0"},//support path system none
     {"file_lock_path",sLockFile.c_str()},
     //console
     {"console:ip","127.0.0.1"},
-    {"console:port","58810"},
+    {"console:port","28800"},
     //channel
     {"channel:name","ch"},
     {"channel:num","1"},
     {"channel:info#1:id","1"},//connect other channel
-    {"channel:info#1:addr","tcp://127.0.0.1:58880"},
+    {"channel:info#1:addr","tcp://127.0.0.1:18800"},
     {"channel:info#1:listener","0"},
 
     /////////////add default config above////////////////

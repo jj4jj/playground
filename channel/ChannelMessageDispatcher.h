@@ -1,7 +1,6 @@
 #pragma once
-
-class ChannelMessage;
-class ChannelAgent;
+#include "ChannelMessage.h"
+#include "ChannelAgent.h"
 
 class ChannelMessageDispatcher
 {    

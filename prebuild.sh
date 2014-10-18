@@ -1,9 +1,6 @@
-#!/bin/sh
-
+#!/bin/bash
 ROOT_DIR=`pwd`
-cd ${ROOT_DIR}/proto
-sh generate.sh
-
-
-
-
+echo "current dir is $ROOT_DIR"
+PROTO_DIR=`pwd`/proto
+cd `pwd`/proto && sh generate.sh
+cd ..

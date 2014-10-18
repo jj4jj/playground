@@ -1,12 +1,135 @@
+#include "base/StringUtil.h"
 #include "AgentApp.h"
-
 
 #if 1
 void    AgentContext::OnGenerateDefaultConfig()
 {
+    //default
+    static const char * kv[][2] = {
+    //gate server
+    {"agent:gate:num","1"},
+    {"agent:gate#1:channel","1"},
+
+    {"agent:db:num","1"},
+    {"agent:db#1:ip","127.0.0.1"},
+    {"agent:db#1:port",""},
+    {"agent:db#1:user","root"},
+    {"agent:db#1:passwd","123456"},
+    {"agent:db#1:dbname","mtest"},
+        
+    {"agent:cache:num","1"},
+    {"agent:cache#1:ip","127.0.0.1"},
+    {"agent:cache#1:port",""},
+    {"agent:cache#1:dbidx","0"},
+            
+    {"agent:area:num","2"},
+    {"agent:area:ids","1 2 "},
+
+
+    /////////////add default config above////////////////
+    {NULL,NULL}};
+    int i = 0;
+
+    ConfigValue v;
+    while(kv[i][0])
+    {
+        v.key  = kv[i][0];
+        v.value  = kv[i][1];
+        parser.CreateConfig(v);
+        ++i;
+    }    
 }
 int     AgentContext::OnInit()
 {
+    //get some config value   
+    /*
+    {"agent:gate:num","1"},
+    {"agent:gate#1:channel","1"},
+
+    {"agent:db:num","1"},
+    {"agent:db#1:ip","127.0.0.1"},
+    {"agent:db#1:port",""},
+    {"agent:db#1:user","root"},
+    {"agent:db#1:passwd","123456"},
+    {"agent:db#1:dbname","mtest"},
+        
+    {"agent:cache:num","1"},
+    {"agent:cache#1:ip","127.0.0.1"},
+    {"agent:cache#1:port",""},
+    {"agent:cache#1:dbidx","0"},
+            
+    {"agent:area:num","2"},
+    {"agent:area:ids","1 2 "},
+    */
+    int n = parser.GetConfigInt("agent:gate:num");
+    MysqlProxyOption    mpo;
+    RedisAddr           redis;
+    char    szConfigBuffer[64];
+    for(int i = 0;i < n; ++i)
+    {
+        snprintf(szConfigBuffer,sizeof(szConfigBuffer),"agent:db#%d:ip",i+1);
+        mpo.ip = parser.GetConfigString(szConfigBuffer);
+        snprintf(szConfigBuffer,sizeof(szConfigBuffer),"agent:db#%d:port",i+1);
+        mpo.port = parser.GetConfigInt(szConfigBuffer);
+        snprintf(szConfigBuffer,sizeof(szConfigBuffer),"agent:db#%d:user",i+1);
+        mpo.uname = parser.GetConfigString(szConfigBuffer);
+        snprintf(szConfigBuffer,sizeof(szConfigBuffer),"agent:db#%d:passwd",i+1);
+        mpo.passwd = parser.GetConfigString(szConfigBuffer);
+        snprintf(szConfigBuffer,sizeof(szConfigBuffer),"agent:db#%d:dbname",i+1);
+        mpo.dbname = parser.GetConfigString(szConfigBuffer);
+        dbs.push_back(mpo);
+    }
+    n = parser.GetConfigInt("agent:cache:num");
+    for(int i = 0;i < n; ++i)
+    {
+        snprintf(szConfigBuffer,sizeof(szConfigBuffer),"agent:cache#%d:ip",i+1);
+        redis.ip = parser.GetConfigString(szConfigBuffer);
+        snprintf(szConfigBuffer,sizeof(szConfigBuffer),"agent:cache#%d:port",i+1);
+        redis.port = parser.GetConfigInt(szConfigBuffer);
+        snprintf(szConfigBuffer,sizeof(szConfigBuffer),"agent:cache#%d:dbidx",i+1);
+        redis.dbidx = parser.GetConfigInt(szConfigBuffer);
+        dbs.push_back(mpo);
+    }
+    int     area_num[128];
+    n = parser.GetConfigInt("agent:area:num");
+    string sValue = parser.GetConfigString("agent:area:ids");
+    int real_num =  StringUtil::SplitNum(sValue.c_str(),area_num,128," ");
+    if(real_num != n)
+    {
+        LOG_WARN("agent area num = %d but real num = %d ",n,real_num);
+    }
+    areas.clear();
+    for(int i = 0;i < n; ++i)
+    {
+        areas.insert(area_num[i]);
+    }
+    if(areas.empty())
+    {
+        LOG_FATAL("area ids is empty !");
+        return -1;
+    }
+
+    n = parser.GetConfigInt("agent:gate:num");
+    //{"agent:gate:num","1"},
+    //{"agent:gate#1:channel","1"},
+    
+    gates.clear();
+    for(int i = 0 ; i < n ; ++i)
+    {
+        snprintf(szConfigBuffer,sizeof(szConfigBuffer),"agent:gate#%d:channel",i+1);
+        int chid = parser.GetConfigInt( szConfigBuffer);
+        if(chid == 0)
+        {
+            LOG_FATAL("get config = %s = 0",szConfigBuffer);
+            return -1;
+        }
+        gates.insert(chid);
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////////
+
+
+    
     return 0;
 }
 #endif

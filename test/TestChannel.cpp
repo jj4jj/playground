@@ -1,6 +1,5 @@
-
 #include "channel/ChannelMessage.h"
-#include "channel/ChannelMessageHandler.h"
+#include "channel/ChannelMessageDispatcher.h"
 #include "channel/ChannelAgent.h"
 #include "channel/ChannelAgentMgr.h"
 #include "base/Log.h"

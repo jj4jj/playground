@@ -71,7 +71,7 @@ int     App::OnInit()
 //return 0 is ok , otherwise exit process
 int     App::OnStart()
 {
-    LOG_DEBUG("OnInit");
+    LOG_DEBUG("OnStart");
     return 0;
 }
 
@@ -153,12 +153,15 @@ void    App::InitSignal()
     SignalHelper::IgnoreSignal(SIGPIPE);
     SignalHelper::IgnoreSignal(SIGTERM);
     /////////////////////////////////////////////////////////
-    struct sigaction   sig_segv_action;   
-    bzero(&sig_segv_action,sizeof(sig_segv_action));
-    sig_segv_action.sa_sigaction = OnSignalCoreDump;
-    sig_segv_action.sa_flags = SA_SIGINFO|SA_RESETHAND;
-    SignalHelper::ClearSigSet(&sig_segv_action.sa_mask);
-    SignalHelper::SignalAction(SIGSEGV,&sig_segv_action,NULL);
+    if(ctx->hook_coredump)
+    {
+        struct sigaction   sig_segv_action;   
+        bzero(&sig_segv_action,sizeof(sig_segv_action));
+        sig_segv_action.sa_sigaction = OnSignalCoreDump;
+        sig_segv_action.sa_flags = SA_SIGINFO|SA_RESETHAND;
+        SignalHelper::ClearSigSet(&sig_segv_action.sa_mask);
+        SignalHelper::SignalAction(SIGSEGV,&sig_segv_action,NULL);
+    }
     ////////////////////////////////////////////////////////
     //SignalHelper::IgnoreSignal(SIGINT);
 }

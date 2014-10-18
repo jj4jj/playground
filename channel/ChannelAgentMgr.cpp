@@ -2,7 +2,7 @@
 #include "base/Log.h"
 #include "ChannelMessage.h"
 #include "Channel.h"
-#include "ChannelMessageHandler.h"
+#include "ChannelMessageDispatcher.h"
 #include "ChannelAgent.h"
 #include "ChannelAgentMgr.h"
 

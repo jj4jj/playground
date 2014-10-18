@@ -115,16 +115,27 @@ int App::main(int argc , char* argv [])
     /////////////////////////////////////////////////////////
     if(pApp->Init(&ctx))
     {
+        LOG_ERROR("Init error !");
         return -1;
     }
+    /////////////////////////////////////////////////////////
+    ctx.closing = 0;
     /////////////////////////////////////////////////////////
     if(0 == pApp->Start())
     {
         int proc = 0;
         while(true)
         {        
-            if(ctx.closing)
+            if(0 == ctx.closing)
             {
+                proc = pApp->Poll(ctx.tickPollCount);
+                if( proc <= 0 )
+                {
+                    usleep(ctx.tickCountUs);
+                }
+            }
+            else
+            {            
                 //there is no sth todo
                 proc = pApp->Closing(ctx.closing);
                 if( proc <= 0 )
@@ -132,15 +143,11 @@ int App::main(int argc , char* argv [])
                     break;
                 }
             }
-            else
-            {            
-                proc = pApp->Poll(ctx.tickPollCount);
-            }
-            if( proc <= 0 )
-            {
-                usleep(ctx.tickCountUs);
-            }
         }
+    }
+    else
+    {
+        LOG_ERROR("start error !");
     }
     return pApp->Destroy();
 } 
