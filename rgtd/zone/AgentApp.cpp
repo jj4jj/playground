@@ -12,18 +12,18 @@ void    AgentContext::OnGenerateDefaultConfig()
 
     {"agent:db:num","1"},
     {"agent:db#1:ip","127.0.0.1"},
-    {"agent:db#1:port",""},
+    {"agent:db#1:port","3306"},
     {"agent:db#1:user","root"},
     {"agent:db#1:passwd","123456"},
     {"agent:db#1:dbname","mtest"},
         
     {"agent:cache:num","1"},
     {"agent:cache#1:ip","127.0.0.1"},
-    {"agent:cache#1:port",""},
+    {"agent:cache#1:port","6379"},
     {"agent:cache#1:dbidx","0"},
             
-    {"agent:area:num","2"},
-    {"agent:area:ids","1 2 "},
+    {"agent:area:num","5"},
+    {"agent:area:ids","1 2 3 4 5"},
 
 
     /////////////add default config above////////////////
