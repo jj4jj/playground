@@ -5,8 +5,8 @@
 //R : openid ->  gid
 //L : gid    ->  openid
 
-#define  ACCOUNT_R  ('R')
-#define  ACCOUNT_L  ('L')
+#define  ACCOUNT_LR  ('R')
+#define  ACCOUNT_RL  ('L')
 
 class ZoneAgentMgr;
 class AccountDBListener : public DataListener

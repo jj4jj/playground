@@ -1,7 +1,7 @@
 #the compiling files
 file(GLOB_RECURSE playground_gate_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp *.cc *.h)
 SET_SOURCE_FILES_PROPERTIES(${playground_gate_SRCS} PROPERTIES LANGUAGE CXX )
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/proto/gate gate_proto_SRCS)
+#aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/proto/gate gate_proto_SRCS)
 
 
 #base dir depend on itself and some other lib
@@ -24,7 +24,6 @@ link_directories(
 #it will generate a exe
 ADD_EXECUTABLE(gate
 		${playground_gate_SRCS}
-		${gate_proto_SRCS}
 )
 
 #assign custrom link lib
@@ -36,6 +35,7 @@ target_link_libraries(gate
 	ssukits_utility
 	ssukits_ipc
 	ssukits_base
+	playground_proto_gate
 	zmq
 	rt
 	iniparser

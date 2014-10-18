@@ -4,8 +4,8 @@ package db;
 
 message LoginRecored
 {
-	required	uint32	area;
-	required	uint32	time;	
+	required	uint32	area = 1;
+	required	uint32	time = 2;	
 };
 
 

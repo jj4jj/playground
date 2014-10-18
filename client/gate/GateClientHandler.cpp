@@ -1,6 +1,6 @@
 
 #include "base/Log.h"
-#include "gate/proto/gate/gate.pb.h"
+#include "proto/gen/gate/gate.pb.h"
 #include "GateClientHandler.h"
 
 

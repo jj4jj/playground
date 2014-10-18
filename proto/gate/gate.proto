@@ -29,6 +29,7 @@ message AuthReq
 	required	uint32	id		=	1;	//uid
 	required	uint32	auth	=	2;	//type
 	optional	string	token	=	3;	//passwd when type is password auth	
+	optional	uint32	area	=	4;	//area id
 };
 
 message AuthRsp

@@ -1,7 +1,10 @@
 #include <stdint.h>
 #include "base/Log.h"
-#include "proto/gate/gate.pb.h"
+#include "proto/gen/gate/gate.pb.h"
 #include "GateFrame.h"
+#include "app/App.hpp"
+#include "GateServerContext.h"
+#include "base/DateTime.h"
 /////////////////////////////////////////////////////////////////////////////////////
 #include "GateServerHandler.h"
 
@@ -25,11 +28,14 @@ GateServerHandler::Connection::~Connection()
 void GateServerHandler::Connection::Init()
 {
     iIdx = -1;
-    iDst = 0;
+    iDstChannel = 0;
     iMsgLen = 0;
     bState = STATE_INVALID;
     ulUid = 0;
     recvBuffer.iUsed = 0;
+    ///////////////////////
+    tLastActTime = 0;
+    sToken = "";
 }
 void GateServerHandler::Connection::Close()
 {
@@ -107,7 +113,6 @@ int     GateServerHandler::OnNewConnection(TcpSocket   &   client)
     }    
     ///////////////////////////////////////////////////////
     m_vecConnections[iIdx].iIdx = iIdx;
-    m_vecConnections[iIdx].bState = STATE_AUTHING;
     m_mpConnections[client.GetFD()] = iIdx;
 
     return 0; 
@@ -194,8 +199,8 @@ int     GateServerHandler::OnClientMessage(GateServerHandler::Connection* pConn,
     LOG_DEBUG("recv connx uid = %u msg = %d state = %d" ,pConn->ulUid,iMsgLen,pConn->bState);
     switch(pConn->bState)
     {        
-        case STATE_AUTHING:
-        {                        
+        case STATE_CONNECTED:
+        {
             //a package
             //read a auth
             gate::GateAuth  ga;
@@ -207,25 +212,42 @@ int     GateServerHandler::OnClientMessage(GateServerHandler::Connection* pConn,
             /////////////////////
             int iRet = Authorizing(pConn,ga.authreq());
             //////////////////////////////////////////
-            NotifyAuthResult(pConn,iRet);            
             if(0 == iRet)
             {
                 LOG_INFO("got a ga package cmd = %d uid = %lu type =%d pwd = %s",
                     ga.cmd(),ga.authreq().id(),
                     ga.authreq().auth(),
                     ga.authreq().token().c_str() );
-                pConn->bState = STATE_AUTHORIZED;
+                /////////////////////////////////////////////
+                //create a connection                 
+                NotifyAuthResult(pConn,iRet);    
+                pConn->bState = STATE_AUTHORIZED;                
             }
+            else if(iRet > 0)
+            {
+                pConn->bState = STATE_AUTHING;
+            }
+            else
+            {
+                LOG_ERROR("ulUid = %lu authorizing error = %d",ga.authreq().id(),iRet);
+                RemoveConnection(pConn,gate::GateConnection::CONNECTION_CLOSE_EXCEPTION);
+                return -1;
+            }
+        }
+        break;
+        case STATE_AUTHING:
+        {            
+            LOG_DEBUG("user id = %lu is authing ",pConn->ulUid);
+            return 0;
         }
         break;
         case STATE_AUTHORIZED:
             //rely to agent
-            LOG_INFO("rely to agent = %d msg len = %d",pConn->iDst,iMsgLen);
+            LOG_INFO("rely to agent = %d msg len = %d",pConn->iDstChannel,iMsgLen);
             ForwardData(pConn,Buffer(pMsgBuffer,iMsgLen));
         break;
         ///////////////////////////////////////////
         //nothing to do ? error state ?
-        case STATE_CONNECTED:
         default:
             RemoveConnection(pConn,gate::GateConnection::CONNECTION_CLOSE_EXCEPTION);
             return -1;
@@ -260,8 +282,33 @@ int     GateServerHandler::NotifyNeedAuth(GateServerHandler::Connection* pConn)
 }
 int         GateServerHandler::Authorizing(GateServerHandler::Connection * pConn,const gate::AuthReq & auth)
 {
-    LOG_INFO("authorizing uid = %d type = %d token = %s ... ok !",auth.id(),auth.auth(),auth.token().c_str());
-    return 0;
+    GateServerContext * gsc = (GateServerContext *)GetApp()->GetContext();
+    LOG_INFO("authorizing uid = %d type = %d token = %s ... auth mode = %d !",
+        auth.id(),auth.auth(),auth.token().c_str(),gsc->iNeedAuth);
+    if(gsc->mpAreaID2ChannelID.find(auth.area()) == gsc->mpAreaID2ChannelID.end())
+    {
+        pConn->iArea =  auth.area();
+        pConn->iDstChannel = gsc->mpAreaID2ChannelID[auth.area()];
+    }
+    else
+    {
+        LOG_ERROR("area not found !");
+        return -1;
+    }
+    pConn->ulUid = auth.id();
+    pConn->sToken = auth.token(); 
+    pConn->tLastActTime = Time::GetTimeStampNow();
+    if(gsc->iNeedAuth)
+    {
+        //local auth 
+        //
+        
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
 }
 int         GateServerHandler::NotifyAuthResult(GateServerHandler::Connection* pConn,int result)
 {
@@ -346,16 +393,18 @@ void        GateServerHandler::ReportEvent(Connection* pConn,int iEvent,int iPar
         break;
     }
     ///////////////////////////////////////////////
-    LOG_INFO("report event = %d to dst = %d",iEvent,pConn->iDst);
+    LOG_INFO("report event = %d to dst = %d",iEvent,pConn->iDstChannel);
 
     Buffer buff;
     buff.Create(gc.ByteSize());
     gc.SerializeToArray(buff.pBuffer,buff.iCap);
-    m_pChannelProxy->SendToAgent(pConn->iDst,buff);
+    m_pChannelProxy->SendToAgent(pConn->iDstChannel,buff);
     buff.Destroy();
 }
 void        GateServerHandler::ForwardData(Connection* pConn,const Buffer& buffer)
 {
+    GateServerContext * gsc = (GateServerContext *)GetApp()->GetContext();
+
     gate::GateConnection gc;
     gc.set_event(gate::GateConnection::EVENT_DATA);
     gc.set_idx(m_mpConnections[pConn->cliSocket.GetFD()]);    
@@ -367,17 +416,22 @@ void        GateServerHandler::ForwardData(Connection* pConn,const Buffer& buffe
     std::vector<Buffer> vBuff;
     vBuff.push_back(buff);
     vBuff.push_back(buffer);
-    m_pChannelProxy->SendToAgent(pConn->iDst,vBuff);    
+    m_pChannelProxy->SendToAgent(pConn->iDstChannel,vBuff);    
     buff.Destroy();
+
+    
     //////////////////////////////////////////////////////
-    //TEST MODE'
-    static Buffer  s_b;
-    if(!s_b.pBuffer)
+    if(gsc->iTestMode)
     {
-        s_b.Create(1024);
-        s_b.iUsed = 1024;        
+        //TEST MODE'
+        static Buffer  s_b;
+        if(!s_b.pBuffer)
+        {
+            s_b.Create(1024);
+            s_b.iUsed = 1024;        
+        }
+        SendFrameToClient(pConn,GateFrame((char*)(s_b.pBuffer),s_b.iCap));
     }
-    SendFrameToClient(pConn,GateFrame((char*)(s_b.pBuffer),s_b.iCap));
 }
 int         GateServerHandler::SendFrameToClient(Connection* pConn,const GateFrame & frame)
 {

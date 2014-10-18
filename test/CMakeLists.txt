@@ -190,3 +190,21 @@ target_link_libraries(res_test
 INSTALL(TARGETS  res_test DESTINATION test/)
 
 
+
+###################################
+#it will generate a exe
+ADD_EXECUTABLE(gate_test
+	${CMAKE_CURRENT_SOURCE_DIR}/TestGate.cpp
+)
+#assign custrom link lib
+target_link_libraries(gate_test
+	libssukits_base.a
+	libssukits_net.a	
+	gate_client.a
+	playground_proto_gate
+	protobuf.a
+)
+INSTALL(TARGETS  gate_test DESTINATION test/)
+
+
+

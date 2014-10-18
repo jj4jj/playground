@@ -14,3 +14,13 @@ INSTALL(TARGETS playground_proto DESTINATION lib/)
 
 
 
+#######################################################################
+
+file(GLOB_RECURSE playground_proto_gate_SRCS gen/gate/*.cc gen/gate/*.h)
+add_library(playground_proto_gate STATIC
+	${playground_proto_gate_SRCS}
+)
+INSTALL(TARGETS playground_proto_gate DESTINATION lib/)
+
+
+

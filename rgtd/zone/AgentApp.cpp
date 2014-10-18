@@ -21,7 +21,7 @@ int     AgentApp::StartDB()
     //db - register db tables
     MysqlProxyOption    mpo;
     // for testing , it should read from config
-    mpo.dbname = "mtest";
+    mpo.dbname = "rgtd";
     mpo.ip = "127.0.0.1";
     mpo.port = 3306;
     mpo.uname = "root";

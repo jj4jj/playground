@@ -23,8 +23,8 @@ int             ZoneAgentMgr::Init()
     //
 
     m_db->AddListener(string("Role"),DataListenerPtr( new RoleDBListener(this)));
-    m_db->AddListener(string("AccountR"),DataListenerPtr(new AccountDBListener(this,ACCOUNT_R)));
-    m_db->AddListener(string("AccountL"),DataListenerPtr(new AccountDBListener(this,ACCOUNT_L)));
+    m_db->AddListener(string("AccountLR"),DataListenerPtr(new AccountDBListener(this,ACCOUNT_LR)));
+    m_db->AddListener(string("AccountRL"),DataListenerPtr(new AccountDBListener(this,ACCOUNT_RL)));
     
     //bind db handler
     //bind cache handler

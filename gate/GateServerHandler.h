@@ -1,6 +1,6 @@
 #pragma once
 #include "net/TcpServerHandler.h"
-#include "proto/gate/gate.pb.h"
+#include "proto/gen/gate/gate.pb.h"
 #include "app/ChannelMsgProxy.h"
 //gate server report connection event to agent
 //msg
@@ -26,10 +26,13 @@ private:
         int         iIdx;
         TcpSocket   cliSocket;
         Buffer      recvBuffer;
-        int         iDst;
+        int         iDstChannel;
         int         iMsgLen;
         int         bState;//invalid ? init ? authorized ? 
-        uint64_t    ulUid;//
+        uint64_t    ulUid;//uid
+        string      sToken;
+        time_t      tLastActTime;
+        int         iArea;
     public:
         Connection();
         ~Connection();

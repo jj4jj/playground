@@ -10,3 +10,4 @@ add_library(dbagent STATIC
 )
 
 INSTALL(TARGETS dbagent DESTINATION lib/)
+

@@ -24,7 +24,7 @@ message	HeroArm
 };
 message	RoleHeroArm
 {
-	repeated	HeroArm		grids;
+	repeated	HeroArm		grids = 1;
 };
 message	HeroSkill
 {
@@ -33,9 +33,13 @@ message	HeroSkill
 };
 message	RoleHeroSkill
 {
-	repeated	HeroSkill	skills;
+	repeated	HeroSkill	skills = 1;
 };
-
+message RoleHeroGrowth
+{
+	optional	uint32		level	=	1;
+	optional	uint32		exp		=	2;
+};
 message RoleHero
 {	
 	required	uint32			id		=	1 [default = 0];	
