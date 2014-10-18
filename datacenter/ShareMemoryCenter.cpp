@@ -1,9 +1,20 @@
 #include "base/Log.h"
 #include "base/CommonMacro.h"
 #include "ShareMemoryCenter.h"
+#include "base/File.h"
 
 #define SHM_MAGIC   ("RSHM")
 #if 1
+ShareMemoryCenter::ShareMemoryCenter()
+{
+    m_pSerializer = NULL;
+    m_vecModules.clear();
+    m_pFmtBase = NULL;
+    m_pDataBase = NULL;
+    m_zTotalSize = 0;
+}
+
+
 int     ShareMemoryCenter::Register(const ShareMemoryModuleReg & reg)
 {
     if(FindReg(reg.name))
@@ -30,6 +41,13 @@ int     ShareMemoryCenter::Init(const char* pszShmKeyPath)
     //then recover it
     //else there is no old shm
     //init it
+    if(!File::Exist(pszShmKeyPath))
+    {
+        LOG_INFO("shm file path is not exist , so touch it !");
+        File touchFile(pszShmKeyPath,"w+");
+        touchFile.Close();
+    }
+    LOG_INFO("init shm center key path = %s",pszShmKeyPath);
     m_zTotalSize += sizeof(ShareMemoryCenterDataFmt);
     int shmKey = ShareMemory::PathToKey(pszShmKeyPath);
     int ret = m_shm.Attach(shmKey,m_zTotalSize);
@@ -70,6 +88,8 @@ int     ShareMemoryCenter::Init(const char* pszShmKeyPath)
         {
             LOG_ERROR("old shm size = %zu old mod = %u but new shm size = %zu mod = %u . will extend old shm (todo pre alloc big size)",
                      zOldShmSize,m_pFmtBase->modulesCount,m_zTotalSize,m_vecModules.size());
+            assert(zOldShmSize < m_zTotalSize &&
+                   m_pFmtBase->modulesCount < m_vecModules.size());
             ////////////////////////////////////////////////////////////////////////////////
             AppendRegModules();//append no reg module
         }
@@ -81,6 +101,7 @@ void     ShareMemoryCenter::InitRegModules()
     bzero(m_pFmtBase,m_zTotalSize);
     memcpy(m_pFmtBase->magic,SHM_MAGIC,strlen(SHM_MAGIC));
     m_pFmtBase->dataOffset = sizeof(ShareMemoryCenterDataFmt);
+    m_pFmtBase->dataLength = sizeof(ShareMemoryCenterDataFmt);
     AppendRegModules();
 }
 void     ShareMemoryCenter::AppendRegModules()
@@ -97,7 +118,7 @@ void     ShareMemoryCenter::AppendRegModules()
 }
 size_t  ShareMemoryCenter::GetOldShmSize()
 {
-    return  m_pFmtBase->dataLength + sizeof(ShareMemoryCenterDataFmt);
+    return  m_pFmtBase->dataLength;
 }
 int     ShareMemoryCenter::AttachAllModules()
 {
@@ -155,7 +176,7 @@ int         ShareMemoryCenter::AddModule(const char* pszName)
     {
         return -1;
     }
-    if(reg->zSize + m_pFmtBase->dataLength + sizeof(ShareMemoryCenterDataFmt) > m_zTotalSize)
+    if(reg->zSize + m_pFmtBase->dataLength > m_zTotalSize)
     {
         LOG_FATAL("shm buffer is not enough !!");
         return -1;
@@ -167,7 +188,7 @@ int         ShareMemoryCenter::AddModule(const char* pszName)
     }
 
     ShareMemoryModule & mod = m_pFmtBase->modules[m_pFmtBase->modulesCount];
-    mod.dataOffset = sizeof(ShareMemoryCenterDataFmt) + m_pFmtBase->dataLength;
+    mod.dataOffset = m_pFmtBase->dataLength;
     mod.zSize      = reg->zSize;
     bzero((char*)m_pFmtBase + mod.dataOffset,mod.zSize);
     STRNCPY(mod.szName,sizeof(mod.szName),reg->name.c_str());

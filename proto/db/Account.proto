@@ -31,9 +31,6 @@ message Account
 };
 
 
-
-
-
 ////---------------------------FOR CACHE-------------------------------------------------
 //for cache
 message AccountLR
@@ -42,11 +39,14 @@ message AccountLR
 	{
 		optional	uint32	gid	= 1;
 	};
+	message	_MaxLength
+	{
+		optional	uint32	openid	= 1 [default=32];
+	};
 	required	uint64			gid	 		 =	1;
 	required	uint32			platform	 =	2;
 	required	string			openid		 =	3;
 	required	uint32			time		 =  4;
-	required	AccountMisc		misc		 =  5;
 };
 //for cache
 message AccountRL
@@ -56,11 +56,14 @@ message AccountRL
 		optional	uint32	platform	 	=	1;
 		optional	uint32	openid			= 	2;
 	};
+	message	_MaxLength
+	{
+		optional	uint32	openid	= 1 [default=32];
+	};
 	required	uint64			gid	 		 =	1;
 	required	uint32			platform	 =	2;
 	required	string			openid		 =	3;
 	required	uint32			time		 =  4;
-	required	AccountMisc		misc		 =  5;
 };
 
 

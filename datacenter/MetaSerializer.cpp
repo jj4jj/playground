@@ -111,7 +111,7 @@ int    MetaSerializer::GetFieldMaxLength(const google::protobuf::Descriptor* des
     const Descriptor  * pk = desc->FindNestedTypeByName(string("_MaxLength"));
     if(!pk)
     {
-        LOG_ERROR("msg name = %s pk not found !",desc->name().c_str());
+        LOG_ERROR("msg name = %s max length not found !",desc->name().c_str());
         return 0;
     }
     

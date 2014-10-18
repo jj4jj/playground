@@ -49,7 +49,7 @@ void    AgentContext::OnGenerateDefaultConfig()
     {"agent:db#1:port","3306"},
     {"agent:db#1:user","root"},
     {"agent:db#1:passwd","123456"},
-    {"agent:db#1:dbname","mtest"},
+    {"agent:db#1:dbname","rgtd"},
         
     {"agent:cache:num","1"},
     {"agent:cache#1:ip","127.0.0.1"},
@@ -177,6 +177,7 @@ int     AgentContext::OnInit()
 #if 1
 int     AgentApp::StartDB()
 {
+
     DBAgentOption   cao;
     //AgentContext    * agent_ctx = (AgentContext*)GetContext();
     /////////////////////////////////////////////

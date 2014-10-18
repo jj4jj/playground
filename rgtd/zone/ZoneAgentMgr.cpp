@@ -5,6 +5,7 @@
 #include "datacenter/ShareMemoryCenter.h"
 #include "AccountDBListener.h"
 #include "RoleDBListener.h"
+#include "proto/gen/db/include.h"
 
 class AgentGateMsgDispatcher : public  ChannelMessageDispatcher
 {
@@ -47,12 +48,20 @@ ZoneAgent &     ZoneAgentMgr::GetAgent(int iZoneID)
 }
 int             ZoneAgentMgr::Init()
 {    
+
+    db::AccountLR   alr;
+    db::AccountRL   arl;
+    db::Account   acc;
+    db::Role      role;
+
+    
     m_chnlProxy = &GetAgentServer().GetChannelProxy();
     m_db = &GetAgentServer().db;
     m_cache = &GetAgentServer().cache;
     //
 
     m_db->AddListener(string("Role"),DataListenerPtr( new RoleDBListener(this)));
+    m_db->AddListener(string("Account"),DataListenerPtr(new AccountDBListener(this,ACCOUNT_DB)));
     m_db->AddListener(string("AccountLR"),DataListenerPtr(new AccountDBListener(this,ACCOUNT_LR)));
     m_db->AddListener(string("AccountRL"),DataListenerPtr(new AccountDBListener(this,ACCOUNT_RL)));
     

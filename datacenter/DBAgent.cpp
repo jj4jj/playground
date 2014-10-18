@@ -110,7 +110,7 @@ int DBAgent::GenerateMysqlMetas(vector<MysqlMeta> & metas,const vector<string> &
         MysqlMeta   rowMeta;
         rowMeta.tblname = tables[i];
         //////////////////////////////////
-        const Descriptor * desc = serializer->GetDescriptor(tables[i]);
+        const Descriptor * desc = serializer->GetDescriptor(string(GetMetaNameSpace()+"."+tables[i]));
         if(!desc)
         {
             LOG_FATAL("not found table = %s descriptor !",tables[i].c_str());
@@ -135,7 +135,6 @@ int DBAgent::GenerateMysqlMetas(vector<MysqlMeta> & metas,const vector<string> &
             {
                 fieldMeta.ispk = true;
             }
-            fieldMeta.maxlen = serializer->GetFieldMaxLength(desc,fieldMeta.name);            
             switch(field->cpp_type())
             {
                 case FieldDescriptor::CPPTYPE_BOOL:
@@ -148,6 +147,7 @@ int DBAgent::GenerateMysqlMetas(vector<MysqlMeta> & metas,const vector<string> &
                     break;
                 case FieldDescriptor::CPPTYPE_STRING:
                     fieldMeta.type = MysqlFieldMeta::VAL_TYPE_VARCHAR;
+                    fieldMeta.maxlen = serializer->GetFieldMaxLength(desc,fieldMeta.name);
                     break;
                 case FieldDescriptor::CPPTYPE_UINT32:
                     fieldMeta.type = MysqlFieldMeta::VAL_TYPE_UINT32;

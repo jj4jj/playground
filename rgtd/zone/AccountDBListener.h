@@ -5,6 +5,7 @@
 //R : openid ->  gid
 //L : gid    ->  openid
 
+#define  ACCOUNT_DB  ('D')
 #define  ACCOUNT_LR  ('R')
 #define  ACCOUNT_RL  ('L')
 

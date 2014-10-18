@@ -58,11 +58,13 @@ class MetaSerializer;
 class ShareMemoryCenter
 {
 public:
+    ShareMemoryCenter();
+public:
     int          Register(const ShareMemoryModuleReg & reg);
     int          Init(const char* pszShmKeyPath);
     ShareMemoryModule*   FindModule(const char* pszName);
     Buffer       GetModleBuffer(const char* pszName);
- protected:
+protected:
     void        InitRegModules();
     void        AppendRegModules();
     size_t      GetOldShmSize();
@@ -70,7 +72,7 @@ public:
     int         Check();
     int         AddModule(const char* pszName);
     ShareMemoryModuleReg * FindReg(const string & name);
-public:
+public:    
     //don't call it generally , unless you know what you are doing !!
     void         DeleteSHM();
 private:
