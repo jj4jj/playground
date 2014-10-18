@@ -104,6 +104,7 @@ int      ChannelMsgProxy::SubscribeSingleMsg(int id,ChannelMessageDispatcherPtr 
     }
     assert(m_mpHandlerMap.find(id) == m_mpHandlerMap.end());
     m_mpHandlerMap[id] = hanlder;
+    LOG_INFO("subscribe single msg id = %d",id);
     return 0;
 }
 int      ChannelMsgProxy::SubscribeContinuousMsg(int fromid , int endid,ChannelMessageDispatcherPtr hanlder)
@@ -121,6 +122,7 @@ int      ChannelMsgProxy::SubscribeContinuousMsg(int fromid , int endid,ChannelM
     }
     std::pair<int,int> sec = std::make_pair(fromid,endid);
     m_vecHandlers.push_back(std::make_pair(sec,hanlder));           
+    LOG_INFO("subscribe single msg id  from = %d to = %d",fromid,endid);
     return 0;    
 }
 bool        ChannelMsgProxy::MatchSegment(ChannelProxyMsgHandlerTableSegment & seg , int id)
