@@ -206,32 +206,64 @@ int    App::InitLockFile()
     if(ctx->uniq_process)
     {
         LOG_INFO("uniq process checking file path = [%s] ...",ctx->lockFilePath.c_str());
-        m_lockFile.Open(ctx->lockFilePath.c_str(),"w+");
-        char pidBuffer[32];
-        while( m_lockFile.ExcluLock())
+        //if file not exist
+        //ok , create it .
+        //else
+        //read pid
+        //send pid signal stopping
+        //init
+        bool existFile = File::Exist(ctx->lockFilePath.c_str());
+        if(!existFile)
         {
-            
-            fprintf(stderr,"lock file = %s error , pls be sure there is no another process running !",ctx->lockFilePath.c_str());
-            //send signal
-            m_lockFile.GetLine(pidBuffer,sizeof(pidBuffer));  
-            if(strlen(pidBuffer) == 0)
+            //touch
+            m_lockFile.Open(ctx->lockFilePath.c_str(),"w+");
+            m_lockFile.Close();            
+        }
+        int ret = m_lockFile.Open(ctx->lockFilePath.c_str(),"r+");
+        if(ret)
+        {
+            LOG_ERROR("lock file = %s open error !",ctx->lockFilePath.c_str());
+            return -1;
+        }
+        char pidBuffer[64];        
+        if(existFile)
+        {
+            if(true)//m_lockFile.ExcluLock())//it's blocking io
             {
-                fprintf(stderr,"read pid from lock file error ! maybe u need kill another program manually");
+                //send signal  by context assign
+                LOG_ERROR("lock file = %s get lock error , pls be sure there is no another process running !",ctx->lockFilePath.c_str());
+                //send signal
+                m_lockFile.Seek();
+                m_lockFile.GetLine(pidBuffer,sizeof(pidBuffer));  
+                if(strlen(pidBuffer) == 0)
+                {
+                    LOG_ERROR("read pid from lock file error ! maybe u need kill another program manually");
+                    m_lockFile.Close();
+                    return -1;
+                }            
+                pidBuffer[sizeof(pidBuffer)-1] = '\0';            
+                int pid = atoi(pidBuffer);
+                //todo 
+                SignalHelper::SendProcessSignal(SIGUSR1,pid);
+            }            
+        }
+        else
+        {
+            if(false)//m_lockFile.ExcluLock())
+            {
+                LOG_ERROR("get file = %s lock error ! impossible !!! ",ctx->lockFilePath.c_str());
                 return -1;
             }
-            
-            pidBuffer[sizeof(pidBuffer)-1] = '\0';            
-            int pid = atoi(pidBuffer);
-            SignalHelper::SendProcessSignal(SIGUSR1,pid);
         }
-        m_lockFile.Seek();//begin
+        //lock success write pid
         pid_t pid = getpid();
         SNPRINTF(pidBuffer,sizeof(pidBuffer),"%u",pid);        
         LOG_INFO("write lock file pid = %u",pid);
+        m_lockFile.Seek();
         if(m_lockFile.Write(pidBuffer,strlen(pidBuffer)+1) < 0)
         {
             LOG_ERROR("warnning write lock file pid = %u error for errstr = %s",
-                    pid,strerror( errno));
+                    pid,strerror(errno));
         }
         m_lockFile.Flush();
     }
@@ -293,16 +325,16 @@ int     App::Init(AppContext * _ctx)
         //daemonlize
         Daemon::Instance().Create();
     }    
-    ////////////////////////lock file ////////////////////////////
-    if(InitLockFile())
-    {
-        LOG_ERROR("init lock file error !");
-        return -1;
-    }
     /////////////////////  log  ///////////////////////////////
     if(InitLog())
     {
         LOG_FATAL("Log init error !");
+        return -1;
+    }
+    ////////////////////////lock file ////////////////////////////
+    if(InitLockFile())
+    {
+        LOG_ERROR("init lock file error !");
         return -1;
     }
     //////////////////////////////////////////////////////////

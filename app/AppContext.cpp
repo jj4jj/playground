@@ -102,7 +102,7 @@ void    AppContext::GenerateDefaultConfig(const char* pszConfigFile)
     {"log_min_level","2"},
     {"daemon","0"},
     {"hook_coredump","0"},        
-    {"tick_count_us","100"},
+    {"tick_count_us","10000"},
     {"tick_poll_num","1"},
     {"uniq_process","1"},//support path system none
     {"file_lock_path",sLockFile.c_str()},

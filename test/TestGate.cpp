@@ -46,14 +46,40 @@ public:
 
 int main(int argc,char* argv[])
 {
+
+
+/*
+default addr arrangement:
+
+agent
+    51XXX
+    channel listen
+        51010
+        51011
+        51012
+gate
+    52XXX  
+    tcp server listen
+        52010
+        52011
+        52012        
+console
+    XX000
+        XX000
+account
+    56XXX
+platform
+    58XXX
+
+*/
     
-    int port = 51800;
+    int port = 52010;
     const char* pszIP = "127.0.0.1";
     int client_num = 1;
 
     if(argc < 4)
     {
-        printf("usage : port ip client_num [use default ip = 127.0.0.1 port = 51800 num = 1]\n");
+        printf("usage : port ip client_num [use default ip = 127.0.0.1 port = 52010 num = 1]\n");
     }
     else
     {

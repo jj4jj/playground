@@ -7,6 +7,7 @@
 #if 1
 int ChannelProxyMessageDispatcher::DispatchMessage(ChannelAgent & agent , const ChannelMessage & msg)
 {
+    LOG_DEBUG("recv a msg from id = %d msg len = %u",agent.GetID(),msg.dwSize);
     //find id msg handler dispatch it.
     ChannelMessageDispatcher* handler = proxy->FindHandler(agent.GetID());
     if(!handler)

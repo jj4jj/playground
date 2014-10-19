@@ -47,11 +47,7 @@ ZoneAgent &     ZoneAgentMgr::GetAgent(int iZoneID)
     return *m_mpZoneAgent[iZoneID].get();
 }
 int             ZoneAgentMgr::Init()
-{        
-    db::protobuf_AddDesc_db_2fAccount_2eproto();
-    db::protobuf_AddDesc_db_2fLoginHistory_2eproto();
-    db::protobuf_AddDesc_db_2fRole_2eproto();
-    
+{            
     m_chnlProxy = &GetAgentServer().GetChannelProxy();
     m_db = &GetAgentServer().db;
     m_cache = &GetAgentServer().cache;
@@ -94,12 +90,12 @@ int             ZoneAgentMgr::Destroy()
 //
 int             ZoneAgentMgr::OnGateMessage(const ChannelMessage & msg)
 {
-
-    
-    return 0;
+    LOG_DEBUG("todo");
+        return 0;
 }
 int             ZoneAgentMgr::OnServerMessage(const ChannelMessage & msg)
 {
+    LOG_DEBUG("todo");
     return 0;
 }
 #endif

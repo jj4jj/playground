@@ -177,6 +177,7 @@ int     AgentContext::OnInit()
 #if 1
 int     AgentApp::StartDB()
 {
+    db::init_proto_dummy();
 
     DBAgentOption   cao;
     //AgentContext    * agent_ctx = (AgentContext*)GetContext();
@@ -196,6 +197,10 @@ int     AgentApp::StartDB()
 }
 int     AgentApp::StartCache()
 {
+
+    db::init_proto_dummy();
+
+    
     CacheAgentOption    cao;
 
     //just for test , it should read from config
@@ -224,6 +229,7 @@ int     AgentApp::InitScript()
 }
 int     AgentApp::InitResTable()
 {
+    res::init_proto_dummy();
     //"../res" is temporary . should read from config
     return resTable.Init("../res",&meta);
 }
