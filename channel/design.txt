@@ -25,7 +25,28 @@
    1.every node has some local listening points .
    2.every node can build many channels to other nodes listening points.
    3.channel message will caching when one channel end is down .
- 
+
+	
+	
+	every process has a listen point .
+	other process send msg to the point . [addr][msg]
+	global naming service get name addr .
+
+
+
+		naming service[share db datacenter]
+			|
+			|
+			|
+		-------------------------------------
+		|			|						|
+	   node1	   node2	 			   nodeN
+		listen
+		 get node2
+		  send node2
+	
+
+
 
 
 

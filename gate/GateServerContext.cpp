@@ -19,10 +19,12 @@ agent
         51012
 gate
     52XXX  
-    tcp server listen
+    channel listen
         52010
-        52011
-        52012        
+    tcp server listen
+        52100
+        52101
+        52102        
 console
     XX000
         XX000
@@ -54,6 +56,7 @@ void    GateServerContext::OnGenerateDefaultConfig()
     //default agent
     {"console:port","52000"},
     {"channel:num","1"}, //agent zone areas
+    {"channel:local","tcp://127.0.0.1:52010"},
     {"channel:info#1:addr","tcp://127.0.0.1:51010"}, //agent zone areas
     /////////////add default config above////////////////
     {NULL,NULL}};

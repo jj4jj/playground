@@ -4,7 +4,6 @@
 #include "ChannelMessage.h"
 #include "Channel.h"
 
-
 class ChannelAgent
 {
 public:
@@ -14,6 +13,8 @@ public:
     virtual    int    Init(void * ctx,int mode,const char * pszName,const char* pszAddr);
 public:
     inline int GetID(){return id;}
+    inline const char* GetName(){return szName;}
+    void SetName(const char* szName_){strncpy(szName,szName_,sizeof(szName));}
     //return 0 get a message , otherwise , return error code
     int GetMessage(ChannelMessage & msg);
     //return 0 is ok , otherwise return an error code
@@ -21,6 +22,7 @@ public:
     inline Channel & GetChannel(){return channel;}
 private:
     int         id;
+    char        szName[128];
     Channel     channel;    
 };
 

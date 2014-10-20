@@ -2,6 +2,8 @@
 #include "ChannelMessage.h"
 #include "ChannelAgent.h"
 
+/////////////////////////////////////////////////////////////////////////////////////
+
 class ChannelMessageDispatcher
 {    
 public:    
@@ -9,15 +11,5 @@ public:
     virtual   ~ChannelMessageDispatcher(){}
 };
 typedef shared_ptr<ChannelMessageDispatcher>   ChannelMessageDispatcherPtr;
-
-
-
-
-
-
-
-
-
-
 
 

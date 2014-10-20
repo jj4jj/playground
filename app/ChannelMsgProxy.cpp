@@ -6,7 +6,7 @@
 
 
 #if 1
-ChannelMsgProxy::ChannelMsgProxy():m_pCtx(NULL),m_dispatcher(this)
+ChannelMsgProxy::ChannelMsgProxy():m_pCtx(NULL)
 {
 }
 ChannelMsgProxy::~ChannelMsgProxy()
@@ -31,12 +31,18 @@ int     ChannelMsgProxy::Init(AppContext * pCtx)
     {
         return -1;
     }
-    if(pCtx->channels.empty())
+
+    if(pCtx->localChannelAddr.length() == 0)
     {
-        LOG_INFO("no channel config !");
+        LOG_INFO("no listen channel config !");
         return 0;
     }
-    if(ChannelAgentMgr::Instance().Init(pCtx->channels.size(),&m_dispatcher))
+    //////////////////////////////////////////////////////
+    ChannelMessageDispatcherPtr dispatcher(new ChannelProxyMessageDispatcher(this));
+    //const char * pszName,const char* pszAddr
+    if(ChannelAgentMgr::Instance().Init(pCtx->channelName.c_str(),
+                                pCtx->localChannelAddr.c_str(),
+                                dispatcher) )
     {
         LOG_ERROR("channel mgr init error !");
         return -1;
@@ -45,9 +51,9 @@ int     ChannelMsgProxy::Init(AppContext * pCtx)
     LOG_INFO("add channel count = %d",pCtx->channels.size());
     for(uint i = 0;i < pCtx->channels.size(); ++i)
     {
-        GateChannel & chnl = pCtx->channels[i];
-        LOG_INFO("add channel id = %d listen = %d addr = %s",chnl.id,chnl.listener,chnl.channelAddr.c_str());
-        if(ChannelAgentMgr::Instance().AddChannel(chnl.id,!chnl.listener,
+        ChannelConfig & chnl = pCtx->channels[i];
+        LOG_INFO("add channel id = %d addr = %s",chnl.id,chnl.channelAddr.c_str());
+        if(ChannelAgentMgr::Instance().AddChannel(chnl.id,false,
             pCtx->channelName.c_str(),chnl.channelAddr.c_str()) ) 
         {
             LOG_ERROR("chnnel create error id = %d",chnl.id);

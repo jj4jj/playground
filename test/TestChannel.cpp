@@ -3,25 +3,33 @@
 #include "channel/ChannelAgent.h"
 #include "channel/ChannelAgentMgr.h"
 #include "base/Log.h"
-static int channel_id = 0;
+static int channel_id = 1;
+const char* pszAddr1 = "tcp://127.0.0.1:13672";
+const char* pszAddr2 = "tcp://127.0.0.1:13673";
+const char* pszName = "test";
+
 class TestChannelHandler : public  ChannelMessageDispatcher
 {
 public:    
     virtual   int DispatchMessage(ChannelAgent & agent,const ChannelMessage & msg)
     {
-        printf("recv channel message size = %u\n",msg.dwSize);
+        LOG_INFO("recv channel = %d src = %d message size = %u\n",agent.GetID(),msg.iSrc,msg.dwSize);        
+        LOG_INFO("msg = [%s]",(char*)msg.pData);        
         return 0;
     }
 };
-void connect()
+void connect(int sel)
 {
-    ChannelAgentMgr::Instance().AddChannel(channel_id,true,"test","tcp://127.0.0.1:58850");
+    if(1 == sel)
+    {
+        ChannelAgentMgr::Instance().AddChannel(channel_id,false,pszName,pszAddr1);
+    }
+    else
+    {
+        ChannelAgentMgr::Instance().AddChannel(channel_id,false,pszName,pszAddr2);
+    }
 }
-void listen()
-{
-    ChannelAgentMgr::Instance().AddChannel(channel_id,false,"test","tcp://127.0.0.1:58850");
-}
-void close()
+void Close(int local)
 {
     //ChannelAgentMgr::Instance().RemoveChannel(channel_id);
 }
@@ -33,10 +41,10 @@ void write()
         return ;
     }
     ChannelMessage msg;
-    Buffer bf("channel message write");
+    Buffer bf("channel message write test");
     p->PostMessage(ChannelMessage(bf));
 }
-void read()
+void read(int local)
 {
     ChannelAgent * p =  ChannelAgentMgr::Instance().GetChannel(channel_id);
     if(!p)
@@ -49,6 +57,7 @@ void read()
 }
 int main(int argc , char* argv[])
 {
+    /*
     printf("usage : %s <cmd>\n",argv[0]);
     puts("cmd\n\tlisten\t\t|\tcreate a channel name is test name is 'test' , liten on tcp://127.0.0.1:58850");
     puts("\tconnect\t\t|\tconnect to the channel");
@@ -60,44 +69,45 @@ int main(int argc , char* argv[])
     struct 
     {
         const char* cmd;
-        void (*pfn)();
+        void (*pfn)(int);
     } options[] = {
         {"listen",listen},
         {"connect",connect},
-        {"close",close},
+        {"close",Close},
         {"write",write},
         {"read",read},
     };
-    TestChannelHandler hdr;
-    if(ChannelAgentMgr::Instance().Init(5,&hdr))
+    */
+    ChannelMessageDispatcherPtr hdr(new TestChannelHandler());
+    if(argc < 2)
     {
         return -1;
-    }    
-    char line[128];
-    while(1)
-    {
-        ChannelAgentMgr::Instance().Polling();
-        printf(">>");
-        scanf("%s",line);
-        bool bexe = false;
-        for(int i = 0; i < (int)(sizeof(options)/sizeof(options[0]));++i)
-        {
-            if(strcmp(options[i].cmd,line) == 0 )
-            {
-                options[i].pfn();
-                bexe = true;
-                break;
-            }
-        }        
-        if(0 == strcmp("quit",line))
-        {
-            return 0;
-        }
-        else if(!bexe)
-        {
-            printf("not found cmd = [%s]\n",line);
-        }
     }
+    
+
+    if(argv[1][0] == 'w')
+    {
+        if(ChannelAgentMgr::Instance().Init("ch",pszAddr2,hdr,2))
+        {
+            return -1;
+        }    
+        connect(1);
+        write();
+    }
+    else
+    {
+        if(ChannelAgentMgr::Instance().Init("ch",pszAddr1,hdr,2))
+        {
+            return -1;
+        }    
+        connect(2);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////    
+    while(true)
+    {
+        ChannelAgentMgr::Instance().Polling();        
+    }    
     return 0;
 }
 

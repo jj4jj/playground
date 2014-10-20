@@ -33,7 +33,6 @@ private:
     Buffer chnMsgSendBuffer;
     ChannelProxyMsgHandlerMap       m_mpHandlerMap; 
     ChannelProxyMsgHandlerTable     m_vecHandlers;
-    ChannelProxyMessageDispatcher   m_dispatcher;
     enum
     {
         MAX_CHANNEL_MESSAGE_SIZE = 65536,

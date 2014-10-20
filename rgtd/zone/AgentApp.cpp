@@ -19,21 +19,22 @@ agent
         51012
 gate
     52XXX  
-    tcp server listen
+    channel listen
         52010
-        52011
-        52012        
+    tcp server listen
+        52100
+        52101
+        52102        
 console
     XX000
         XX000
-        XX001
-        XX002
 account
     56XXX
 platform
     58XXX
 
 */
+
 
 
 void    AgentContext::OnGenerateDefaultConfig()
@@ -63,8 +64,8 @@ void    AgentContext::OnGenerateDefaultConfig()
     //default channel
     {"console:port","51000"},
     {"channel:num","1"},
-    {"channel:info#1:addr","tcp://127.0.0.1:51010"},
-    {"channel:info#1:listener","1"},
+    {"channel:local","tcp://127.0.0.1:51010"},
+    {"channel:info#1:addr","tcp://127.0.0.1:52010"},
     /////////////add default config above////////////////
     {NULL,NULL}};
     int i = 0;

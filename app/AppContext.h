@@ -3,12 +3,11 @@
 #include "base/stdinc.h"
 
 
-struct GateChannel
+struct ChannelConfig
 {
     //id = 0 is local listen channel , otherwise connecting channel
     int     id;
     string  channelAddr;
-    bool    listener;
 };
 
 class AppContext
@@ -16,16 +15,15 @@ class AppContext
 public:
     IniConfigParser     parser;
     //////////////////////////////////////////////
-    string                   channelName;
-    std::vector<GateChannel> channels;
+    string                     channelName;
+    string                     localChannelAddr;
+    std::vector<ChannelConfig> channels;
     int       tickCountUs;
     int       tickPollCount;
     struct timeval  curTime;   //this tick time        
     int       uniq_process;
     string    lockFilePath;
     int       hook_coredump;
-
-
 
     ///////////////////////////////////////
     int       closing;

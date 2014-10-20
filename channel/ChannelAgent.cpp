@@ -4,10 +4,11 @@
 #include "base/Log.h"
 #include "ChannelMessageDispatcher.h"
 #include "ChannelAgent.h"
+
 #if 1
-ChannelAgent::ChannelAgent(int _id)
+ChannelAgent::ChannelAgent(int _id):id(_id),channel(this)
 {
-    id = _id;
+    szName[0]=0;
 }
 ChannelAgent::~ChannelAgent()
 {
@@ -24,6 +25,7 @@ int        ChannelAgent::Init(void * ctx,int mode,const char * pszName,const cha
         LOG_ERROR("channel create error = %d",iRet);
         return -1;
     }
+    LOG_INFO("create channel id = %d name = %s ok .",id,szName);
     return 0;
 }
 
@@ -32,12 +34,10 @@ int ChannelAgent::GetMessage(ChannelMessage & msg)
 {
     //receive a message
     Buffer buff;
-    if(channel.Read(buff))
+    if(channel.Read(msg.iSrc,msg))
     {
         return -1;
     }
-    msg.pData = buff.pBuffer;
-    msg.dwSize = buff.iUsed;
     return 0;    
 }
 //return 0 is ok , otherwise return an error code

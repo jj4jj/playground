@@ -3,6 +3,7 @@
 #include "base/Buffer.h"
 #include "zmq.h"
 
+class ChannelAgent;
 struct Channel
 {
     enum
@@ -16,12 +17,15 @@ struct Channel
     void* receiver; 
     Buffer rcvBuffer;
 public:
-    Channel();
+    Channel(ChannelAgent* _agent);
     ~Channel();
 public:
     int Write(const Buffer & buffer);
-    int Read(Buffer & buffer);
+    int Read(int & rcvMsgID,ChannelMessage & msg);
     int Create(int mode,void* ctx,const char* pszAddr,const char* name,int hwm = 1000);
     void Destroy();
+private:
+    ChannelAgent*   agent;
+    zmq_msg_t       msg_head;
 };
 

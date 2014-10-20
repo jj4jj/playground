@@ -21,21 +21,24 @@ ChannelAgentMgr::~ChannelAgentMgr()
 #endif
 
 #if 1
-int             ChannelAgentMgr::Init(int iMaxChannel,ChannelMessageDispatcher*  _pDispatcher)
+int             ChannelAgentMgr::Init(const char * pszName,const char* pszListenAddr,
+                                      ChannelMessageDispatcherPtr  _ptrDispatcher,
+                                      int iMaxLocalChannel )
 {
-    assert(NULL == zmq_context && iMaxChannel > 0 && zpollitems == NULL);
+    assert(NULL == zmq_context && iMaxLocalChannel > 0 && zpollitems == NULL);
     zmq_context = zmq_ctx_new();
     if(!zmq_context)
     {
         LOG_FATAL("zmq init error !");
         return -1;
     }            
-    nzpollitem = iMaxChannel;
-    zpollitems = (zmq_pollitem_t*)malloc(iMaxChannel*sizeof(zmq_pollitem_t));    
+    zpollitems = (zmq_pollitem_t*)malloc(iMaxLocalChannel*sizeof(zmq_pollitem_t));    
     assert(zpollitems != NULL);
-    pDispatcher = _pDispatcher;
-    bzero(zpollitems,iMaxChannel*sizeof(zmq_pollitem_t));
-    return 0;
+    ptrDispatcher = _ptrDispatcher;
+    bzero(zpollitems,iMaxLocalChannel*sizeof(zmq_pollitem_t));
+    nzpollitem = 0;
+    ///////////////////////////////////////////////////////
+    return AddChannel(0,true,pszName,pszListenAddr);
 }
 void            ChannelAgentMgr::Destroy()
 {
@@ -48,35 +51,45 @@ void            ChannelAgentMgr::Destroy()
     nzpollitem = 0;
 }
 
-int             ChannelAgentMgr::AddChannel(int id,bool bRemote,const char * pszName,const char* pszAddr)
+int             ChannelAgentMgr::AddChannel(int id,bool local,const char * pszName,const char* pszAddr)
 {
+    if(!local)
+    {
+        assert(id > 0);
+    }
     if(m_mpChannelAgent.find(id) != m_mpChannelAgent.end())
     {
         //already exist
         LOG_ERROR("register channel repeatly id = %d",id);
         return -1;
     }
-    LOG_INFO("add channel id = %d remote = %d name = %s addr = %s ",
-        id,bRemote,pszName,pszAddr);
+    LOG_INFO("add channel id = %d local = %d name = %s addr = %s ",
+        id,local?1:0,pszName,pszAddr);    
     ChannelAgentPtr p(new ChannelAgent(id));
     char channelName[32];
     assert(strlen(pszName) < 20);
     SNPRINTF(channelName,sizeof(channelName),"%s#%d",pszName,id);
-    int chnMode = bRemote?Channel::CHANNEL_MODE_REMOTE:Channel::CHANNEL_MODE_LOCAL;
+    int chnMode = local?Channel::CHANNEL_MODE_LOCAL:Channel::CHANNEL_MODE_REMOTE;
     int iRet = p->Init(zmq_context,chnMode,channelName,pszAddr);
     if(iRet)
     {
         LOG_ERROR("create channell error = %d",iRet);
         return -2;
     }
-    Channel & chnl = p->GetChannel();    
-    zmq_pollitem_t & item = zpollitems[nzpollitem++];
-    item.socket = chnl.receiver;
-    item.fd = id;
-    item.events = ZMQ_POLLIN;
-    item.revents = 0;
+
+    if(local)
+    {
+        Channel & chnl = p->GetChannel();    
+        zmq_pollitem_t & item = zpollitems[nzpollitem++];
+        item.socket = chnl.receiver;
+        item.fd = id;
+        item.events = ZMQ_POLLIN;
+        item.revents = 0;
+    }
+    ///////////////////////////////////////////////////
     m_mpChannelAgent[id] = p;  
-    LOG_DEBUG("agent id = %d agent ptr = %p ptr agent id = %d ",id,p.get(),p->GetID());
+    LOG_DEBUG("agent id = %d agent ptr = %p ptr agent id = %d zitem = %d",
+        id,p.get(),p->GetID(),nzpollitem);
     return 0;
 }
 ChannelAgent* ChannelAgentMgr::GetChannel(int id)
@@ -134,7 +147,7 @@ int             ChannelAgentMgr::Polling(int timeout)
                 continue;
             }
             ///////////////////////////////////////////////////////
-            pDispatcher->DispatchMessage(*(it->second.get()),msg);            
+            ptrDispatcher->DispatchMessage(*(it->second.get()),msg);            
             ////////////////////////////////////////////////////////
             ++ievnts;
         }
