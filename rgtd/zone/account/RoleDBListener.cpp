@@ -5,7 +5,16 @@
 
 int   RoleDBListener::OnGet(int ret,void* obj,Buffer & cb)
 {
-    LOG_INFO("todo");
+    RoleDBCallBack * pCB = (RoleDBCallBack*)cb.pBuffer;
+    LOG_DEBUG("on get !");
+    switch(pCB->type)
+    {
+        case ROLE_DB_GET_TEST:
+            break;
+        case ROLE_DB_GET_LOGIN:
+            zoneMgr->GetLoginLogic().OnLoadPlayer(ret,pCB->uid,(db::Role*)obj);
+            break;        
+    }
     return 0;
 }
 int   RoleDBListener::OnInsert(int ret,Buffer & cb)

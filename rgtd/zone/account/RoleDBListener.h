@@ -1,5 +1,19 @@
 #pragma once
+#include "datacenter/DBAgent.h"
 #include "datacenter/DataListener.h"
+
+
+struct  RoleDBCallBack
+{
+    uint64_t    uid;
+    uint8_t     type;
+};
+enum    RoleDBGetType
+{
+    ROLE_DB_GET_TEST    =   0,
+    ROLE_DB_GET_LOGIN   =   1,
+};
+
 
 class ZoneAgentMgr;
 class RoleDBListener : public DataListener

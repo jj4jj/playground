@@ -3,8 +3,8 @@
 #include "datacenter/DBAgent.h"
 #include "datacenter/CacheAgent.h"
 #include "datacenter/ShareMemoryCenter.h"
-#include "AccountDBListener.h"
-#include "RoleDBListener.h"
+#include "account/AccountDBListener.h"
+#include "account/RoleDBListener.h"
 #include "proto/gen/db/include.h"
 #include "proto/gen/cs/include.h"
 #include "proto/gen/gate/include.h"
@@ -63,7 +63,12 @@ int             ZoneAgentMgr::Init()
     AgentContext * contxt = (AgentContext *)GetApp()->GetContext();
 
 
-
+    int ret = login.Init(this);
+    if(ret)
+    {
+        LOG_ERROR("login init error !");
+        return -1;
+    }
     m_chnlProxy = &GetAgentServer().GetChannelProxy();
     m_db = &GetAgentServer().db;
     m_cache = &GetAgentServer().cache;
@@ -158,7 +163,7 @@ int             ZoneAgentMgr::OnGateMessage(const ChannelMessage & msg)
                 ggc.ip(),ggc.port(),ggc.uid(),msg.iSrc,ggc.idx());
             ////////////////////////////////////////////////////////////////////////
             //area new client
-            return  pAgent->AttachPlayerAgent(ggc);            
+            return  pAgent->AttachPlayerAgent(msg.iSrc,ggc);            
             break;
         }
         case gate::GateConnection::EVENT_CLOSE:
