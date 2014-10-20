@@ -28,9 +28,6 @@ void ZoneAgent::Destroy()
     m_dwZoneID = 0;
     m_mgr = NULL;
 
-    
-    return 0;
-
 }
 int ZoneAgent::OnServerMessage()
 {

@@ -28,7 +28,7 @@ public:
     int DetachPlayerAgent(const gate::GateConnection & ggc);
 private:
     uint32_t         m_dwZoneID;
-    ZoneAgent      * m_mgr;
+    ZoneAgentMgr     * m_mgr;
 };
 typedef shared_ptr<ZoneAgent>       ZoneAgentPtr;
 
