@@ -45,7 +45,7 @@ public:
     Connection* GetConnectionByFD(int fd);    
     Connection* GetConnectionByIdx(int idx);
     int         ConnxToIndex(Connection* p);
-    void        ReportEvent(Connection* pConn,int iEvent,int iParam);
+    void        ReportEvent(Connection* pConn,int iEvent,int iParam,const Buffer * data = NULL);
     void        ForwardData(Connection* pConn,const Buffer& buffer);
     int         SendFrameToClient(Connection* pConn,const GateFrame & frame);
     int         SendToClient(Connection* pConn,gate::GateAuth & ga);

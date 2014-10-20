@@ -41,12 +41,18 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* AccountLR__PrimaryKey_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   AccountLR__PrimaryKey_reflection_ = NULL;
+const ::google::protobuf::Descriptor* AccountLR__MaxLength_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  AccountLR__MaxLength_reflection_ = NULL;
 const ::google::protobuf::Descriptor* AccountRL_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   AccountRL_reflection_ = NULL;
 const ::google::protobuf::Descriptor* AccountRL__PrimaryKey_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   AccountRL__PrimaryKey_reflection_ = NULL;
+const ::google::protobuf::Descriptor* AccountRL__MaxLength_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  AccountRL__MaxLength_reflection_ = NULL;
 
 }  // namespace
 
@@ -138,12 +144,11 @@ void protobuf_AssignDesc_db_2fAccount_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(Account__Index));
   AccountLR_descriptor_ = file->message_type(2);
-  static const int AccountLR_offsets_[5] = {
+  static const int AccountLR_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AccountLR, gid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AccountLR, platform_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AccountLR, openid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AccountLR, time_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AccountLR, misc_),
   };
   AccountLR_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -171,13 +176,27 @@ void protobuf_AssignDesc_db_2fAccount_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(AccountLR__PrimaryKey));
+  AccountLR__MaxLength_descriptor_ = AccountLR_descriptor_->nested_type(1);
+  static const int AccountLR__MaxLength_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AccountLR__MaxLength, openid_),
+  };
+  AccountLR__MaxLength_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      AccountLR__MaxLength_descriptor_,
+      AccountLR__MaxLength::default_instance_,
+      AccountLR__MaxLength_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AccountLR__MaxLength, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AccountLR__MaxLength, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(AccountLR__MaxLength));
   AccountRL_descriptor_ = file->message_type(3);
-  static const int AccountRL_offsets_[5] = {
+  static const int AccountRL_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AccountRL, gid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AccountRL, platform_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AccountRL, openid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AccountRL, time_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AccountRL, misc_),
   };
   AccountRL_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -206,6 +225,21 @@ void protobuf_AssignDesc_db_2fAccount_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(AccountRL__PrimaryKey));
+  AccountRL__MaxLength_descriptor_ = AccountRL_descriptor_->nested_type(1);
+  static const int AccountRL__MaxLength_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AccountRL__MaxLength, openid_),
+  };
+  AccountRL__MaxLength_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      AccountRL__MaxLength_descriptor_,
+      AccountRL__MaxLength::default_instance_,
+      AccountRL__MaxLength_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AccountRL__MaxLength, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AccountRL__MaxLength, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(AccountRL__MaxLength));
 }
 
 namespace {
@@ -233,9 +267,13 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     AccountLR__PrimaryKey_descriptor_, &AccountLR__PrimaryKey::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    AccountLR__MaxLength_descriptor_, &AccountLR__MaxLength::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     AccountRL_descriptor_, &AccountRL::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     AccountRL__PrimaryKey_descriptor_, &AccountRL__PrimaryKey::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    AccountRL__MaxLength_descriptor_, &AccountRL__MaxLength::default_instance());
 }
 
 }  // namespace
@@ -255,10 +293,14 @@ void protobuf_ShutdownFile_db_2fAccount_2eproto() {
   delete AccountLR_reflection_;
   delete AccountLR__PrimaryKey::default_instance_;
   delete AccountLR__PrimaryKey_reflection_;
+  delete AccountLR__MaxLength::default_instance_;
+  delete AccountLR__MaxLength_reflection_;
   delete AccountRL::default_instance_;
   delete AccountRL_reflection_;
   delete AccountRL__PrimaryKey::default_instance_;
   delete AccountRL__PrimaryKey_reflection_;
+  delete AccountRL__MaxLength::default_instance_;
+  delete AccountRL__MaxLength_reflection_;
 }
 
 void protobuf_AddDesc_db_2fAccount_2eproto() {
@@ -274,14 +316,14 @@ void protobuf_AddDesc_db_2fAccount_2eproto() {
     "\004 \002(\r\022\035\n\004misc\030\005 \002(\0132\017.db.AccountMisc\032\032\n\013"
     "_PrimaryKey\022\013\n\003gid\030\001 \001(\r\032 \n\n_MaxLength\022\022"
     "\n\006openid\030\001 \001(\r:\00232\032%\n\006_Index\022\013\n\003gid\030\001 \001("
-    "\t\022\016\n\006openid\030\002 \001(\t\"\203\001\n\tAccountLR\022\013\n\003gid\030\001"
+    "\t\022\016\n\006openid\030\002 \001(\t\"\206\001\n\tAccountLR\022\013\n\003gid\030\001"
     " \002(\004\022\020\n\010platform\030\002 \002(\r\022\016\n\006openid\030\003 \002(\t\022\014"
-    "\n\004time\030\004 \002(\r\022\035\n\004misc\030\005 \002(\0132\017.db.AccountM"
-    "isc\032\032\n\013_PrimaryKey\022\013\n\003gid\030\001 \001(\r\"\230\001\n\tAcco"
-    "untRL\022\013\n\003gid\030\001 \002(\004\022\020\n\010platform\030\002 \002(\r\022\016\n\006"
-    "openid\030\003 \002(\t\022\014\n\004time\030\004 \002(\r\022\035\n\004misc\030\005 \002(\013"
-    "2\017.db.AccountMisc\032/\n\013_PrimaryKey\022\020\n\010plat"
-    "form\030\001 \001(\r\022\016\n\006openid\030\002 \001(\r", 546);
+    "\n\004time\030\004 \002(\r\032\032\n\013_PrimaryKey\022\013\n\003gid\030\001 \001(\r"
+    "\032 \n\n_MaxLength\022\022\n\006openid\030\001 \001(\r:\00232\"\233\001\n\tA"
+    "ccountRL\022\013\n\003gid\030\001 \002(\004\022\020\n\010platform\030\002 \002(\r\022"
+    "\016\n\006openid\030\003 \002(\t\022\014\n\004time\030\004 \002(\r\032/\n\013_Primar"
+    "yKey\022\020\n\010platform\030\001 \001(\r\022\016\n\006openid\030\002 \001(\r\032 "
+    "\n\n_MaxLength\022\022\n\006openid\030\001 \001(\r:\00232", 552);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "db/Account.proto", &protobuf_RegisterTypes);
   AccountMisc::default_instance_ = new AccountMisc();
@@ -291,8 +333,10 @@ void protobuf_AddDesc_db_2fAccount_2eproto() {
   Account__Index::default_instance_ = new Account__Index();
   AccountLR::default_instance_ = new AccountLR();
   AccountLR__PrimaryKey::default_instance_ = new AccountLR__PrimaryKey();
+  AccountLR__MaxLength::default_instance_ = new AccountLR__MaxLength();
   AccountRL::default_instance_ = new AccountRL();
   AccountRL__PrimaryKey::default_instance_ = new AccountRL__PrimaryKey();
+  AccountRL__MaxLength::default_instance_ = new AccountRL__MaxLength();
   AccountMisc::default_instance_->InitAsDefaultInstance();
   Account::default_instance_->InitAsDefaultInstance();
   Account__PrimaryKey::default_instance_->InitAsDefaultInstance();
@@ -300,8 +344,10 @@ void protobuf_AddDesc_db_2fAccount_2eproto() {
   Account__Index::default_instance_->InitAsDefaultInstance();
   AccountLR::default_instance_->InitAsDefaultInstance();
   AccountLR__PrimaryKey::default_instance_->InitAsDefaultInstance();
+  AccountLR__MaxLength::default_instance_->InitAsDefaultInstance();
   AccountRL::default_instance_->InitAsDefaultInstance();
   AccountRL__PrimaryKey::default_instance_->InitAsDefaultInstance();
+  AccountRL__MaxLength::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_db_2fAccount_2eproto);
 }
 
@@ -1931,11 +1977,232 @@ void AccountLR__PrimaryKey::Swap(AccountLR__PrimaryKey* other) {
 // -------------------------------------------------------------------
 
 #ifndef _MSC_VER
+const int AccountLR__MaxLength::kOpenidFieldNumber;
+#endif  // !_MSC_VER
+
+AccountLR__MaxLength::AccountLR__MaxLength()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:db.AccountLR._MaxLength)
+}
+
+void AccountLR__MaxLength::InitAsDefaultInstance() {
+}
+
+AccountLR__MaxLength::AccountLR__MaxLength(const AccountLR__MaxLength& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:db.AccountLR._MaxLength)
+}
+
+void AccountLR__MaxLength::SharedCtor() {
+  _cached_size_ = 0;
+  openid_ = 32u;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+AccountLR__MaxLength::~AccountLR__MaxLength() {
+  // @@protoc_insertion_point(destructor:db.AccountLR._MaxLength)
+  SharedDtor();
+}
+
+void AccountLR__MaxLength::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void AccountLR__MaxLength::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* AccountLR__MaxLength::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return AccountLR__MaxLength_descriptor_;
+}
+
+const AccountLR__MaxLength& AccountLR__MaxLength::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_db_2fAccount_2eproto();
+  return *default_instance_;
+}
+
+AccountLR__MaxLength* AccountLR__MaxLength::default_instance_ = NULL;
+
+AccountLR__MaxLength* AccountLR__MaxLength::New() const {
+  return new AccountLR__MaxLength;
+}
+
+void AccountLR__MaxLength::Clear() {
+  openid_ = 32u;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool AccountLR__MaxLength::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:db.AccountLR._MaxLength)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional uint32 openid = 1 [default = 32];
+      case 1: {
+        if (tag == 8) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &openid_)));
+          set_has_openid();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:db.AccountLR._MaxLength)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:db.AccountLR._MaxLength)
+  return false;
+#undef DO_
+}
+
+void AccountLR__MaxLength::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:db.AccountLR._MaxLength)
+  // optional uint32 openid = 1 [default = 32];
+  if (has_openid()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->openid(), output);
+  }
+
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+  // @@protoc_insertion_point(serialize_end:db.AccountLR._MaxLength)
+}
+
+::google::protobuf::uint8* AccountLR__MaxLength::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:db.AccountLR._MaxLength)
+  // optional uint32 openid = 1 [default = 32];
+  if (has_openid()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->openid(), target);
+  }
+
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:db.AccountLR._MaxLength)
+  return target;
+}
+
+int AccountLR__MaxLength::ByteSize() const {
+  int total_size = 0;
+
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional uint32 openid = 1 [default = 32];
+    if (has_openid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->openid());
+    }
+
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void AccountLR__MaxLength::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const AccountLR__MaxLength* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const AccountLR__MaxLength*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void AccountLR__MaxLength::MergeFrom(const AccountLR__MaxLength& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_openid()) {
+      set_openid(from.openid());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void AccountLR__MaxLength::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void AccountLR__MaxLength::CopyFrom(const AccountLR__MaxLength& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool AccountLR__MaxLength::IsInitialized() const {
+
+  return true;
+}
+
+void AccountLR__MaxLength::Swap(AccountLR__MaxLength* other) {
+  if (other != this) {
+    std::swap(openid_, other->openid_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata AccountLR__MaxLength::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = AccountLR__MaxLength_descriptor_;
+  metadata.reflection = AccountLR__MaxLength_reflection_;
+  return metadata;
+}
+
+
+// -------------------------------------------------------------------
+
+#ifndef _MSC_VER
 const int AccountLR::kGidFieldNumber;
 const int AccountLR::kPlatformFieldNumber;
 const int AccountLR::kOpenidFieldNumber;
 const int AccountLR::kTimeFieldNumber;
-const int AccountLR::kMiscFieldNumber;
 #endif  // !_MSC_VER
 
 AccountLR::AccountLR()
@@ -1945,7 +2212,6 @@ AccountLR::AccountLR()
 }
 
 void AccountLR::InitAsDefaultInstance() {
-  misc_ = const_cast< ::db::AccountMisc*>(&::db::AccountMisc::default_instance());
 }
 
 AccountLR::AccountLR(const AccountLR& from)
@@ -1962,7 +2228,6 @@ void AccountLR::SharedCtor() {
   platform_ = 0u;
   openid_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   time_ = 0u;
-  misc_ = NULL;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1976,7 +2241,6 @@ void AccountLR::SharedDtor() {
     delete openid_;
   }
   if (this != default_instance_) {
-    delete misc_;
   }
 }
 
@@ -2012,16 +2276,13 @@ void AccountLR::Clear() {
     ::memset(&first, 0, n);                                \
   } while (0)
 
-  if (_has_bits_[0 / 32] & 31) {
+  if (_has_bits_[0 / 32] & 15) {
     ZR_(platform_, time_);
     gid_ = GOOGLE_ULONGLONG(0);
     if (has_openid()) {
       if (openid_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
         openid_->clear();
       }
-    }
-    if (has_misc()) {
-      if (misc_ != NULL) misc_->::db::AccountMisc::Clear();
     }
   }
 
@@ -2099,19 +2360,6 @@ bool AccountLR::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(42)) goto parse_misc;
-        break;
-      }
-
-      // required .db.AccountMisc misc = 5;
-      case 5: {
-        if (tag == 42) {
-         parse_misc:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_misc()));
-        } else {
-          goto handle_unusual;
-        }
         if (input->ExpectAtEnd()) goto success;
         break;
       }
@@ -2166,12 +2414,6 @@ void AccountLR::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(4, this->time(), output);
   }
 
-  // required .db.AccountMisc misc = 5;
-  if (has_misc()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      5, this->misc(), output);
-  }
-
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -2206,13 +2448,6 @@ void AccountLR::SerializeWithCachedSizes(
   // required uint32 time = 4;
   if (has_time()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(4, this->time(), target);
-  }
-
-  // required .db.AccountMisc misc = 5;
-  if (has_misc()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteMessageNoVirtualToArray(
-        5, this->misc(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -2255,13 +2490,6 @@ int AccountLR::ByteSize() const {
           this->time());
     }
 
-    // required .db.AccountMisc misc = 5;
-    if (has_misc()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-          this->misc());
-    }
-
   }
   if (!unknown_fields().empty()) {
     total_size +=
@@ -2301,9 +2529,6 @@ void AccountLR::MergeFrom(const AccountLR& from) {
     if (from.has_time()) {
       set_time(from.time());
     }
-    if (from.has_misc()) {
-      mutable_misc()->::db::AccountMisc::MergeFrom(from.misc());
-    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -2321,11 +2546,8 @@ void AccountLR::CopyFrom(const AccountLR& from) {
 }
 
 bool AccountLR::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000001f) != 0x0000001f) return false;
+  if ((_has_bits_[0] & 0x0000000f) != 0x0000000f) return false;
 
-  if (has_misc()) {
-    if (!this->misc().IsInitialized()) return false;
-  }
   return true;
 }
 
@@ -2335,7 +2557,6 @@ void AccountLR::Swap(AccountLR* other) {
     std::swap(platform_, other->platform_);
     std::swap(openid_, other->openid_);
     std::swap(time_, other->time_);
-    std::swap(misc_, other->misc_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -2628,11 +2849,232 @@ void AccountRL__PrimaryKey::Swap(AccountRL__PrimaryKey* other) {
 // -------------------------------------------------------------------
 
 #ifndef _MSC_VER
+const int AccountRL__MaxLength::kOpenidFieldNumber;
+#endif  // !_MSC_VER
+
+AccountRL__MaxLength::AccountRL__MaxLength()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:db.AccountRL._MaxLength)
+}
+
+void AccountRL__MaxLength::InitAsDefaultInstance() {
+}
+
+AccountRL__MaxLength::AccountRL__MaxLength(const AccountRL__MaxLength& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:db.AccountRL._MaxLength)
+}
+
+void AccountRL__MaxLength::SharedCtor() {
+  _cached_size_ = 0;
+  openid_ = 32u;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+AccountRL__MaxLength::~AccountRL__MaxLength() {
+  // @@protoc_insertion_point(destructor:db.AccountRL._MaxLength)
+  SharedDtor();
+}
+
+void AccountRL__MaxLength::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void AccountRL__MaxLength::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* AccountRL__MaxLength::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return AccountRL__MaxLength_descriptor_;
+}
+
+const AccountRL__MaxLength& AccountRL__MaxLength::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_db_2fAccount_2eproto();
+  return *default_instance_;
+}
+
+AccountRL__MaxLength* AccountRL__MaxLength::default_instance_ = NULL;
+
+AccountRL__MaxLength* AccountRL__MaxLength::New() const {
+  return new AccountRL__MaxLength;
+}
+
+void AccountRL__MaxLength::Clear() {
+  openid_ = 32u;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool AccountRL__MaxLength::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:db.AccountRL._MaxLength)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional uint32 openid = 1 [default = 32];
+      case 1: {
+        if (tag == 8) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &openid_)));
+          set_has_openid();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:db.AccountRL._MaxLength)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:db.AccountRL._MaxLength)
+  return false;
+#undef DO_
+}
+
+void AccountRL__MaxLength::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:db.AccountRL._MaxLength)
+  // optional uint32 openid = 1 [default = 32];
+  if (has_openid()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->openid(), output);
+  }
+
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+  // @@protoc_insertion_point(serialize_end:db.AccountRL._MaxLength)
+}
+
+::google::protobuf::uint8* AccountRL__MaxLength::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:db.AccountRL._MaxLength)
+  // optional uint32 openid = 1 [default = 32];
+  if (has_openid()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->openid(), target);
+  }
+
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:db.AccountRL._MaxLength)
+  return target;
+}
+
+int AccountRL__MaxLength::ByteSize() const {
+  int total_size = 0;
+
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional uint32 openid = 1 [default = 32];
+    if (has_openid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->openid());
+    }
+
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void AccountRL__MaxLength::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const AccountRL__MaxLength* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const AccountRL__MaxLength*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void AccountRL__MaxLength::MergeFrom(const AccountRL__MaxLength& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_openid()) {
+      set_openid(from.openid());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void AccountRL__MaxLength::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void AccountRL__MaxLength::CopyFrom(const AccountRL__MaxLength& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool AccountRL__MaxLength::IsInitialized() const {
+
+  return true;
+}
+
+void AccountRL__MaxLength::Swap(AccountRL__MaxLength* other) {
+  if (other != this) {
+    std::swap(openid_, other->openid_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata AccountRL__MaxLength::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = AccountRL__MaxLength_descriptor_;
+  metadata.reflection = AccountRL__MaxLength_reflection_;
+  return metadata;
+}
+
+
+// -------------------------------------------------------------------
+
+#ifndef _MSC_VER
 const int AccountRL::kGidFieldNumber;
 const int AccountRL::kPlatformFieldNumber;
 const int AccountRL::kOpenidFieldNumber;
 const int AccountRL::kTimeFieldNumber;
-const int AccountRL::kMiscFieldNumber;
 #endif  // !_MSC_VER
 
 AccountRL::AccountRL()
@@ -2642,7 +3084,6 @@ AccountRL::AccountRL()
 }
 
 void AccountRL::InitAsDefaultInstance() {
-  misc_ = const_cast< ::db::AccountMisc*>(&::db::AccountMisc::default_instance());
 }
 
 AccountRL::AccountRL(const AccountRL& from)
@@ -2659,7 +3100,6 @@ void AccountRL::SharedCtor() {
   platform_ = 0u;
   openid_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   time_ = 0u;
-  misc_ = NULL;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -2673,7 +3113,6 @@ void AccountRL::SharedDtor() {
     delete openid_;
   }
   if (this != default_instance_) {
-    delete misc_;
   }
 }
 
@@ -2709,16 +3148,13 @@ void AccountRL::Clear() {
     ::memset(&first, 0, n);                                \
   } while (0)
 
-  if (_has_bits_[0 / 32] & 31) {
+  if (_has_bits_[0 / 32] & 15) {
     ZR_(platform_, time_);
     gid_ = GOOGLE_ULONGLONG(0);
     if (has_openid()) {
       if (openid_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
         openid_->clear();
       }
-    }
-    if (has_misc()) {
-      if (misc_ != NULL) misc_->::db::AccountMisc::Clear();
     }
   }
 
@@ -2796,19 +3232,6 @@ bool AccountRL::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(42)) goto parse_misc;
-        break;
-      }
-
-      // required .db.AccountMisc misc = 5;
-      case 5: {
-        if (tag == 42) {
-         parse_misc:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_misc()));
-        } else {
-          goto handle_unusual;
-        }
         if (input->ExpectAtEnd()) goto success;
         break;
       }
@@ -2863,12 +3286,6 @@ void AccountRL::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(4, this->time(), output);
   }
 
-  // required .db.AccountMisc misc = 5;
-  if (has_misc()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      5, this->misc(), output);
-  }
-
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -2903,13 +3320,6 @@ void AccountRL::SerializeWithCachedSizes(
   // required uint32 time = 4;
   if (has_time()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(4, this->time(), target);
-  }
-
-  // required .db.AccountMisc misc = 5;
-  if (has_misc()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteMessageNoVirtualToArray(
-        5, this->misc(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -2952,13 +3362,6 @@ int AccountRL::ByteSize() const {
           this->time());
     }
 
-    // required .db.AccountMisc misc = 5;
-    if (has_misc()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-          this->misc());
-    }
-
   }
   if (!unknown_fields().empty()) {
     total_size +=
@@ -2998,9 +3401,6 @@ void AccountRL::MergeFrom(const AccountRL& from) {
     if (from.has_time()) {
       set_time(from.time());
     }
-    if (from.has_misc()) {
-      mutable_misc()->::db::AccountMisc::MergeFrom(from.misc());
-    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -3018,11 +3418,8 @@ void AccountRL::CopyFrom(const AccountRL& from) {
 }
 
 bool AccountRL::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000001f) != 0x0000001f) return false;
+  if ((_has_bits_[0] & 0x0000000f) != 0x0000000f) return false;
 
-  if (has_misc()) {
-    if (!this->misc().IsInitialized()) return false;
-  }
   return true;
 }
 
@@ -3032,7 +3429,6 @@ void AccountRL::Swap(AccountRL* other) {
     std::swap(platform_, other->platform_);
     std::swap(openid_, other->openid_);
     std::swap(time_, other->time_);
-    std::swap(misc_, other->misc_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

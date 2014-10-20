@@ -40,8 +40,10 @@ class Account__MaxLength;
 class Account__Index;
 class AccountLR;
 class AccountLR__PrimaryKey;
+class AccountLR__MaxLength;
 class AccountRL;
 class AccountRL__PrimaryKey;
+class AccountRL__MaxLength;
 
 // ===================================================================
 
@@ -590,6 +592,85 @@ class AccountLR__PrimaryKey : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
+class AccountLR__MaxLength : public ::google::protobuf::Message {
+ public:
+  AccountLR__MaxLength();
+  virtual ~AccountLR__MaxLength();
+
+  AccountLR__MaxLength(const AccountLR__MaxLength& from);
+
+  inline AccountLR__MaxLength& operator=(const AccountLR__MaxLength& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const AccountLR__MaxLength& default_instance();
+
+  void Swap(AccountLR__MaxLength* other);
+
+  // implements Message ----------------------------------------------
+
+  AccountLR__MaxLength* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const AccountLR__MaxLength& from);
+  void MergeFrom(const AccountLR__MaxLength& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional uint32 openid = 1 [default = 32];
+  inline bool has_openid() const;
+  inline void clear_openid();
+  static const int kOpenidFieldNumber = 1;
+  inline ::google::protobuf::uint32 openid() const;
+  inline void set_openid(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:db.AccountLR._MaxLength)
+ private:
+  inline void set_has_openid();
+  inline void clear_has_openid();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 openid_;
+  friend void  protobuf_AddDesc_db_2fAccount_2eproto();
+  friend void protobuf_AssignDesc_db_2fAccount_2eproto();
+  friend void protobuf_ShutdownFile_db_2fAccount_2eproto();
+
+  void InitAsDefaultInstance();
+  static AccountLR__MaxLength* default_instance_;
+};
+// -------------------------------------------------------------------
+
 class AccountLR : public ::google::protobuf::Message {
  public:
   AccountLR();
@@ -642,6 +723,7 @@ class AccountLR : public ::google::protobuf::Message {
   // nested types ----------------------------------------------------
 
   typedef AccountLR__PrimaryKey _PrimaryKey;
+  typedef AccountLR__MaxLength _MaxLength;
 
   // accessors -------------------------------------------------------
 
@@ -678,15 +760,6 @@ class AccountLR : public ::google::protobuf::Message {
   inline ::google::protobuf::uint32 time() const;
   inline void set_time(::google::protobuf::uint32 value);
 
-  // required .db.AccountMisc misc = 5;
-  inline bool has_misc() const;
-  inline void clear_misc();
-  static const int kMiscFieldNumber = 5;
-  inline const ::db::AccountMisc& misc() const;
-  inline ::db::AccountMisc* mutable_misc();
-  inline ::db::AccountMisc* release_misc();
-  inline void set_allocated_misc(::db::AccountMisc* misc);
-
   // @@protoc_insertion_point(class_scope:db.AccountLR)
  private:
   inline void set_has_gid();
@@ -697,8 +770,6 @@ class AccountLR : public ::google::protobuf::Message {
   inline void clear_has_openid();
   inline void set_has_time();
   inline void clear_has_time();
-  inline void set_has_misc();
-  inline void clear_has_misc();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -708,7 +779,6 @@ class AccountLR : public ::google::protobuf::Message {
   ::std::string* openid_;
   ::google::protobuf::uint32 platform_;
   ::google::protobuf::uint32 time_;
-  ::db::AccountMisc* misc_;
   friend void  protobuf_AddDesc_db_2fAccount_2eproto();
   friend void protobuf_AssignDesc_db_2fAccount_2eproto();
   friend void protobuf_ShutdownFile_db_2fAccount_2eproto();
@@ -807,6 +877,85 @@ class AccountRL__PrimaryKey : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
+class AccountRL__MaxLength : public ::google::protobuf::Message {
+ public:
+  AccountRL__MaxLength();
+  virtual ~AccountRL__MaxLength();
+
+  AccountRL__MaxLength(const AccountRL__MaxLength& from);
+
+  inline AccountRL__MaxLength& operator=(const AccountRL__MaxLength& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const AccountRL__MaxLength& default_instance();
+
+  void Swap(AccountRL__MaxLength* other);
+
+  // implements Message ----------------------------------------------
+
+  AccountRL__MaxLength* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const AccountRL__MaxLength& from);
+  void MergeFrom(const AccountRL__MaxLength& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional uint32 openid = 1 [default = 32];
+  inline bool has_openid() const;
+  inline void clear_openid();
+  static const int kOpenidFieldNumber = 1;
+  inline ::google::protobuf::uint32 openid() const;
+  inline void set_openid(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:db.AccountRL._MaxLength)
+ private:
+  inline void set_has_openid();
+  inline void clear_has_openid();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 openid_;
+  friend void  protobuf_AddDesc_db_2fAccount_2eproto();
+  friend void protobuf_AssignDesc_db_2fAccount_2eproto();
+  friend void protobuf_ShutdownFile_db_2fAccount_2eproto();
+
+  void InitAsDefaultInstance();
+  static AccountRL__MaxLength* default_instance_;
+};
+// -------------------------------------------------------------------
+
 class AccountRL : public ::google::protobuf::Message {
  public:
   AccountRL();
@@ -859,6 +1008,7 @@ class AccountRL : public ::google::protobuf::Message {
   // nested types ----------------------------------------------------
 
   typedef AccountRL__PrimaryKey _PrimaryKey;
+  typedef AccountRL__MaxLength _MaxLength;
 
   // accessors -------------------------------------------------------
 
@@ -895,15 +1045,6 @@ class AccountRL : public ::google::protobuf::Message {
   inline ::google::protobuf::uint32 time() const;
   inline void set_time(::google::protobuf::uint32 value);
 
-  // required .db.AccountMisc misc = 5;
-  inline bool has_misc() const;
-  inline void clear_misc();
-  static const int kMiscFieldNumber = 5;
-  inline const ::db::AccountMisc& misc() const;
-  inline ::db::AccountMisc* mutable_misc();
-  inline ::db::AccountMisc* release_misc();
-  inline void set_allocated_misc(::db::AccountMisc* misc);
-
   // @@protoc_insertion_point(class_scope:db.AccountRL)
  private:
   inline void set_has_gid();
@@ -914,8 +1055,6 @@ class AccountRL : public ::google::protobuf::Message {
   inline void clear_has_openid();
   inline void set_has_time();
   inline void clear_has_time();
-  inline void set_has_misc();
-  inline void clear_has_misc();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -925,7 +1064,6 @@ class AccountRL : public ::google::protobuf::Message {
   ::std::string* openid_;
   ::google::protobuf::uint32 platform_;
   ::google::protobuf::uint32 time_;
-  ::db::AccountMisc* misc_;
   friend void  protobuf_AddDesc_db_2fAccount_2eproto();
   friend void protobuf_AssignDesc_db_2fAccount_2eproto();
   friend void protobuf_ShutdownFile_db_2fAccount_2eproto();
@@ -1399,6 +1537,34 @@ inline void AccountLR__PrimaryKey::set_gid(::google::protobuf::uint32 value) {
 
 // -------------------------------------------------------------------
 
+// AccountLR__MaxLength
+
+// optional uint32 openid = 1 [default = 32];
+inline bool AccountLR__MaxLength::has_openid() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void AccountLR__MaxLength::set_has_openid() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void AccountLR__MaxLength::clear_has_openid() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void AccountLR__MaxLength::clear_openid() {
+  openid_ = 32u;
+  clear_has_openid();
+}
+inline ::google::protobuf::uint32 AccountLR__MaxLength::openid() const {
+  // @@protoc_insertion_point(field_get:db.AccountLR._MaxLength.openid)
+  return openid_;
+}
+inline void AccountLR__MaxLength::set_openid(::google::protobuf::uint32 value) {
+  set_has_openid();
+  openid_ = value;
+  // @@protoc_insertion_point(field_set:db.AccountLR._MaxLength.openid)
+}
+
+// -------------------------------------------------------------------
+
 // AccountLR
 
 // required uint64 gid = 1;
@@ -1549,47 +1715,6 @@ inline void AccountLR::set_time(::google::protobuf::uint32 value) {
   // @@protoc_insertion_point(field_set:db.AccountLR.time)
 }
 
-// required .db.AccountMisc misc = 5;
-inline bool AccountLR::has_misc() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-inline void AccountLR::set_has_misc() {
-  _has_bits_[0] |= 0x00000010u;
-}
-inline void AccountLR::clear_has_misc() {
-  _has_bits_[0] &= ~0x00000010u;
-}
-inline void AccountLR::clear_misc() {
-  if (misc_ != NULL) misc_->::db::AccountMisc::Clear();
-  clear_has_misc();
-}
-inline const ::db::AccountMisc& AccountLR::misc() const {
-  // @@protoc_insertion_point(field_get:db.AccountLR.misc)
-  return misc_ != NULL ? *misc_ : *default_instance_->misc_;
-}
-inline ::db::AccountMisc* AccountLR::mutable_misc() {
-  set_has_misc();
-  if (misc_ == NULL) misc_ = new ::db::AccountMisc;
-  // @@protoc_insertion_point(field_mutable:db.AccountLR.misc)
-  return misc_;
-}
-inline ::db::AccountMisc* AccountLR::release_misc() {
-  clear_has_misc();
-  ::db::AccountMisc* temp = misc_;
-  misc_ = NULL;
-  return temp;
-}
-inline void AccountLR::set_allocated_misc(::db::AccountMisc* misc) {
-  delete misc_;
-  misc_ = misc;
-  if (misc) {
-    set_has_misc();
-  } else {
-    clear_has_misc();
-  }
-  // @@protoc_insertion_point(field_set_allocated:db.AccountLR.misc)
-}
-
 // -------------------------------------------------------------------
 
 // AccountRL__PrimaryKey
@@ -1640,6 +1765,34 @@ inline void AccountRL__PrimaryKey::set_openid(::google::protobuf::uint32 value) 
   set_has_openid();
   openid_ = value;
   // @@protoc_insertion_point(field_set:db.AccountRL._PrimaryKey.openid)
+}
+
+// -------------------------------------------------------------------
+
+// AccountRL__MaxLength
+
+// optional uint32 openid = 1 [default = 32];
+inline bool AccountRL__MaxLength::has_openid() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void AccountRL__MaxLength::set_has_openid() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void AccountRL__MaxLength::clear_has_openid() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void AccountRL__MaxLength::clear_openid() {
+  openid_ = 32u;
+  clear_has_openid();
+}
+inline ::google::protobuf::uint32 AccountRL__MaxLength::openid() const {
+  // @@protoc_insertion_point(field_get:db.AccountRL._MaxLength.openid)
+  return openid_;
+}
+inline void AccountRL__MaxLength::set_openid(::google::protobuf::uint32 value) {
+  set_has_openid();
+  openid_ = value;
+  // @@protoc_insertion_point(field_set:db.AccountRL._MaxLength.openid)
 }
 
 // -------------------------------------------------------------------
@@ -1792,47 +1945,6 @@ inline void AccountRL::set_time(::google::protobuf::uint32 value) {
   set_has_time();
   time_ = value;
   // @@protoc_insertion_point(field_set:db.AccountRL.time)
-}
-
-// required .db.AccountMisc misc = 5;
-inline bool AccountRL::has_misc() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-inline void AccountRL::set_has_misc() {
-  _has_bits_[0] |= 0x00000010u;
-}
-inline void AccountRL::clear_has_misc() {
-  _has_bits_[0] &= ~0x00000010u;
-}
-inline void AccountRL::clear_misc() {
-  if (misc_ != NULL) misc_->::db::AccountMisc::Clear();
-  clear_has_misc();
-}
-inline const ::db::AccountMisc& AccountRL::misc() const {
-  // @@protoc_insertion_point(field_get:db.AccountRL.misc)
-  return misc_ != NULL ? *misc_ : *default_instance_->misc_;
-}
-inline ::db::AccountMisc* AccountRL::mutable_misc() {
-  set_has_misc();
-  if (misc_ == NULL) misc_ = new ::db::AccountMisc;
-  // @@protoc_insertion_point(field_mutable:db.AccountRL.misc)
-  return misc_;
-}
-inline ::db::AccountMisc* AccountRL::release_misc() {
-  clear_has_misc();
-  ::db::AccountMisc* temp = misc_;
-  misc_ = NULL;
-  return temp;
-}
-inline void AccountRL::set_allocated_misc(::db::AccountMisc* misc) {
-  delete misc_;
-  misc_ = misc;
-  if (misc) {
-    set_has_misc();
-  } else {
-    clear_has_misc();
-  }
-  // @@protoc_insertion_point(field_set_allocated:db.AccountRL.misc)
 }
 
 

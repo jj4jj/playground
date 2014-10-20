@@ -25,7 +25,7 @@ int       GateClientHandler::Authorize(int type,uint64_t uid,const char* pszToke
     gate::GateAuth ga;
     ga.set_cmd(gate::GateAuth::GATE_AUTH_REQ);
     gate::AuthReq &  req =  *ga.mutable_authreq();
-    req.set_id((int)uid);
+    req.set_uid(uid);
     req.set_auth((int)type);
     req.set_token(pszToken);
     req.set_area(1);

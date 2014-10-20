@@ -9,8 +9,8 @@ class CacheAgent;
 class ZoneAgentMgr
 {
 public:
-    int             AddZone(int iZoneID,ZoneAgentPtr agent);
-    ZoneAgent &     GetAgent(int iZoneID);
+    int             AddZone(uint32_t dwZoneID,ZoneAgentPtr agent);
+    ZoneAgent *     GetAgent(uint32_t dwZoneID);
     int             Init();
     int             Polling(int iPollTimeOutMs = 5);
     int             Destroy();

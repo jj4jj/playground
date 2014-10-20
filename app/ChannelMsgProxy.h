@@ -23,8 +23,8 @@ public:
     int      SubscribeScatterMsg(std::vector<int> & ids,ChannelMessageDispatcherPtr hanlder);
     ChannelMessageDispatcher *   FindHandler(int id);
     bool     MatchSegment(ChannelProxyMsgHandlerTableSegment & seg , int id);
-    int      SendToAgent(int iDst,const std::vector<Buffer>  &  vBuff);
-    int      SendToAgent(int iDst,const Buffer &  buff);
+    int      SendToAgent(int iDst,const std::vector<Buffer>  &  vBuff,int iHeadSize = 0);
+    int      SendToAgent(int iDst,const Buffer &  buff,int iHeadSize = 0);
 public:
     ChannelMsgProxy();
     virtual ~ChannelMsgProxy();
@@ -34,8 +34,10 @@ private:
     Buffer chnMsgSendBuffer;
     ChannelProxyMsgHandlerMap       m_mpHandlerMap; 
     ChannelProxyMsgHandlerTable     m_vecHandlers;
+public:
     enum
     {
+        PROXY_CHANNEL_MESSAGE_HEAD_SIZE =   sizeof(uint16_t),
         MAX_CHANNEL_MESSAGE_SIZE = 65536,
     };
 };

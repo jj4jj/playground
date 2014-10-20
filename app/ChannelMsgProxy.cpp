@@ -67,14 +67,14 @@ int     ChannelMsgProxy::Init(AppContext * pCtx)
     }
     return 0;
 }
-int         ChannelMsgProxy::SendToAgent(int iDst,const std::vector<Buffer>  &  vBuff)
+int         ChannelMsgProxy::SendToAgent(int iDst,const std::vector<Buffer>  &  vBuff,int iHeadSize)
 {
     int iLength = 0;
     for(int i = 0;i < (int)vBuff.size(); ++i)
     {
         iLength += vBuff[i].iUsed;
     }   
-    if(iLength > MAX_CHANNEL_MESSAGE_SIZE)
+    if(iLength + PROXY_CHANNEL_MESSAGE_HEAD_SIZE >= MAX_CHANNEL_MESSAGE_SIZE)
     {
         LOG_ERROR("Buffer size is too much = %d",iLength);
         return -1;
@@ -91,7 +91,8 @@ int         ChannelMsgProxy::SendToAgent(int iDst,const std::vector<Buffer>  &  
     //msg
         //ga_connection
         //data    
-    chnMsgSendBuffer.iUsed = 0;
+    chnMsgSendBuffer.iUsed = PROXY_CHANNEL_MESSAGE_HEAD_SIZE;
+    *(uint16_t*)chnMsgSendBuffer.pBuffer = htons(iHeadSize);
     for(int i = 0;i < (int)vBuff.size(); ++i)
     {
         memcpy(chnMsgSendBuffer.pBuffer + chnMsgSendBuffer.iUsed,
@@ -100,11 +101,11 @@ int         ChannelMsgProxy::SendToAgent(int iDst,const std::vector<Buffer>  &  
     }    
     return pChannel->PostMessage(ChannelMessage(chnMsgSendBuffer));
 }
-int      ChannelMsgProxy::SendToAgent(int iDst,const Buffer & buff)
+int      ChannelMsgProxy::SendToAgent(int iDst,const Buffer & buff,int iHeadSize)
 {
     vector<Buffer>  v;
     v.push_back(buff);
-    return SendToAgent(iDst,v);
+    return SendToAgent(iDst,v,iHeadSize);
 }
 
 int      ChannelMsgProxy::SubscribeSingleMsg(int id,ChannelMessageDispatcherPtr hanlder)
