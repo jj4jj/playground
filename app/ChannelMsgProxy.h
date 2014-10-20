@@ -16,6 +16,7 @@ public:
 public:
     int      Init(AppContext * pCtx);
     int      Polling(int iPollTimeOutMs = 10);
+    void     Destroy();
 public:  
     int      SubscribeSingleMsg(int id,ChannelMessageDispatcherPtr hanlder);
     int      SubscribeContinuousMsg(int fromid , int endid,ChannelMessageDispatcherPtr hanlder);

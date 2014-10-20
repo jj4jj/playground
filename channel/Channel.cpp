@@ -157,6 +157,13 @@ int Channel::Create(int mode,void* ctx,const char* pszAddr,const char* name,int 
         //set name
         zmq_setsockopt(sender,ZMQ_IDENTITY,senderName,strlen(senderName));            
         //set hwm
+        //ZMQ_RECONNECT_IVL_MAX
+
+        int reconnect_interval = 400; //400 ms
+        zmq_setsockopt(sender,ZMQ_RECONNECT_IVL,&reconnect_interval,sizeof(reconnect_interval));
+        int reconnect_interval_max = 30000;//30s
+        zmq_setsockopt(sender,ZMQ_RECONNECT_IVL_MAX,&reconnect_interval_max,sizeof(reconnect_interval_max));
+
         zmq_setsockopt(sender,ZMQ_SNDHWM,&hwm,sizeof(hwm));
         //zmq_setsockopt(sender,ZMQ_RCVHWM,&hwm,sizeof(hwm));
 

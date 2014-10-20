@@ -21,6 +21,11 @@ int     ChannelMsgProxy::Polling(int iPollTimeOutMs )
 {
     return  ChannelAgentMgr::Instance().Polling(iPollTimeOutMs);
 }
+void    ChannelMsgProxy::Destroy()
+{
+    chnMsgSendBuffer.Destroy();
+    ChannelAgentMgr::Instance().Destroy();
+}
 
 int     ChannelMsgProxy::Init(AppContext * pCtx)
 {
@@ -106,7 +111,7 @@ int      ChannelMsgProxy::SubscribeSingleMsg(int id,ChannelMessageDispatcherPtr 
 {
     if(m_mpHandlerMap.find(id) != m_mpHandlerMap.end())
     {
-        LOG_FATAL("subscribe single msg handler repeatly !");        
+        LOG_FATAL("subscribe single msg handler repeatly !");
     }
     assert(m_mpHandlerMap.find(id) == m_mpHandlerMap.end());
     m_mpHandlerMap[id] = hanlder;

@@ -60,6 +60,34 @@ int     AppContext::Init(const char * pszConfigFile)
 
     return OnInit();
 }
+
+/*
+default addr arrangement:
+
+agent
+    51XXX
+    channel listen
+        51010
+        51011
+        51012
+gate
+    52XXX  
+    channel listen
+        52010
+    tcp server listen
+        52100
+        52101
+        52102        
+console
+    XX000
+        XX000
+account
+    56XXX
+platform
+    58XXX
+
+*/
+
 //common generate 
 void    AppContext::GenerateDefaultConfig(const char* pszConfigFile)
 {
@@ -98,13 +126,13 @@ void    AppContext::GenerateDefaultConfig(const char* pszConfigFile)
     {"file_lock_path",sLockFile.c_str()},
     //console
     {"console:ip","127.0.0.1"},
-    {"console:port","28800"},
+    {"console:port","51000"},
     //channel
     {"channel:name","ch"},
-    {"channel:local","tcp://127.0.0.1:18800"},
+    {"channel:local","tcp://127.0.0.1:51010"},
     {"channel:num","1"},
     {"channel:info#1:id","1"},//connect other channel
-    {"channel:info#1:addr","tcp://127.0.0.1:18800"},
+    {"channel:info#1:addr","tcp://127.0.0.1:51010"},
 
     /////////////add default config above////////////////
     {NULL,NULL}};

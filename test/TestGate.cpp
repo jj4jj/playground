@@ -58,11 +58,15 @@ agent
         51011
         51012
 gate
-    52XXX  
-    tcp server listen
+    52XXX 
+
+    channel listen
         52010
         52011
         52012        
+    tcp server listen
+        52100
+    
 console
     XX000
         XX000
@@ -73,13 +77,13 @@ platform
 
 */
     
-    int port = 52010;
+    int port = 52100;
     const char* pszIP = "127.0.0.1";
     int client_num = 1;
 
     if(argc < 4)
     {
-        printf("usage : port ip client_num [use default ip = 127.0.0.1 port = 52010 num = 1]\n");
+        printf("usage : port ip client_num [use default ip = 127.0.0.1 port = %d num = 1]\n",port);
     }
     else
     {

@@ -138,6 +138,11 @@ int     App::Destroy()
     ctx = NULL;
     m_lockFile.Unlock();
     m_lockFile.Close();
+
+    ///////////////////////////////
+    TimerMgr::Instance().Destroy();
+    proxy.Destroy();
+    m_consoleDrv.Destroy();    
     return ret;
 }
 

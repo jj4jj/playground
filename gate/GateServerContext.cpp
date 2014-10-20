@@ -44,7 +44,7 @@ void    GateServerContext::OnGenerateDefaultConfig()
     static const char * kv[][2] = {
     //gate server
     {"gate:ip","127.0.0.1"},
-    {"gate:port","52010"},
+    {"gate:port","52100"},
     {"gate:max_clients","50000"},
     {"gate:test_mode","1"},
     {"gate:need_auth","0"},

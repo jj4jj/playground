@@ -116,6 +116,7 @@ int App::main(int argc , char* argv [])
     if(pApp->Init(&ctx))
     {
         LOG_ERROR("Init error !");
+        pApp->Destroy();
         return -1;
     }
     /////////////////////////////////////////////////////////

@@ -9,6 +9,7 @@
 TimerMgr::TimerMgr()
 {
     m_lTickUs = 0L;
+    m_updatTickHandler = NULL;
     bzero(&m_old_sa,sizeof(m_old_sa));
 }
 TimerMgr::~TimerMgr()
