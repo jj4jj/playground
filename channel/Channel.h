@@ -15,6 +15,7 @@ struct Channel
     int   mode;
     void* sender;
     void* receiver; 
+    int   seqence;
     Buffer rcvBuffer;
 public:
     Channel(ChannelAgent* _agent);

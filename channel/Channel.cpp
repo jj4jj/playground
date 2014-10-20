@@ -12,6 +12,7 @@ Channel::Channel(ChannelAgent * _agent):mode(CHANNEL_MODE_INVALID),
     sender(NULL),receiver(NULL),agent(_agent)
 {
     zmq_msg_init(&msg_head);
+    seqence = 0L;
 }
 Channel::~Channel()
 {
@@ -24,14 +25,17 @@ int  Channel::Write(const Buffer & buffer)
 {
     zmq_msg_t   sndMsg;
     zmq_msg_init(&sndMsg);
+    int part1 = 0,part2 = 0;
+    
 
     if(0 == zmq_msg_size(&msg_head))
     {
         char szHeadMsg[64];
-        snprintf(szHeadMsg,sizeof(szHeadMsg),"%d",agent->GetID());            
+        snprintf(szHeadMsg,sizeof(szHeadMsg),"%d:%d",agent->GetID(),seqence);            
         int len = strlen(szHeadMsg)+1;
         zmq_msg_init_size(&msg_head,len);
         memcpy(zmq_msg_data(&msg_head),szHeadMsg,len);
+        part1 = len;
     }
 
     //head:channel id
@@ -44,6 +48,7 @@ int  Channel::Write(const Buffer & buffer)
     zmq_msg_init(&sndMsg);
     zmq_msg_init_size(&sndMsg,buffer.iUsed);
     memcpy(zmq_msg_data(&sndMsg),buffer.pBuffer,buffer.iUsed);
+    part2 = buffer.iUsed;
     iRet = zmq_msg_send(&sndMsg,sender,ZMQ_DONTWAIT);
     zmq_msg_close(&sndMsg);
     if(iRet < 0)
@@ -51,7 +56,9 @@ int  Channel::Write(const Buffer & buffer)
         LOG_ERROR("zmq send msg error = %d for = %s",iRet,zmq_strerror(iRet));
         return -2;
     }
-    LOG_DEBUG("channel msg write ok size = %u!",buffer.iUsed);
+    LOG_DEBUG("channel msg write ok id = %d part1 = %d part2 = %d seqence = %d iret = %d!",
+        agent->GetID(),part1,part2,seqence,iRet);
+    ++seqence;
     return 0;
 }
 int  Channel::Read(int & rcvMsgID,ChannelMessage & msg)
@@ -60,7 +67,7 @@ int  Channel::Read(int & rcvMsgID,ChannelMessage & msg)
     zmq_msg_t   rcvMsg;
     zmq_msg_init(&rcvMsg);    
     int iRet = 0;
-
+    int part1 = 0, part2 = 0;
 
     //head part
     iRet = zmq_msg_recv(&rcvMsg,receiver,ZMQ_DONTWAIT);
@@ -69,8 +76,12 @@ int  Channel::Read(int & rcvMsgID,ChannelMessage & msg)
         LOG_ERROR("zmq recv msg error = %d for = %s",iRet,zmq_strerror(zmq_errno()));
         return -1;
     }  
-    //
-    rcvMsgID = StringUtil::StrToSLong((char*)zmq_msg_data(&rcvMsg));
+    part1 = zmq_msg_size(&rcvMsg);
+    char* pszPart1Msg = (char*)zmq_msg_data(&rcvMsg);
+    int nums[4] = {-1,-1,-1,-1};
+    StringUtil::SplitNum(pszPart1Msg,nums,4,":");
+    msg.iSrc = rcvMsgID = nums[0];
+    msg.seqence = nums[1];
     zmq_msg_close(&rcvMsg);
 
     //------------------------------------------------------------------------------
@@ -91,6 +102,7 @@ int  Channel::Read(int & rcvMsgID,ChannelMessage & msg)
         return -1;
     } 
     int msglen = zmq_msg_size(&rcvMsg);
+    part2 = msglen;
     //todo zero copy
     if(rcvBuffer.iCap < msglen)
     {
@@ -102,12 +114,15 @@ int  Channel::Read(int & rcvMsgID,ChannelMessage & msg)
             return -1;
         }
     }        
-    memcpy(rcvBuffer.pBuffer,zmq_msg_data(&rcvMsg),rcvBuffer.iCap);        
-    zmq_msg_close(&rcvMsg);
+    memcpy(rcvBuffer.pBuffer,zmq_msg_data(&rcvMsg),msglen);        
     rcvBuffer.iUsed = msglen;
+    zmq_msg_close(&rcvMsg);
     
     msg.dwSize = rcvBuffer.iUsed;
     msg.pData = rcvBuffer.pBuffer;
+
+    LOG_DEBUG("channel msg read ok id = %d part1 = %d part2 = %d seqence = %d iret = %u!",
+        msg.iSrc,part1,part2,msg.seqence,iRet);
     return 0;
 }
 int Channel::Create(int mode,void* ctx,const char* pszAddr,const char* name,int hwm )

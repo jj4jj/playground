@@ -5,6 +5,7 @@
 struct  ChannelMessage
 {
     int         iSrc;
+    int         seqence;
     uint32_t    dwSize;
     uint8_t *   pData;
 public:

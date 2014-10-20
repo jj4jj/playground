@@ -103,7 +103,7 @@ platform
     {
         Log::Instance().Init( pszLogFileName, Log::LOG_LV_DEBUG, 1024000);
     }
-    send_buffer.Create(512);
+    send_buffer.Create(510);
     send_buffer.iUsed = send_buffer.iCap;
     //use batch connection 
     BatchTcpConnection  btc;

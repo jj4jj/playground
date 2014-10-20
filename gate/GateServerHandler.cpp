@@ -396,17 +396,18 @@ void        GateServerHandler::ReportEvent(Connection* pConn,int iEvent,int iPar
     ///////////////////////////////////////////////
     LOG_INFO("report event = %d to dst = %d",iEvent,pConn->iDstChannel);
 
-    Buffer buff;
-    buff.Create(gc.ByteSize());
-    gc.SerializeToArray(buff.pBuffer,buff.iCap);
+    Buffer headBuffer;
+    headBuffer.Create(gc.ByteSize());
+    gc.SerializeToArray(headBuffer.pBuffer,headBuffer.iCap);
+    headBuffer.iUsed = headBuffer.iCap;
     vector<Buffer>  sendBuffVec;
-    sendBuffVec.push_back(buff);
+    sendBuffVec.push_back(headBuffer);
     if(data)
     {
         sendBuffVec.push_back(*data);
     }    
-    m_pChannelProxy->SendToAgent(pConn->iDstChannel,sendBuffVec,buff.iCap);
-    buff.Destroy();
+    m_pChannelProxy->SendToAgent(pConn->iDstChannel,sendBuffVec,headBuffer.iUsed);
+    headBuffer.Destroy();
 }
 void        GateServerHandler::ForwardData(Connection* pConn,const Buffer& buffer)
 {

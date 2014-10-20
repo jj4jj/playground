@@ -93,7 +93,7 @@ int         ChannelMsgProxy::SendToAgent(int iDst,const std::vector<Buffer>  &  
         //data    
     chnMsgSendBuffer.iUsed = PROXY_CHANNEL_MESSAGE_HEAD_SIZE;
     *(uint16_t*)chnMsgSendBuffer.pBuffer = htons(iHeadSize);
-    for(int i = 0;i < (int)vBuff.size(); ++i)
+    for(uint i = 0;i < vBuff.size(); ++i)
     {
         memcpy(chnMsgSendBuffer.pBuffer + chnMsgSendBuffer.iUsed,
                 vBuff[i].pBuffer,vBuff[i].iUsed);

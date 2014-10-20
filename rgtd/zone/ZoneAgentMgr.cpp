@@ -18,7 +18,6 @@ public:
     {
         //GetID
         int ret = mgr->OnGateMessage(msg);
-        LOG_DEBUG("agent gate msg chnnel id = %d ret = %d",agent.GetID(),ret);
         return ret;
     }
 private:
