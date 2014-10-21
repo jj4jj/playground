@@ -31,7 +31,8 @@ public:
     db::Role*   FindRoleObject(uint64_t uid);
     int InsertRole(uint64_t uid,const db::Role* pRole,int coid = 0 );
     int OnInsertRole(int ret,uint64_t uid,int coid,int reason);
-
+    int UpdateRole(uint64_t uid,const db::Role* pRole,int coid = 0 );
+    int OnUpdateRole(int ret,uint64_t uid,int coid,int reason);
 private:
     ZoneAgentMgr    * zoneMgr;
 };

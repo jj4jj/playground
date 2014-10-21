@@ -36,9 +36,10 @@ int SessionMgr::StopSession(uint64_t uid)
         LOG_ERROR("can't find session = %lu",uid);
         return -1;
     }
-    ////////////////////////////////////////////////////
-    //todo check reason
-    return    sson->Kick(Session::KICK_REASON_CLOSE_CLIENT);
+    //////////////////////////////////////////////////////
+    int ret = sson->Kick(Session::KICK_REASON_CLOSE_CLIENT);
+    DeleteSession(uid);
+    return ret;
 }
 
 int SessionMgr::CreateSession(uint64_t uid,int gateid,const gate::GateConnection & cnnx)
@@ -56,7 +57,7 @@ int SessionMgr::CreateSession(uint64_t uid,int gateid,const gate::GateConnection
     else
     {
         LOG_INFO("create new  session  = %lu !",uid);
-        SessionPtr ptr(new Session(gateid));
+        SessionPtr ptr(new Session(gateid,this));
         if(!ptr)
         {
             LOG_ERROR("create session = %lu error !",uid);
@@ -76,16 +77,12 @@ int SessionMgr::CreateSession(uint64_t uid,int gateid,const gate::GateConnection
     }    
     return ret;
 }
-int SessionMgr::DeleteSession()
+int SessionMgr::DeleteSession(uint64_t uid)
 {
-    //todo
+    LOG_INFO("delete session uid = %lu",uid);
+    m_mpSessions.erase(uid);
     return 0;
 }
-void    CheckInvalidSession()
-{
-    //todo
-}
-
 Session * SessionMgr::FindSession(uint64_t    ulUID)
 {
     UIDSessionMapItr it = m_mpSessions.find(ulUID);
@@ -119,5 +116,23 @@ int       SessionMgr::Dispatch(Session & session,const cs::CSMsg & csmsg)
         return -100; 
     }
 }
+int       SessionMgr::PackCSMsg(const cs::CSMsg & csmsg,Buffer & buffer)
+{
+    int len = csmsg.ByteSize();
+    if( m_msgPackBuffer.iCap < len )
+    {
+        m_msgPackBuffer.Destroy();
+        m_msgPackBuffer.Create(len);
+    }
+    if(!csmsg.SerializeToArray(buffer.pBuffer,len))
+    {
+        LOG_ERROR("cs msg pack error !");
+        return -1;
+    }    
+    buffer.iUsed = len;
+    buffer = m_msgPackBuffer;
+    return 0;
+}
+
 #endif
 

@@ -11,7 +11,7 @@ public:
     int     NotifyCreateRole(Session & session);
     int     AutoCreateRole(Session & session);
     int     EnterPlaying(Session & session);
-
+    int     Logout(Session & session);
 public:
     ZoneAgentMgr    * zoneMgr;
 };

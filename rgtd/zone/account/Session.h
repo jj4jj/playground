@@ -15,6 +15,9 @@ namespace db
     class Role;
 };
 
+class SessionMgr;
+class Buffer;
+
 class Session
 {
 public:
@@ -35,15 +38,16 @@ public:
         KICK_REASON_CLOSE_CLIENT = 3,
     };
 public:
-    Session(int src);
+    Session(int src,SessionMgr * smgr);
     int       Init(uint64_t uid_,const gate::GateConnection & ggc);
     int       Kick(int reason);
     int       AttachPlayerAgent(PlayerAgentPtr ptrPlayer);
+    int       ResponseClient(int iEvent,int iParam,Buffer * data = NULL);
 public:
     int       Send(const cs::CSMsg & csmsg);    
     void      SetState(uint8_t st);
-    inline    uint8_t     GetState(){return state;}
-    inline    uint64_t    GetUID(){return uid;}
+    inline    uint8_t       GetState(){return state;}
+    inline    uint64_t      GetUID(){return uid;}
     inline    PlayerAgent * GetPlayerAgent(){return player.get();}
 private:
     /////////////////////////////////////todo : instead of session data with protobuf
@@ -57,8 +61,8 @@ private:
 private:   
     uint8_t         state;
 private:
-    PlayerAgentPtr  player;
-
+    PlayerAgentPtr      player;
+    SessionMgr      *   sessionMgr;
 };
 typedef shared_ptr<Session> SessionPtr;
 

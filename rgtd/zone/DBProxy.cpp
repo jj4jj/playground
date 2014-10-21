@@ -87,10 +87,41 @@ int DBProxy::OnInsertRole(int ret,uint64_t uid,int coid,int reason)
     }
     else
     {
-        LOG_ERROR("no coid get role uid = %lu ret = %d reason = %d trigger = %lu",uid,ret);
+        LOG_ERROR("no coid insert role uid = %lu ret = %d reason = %d trigger = %lu",uid,ret);
     }
     return 0;
 }
 
-
+int DBProxy::UpdateRole(uint64_t uid,const db::Role* pRole,int coid)
+{
+    DBProxyCallBack  dcb;
+    vector<string>  all;
+    dcb.uid = uid;
+    dcb.reason = 0;
+    dcb.coid = coid;
+    dcb.trigger = 0;    
+    int ret = zoneMgr->GetDBAgent().Update((void*)pRole,all,Buffer((char*)&dcb,sizeof(dcb)));
+    if(ret)
+    {
+        LOG_ERROR("db agent update error !");
+        return -1;    
+    }
+    if(coid != 0)
+    {
+        ret = CoroutineMgr::Instance().Yield();
+    }
+    return ret;
+}
+int DBProxy::OnUpdateRole(int ret,uint64_t uid,int coid,int reason)
+{
+    if(coid != 0)
+    {
+        return CommonResume(ret,uid,coid,reason);
+    }
+    else
+    {
+        LOG_ERROR("no coid update role uid = %lu ret = %d reason = %d trigger = %lu",uid,ret);
+    }
+    return 0;
+}
 

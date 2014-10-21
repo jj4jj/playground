@@ -15,7 +15,7 @@ public:
     const string  &    GetName();
     inline      PlayerLogicCenter &  GetLogicCenter(){return *ptrLogic;}
     const db::Role * GetRoleData(){return pRoleData;}
-    db::Role *       MutableRoleData(){ m_iDirty++ ;return pRoleData;}
+    db::Role *       MutableRoleData(){ m_iDirty++ ;return pRoleData;}    
 private:
     PlayerLogicCenterPtr          ptrLogic;    
 private:

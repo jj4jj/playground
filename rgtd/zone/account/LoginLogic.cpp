@@ -25,7 +25,7 @@ static void	Login(Coroutine* co,void* arg)
     int ret = login->zoneMgr->GetDBProxy().GetRole(session->GetUID(),
         ROLE_DB_GET_LOGIN,co->iID);
 
-    LOG_INFO("get role ret = %d uid = %lu error",ret,session->GetUID());
+    LOG_INFO("get role ret = %d uid = %lu ",ret,session->GetUID());
 
     if( ret < 0 )
     {
@@ -77,6 +77,38 @@ static void	Login(Coroutine* co,void* arg)
         return ;
     }    
 }
+static void	Logout(Coroutine* co,void* arg)
+{
+    LoginParam *  param = (LoginParam*)arg;
+    LoginLogic * login =   param->login;
+    Session *    session = param->session;
+    //////////////////////////////////////
+    int retry = 3;
+TRY_SAVE_PLAYER:    
+    int ret = login->zoneMgr->GetDBProxy().UpdateRole(
+            session->GetUID(),
+            session->GetPlayerAgent()->GetRoleData(),
+            co->iID);
+    --retry;
+    LOG_INFO("update role ret = %d uid = %lu .",ret,session->GetUID());
+    if( ret < 0 )
+    {
+        return ;   
+    }
+    if(ret == DATA_OK)
+    {         
+        return;
+    }
+    else
+    {
+        if(retry > 0)
+        {
+            goto TRY_SAVE_PLAYER;
+        }
+        LOG_ERROR("save role db ret = %d retry 3 times !",ret);
+        return ;
+    }    
+}
 int     LoginLogic::Login(Session & session)
 {
     LoginParam lp = {this,&session};
@@ -93,7 +125,7 @@ int     LoginLogic::NotifyCreateRole(Session & session)
 int     LoginLogic::AutoCreateRole(Session & session)
 {    
     //todo
-    //inserting
+    //init player
     db::Role * pRole = new db::Role();    
     pRole->set_rid(session.GetUID());
     LOG_INFO("todo init role = %lu data !",session.GetUID());
@@ -106,4 +138,23 @@ int     LoginLogic::EnterPlaying(Session & session)
     LOG_INFO("player = %lu  login sucess !");
     return -1;
 }
+int     LoginLogic::Logout(Session & session)
+{
+    switch(session.GetState())
+    {            
+        case  Session::PLAYER_STATE_PLAYING     :            
+            break;
+        default:
+            //err
+            return -1;
+    }
+    session.SetState(Session::PLAYER_STATE_OFFLINE);
+    /////////////////////////////////////////////////////////////////
+    LoginParam lp = {this,&session};
+    int coid = CoroutineMgr::Instance().Create(::Logout,&lp);
+    return CoroutineMgr::Instance().Resume(coid);
+    return 0;
+}
+
+
 

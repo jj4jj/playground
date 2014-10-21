@@ -20,7 +20,7 @@ int   RoleDBListener::OnRemove(int ret,Buffer & cb)
 }
 int   RoleDBListener::OnUpdate(int ret,Buffer & cb)
 {
-    LOG_INFO("todo");
-    return 0;
+    DBProxyCallBack * dcb = (DBProxyCallBack *)cb.pBuffer;
+    return zoneMgr->GetDBProxy().OnUpdateRole(ret,dcb->uid,dcb->coid,dcb->reason);
 }
 

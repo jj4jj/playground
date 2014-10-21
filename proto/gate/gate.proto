@@ -15,6 +15,7 @@ message	GateConnection
   		CONNECTION_CLOSE_BY_CLIENT	= 1;
 		CONNECTION_CLOSE_STOP_SVR 	= 2;
 		CONNECTION_CLOSE_EXCEPTION	= 3;
+  		CONNECTION_CLOSE_BY_SERVER	= 4;		
   	};
 	required	EventType	event	=	1;	//event type
 	required	uint32		idx		=	2;	//connection idx
