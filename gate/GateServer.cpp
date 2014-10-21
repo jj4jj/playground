@@ -7,7 +7,7 @@
 #include "net/UdpDriver.h"
 #include "GateServerContext.h"
 #include "channel/ChannelAgentMgr.h"
-
+#include "GateAgentChannelMsgHandler.h"
 #include "app/App.hpp"
 
 class GateServer : public App
@@ -46,7 +46,15 @@ public:
         }               
         ctx->ptrHandler = TcpServerHandlerPtr(new GateServerHandler(&GetChannelProxy(),iMaxClient));
         server.SetServerHandler(ctx->ptrHandler.get());
-        ret = server.Start();
+
+        GetChannelProxy().SubscribeScatterMsg( ctx->vecAgentIDS, ChannelMessageDispatcherPtr(new GateAgentChannelMsgHandler((GateServerHandler*)ctx->ptrHandler.get())));
+
+        return 0;
+    }
+    virtual int        OnStart()
+    {
+        GateServerContext * ctx  = (GateServerContext*)GetContext();
+        int ret = ctx->gateServer.Start();
         if(ret !=0 )
         {
             LOG_FATAL("tcp server start error  = %d!",ret);

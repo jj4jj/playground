@@ -73,9 +73,13 @@ int  DBAgent::DispatchResult(MysqlResponse & rsp)
         {
             ret = m_mpListener[type]->OnRemove(ret,cb);
         }
+        else if(rsp.op == MYSQL_REQ_CREATE_TB )
+        {
+            ret = m_mpListener[type]->OnCreateTable(rsp.tblname.c_str(),ret);
+        }
         else
         {
-            LOG_ERROR("not support cmd = %d",rsp.op);
+            LOG_ERROR("not support cmd = %d ret = %d",rsp.op,ret);
             ret = -1;
         }
     }

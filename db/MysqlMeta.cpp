@@ -55,7 +55,7 @@ PRIMARY KEY()
     {
         if(cols[i].ispk)
         {
-            if(i > 0)
+            if(pks.length() > 0)
             {
                 pks += ",";
             }

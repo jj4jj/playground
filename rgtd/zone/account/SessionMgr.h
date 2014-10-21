@@ -22,6 +22,7 @@ public:
     int       Dispatch(Session & session,const cs::CSMsg & csmsg);
     int       PackCSMsg(const cs::CSMsg & csmsg,Buffer & buffer);
     inline    ZoneAgent &   GetZoneAgent(){return *zoneAgent;}
+    inline    LoginLogic &  GetLoginLogic(){return *login;}
 private:
     typedef unordered_map<uint64_t,SessionPtr>          UIDSessionMap;
     typedef unordered_map<uint32_t,CSMsgHandlerPtr>     CMDHandlerMap;

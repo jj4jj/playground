@@ -15,6 +15,7 @@ struct GateServerContext : AppContext
     int             iTestMode;
     int             iNeedAuth;    
     MapAgentAreaIDGateChannelID    mpAreaID2ChannelID;
+    vector<int>                    vecAgentIDS;
 public:
     virtual void    OnGenerateDefaultConfig();
     virtual int     OnInit();

@@ -19,7 +19,7 @@ public:
 private:
     int     GetNextIdx();
     
-private:
+public:
     //
     struct  Connection
     {

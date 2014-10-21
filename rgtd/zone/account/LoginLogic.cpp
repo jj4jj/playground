@@ -73,7 +73,8 @@ static void	Login(Coroutine* co,void* arg)
     }
     else
     {
-        LOG_ERROR("get role db ret = %d",ret);
+        LOG_ERROR("get role db error ret = %d",ret);
+        session->Kick(Session::KICK_REASON_DB_ERR);        
         return ;
     }    
 }

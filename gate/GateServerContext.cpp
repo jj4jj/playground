@@ -85,10 +85,17 @@ int     GateServerContext::OnInit()
     mpAreaID2ChannelID.clear();
     int nCount = parser.GetConfigInt("gate:agent:num");
     char szConfigBuffer[64];
+    std::set<int>   chkUniq;
     for(int i = 0;i < nCount; ++i)
     {
         snprintf(szConfigBuffer,sizeof(szConfigBuffer),"gate:agent#%d:channel",i+1);        
         int chId = parser.GetConfigInt(szConfigBuffer);
+        if(chkUniq.find(chId) != chkUniq.end())
+        {
+            LOG_FATAL("agent channel id = %d is repeat !",chId);
+            return -1;
+        }
+        chkUniq.insert(chId);
         snprintf(szConfigBuffer,sizeof(szConfigBuffer),"gate:agent#%d:areas",i+1);        
         string sConfigValue  = parser.GetConfigString(szConfigBuffer);        
         int areas[128];
@@ -102,6 +109,7 @@ int     GateServerContext::OnInit()
             }
             mpAreaID2ChannelID[areas[j]] = chId;
         }           
+        vecAgentIDS.push_back(chId);
     }
     
     return 0;   

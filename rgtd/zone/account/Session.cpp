@@ -69,13 +69,18 @@ int       Session::ResponseClient(int iEvent,int iParam,Buffer * data)
 }
 int       Session::Kick(int reason)
 {
+    if(GetState() == Session::PLAYER_STATE_KICKING )
+    {
+        return -1;
+    }
     //todo notify client close connection
-    LOG_DEBUG("kick reason = %u",reason);
+    LOG_DEBUG("kick uid = %lu reason = %u",GetUID(),reason);
     //delete flag
-    sessionMgr->GetZoneAgent().GetZoneMgr().GetLoginLogic().Logout(*this);
+    sessionMgr->GetLoginLogic().Logout(*this);
     //---------------------------------------------------------------
     ResponseClient(gate::GateConnection::EVENT_CLOSE,
-                   gate::GateConnection::CONNECTION_CLOSE_BY_DEFAULT);    
+                   gate::GateConnection::CONNECTION_CLOSE_BY_DEFAULT); 
+    SetState(Session::PLAYER_STATE_KICKING);
     return 0;
 }
 int       Session::AttachPlayerAgent(PlayerAgentPtr ptrPlayer)

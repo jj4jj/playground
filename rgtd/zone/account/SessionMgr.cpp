@@ -36,7 +36,7 @@ int SessionMgr::StopSession(uint64_t uid)
         LOG_ERROR("can't find session = %lu",uid);
         return -1;
     }
-    //////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////
     int ret = sson->Kick(Session::KICK_REASON_CLOSE_CLIENT);
     DeleteSession(uid);
     return ret;

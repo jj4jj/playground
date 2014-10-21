@@ -28,4 +28,10 @@ int   DataListener::OnUpdate(int ret,Buffer & cb)
     return 0;
 
 }    
+int   DataListener::OnCreateTable(const char* pszName,int ret)
+{
+    LOG_INFO("create table = %s ret = %d",pszName,ret);
+    return 0;
+}
+
 

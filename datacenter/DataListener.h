@@ -14,7 +14,7 @@ public :
     virtual   int   OnInsert(int ret,Buffer & cb);
     virtual   int   OnRemove(int ret,Buffer & cb);
     virtual   int   OnUpdate(int ret,Buffer & cb);
-    
+    virtual   int   OnCreateTable(const char* pszName,int ret);    
 };
 typedef shared_ptr<DataListener>    DataListenerPtr;
 
