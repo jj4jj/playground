@@ -12,9 +12,11 @@ message CSMsgTest
 	{
 		CSMSG_TEST_INFO_REQ	=	1;
 		CSMSG_TEST_INFO_RSP	=	2;
+		CSMSG_TEST_TXT_RSP	=	3;		
 	};
 	required	uint32				cmd = 1;
 	optional	TestInfoRsp	infRsp	=	2;
+	optional	string		txtRsp	=	3;
 };
 
 message LoginRegNotify

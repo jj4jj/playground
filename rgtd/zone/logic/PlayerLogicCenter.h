@@ -1,5 +1,6 @@
 #pragma once
 #include "base/stdinc.h"
+#include "EventCenter.h"
 
 class  PlayerAgent;
 class  PlayerTaskLogic;

@@ -23,6 +23,8 @@ public:
     inline      PlayerLogicCenter &  GetLogicCenter(){return *ptrLogic;}
     const db::Role * GetRoleData(){return pRoleData;}
     db::Role *       MutableRoleData(){ m_iDirty++ ;return pRoleData;}    
+    inline  bool             IsDirty(){return m_iDirty > 0;}
+    inline  void    CleanDirty(){m_iDirty = 0;}
 private:
     PlayerLogicCenterPtr          ptrLogic;    
 private:
