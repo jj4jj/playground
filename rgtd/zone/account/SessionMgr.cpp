@@ -12,43 +12,67 @@
 SessionMgr::SessionMgr(ZoneAgent* zone):zoneAgent(zone)
 {
 }
-int SessionMgr::Init()
+int SessionMgr::RegisterCSMsgHandler(uint32_t cmd,CSMsgHandlerPtr handler)
 {
-    login = &(zoneAgent->GetZoneMgr().GetLoginLogic());
+    if(m_mpHandlers.find(cmd) == m_mpHandlers.end())
+    {
+        LOG_ERROR("register handler repeatly ! cmd = %u",cmd);
+        return -1;
+    }
+    m_mpHandlers[cmd] = handler;
     return 0;
 }
-int SessionMgr::CreateSession(int gateid,const gate::GateConnection & cnnx)
+
+int SessionMgr::Init()
+{
+    login = &(zoneAgent->GetZoneMgr().GetLoginLogic());    
+    return 0;
+}
+int SessionMgr::StopSession(uint64_t uid)
+{
+    Session *  sson =  FindSession(uid);
+    if(!sson)
+    {
+        LOG_ERROR("can't find session = %lu",uid);
+        return -1;
+    }
+    ////////////////////////////////////////////////////
+    //todo check reason
+    return    sson->Kick(Session::KICK_REASON_CLOSE_CLIENT);
+}
+
+int SessionMgr::CreateSession(uint64_t uid,int gateid,const gate::GateConnection & cnnx)
 {    
-    Session *  sson =  FindSession(cnnx.uid());
+    Session *  sson =  FindSession(uid);
     int ret = 0;
     if(sson)
     {
         //old session
-        LOG_INFO("kick old session  = %u !",cnnx.uid());
+        LOG_INFO("kick old session  = %u !",uid);
         ////////////////////////////////////////////////
         sson->Kick(Session::KICK_REASON_RELOGIN);
-        sson->Init(cnnx);
+        sson->Init(uid,cnnx);
     }
     else
     {
-        LOG_INFO("create new  session  = %u !",cnnx.uid());
+        LOG_INFO("create new  session  = %lu !",uid);
         SessionPtr ptr(new Session(gateid));
         if(!ptr)
         {
-            LOG_ERROR("create session = %u error !",cnnx.uid());
+            LOG_ERROR("create session = %lu error !",uid);
             return -1;
         }
-        ret = ptr->Init(cnnx);
+        ret = ptr->Init(uid,cnnx);
         if(0 == ret)
         {
-            m_mpSessions[cnnx.uid()] = ptr;
+            m_mpSessions[uid] = ptr;
             sson = ptr.get();
         }
     }
     if(sson)
     {
         //Login
-        return login->LoadPlayer(*sson);
+        return login->Login(*sson);
     }    
     return ret;
 }
@@ -57,16 +81,28 @@ int SessionMgr::DeleteSession()
     //todo
     return 0;
 }
+void    CheckInvalidSession()
+{
+    //todo
+}
 
 Session * SessionMgr::FindSession(uint64_t    ulUID)
 {
-    //todo
+    UIDSessionMapItr it = m_mpSessions.find(ulUID);
+    if(it != m_mpSessions.end())
+    {
+        return it->second.get();
+    }
     return NULL;
 }
 
-CSMsgHandler*   SessionMgr::GetMsgHandler(uint32_t cmd)
+CSMsgHandler *  SessionMgr::GetMsgHandler(uint32_t cmd)
 {
-    //todo
+    CMDHandlerMapItr it = m_mpHandlers.find(cmd);
+    if(it != m_mpHandlers.end())
+    {
+        return it->second.get();
+    }
     return NULL;
 }
 int       SessionMgr::Dispatch(Session & session,const cs::CSMsg & csmsg)
@@ -75,8 +111,6 @@ int       SessionMgr::Dispatch(Session & session,const cs::CSMsg & csmsg)
     CSMsgHandler * pHandler = GetMsgHandler(cmd);
     if(pHandler)
     {
-        //create a coroutine ?
-        //
         return pHandler->Handle(session,csmsg);
     }
     else

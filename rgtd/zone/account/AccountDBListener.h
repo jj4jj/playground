@@ -1,6 +1,8 @@
 #pragma once
-#include "datacenter/DataListener.h"
 
+
+#include "datacenter/DataListener.h"
+#include "DBProxy.h"
 
 //R : openid ->  gid
 //L : gid    ->  openid

@@ -35,8 +35,8 @@ target_link_libraries(agent
 	dbagent
 	playground_proto
 	channel
-	ssukits_net
 	ssukits_utility
+	ssukits_net
 	ssukits_ipc
 	ssukits_thread
 	ssukits_base

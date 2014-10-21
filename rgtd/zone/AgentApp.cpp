@@ -4,7 +4,7 @@
 #include "proto/gen/cs/include.h"
 #include "proto/gen/ss/include.h"
 #include "proto/gen/conf/include.h"
-
+#include "utility/Coroutine.h"
 #include "AgentApp.h"
 
 #if 1
@@ -245,6 +245,18 @@ int     AgentApp::OnInit()
     int ret = 0;
     //read config    
     //meta
+    //default co size
+    //160MB - 20480
+    //1024 - 8M
+    ret = CoroutineMgr::Instance().Init(1024);
+    if(ret)
+    {
+        LOG_ERROR("coroutine init error !");
+        return -1;
+    }
+    LOG_INFO("coroutine init success !");
+
+
     ret = meta.Init();
     if(ret)
     {

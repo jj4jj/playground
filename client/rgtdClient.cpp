@@ -8,18 +8,24 @@
 #include "base/Log.h"
 #include "net/TcpClient.h"
 #include "net/BatchTcpConnection.h"
-#include "client/gate/GateClientHandler.h"
+#include "gate/GateClientHandler.h"
+#include "proto/gen/cs/include.h"
+#include "thread/Thread.h"
 
 static int client_id = 0;
 static Buffer send_buffer;
+class rgtdClientHandler;
+static rgtdClientHandler * sender = NULL;
 
-class TestGateClientHandler: public GateClientHandler
+
+class rgtdClientHandler: public GateClientHandler
 {
 public:    
     virtual   int  OnConnect(bool bSuccess)
     {
         ++client_id;
         LOG_INFO("client connected state = %d id = %d",bSuccess,client_id);
+        sender = this;
         return 0;
     }
     virtual   int  OnNeedAuth()
@@ -29,12 +35,15 @@ public:
     virtual   int  OnAuthResult(int result)
     {
         LOG_INFO("server auth result = %d",result);
-        return SendMessage((char*)send_buffer.pBuffer,send_buffer.iUsed);
+        return 0;
     }
     virtual   int  OnMessage(char* pBuffer,int iBuffLen)
     {
         LOG_INFO("recv msg len = %d",iBuffLen);
-        return SendMessage((char*)send_buffer.pBuffer,send_buffer.iUsed);
+        cs::CSMsg csmsg;
+        csmsg.ParseFromArray(pBuffer,iBuffLen);
+        string s = csmsg.DebugString();
+        printf("recv msg:\n%s\n",s.c_str());
         return 0;
     }
     virtual   int  OnClose(bool bByMyself)//server or me close 
@@ -43,40 +52,82 @@ public:
         return 0;
     }
 };
-
-int main(int argc,char* argv[])
+static char cmdLine[2][1024];
+static int w_idx = 0;
+static int r_ready = 0;
+static void * ReadStdinThread(void*)
+{
+    while(1)
+    {
+        printf("rgtdClient>>");
+        fflush(stdout);
+        fgets(cmdLine[w_idx],sizeof(cmdLine[w_idx]),stdin);
+        cmdLine[w_idx][strlen(cmdLine[w_idx])-1] = 0;
+        w_idx = (w_idx+1)%2;
+        r_ready  = 1;
+    }
+    return 0;
+}
+///////////////////////////////////////
+void Auth()
+{
+    
+}
+void Login()
+{
+    cs::CSMsg msg;
+    //    msg.set_cmd(cs::CSMSG_);
+}
+void Reg();
+void Req();
+void Help();
+static struct
+{
+    const char* pszCMD;
+    void (*fn)();
+}   cmds [] = 
+{
+    {"auth",Auth},
+    {"login",Login},
+    {"reg",Reg},
+    {"req",Req},
+    {"help",Help},
+    {NULL,NULL}
+};
+void Help()
+{
+    for(int i = 0; cmds[i].pszCMD ; ++i)
+    {
+        puts(cmds[i].pszCMD);
+    }
+}
+void Reg()
 {
 
+}
+void Req()
+{
 
-/*
-default addr arrangement:
+}
 
-agent
-    51XXX
-    channel listen
-        51010
-        51011
-        51012
-gate
-    52XXX 
 
-    channel listen
-        52010
-        52011
-        52012        
-    tcp server listen
-        52100
-    
-console
-    XX000
-        XX000
-account
-    56XXX
-platform
-    58XXX
-
-*/
-    
+static void ProcessCMD(const char * pszCMD)
+{
+    if(strlen(pszCMD) == 0)
+    {
+        return;
+    }
+    LOG_INFO("process cmd = [%s] ...",pszCMD);
+    for(int i = 0; cmds[i].pszCMD ; ++i)
+    {
+        if(strcmp(pszCMD,cmds[i].pszCMD) == 0)
+        {
+            return cmds[i].fn();
+        }
+    }
+}
+int main(int argc,char* argv[])
+{    
     int port = 52100;
     const char* pszIP = "127.0.0.1";
     int client_num = 1;
@@ -103,8 +154,7 @@ platform
     {
         Log::Instance().Init( pszLogFileName, Log::LOG_LV_DEBUG, 1024000);
     }
-    send_buffer.Create(510);
-    send_buffer.iUsed = send_buffer.iCap;
+    send_buffer.Create(1024*1024*4);
     //use batch connection 
     BatchTcpConnection  btc;
     if(btc.Init(client_num))
@@ -113,10 +163,10 @@ platform
     }
     int iErrorNum = 0;
     SockAddress addr(port,pszIP);    
-    LOG_INFO("gate server is listening on %s",addr.ToString());
+    LOG_INFO("connect to server  %s",addr.ToString());
     for(int i = 0;i < client_num; ++i)
     {
-        if(btc.AddConnection(addr,TcpClientHandlerSharedPtr( new TestGateClientHandler())))
+        if(btc.AddConnection(addr,TcpClientHandlerSharedPtr( new rgtdClientHandler())))
         {
             LOG_ERROR("connection error = %d",i);
             ++iErrorNum;
@@ -127,6 +177,9 @@ platform
         LOG_ERROR("connection is error !");
         return -1;
     }
+
+    Thread  trd;
+    trd.Create(NULL,ReadStdinThread,NULL);
     while(true)
     {
        int ret = btc.Loop();
@@ -139,8 +192,14 @@ platform
        {
             usleep(1000);
        }
+       if(r_ready)
+       {
+            ProcessCMD(cmdLine[(w_idx+1)%2]);
+            r_ready = 0;
+       }
     }     
     send_buffer.Destroy();
+    
     return 0;
 }
 

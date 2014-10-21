@@ -7,11 +7,11 @@ class LoginLogic
 {
 public:
     int     Init(ZoneAgentMgr * mgr);
-    int     LoadPlayer(Session & session);
-    int     OnLoadPlayer(int ret,uint64_t uid,db::Role * role);
+    int     Login(Session & session);
     int     NotifyCreateRole(Session & session);
     int     AutoCreateRole(Session & session);
     int     EnterPlaying(Session & session);
-private:
+
+public:
     ZoneAgentMgr    * zoneMgr;
 };

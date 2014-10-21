@@ -7,16 +7,21 @@ class PlayerAgent
 {
 public:
     typedef     shared_ptr<db::Role>     RolePtr;
+    PlayerAgent(db::Role * role,bool fromdb);
+    ~PlayerAgent();
 public:
-    int         Attach(RolePtr ptr);
     uint64_t    GetUID();
     uint32_t    GetAreaID();      
-    string      GetName();
+    const string  &    GetName();
     inline      PlayerLogicCenter &  GetLogicCenter(){return *ptrLogic;}
+    const db::Role * GetRoleData(){return pRoleData;}
+    db::Role *       MutableRoleData(){ m_iDirty++ ;return pRoleData;}
 private:
-    PlayerLogicCenterPtr      ptrLogic;    
+    PlayerLogicCenterPtr          ptrLogic;    
 private:
-    RolePtr             ptrRole;
+    db::Role*                     pRoleData;
+    int                           m_iDirty;
+    bool                          m_fromDB;
 };
 typedef shared_ptr<PlayerAgent>     PlayerAgentPtr;
 

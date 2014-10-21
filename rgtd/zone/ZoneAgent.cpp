@@ -37,30 +37,46 @@ int ZoneAgent::OnServerMessage()
 {
     return 0;
 }
+uint64_t    ZoneAgent::GetRoleID(uint64_t uid,uint32_t area)
+{
+    ///area[16]uid[32]
+    uint64_t rid = (area&0xFFFF);
+    rid <<= 32;
+    rid |= (uid&0xFFFFFFFF);
+    return rid;
+}
+
 #endif
 
 ////////////////////////////
 #if 1
-int ZoneAgent::DispatchPlayerAgentMsg(const cs::CSMsg & csmsg)
+int ZoneAgent::DispatchPlayerAgentMsg(const gate::GateConnection & ggc,const cs::CSMsg & csmsg)
 {   
-
-    //csmsg.DebugString();
-    
-    return 0;
+    uint64_t uid = GetRoleID(ggc.uid(),ggc.area());
+    Session * session = m_sessionMgr.FindSession(uid);
+    if(!session)
+    {
+        LOG_ERROR("not found session uid = %lu",uid);
+        return -1;
+    }
+    return m_sessionMgr.Dispatch(*session,csmsg);
 }
 int ZoneAgent::AttachPlayerAgent(int gateid,const gate::GateConnection & ggc)
 {
-    int ret = m_sessionMgr.CreateSession(gateid, ggc);
+    uint64_t uid = GetRoleID(ggc.uid(),ggc.area());
+    int ret = m_sessionMgr.CreateSession(uid,gateid, ggc);
     if(ret != 0)
     {
-        LOG_ERROR("attach session error = %u uid = %lu",ret,ggc.uid());
+        LOG_ERROR("attach session error = %u uid = %lu",ret,uid);
         return -1;
     }    
+    LOG_INFO("create new session ok uid = %lu gate = %u idx = %u area = %u",
+            uid,gateid,ggc.idx(),ggc.area());
     return 0;
 }
 int ZoneAgent::DetachPlayerAgent(const gate::GateConnection & ggc)
 {
-    return 0;
-
+    uint64_t uid = GetRoleID(ggc.uid(),ggc.area());
+    return m_sessionMgr.StopSession(uid);
 }
 #endif

@@ -40,6 +40,17 @@ private:
 
 
 #if 1
+ZoneAgentMgr::ZoneAgentMgr():dbProxy(this),cacheProxy(this)
+{
+
+
+}
+
+
+#endif
+
+
+#if 1
 int             ZoneAgentMgr::AddZone(uint32_t dwZoneID,ZoneAgentPtr agent)
 {
     if(m_mpZoneAgent.find(dwZoneID) != m_mpZoneAgent.end())
@@ -190,7 +201,7 @@ int             ZoneAgentMgr::OnGateMessage(const ChannelMessage & msg)
                 LOG_ERROR("unpack client msg error !");
                 return -1;
             }
-            return  pAgent->DispatchPlayerAgentMsg(csmsg);                        
+            return  pAgent->DispatchPlayerAgentMsg(ggc,csmsg);                        
         }
             ////////////////////////////////////////////////////////////////////////
             break;       

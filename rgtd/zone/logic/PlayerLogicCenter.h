@@ -15,7 +15,8 @@ private:
     PlayerAgent*         host;    
 public:
     /////////////////////////////////////////////////////////////
-    shared_ptr<PlayerTaskLogic>     task;
+    typedef shared_ptr<PlayerTaskLogic>     PlayerTaskLogicPtr;
+    PlayerTaskLogicPtr     task;
 };
 typedef shared_ptr<PlayerLogicCenter>     PlayerLogicCenterPtr;
 

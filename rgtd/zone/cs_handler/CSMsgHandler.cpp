@@ -15,15 +15,15 @@ int     CSMsgHandler::Handle(Session & session,const cs::CSMsg & msg)
 {
     switch(session.GetState())
     {
-        case Session::STATE_CREATING:
+        case Session::PLAYER_STATE_CREATING:
             return OnCreatingMsg(session,msg);
             break;
-        case Session::STATE_PLAYING:
+        case Session::PLAYER_STATE_PLAYING:
             return OnPlayingMsg(session,msg);
             break;
         /////////////////////////////////////////////                
-        case Session::STATE_LOADING:
-        case Session::STATE_INIT:
+        case Session::PLAYER_STATE_LOADING:
+        case Session::PLAYER_STATE_INIT:
         default:
             LOG_ERROR("session uid = %u get msg = %d when state = %u",
                 session.GetUID(),session.GetState());

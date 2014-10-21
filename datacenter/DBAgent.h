@@ -32,12 +32,12 @@ public:
 public:
     int  DispatchResult(MysqlResponse & rsp); 
     MetaSerializer::MetaObject*    FindObject(const string & key);
+    MetaSerializer::MetaObject*    FindObject(MetaSerializer::MetaObject * obj);
     void           FreeObject(const string & key);
 protected:
     int            GetPrimaryKey(void* obj,string & key);
     int            CreateObjectFromMysql(MysqlResponse & rsp,void ** ppObj);
     int            GenerateMysqlFields(vector<MysqlField> & data,void* obj,vector<string> * fields);
-    MetaSerializer::MetaObject*    FindObject(MetaSerializer::MetaObject * obj);
 public:
     DBAgent():serializer(NULL){}
 private:

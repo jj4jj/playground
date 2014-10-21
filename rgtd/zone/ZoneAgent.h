@@ -11,11 +11,12 @@ public:
     virtual    ~ZoneAgent();
 public:
     ////////////////////////////////////////////////////////////////////
-    int     Init();
-    void    Destroy();
-    int     OnServerMessage();
+    int         Init();
+    void        Destroy();
+    int         OnServerMessage();
+    uint64_t    GetRoleID(uint64_t uid,uint32_t area);
     ////////////////////////////
-    int     DispatchPlayerAgentMsg(const cs::CSMsg & csmsg);
+    int     DispatchPlayerAgentMsg(const gate::GateConnection & ggc,const cs::CSMsg & csmsg);
     int     AttachPlayerAgent(int gateid,const gate::GateConnection & ggc);
     int     DetachPlayerAgent(const gate::GateConnection & ggc);
     inline  ZoneAgentMgr &  GetZoneMgr(){return *zoneMgr;}

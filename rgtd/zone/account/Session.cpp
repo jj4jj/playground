@@ -7,12 +7,13 @@ Session::Session(int src):gate(src)
     uid = area = 0;
     idx = -1;
     port = 0;
-    state = STATE_INIT;
+    state = PLAYER_STATE_INIT;
 }
-int       Session::Init(const gate::GateConnection & ggc)
+int       Session::Init(uint64_t uid_,const gate::GateConnection & ggc)
 {
     //set uid
-    uid = ggc.uid();
+    uid = uid_;
+    accountid = ggc.uid();
     //ip = ggc.ip();
     port = ggc.port();
     idx = ggc.idx();
@@ -24,7 +25,15 @@ int       Session::Kick(int reason)
     //todo notify client close connection
     //TODO
     LOG_DEBUG("kick reason = %u",reason);
+    //delete flag
+    SetState(PLAYER_STATE_KICKING);
     return -1;
+}
+int       Session::AttachPlayerAgent(PlayerAgentPtr ptrPlayer)
+{
+    player = ptrPlayer;
+    //todo sth
+    return 0;
 }
 
 int       Session::Send(const cs::CSMsg & csmsg)
