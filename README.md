@@ -8,15 +8,18 @@ a simple online game svr demo for exersise
 * channel half
 * res table converter
 * gate
-
-
-##todo
 * set channel be a kernel module in app
-* benchmark of channel and gate
-* redis and level db data persistence solution
+* redis and mysql data persistence solution
 * agent server framework
-* lbs , rank , pay , oss , auth , session keep
+
+##doing
 * agent server logic dev
 * bugfixing
+* logic organization
+
+##todo
+* benchmark of channel and gate
+* lbs , rank , pay , oss , auth , session keep
 * optimal
+* exception cosideration
 
