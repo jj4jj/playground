@@ -50,7 +50,7 @@ int  DBAgent::DispatchResult(MysqlResponse & rsp)
         ret = DATA_MYSQL_ERR_START + ret;
     }
     string type = rsp.tblname;
-    if(m_mpListener.find(rsp.tblname) != m_mpListener.end())
+    if(m_mpListener.find(type) != m_mpListener.end())
     {
         if(rsp.op == MYSQL_REQ_SELECT)
         {          
@@ -134,7 +134,7 @@ int DBAgent::GenerateMysqlMetas(vector<MysqlMeta> & metas,const vector<string> &
             const FieldDescriptor * field = desc->field(j);
             fieldMeta.name = field->name();
             fieldMeta.maxlen = 0;
-            fieldMeta.typeName = GetMetaNameSpace()+"."+desc->name()+"."+field->type_name();
+            fieldMeta.typeName = field->type_name();
             if(std::find(pks.begin(),pks.end(),fieldMeta.name) != pks.end())
             {
                 fieldMeta.ispk = true;
@@ -167,6 +167,8 @@ int DBAgent::GenerateMysqlMetas(vector<MysqlMeta> & metas,const vector<string> &
                     break;
                 case FieldDescriptor::CPPTYPE_MESSAGE:
                     fieldMeta.type = MysqlFieldMeta::VAL_TYPE_BLOB;                    
+                    fieldMeta.typeName = field->message_type()->full_name();
+                    //GetMetaNameSpace()+"."+desc->name()+"."+field->message_type()->name();                    
                     break;  
                 default:
                     LOG_FATAL("unsupport type = %d",field->cpp_type());
@@ -347,11 +349,15 @@ int  DBAgent::CreateObjectFromMysql(MysqlResponse & rsp,void ** ppObj)
             LOG_ERROR("meta = %s not found field meta = %s ",
                 rsp.tblname.c_str(),mf.name.c_str());
             return DATA_UNPACK_ERROR;
-        }
-               
+        }    
         MetaSerializer::MetaObject * fieldObj = NULL;        
         if(MysqlFieldMeta::VAL_TYPE_BLOB == mf.type)
         {
+            if(mf.buffer.empty())
+            {
+                LOG_WARN("obj name = %s field = %s type = %s from db size is 0 .",objTypeName.c_str(),fieldMeta->name.c_str(),fieldMeta->typeName.c_str());
+                continue;
+            }
             Buffer buffer(&(mf.buffer[0]),mf.buffer.size());
             if(serializer->UnPack(fieldMeta->typeName.c_str(),buffer,(void**)&fieldObj))
             {

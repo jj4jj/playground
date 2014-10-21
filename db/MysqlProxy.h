@@ -95,7 +95,7 @@ public:
     int     CreateTable(MysqlMeta & meta);
     int     DispatchReq(const MysqlRequest & req);
     int     Select(const string & tblname,const string & where,
-                    const vector<string> & selCols, vector<MysqlField> & cols);
+                    const vector<string> & selCols, vector<MysqlField> & data);
     int     Insert(const string & table,const std::vector<MysqlField> & data);
     int     Update(const string & table,const string & where,const std::vector<MysqlField> & data);
     int     Delete(const string &  table,const string & where);

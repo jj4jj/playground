@@ -158,7 +158,7 @@ MysqlMeta*   MysqlProxy::GetTableMeta(const string & name)
     return NULL;
 }
 int     MysqlProxy::Select(const string & tblname,const string & where,
-                    const vector<string> & selCols, vector<MysqlField> & cols)
+                    const vector<string> & selCols, vector<MysqlField> & data)
 {
     MysqlMeta* meta = GetTableMeta(tblname);
     if(!meta)
@@ -195,20 +195,22 @@ int     MysqlProxy::Select(const string & tblname,const string & where,
     MYSQL_ROW row = mysql_fetch_row(res_set);    
     unsigned long * lens = mysql_fetch_lengths(res_set);
     //meta->Init(cols);
-    cols.clear();
+    data.clear();
     ////////////////////////////////////////
     MysqlField col;
     if(row)
     {
         MYSQL_FIELD * field = NULL;
+        LOG_DEBUG("select ok cols = %d",nfields);
         for(int i  = 0; i < nfields; i++)
         {
             field = mysql_fetch_field_direct(res_set,i);
             assert(field);
             //meta set col value
             col.name = field->name;
+            LOG_DEBUG("get field name = %s data len = %d",field->name,lens[i]);
             meta->SetFieldValue(col,row[i],lens[i]);
-            cols.push_back(col);
+            data.push_back(col);
         }
         ret = MYSQL_RESULT_OK;
     }

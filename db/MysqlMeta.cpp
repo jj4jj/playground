@@ -341,7 +341,7 @@ int MysqlMeta::SetFieldValue(MysqlField & field,char* data,uint64_t datalen)
     field.name = fieldMeta->name;
     field.type = fieldMeta->type;    
 
-    char numberBuffer[32];
+    char numberBuffer[64];
     int minlen = std::min(datalen , sizeof(numberBuffer) - 1);
     memcpy(numberBuffer,data,minlen);
     numberBuffer[minlen] = 0;
@@ -385,7 +385,8 @@ int MysqlMeta::SetFieldValue(MysqlField & field,char* data,uint64_t datalen)
        default:
        assert(false);
            break;
-    }   
+    }  
+    LOG_DEBUG("set field val long = %lu buff size = %d",field.u_data.u64,field.buffer.size());
     return 0;
 }
 string    MysqlMeta::Visual(const std::vector<MysqlField>   & vc)

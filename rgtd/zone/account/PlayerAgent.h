@@ -10,6 +10,13 @@ public:
     PlayerAgent(db::Role * role,bool fromdb);
     ~PlayerAgent();
 public:
+    //initilaize 
+    void     InitBirthPlayer();
+    //attach role data
+    void     Attach();
+    //detach role data
+    void     Detach();
+public:
     uint64_t    GetUID();
     uint32_t    GetAreaID();      
     const string  &    GetName();

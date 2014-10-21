@@ -4,6 +4,10 @@
 
 ////////////////////////////////////////////////////
 #include "PlayerAgent.h"
+
+
+
+#if 1
 PlayerAgent::PlayerAgent(db::Role * role,bool fromdb)
 {
     pRoleData = role;
@@ -29,6 +33,28 @@ PlayerAgent::~PlayerAgent()
     }
     m_iDirty = 0;
 }
+#endif
+
+#if 1
+//initilaize 
+void     PlayerAgent::InitBirthPlayer()
+{
+    ptrLogic->InitBirthPlayer();
+}
+//attach role data
+void     PlayerAgent::Attach()
+{
+    ptrLogic->Attach();
+}
+//detach role data
+void     PlayerAgent::Detach()
+{
+    ptrLogic->Detach();
+}
+#endif
+
+#if 1
+
 
 uint64_t    PlayerAgent::GetUID()
 {
@@ -44,4 +70,7 @@ const string  &   PlayerAgent::GetName()
 {
     return pRoleData->name();
 }
+
+#endif
+
 

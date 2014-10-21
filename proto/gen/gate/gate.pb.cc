@@ -46,13 +46,14 @@ void protobuf_AssignDesc_gate_2fgate_2eproto() {
       "gate/gate.proto");
   GOOGLE_CHECK(file != NULL);
   GateConnection_descriptor_ = file->message_type(0);
-  static const int GateConnection_offsets_[6] = {
+  static const int GateConnection_offsets_[7] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GateConnection, event_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GateConnection, idx_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GateConnection, uid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GateConnection, area_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GateConnection, ip_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GateConnection, port_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GateConnection, reason_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GateConnection, uid_),
   };
   GateConnection_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -69,7 +70,7 @@ void protobuf_AssignDesc_gate_2fgate_2eproto() {
   GateConnection_ConnectionCloseReason_descriptor_ = GateConnection_descriptor_->enum_type(1);
   AuthReq_descriptor_ = file->message_type(1);
   static const int AuthReq_offsets_[4] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AuthReq, id_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AuthReq, uid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AuthReq, auth_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AuthReq, token_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AuthReq, area_),
@@ -160,22 +161,24 @@ void protobuf_AddDesc_gate_2fgate_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\017gate/gate.proto\022\004gate\"\340\002\n\016GateConnecti"
+    "\n\017gate/gate.proto\022\004gate\"\216\003\n\016GateConnecti"
     "on\022-\n\005event\030\001 \002(\0162\036.gate.GateConnection."
-    "EventType\022\013\n\003idx\030\002 \002(\r\022\n\n\002ip\030\003 \001(\r\022\014\n\004po"
-    "rt\030\004 \001(\r\022\016\n\006reason\030\005 \001(\r\022\013\n\003uid\030\006 \001(\004\"A\n"
-    "\tEventType\022\023\n\017EVENT_CONNECTED\020\001\022\017\n\013EVENT"
-    "_CLOSE\020\002\022\016\n\nEVENT_DATA\020\003\"\227\001\n\025ConnectionC"
-    "loseReason\022\037\n\033CONNECTION_CLOSE_BY_DEFAUL"
-    "T\020\000\022\036\n\032CONNECTION_CLOSE_BY_CLIENT\020\001\022\035\n\031C"
-    "ONNECTION_CLOSE_STOP_SVR\020\002\022\036\n\032CONNECTION"
-    "_CLOSE_EXCEPTION\020\003\"@\n\007AuthReq\022\n\n\002id\030\001 \002("
-    "\r\022\014\n\004auth\030\002 \002(\r\022\r\n\005token\030\003 \001(\t\022\014\n\004area\030\004"
-    " \001(\r\"\031\n\007AuthRsp\022\016\n\006result\030\001 \002(\r\"\240\001\n\010Gate"
-    "Auth\022\013\n\003cmd\030\001 \002(\r\022\036\n\007authReq\030\002 \001(\0132\r.gat"
-    "e.AuthReq\022\036\n\007authRsp\030\003 \001(\0132\r.gate.AuthRs"
-    "p\"G\n\013GateAuthCMD\022\022\n\016GATE_NEED_AUTH\020\001\022\021\n\r"
-    "GATE_AUTH_REQ\020\002\022\021\n\rGATE_AUTH_RSP\020\003", 634);
+    "EventType\022\013\n\003idx\030\002 \002(\r\022\013\n\003uid\030\003 \002(\004\022\014\n\004a"
+    "rea\030\004 \002(\r\022\n\n\002ip\030\024 \001(\r\022\014\n\004port\030\025 \001(\r\022\016\n\006r"
+    "eason\030\026 \001(\r\"A\n\tEventType\022\023\n\017EVENT_CONNEC"
+    "TED\020\001\022\017\n\013EVENT_CLOSE\020\002\022\016\n\nEVENT_DATA\020\003\"\267"
+    "\001\n\025ConnectionCloseReason\022\037\n\033CONNECTION_C"
+    "LOSE_BY_DEFAULT\020\000\022\036\n\032CONNECTION_CLOSE_BY"
+    "_CLIENT\020\001\022\035\n\031CONNECTION_CLOSE_STOP_SVR\020\002"
+    "\022\036\n\032CONNECTION_CLOSE_EXCEPTION\020\003\022\036\n\032CONN"
+    "ECTION_CLOSE_BY_SERVER\020\004\"A\n\007AuthReq\022\013\n\003u"
+    "id\030\001 \002(\004\022\014\n\004auth\030\002 \002(\r\022\r\n\005token\030\003 \001(\t\022\014\n"
+    "\004area\030\004 \001(\r\"\031\n\007AuthRsp\022\016\n\006result\030\001 \002(\r\"\240"
+    "\001\n\010GateAuth\022\013\n\003cmd\030\001 \002(\r\022\036\n\007authReq\030\002 \001("
+    "\0132\r.gate.AuthReq\022\036\n\007authRsp\030\003 \001(\0132\r.gate"
+    ".AuthRsp\"G\n\013GateAuthCMD\022\022\n\016GATE_NEED_AUT"
+    "H\020\001\022\021\n\rGATE_AUTH_REQ\020\002\022\021\n\rGATE_AUTH_RSP\020"
+    "\003", 681);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "gate/gate.proto", &protobuf_RegisterTypes);
   GateConnection::default_instance_ = new GateConnection();
@@ -231,6 +234,7 @@ bool GateConnection_ConnectionCloseReason_IsValid(int value) {
     case 1:
     case 2:
     case 3:
+    case 4:
       return true;
     default:
       return false;
@@ -242,6 +246,7 @@ const GateConnection_ConnectionCloseReason GateConnection::CONNECTION_CLOSE_BY_D
 const GateConnection_ConnectionCloseReason GateConnection::CONNECTION_CLOSE_BY_CLIENT;
 const GateConnection_ConnectionCloseReason GateConnection::CONNECTION_CLOSE_STOP_SVR;
 const GateConnection_ConnectionCloseReason GateConnection::CONNECTION_CLOSE_EXCEPTION;
+const GateConnection_ConnectionCloseReason GateConnection::CONNECTION_CLOSE_BY_SERVER;
 const GateConnection_ConnectionCloseReason GateConnection::ConnectionCloseReason_MIN;
 const GateConnection_ConnectionCloseReason GateConnection::ConnectionCloseReason_MAX;
 const int GateConnection::ConnectionCloseReason_ARRAYSIZE;
@@ -249,10 +254,11 @@ const int GateConnection::ConnectionCloseReason_ARRAYSIZE;
 #ifndef _MSC_VER
 const int GateConnection::kEventFieldNumber;
 const int GateConnection::kIdxFieldNumber;
+const int GateConnection::kUidFieldNumber;
+const int GateConnection::kAreaFieldNumber;
 const int GateConnection::kIpFieldNumber;
 const int GateConnection::kPortFieldNumber;
 const int GateConnection::kReasonFieldNumber;
-const int GateConnection::kUidFieldNumber;
 #endif  // !_MSC_VER
 
 GateConnection::GateConnection()
@@ -275,10 +281,11 @@ void GateConnection::SharedCtor() {
   _cached_size_ = 0;
   event_ = 1;
   idx_ = 0u;
+  uid_ = GOOGLE_ULONGLONG(0);
+  area_ = 0u;
   ip_ = 0u;
   port_ = 0u;
   reason_ = 0u;
-  uid_ = GOOGLE_ULONGLONG(0);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -324,7 +331,7 @@ void GateConnection::Clear() {
     ::memset(&first, 0, n);                                \
   } while (0)
 
-  if (_has_bits_[0 / 32] & 63) {
+  if (_has_bits_[0 / 32] & 127) {
     ZR_(idx_, reason_);
     event_ = 1;
   }
@@ -342,7 +349,7 @@ bool GateConnection::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   // @@protoc_insertion_point(parse_start:gate.GateConnection)
   for (;;) {
-    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(16383);
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
@@ -376,13 +383,43 @@ bool GateConnection::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(24)) goto parse_ip;
+        if (input->ExpectTag(24)) goto parse_uid;
         break;
       }
 
-      // optional uint32 ip = 3;
+      // required uint64 uid = 3;
       case 3: {
         if (tag == 24) {
+         parse_uid:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+                 input, &uid_)));
+          set_has_uid();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(32)) goto parse_area;
+        break;
+      }
+
+      // required uint32 area = 4;
+      case 4: {
+        if (tag == 32) {
+         parse_area:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &area_)));
+          set_has_area();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(160)) goto parse_ip;
+        break;
+      }
+
+      // optional uint32 ip = 20;
+      case 20: {
+        if (tag == 160) {
          parse_ip:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
@@ -391,13 +428,13 @@ bool GateConnection::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(32)) goto parse_port;
+        if (input->ExpectTag(168)) goto parse_port;
         break;
       }
 
-      // optional uint32 port = 4;
-      case 4: {
-        if (tag == 32) {
+      // optional uint32 port = 21;
+      case 21: {
+        if (tag == 168) {
          parse_port:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
@@ -406,33 +443,18 @@ bool GateConnection::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(40)) goto parse_reason;
+        if (input->ExpectTag(176)) goto parse_reason;
         break;
       }
 
-      // optional uint32 reason = 5;
-      case 5: {
-        if (tag == 40) {
+      // optional uint32 reason = 22;
+      case 22: {
+        if (tag == 176) {
          parse_reason:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  input, &reason_)));
           set_has_reason();
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectTag(48)) goto parse_uid;
-        break;
-      }
-
-      // optional uint64 uid = 6;
-      case 6: {
-        if (tag == 48) {
-         parse_uid:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
-                 input, &uid_)));
-          set_has_uid();
         } else {
           goto handle_unusual;
         }
@@ -476,24 +498,29 @@ void GateConnection::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->idx(), output);
   }
 
-  // optional uint32 ip = 3;
-  if (has_ip()) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(3, this->ip(), output);
-  }
-
-  // optional uint32 port = 4;
-  if (has_port()) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(4, this->port(), output);
-  }
-
-  // optional uint32 reason = 5;
-  if (has_reason()) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(5, this->reason(), output);
-  }
-
-  // optional uint64 uid = 6;
+  // required uint64 uid = 3;
   if (has_uid()) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt64(6, this->uid(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(3, this->uid(), output);
+  }
+
+  // required uint32 area = 4;
+  if (has_area()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(4, this->area(), output);
+  }
+
+  // optional uint32 ip = 20;
+  if (has_ip()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(20, this->ip(), output);
+  }
+
+  // optional uint32 port = 21;
+  if (has_port()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(21, this->port(), output);
+  }
+
+  // optional uint32 reason = 22;
+  if (has_reason()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(22, this->reason(), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -517,24 +544,29 @@ void GateConnection::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->idx(), target);
   }
 
-  // optional uint32 ip = 3;
-  if (has_ip()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(3, this->ip(), target);
-  }
-
-  // optional uint32 port = 4;
-  if (has_port()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(4, this->port(), target);
-  }
-
-  // optional uint32 reason = 5;
-  if (has_reason()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(5, this->reason(), target);
-  }
-
-  // optional uint64 uid = 6;
+  // required uint64 uid = 3;
   if (has_uid()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(6, this->uid(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(3, this->uid(), target);
+  }
+
+  // required uint32 area = 4;
+  if (has_area()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(4, this->area(), target);
+  }
+
+  // optional uint32 ip = 20;
+  if (has_ip()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(20, this->ip(), target);
+  }
+
+  // optional uint32 port = 21;
+  if (has_port()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(21, this->port(), target);
+  }
+
+  // optional uint32 reason = 22;
+  if (has_reason()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(22, this->reason(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -562,32 +594,39 @@ int GateConnection::ByteSize() const {
           this->idx());
     }
 
-    // optional uint32 ip = 3;
-    if (has_ip()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->ip());
-    }
-
-    // optional uint32 port = 4;
-    if (has_port()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->port());
-    }
-
-    // optional uint32 reason = 5;
-    if (has_reason()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->reason());
-    }
-
-    // optional uint64 uid = 6;
+    // required uint64 uid = 3;
     if (has_uid()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt64Size(
           this->uid());
+    }
+
+    // required uint32 area = 4;
+    if (has_area()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->area());
+    }
+
+    // optional uint32 ip = 20;
+    if (has_ip()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->ip());
+    }
+
+    // optional uint32 port = 21;
+    if (has_port()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->port());
+    }
+
+    // optional uint32 reason = 22;
+    if (has_reason()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->reason());
     }
 
   }
@@ -623,6 +662,12 @@ void GateConnection::MergeFrom(const GateConnection& from) {
     if (from.has_idx()) {
       set_idx(from.idx());
     }
+    if (from.has_uid()) {
+      set_uid(from.uid());
+    }
+    if (from.has_area()) {
+      set_area(from.area());
+    }
     if (from.has_ip()) {
       set_ip(from.ip());
     }
@@ -631,9 +676,6 @@ void GateConnection::MergeFrom(const GateConnection& from) {
     }
     if (from.has_reason()) {
       set_reason(from.reason());
-    }
-    if (from.has_uid()) {
-      set_uid(from.uid());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -652,7 +694,7 @@ void GateConnection::CopyFrom(const GateConnection& from) {
 }
 
 bool GateConnection::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
+  if ((_has_bits_[0] & 0x0000000f) != 0x0000000f) return false;
 
   return true;
 }
@@ -661,10 +703,11 @@ void GateConnection::Swap(GateConnection* other) {
   if (other != this) {
     std::swap(event_, other->event_);
     std::swap(idx_, other->idx_);
+    std::swap(uid_, other->uid_);
+    std::swap(area_, other->area_);
     std::swap(ip_, other->ip_);
     std::swap(port_, other->port_);
     std::swap(reason_, other->reason_);
-    std::swap(uid_, other->uid_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -683,7 +726,7 @@ void GateConnection::Swap(GateConnection* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int AuthReq::kIdFieldNumber;
+const int AuthReq::kUidFieldNumber;
 const int AuthReq::kAuthFieldNumber;
 const int AuthReq::kTokenFieldNumber;
 const int AuthReq::kAreaFieldNumber;
@@ -708,7 +751,7 @@ AuthReq::AuthReq(const AuthReq& from)
 void AuthReq::SharedCtor() {
   ::google::protobuf::internal::GetEmptyString();
   _cached_size_ = 0;
-  id_ = 0u;
+  uid_ = GOOGLE_ULONGLONG(0);
   auth_ = 0u;
   token_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   area_ = 0u;
@@ -761,13 +804,13 @@ void AuthReq::Clear() {
   } while (0)
 
   if (_has_bits_[0 / 32] & 15) {
-    ZR_(id_, auth_);
+    ZR_(auth_, area_);
+    uid_ = GOOGLE_ULONGLONG(0);
     if (has_token()) {
       if (token_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
         token_->clear();
       }
     }
-    area_ = 0u;
   }
 
 #undef OFFSET_OF_FIELD_
@@ -787,13 +830,13 @@ bool AuthReq::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required uint32 id = 1;
+      // required uint64 uid = 1;
       case 1: {
         if (tag == 8) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &id_)));
-          set_has_id();
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+                 input, &uid_)));
+          set_has_uid();
         } else {
           goto handle_unusual;
         }
@@ -873,9 +916,9 @@ failure:
 void AuthReq::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:gate.AuthReq)
-  // required uint32 id = 1;
-  if (has_id()) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->id(), output);
+  // required uint64 uid = 1;
+  if (has_uid()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(1, this->uid(), output);
   }
 
   // required uint32 auth = 2;
@@ -908,9 +951,9 @@ void AuthReq::SerializeWithCachedSizes(
 ::google::protobuf::uint8* AuthReq::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // @@protoc_insertion_point(serialize_to_array_start:gate.AuthReq)
-  // required uint32 id = 1;
-  if (has_id()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->id(), target);
+  // required uint64 uid = 1;
+  if (has_uid()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(1, this->uid(), target);
   }
 
   // required uint32 auth = 2;
@@ -946,11 +989,11 @@ int AuthReq::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required uint32 id = 1;
-    if (has_id()) {
+    // required uint64 uid = 1;
+    if (has_uid()) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->id());
+        ::google::protobuf::internal::WireFormatLite::UInt64Size(
+          this->uid());
     }
 
     // required uint32 auth = 2;
@@ -1001,8 +1044,8 @@ void AuthReq::MergeFrom(const ::google::protobuf::Message& from) {
 void AuthReq::MergeFrom(const AuthReq& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_id()) {
-      set_id(from.id());
+    if (from.has_uid()) {
+      set_uid(from.uid());
     }
     if (from.has_auth()) {
       set_auth(from.auth());
@@ -1037,7 +1080,7 @@ bool AuthReq::IsInitialized() const {
 
 void AuthReq::Swap(AuthReq* other) {
   if (other != this) {
-    std::swap(id_, other->id_);
+    std::swap(uid_, other->uid_);
     std::swap(auth_, other->auth_);
     std::swap(token_, other->token_);
     std::swap(area_, other->area_);

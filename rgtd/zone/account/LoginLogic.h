@@ -7,11 +7,11 @@ class LoginLogic
 {
 public:
     int     Init(ZoneAgentMgr * mgr);
-    int     Login(Session & session);
+    int     Login(SessionPtr & session);
     int     NotifyCreateRole(Session & session);
-    int     AutoCreateRole(Session & session);
+    int     CreateRole(Session & session);
     int     EnterPlaying(Session & session);
-    int     Logout(Session & session);
+    int     Logout(SessionPtr & session);
 public:
     ZoneAgentMgr    * zoneMgr;
 };

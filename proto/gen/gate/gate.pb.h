@@ -63,11 +63,12 @@ enum GateConnection_ConnectionCloseReason {
   GateConnection_ConnectionCloseReason_CONNECTION_CLOSE_BY_DEFAULT = 0,
   GateConnection_ConnectionCloseReason_CONNECTION_CLOSE_BY_CLIENT = 1,
   GateConnection_ConnectionCloseReason_CONNECTION_CLOSE_STOP_SVR = 2,
-  GateConnection_ConnectionCloseReason_CONNECTION_CLOSE_EXCEPTION = 3
+  GateConnection_ConnectionCloseReason_CONNECTION_CLOSE_EXCEPTION = 3,
+  GateConnection_ConnectionCloseReason_CONNECTION_CLOSE_BY_SERVER = 4
 };
 bool GateConnection_ConnectionCloseReason_IsValid(int value);
 const GateConnection_ConnectionCloseReason GateConnection_ConnectionCloseReason_ConnectionCloseReason_MIN = GateConnection_ConnectionCloseReason_CONNECTION_CLOSE_BY_DEFAULT;
-const GateConnection_ConnectionCloseReason GateConnection_ConnectionCloseReason_ConnectionCloseReason_MAX = GateConnection_ConnectionCloseReason_CONNECTION_CLOSE_EXCEPTION;
+const GateConnection_ConnectionCloseReason GateConnection_ConnectionCloseReason_ConnectionCloseReason_MAX = GateConnection_ConnectionCloseReason_CONNECTION_CLOSE_BY_SERVER;
 const int GateConnection_ConnectionCloseReason_ConnectionCloseReason_ARRAYSIZE = GateConnection_ConnectionCloseReason_ConnectionCloseReason_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* GateConnection_ConnectionCloseReason_descriptor();
@@ -183,6 +184,7 @@ class GateConnection : public ::google::protobuf::Message {
   static const ConnectionCloseReason CONNECTION_CLOSE_BY_CLIENT = GateConnection_ConnectionCloseReason_CONNECTION_CLOSE_BY_CLIENT;
   static const ConnectionCloseReason CONNECTION_CLOSE_STOP_SVR = GateConnection_ConnectionCloseReason_CONNECTION_CLOSE_STOP_SVR;
   static const ConnectionCloseReason CONNECTION_CLOSE_EXCEPTION = GateConnection_ConnectionCloseReason_CONNECTION_CLOSE_EXCEPTION;
+  static const ConnectionCloseReason CONNECTION_CLOSE_BY_SERVER = GateConnection_ConnectionCloseReason_CONNECTION_CLOSE_BY_SERVER;
   static inline bool ConnectionCloseReason_IsValid(int value) {
     return GateConnection_ConnectionCloseReason_IsValid(value);
   }
@@ -220,33 +222,40 @@ class GateConnection : public ::google::protobuf::Message {
   inline ::google::protobuf::uint32 idx() const;
   inline void set_idx(::google::protobuf::uint32 value);
 
-  // optional uint32 ip = 3;
+  // required uint64 uid = 3;
+  inline bool has_uid() const;
+  inline void clear_uid();
+  static const int kUidFieldNumber = 3;
+  inline ::google::protobuf::uint64 uid() const;
+  inline void set_uid(::google::protobuf::uint64 value);
+
+  // required uint32 area = 4;
+  inline bool has_area() const;
+  inline void clear_area();
+  static const int kAreaFieldNumber = 4;
+  inline ::google::protobuf::uint32 area() const;
+  inline void set_area(::google::protobuf::uint32 value);
+
+  // optional uint32 ip = 20;
   inline bool has_ip() const;
   inline void clear_ip();
-  static const int kIpFieldNumber = 3;
+  static const int kIpFieldNumber = 20;
   inline ::google::protobuf::uint32 ip() const;
   inline void set_ip(::google::protobuf::uint32 value);
 
-  // optional uint32 port = 4;
+  // optional uint32 port = 21;
   inline bool has_port() const;
   inline void clear_port();
-  static const int kPortFieldNumber = 4;
+  static const int kPortFieldNumber = 21;
   inline ::google::protobuf::uint32 port() const;
   inline void set_port(::google::protobuf::uint32 value);
 
-  // optional uint32 reason = 5;
+  // optional uint32 reason = 22;
   inline bool has_reason() const;
   inline void clear_reason();
-  static const int kReasonFieldNumber = 5;
+  static const int kReasonFieldNumber = 22;
   inline ::google::protobuf::uint32 reason() const;
   inline void set_reason(::google::protobuf::uint32 value);
-
-  // optional uint64 uid = 6;
-  inline bool has_uid() const;
-  inline void clear_uid();
-  static const int kUidFieldNumber = 6;
-  inline ::google::protobuf::uint64 uid() const;
-  inline void set_uid(::google::protobuf::uint64 value);
 
   // @@protoc_insertion_point(class_scope:gate.GateConnection)
  private:
@@ -254,14 +263,16 @@ class GateConnection : public ::google::protobuf::Message {
   inline void clear_has_event();
   inline void set_has_idx();
   inline void clear_has_idx();
+  inline void set_has_uid();
+  inline void clear_has_uid();
+  inline void set_has_area();
+  inline void clear_has_area();
   inline void set_has_ip();
   inline void clear_has_ip();
   inline void set_has_port();
   inline void clear_has_port();
   inline void set_has_reason();
   inline void clear_has_reason();
-  inline void set_has_uid();
-  inline void clear_has_uid();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -269,9 +280,10 @@ class GateConnection : public ::google::protobuf::Message {
   mutable int _cached_size_;
   int event_;
   ::google::protobuf::uint32 idx_;
+  ::google::protobuf::uint64 uid_;
+  ::google::protobuf::uint32 area_;
   ::google::protobuf::uint32 ip_;
   ::google::protobuf::uint32 port_;
-  ::google::protobuf::uint64 uid_;
   ::google::protobuf::uint32 reason_;
   friend void  protobuf_AddDesc_gate_2fgate_2eproto();
   friend void protobuf_AssignDesc_gate_2fgate_2eproto();
@@ -335,12 +347,12 @@ class AuthReq : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required uint32 id = 1;
-  inline bool has_id() const;
-  inline void clear_id();
-  static const int kIdFieldNumber = 1;
-  inline ::google::protobuf::uint32 id() const;
-  inline void set_id(::google::protobuf::uint32 value);
+  // required uint64 uid = 1;
+  inline bool has_uid() const;
+  inline void clear_uid();
+  static const int kUidFieldNumber = 1;
+  inline ::google::protobuf::uint64 uid() const;
+  inline void set_uid(::google::protobuf::uint64 value);
 
   // required uint32 auth = 2;
   inline bool has_auth() const;
@@ -370,8 +382,8 @@ class AuthReq : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:gate.AuthReq)
  private:
-  inline void set_has_id();
-  inline void clear_has_id();
+  inline void set_has_uid();
+  inline void clear_has_uid();
   inline void set_has_auth();
   inline void clear_has_auth();
   inline void set_has_token();
@@ -383,9 +395,9 @@ class AuthReq : public ::google::protobuf::Message {
 
   ::google::protobuf::uint32 _has_bits_[1];
   mutable int _cached_size_;
-  ::google::protobuf::uint32 id_;
-  ::google::protobuf::uint32 auth_;
+  ::google::protobuf::uint64 uid_;
   ::std::string* token_;
+  ::google::protobuf::uint32 auth_;
   ::google::protobuf::uint32 area_;
   friend void  protobuf_AddDesc_gate_2fgate_2eproto();
   friend void protobuf_AssignDesc_gate_2fgate_2eproto();
@@ -657,87 +669,15 @@ inline void GateConnection::set_idx(::google::protobuf::uint32 value) {
   // @@protoc_insertion_point(field_set:gate.GateConnection.idx)
 }
 
-// optional uint32 ip = 3;
-inline bool GateConnection::has_ip() const {
+// required uint64 uid = 3;
+inline bool GateConnection::has_uid() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void GateConnection::set_has_ip() {
+inline void GateConnection::set_has_uid() {
   _has_bits_[0] |= 0x00000004u;
 }
-inline void GateConnection::clear_has_ip() {
-  _has_bits_[0] &= ~0x00000004u;
-}
-inline void GateConnection::clear_ip() {
-  ip_ = 0u;
-  clear_has_ip();
-}
-inline ::google::protobuf::uint32 GateConnection::ip() const {
-  // @@protoc_insertion_point(field_get:gate.GateConnection.ip)
-  return ip_;
-}
-inline void GateConnection::set_ip(::google::protobuf::uint32 value) {
-  set_has_ip();
-  ip_ = value;
-  // @@protoc_insertion_point(field_set:gate.GateConnection.ip)
-}
-
-// optional uint32 port = 4;
-inline bool GateConnection::has_port() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void GateConnection::set_has_port() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void GateConnection::clear_has_port() {
-  _has_bits_[0] &= ~0x00000008u;
-}
-inline void GateConnection::clear_port() {
-  port_ = 0u;
-  clear_has_port();
-}
-inline ::google::protobuf::uint32 GateConnection::port() const {
-  // @@protoc_insertion_point(field_get:gate.GateConnection.port)
-  return port_;
-}
-inline void GateConnection::set_port(::google::protobuf::uint32 value) {
-  set_has_port();
-  port_ = value;
-  // @@protoc_insertion_point(field_set:gate.GateConnection.port)
-}
-
-// optional uint32 reason = 5;
-inline bool GateConnection::has_reason() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-inline void GateConnection::set_has_reason() {
-  _has_bits_[0] |= 0x00000010u;
-}
-inline void GateConnection::clear_has_reason() {
-  _has_bits_[0] &= ~0x00000010u;
-}
-inline void GateConnection::clear_reason() {
-  reason_ = 0u;
-  clear_has_reason();
-}
-inline ::google::protobuf::uint32 GateConnection::reason() const {
-  // @@protoc_insertion_point(field_get:gate.GateConnection.reason)
-  return reason_;
-}
-inline void GateConnection::set_reason(::google::protobuf::uint32 value) {
-  set_has_reason();
-  reason_ = value;
-  // @@protoc_insertion_point(field_set:gate.GateConnection.reason)
-}
-
-// optional uint64 uid = 6;
-inline bool GateConnection::has_uid() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
-}
-inline void GateConnection::set_has_uid() {
-  _has_bits_[0] |= 0x00000020u;
-}
 inline void GateConnection::clear_has_uid() {
-  _has_bits_[0] &= ~0x00000020u;
+  _has_bits_[0] &= ~0x00000004u;
 }
 inline void GateConnection::clear_uid() {
   uid_ = GOOGLE_ULONGLONG(0);
@@ -753,32 +693,128 @@ inline void GateConnection::set_uid(::google::protobuf::uint64 value) {
   // @@protoc_insertion_point(field_set:gate.GateConnection.uid)
 }
 
+// required uint32 area = 4;
+inline bool GateConnection::has_area() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void GateConnection::set_has_area() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void GateConnection::clear_has_area() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void GateConnection::clear_area() {
+  area_ = 0u;
+  clear_has_area();
+}
+inline ::google::protobuf::uint32 GateConnection::area() const {
+  // @@protoc_insertion_point(field_get:gate.GateConnection.area)
+  return area_;
+}
+inline void GateConnection::set_area(::google::protobuf::uint32 value) {
+  set_has_area();
+  area_ = value;
+  // @@protoc_insertion_point(field_set:gate.GateConnection.area)
+}
+
+// optional uint32 ip = 20;
+inline bool GateConnection::has_ip() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void GateConnection::set_has_ip() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void GateConnection::clear_has_ip() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void GateConnection::clear_ip() {
+  ip_ = 0u;
+  clear_has_ip();
+}
+inline ::google::protobuf::uint32 GateConnection::ip() const {
+  // @@protoc_insertion_point(field_get:gate.GateConnection.ip)
+  return ip_;
+}
+inline void GateConnection::set_ip(::google::protobuf::uint32 value) {
+  set_has_ip();
+  ip_ = value;
+  // @@protoc_insertion_point(field_set:gate.GateConnection.ip)
+}
+
+// optional uint32 port = 21;
+inline bool GateConnection::has_port() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void GateConnection::set_has_port() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void GateConnection::clear_has_port() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void GateConnection::clear_port() {
+  port_ = 0u;
+  clear_has_port();
+}
+inline ::google::protobuf::uint32 GateConnection::port() const {
+  // @@protoc_insertion_point(field_get:gate.GateConnection.port)
+  return port_;
+}
+inline void GateConnection::set_port(::google::protobuf::uint32 value) {
+  set_has_port();
+  port_ = value;
+  // @@protoc_insertion_point(field_set:gate.GateConnection.port)
+}
+
+// optional uint32 reason = 22;
+inline bool GateConnection::has_reason() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void GateConnection::set_has_reason() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void GateConnection::clear_has_reason() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void GateConnection::clear_reason() {
+  reason_ = 0u;
+  clear_has_reason();
+}
+inline ::google::protobuf::uint32 GateConnection::reason() const {
+  // @@protoc_insertion_point(field_get:gate.GateConnection.reason)
+  return reason_;
+}
+inline void GateConnection::set_reason(::google::protobuf::uint32 value) {
+  set_has_reason();
+  reason_ = value;
+  // @@protoc_insertion_point(field_set:gate.GateConnection.reason)
+}
+
 // -------------------------------------------------------------------
 
 // AuthReq
 
-// required uint32 id = 1;
-inline bool AuthReq::has_id() const {
+// required uint64 uid = 1;
+inline bool AuthReq::has_uid() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void AuthReq::set_has_id() {
+inline void AuthReq::set_has_uid() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void AuthReq::clear_has_id() {
+inline void AuthReq::clear_has_uid() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void AuthReq::clear_id() {
-  id_ = 0u;
-  clear_has_id();
+inline void AuthReq::clear_uid() {
+  uid_ = GOOGLE_ULONGLONG(0);
+  clear_has_uid();
 }
-inline ::google::protobuf::uint32 AuthReq::id() const {
-  // @@protoc_insertion_point(field_get:gate.AuthReq.id)
-  return id_;
+inline ::google::protobuf::uint64 AuthReq::uid() const {
+  // @@protoc_insertion_point(field_get:gate.AuthReq.uid)
+  return uid_;
 }
-inline void AuthReq::set_id(::google::protobuf::uint32 value) {
-  set_has_id();
-  id_ = value;
-  // @@protoc_insertion_point(field_set:gate.AuthReq.id)
+inline void AuthReq::set_uid(::google::protobuf::uint64 value) {
+  set_has_uid();
+  uid_ = value;
+  // @@protoc_insertion_point(field_set:gate.AuthReq.uid)
 }
 
 // required uint32 auth = 2;

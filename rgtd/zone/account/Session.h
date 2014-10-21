@@ -39,6 +39,8 @@ public:
     };
 public:
     Session(int src,SessionMgr * smgr);
+    ~Session();
+public:    
     int       Init(uint64_t uid_,const gate::GateConnection & ggc);
     int       Kick(int reason);
     int       AttachPlayerAgent(PlayerAgentPtr ptrPlayer);

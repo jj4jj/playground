@@ -73,7 +73,7 @@ int SessionMgr::CreateSession(uint64_t uid,int gateid,const gate::GateConnection
     if(sson)
     {
         //Login
-        return login->Login(*sson);
+        return login->Login(m_mpSessions[uid]);
     }    
     return ret;
 }
@@ -92,7 +92,15 @@ Session * SessionMgr::FindSession(uint64_t    ulUID)
     }
     return NULL;
 }
-
+SessionPtr & SessionMgr::GetSession(uint64_t uid)
+{
+    UIDSessionMapItr it = m_mpSessions.find(uid);
+    if(it != m_mpSessions.end())
+    {
+        return it->second;
+    }
+    return m_mpSessions[0];
+}
 CSMsgHandler *  SessionMgr::GetMsgHandler(uint32_t cmd)
 {
     CMDHandlerMapItr it = m_mpHandlers.find(cmd);

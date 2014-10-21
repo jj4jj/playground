@@ -13,17 +13,19 @@ int LoginLogic::Init(ZoneAgentMgr * mgr)
 struct LoginParam
 {
     LoginLogic * login;
-    Session    * session;
+    SessionPtr   session;
 };
 static void	Login(Coroutine* co,void* arg)
 {
     LoginParam *  param = (LoginParam*)arg;
     LoginLogic * login =   param->login;
-    Session *    session = param->session;
-    //////////////////////////////////////
+    SessionPtr   session = param->session;
+    ////////////////////////////////////////////////////////////////
     session->SetState(Session::PLAYER_STATE_LOADING);
+    
     int ret = login->zoneMgr->GetDBProxy().GetRole(session->GetUID(),
         ROLE_DB_GET_LOGIN,co->iID);
+    
 
     LOG_INFO("get role ret = %d uid = %lu ",ret,session->GetUID());
 
@@ -38,6 +40,7 @@ static void	Login(Coroutine* co,void* arg)
         if(!pRole)
         {
             LOG_ERROR("get role object error !");
+            session->Kick(Session::KICK_REASON_DB_ERR);            
             return ;
         }
         //create player agent
@@ -81,9 +84,10 @@ static void	Login(Coroutine* co,void* arg)
 static void	Logout(Coroutine* co,void* arg)
 {
     LoginParam *  param = (LoginParam*)arg;
-    LoginLogic * login =   param->login;
-    Session *    session = param->session;
+    LoginLogic *  login =   param->login;
+    SessionPtr    session = param->session;
     //////////////////////////////////////
+
     int retry = 3;
 TRY_SAVE_PLAYER:    
     int ret = login->zoneMgr->GetDBProxy().UpdateRole(
@@ -110,9 +114,9 @@ TRY_SAVE_PLAYER:
         return ;
     }    
 }
-int     LoginLogic::Login(Session & session)
+int     LoginLogic::Login(SessionPtr & session)
 {
-    LoginParam lp = {this,&session};
+    LoginParam lp = {this,session};
     int coid = CoroutineMgr::Instance().Create(::Login,&lp);
     return CoroutineMgr::Instance().Resume(coid);
 }
@@ -121,16 +125,15 @@ int     LoginLogic::NotifyCreateRole(Session & session)
     //todo    
     //auto
     LOG_INFO("todo notify client to create role !");
-    return AutoCreateRole(session);
+    return CreateRole(session);
 }
-int     LoginLogic::AutoCreateRole(Session & session)
+int     LoginLogic::CreateRole(Session & session)
 {    
-    //todo
     //init player
     db::Role * pRole = new db::Role();    
-    pRole->set_rid(session.GetUID());
-    LOG_INFO("todo init role = %lu data !",session.GetUID());
+    pRole->set_rid(session.GetUID());    
     session.AttachPlayerAgent(PlayerAgentPtr(new PlayerAgent(pRole,false)));    
+    session.GetPlayerAgent()->InitBirthPlayer();
     return 0;
 }
 int     LoginLogic::EnterPlaying(Session & session)
@@ -139,9 +142,9 @@ int     LoginLogic::EnterPlaying(Session & session)
     LOG_INFO("player = %lu  login sucess !");
     return -1;
 }
-int     LoginLogic::Logout(Session & session)
+int     LoginLogic::Logout(SessionPtr & session)
 {
-    switch(session.GetState())
+    switch(session->GetState())
     {            
         case  Session::PLAYER_STATE_PLAYING     :            
             break;
@@ -149,9 +152,9 @@ int     LoginLogic::Logout(Session & session)
             //err
             return -1;
     }
-    session.SetState(Session::PLAYER_STATE_OFFLINE);
+    session->SetState(Session::PLAYER_STATE_OFFLINE);
     /////////////////////////////////////////////////////////////////
-    LoginParam lp = {this,&session};
+    LoginParam lp = {this,session};
     int coid = CoroutineMgr::Instance().Create(::Logout,&lp);
     return CoroutineMgr::Instance().Resume(coid);
     return 0;

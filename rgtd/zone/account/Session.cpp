@@ -16,6 +16,11 @@ Session::Session(int src,SessionMgr* smgr):gate(src),sessionMgr(smgr)
     port = 0;
     state = PLAYER_STATE_INIT;
 }
+Session::~Session()
+{
+    LOG_DEBUG("real delete session uid = %lu",uid);
+}
+
 int       Session::Init(uint64_t uid_,const gate::GateConnection & ggc)
 {
     //set uid
@@ -76,7 +81,7 @@ int       Session::Kick(int reason)
     //todo notify client close connection
     LOG_DEBUG("kick uid = %lu reason = %u",GetUID(),reason);
     //delete flag
-    sessionMgr->GetLoginLogic().Logout(*this);
+    sessionMgr->GetLoginLogic().Logout(sessionMgr->GetSession(GetUID()));
     //---------------------------------------------------------------
     ResponseClient(gate::GateConnection::EVENT_CLOSE,
                    gate::GateConnection::CONNECTION_CLOSE_BY_DEFAULT); 

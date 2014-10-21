@@ -1,12 +1,8 @@
 #pragma once
-
-
-class PlayerAgent;
-class PlayerTaskLogic
+#include "PlayerLogicCenter.h"
+class PlayerTaskLogic : public PlayerLogic
 {
-public:
-    PlayerTaskLogic(PlayerAgent * p):player(p){}
-private:
-    PlayerAgent * player;
+public:    
+    PlayerTaskLogic(PlayerAgent* _pl,const string & nm):PlayerLogic(_pl,nm){}
 };
 

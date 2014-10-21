@@ -17,7 +17,8 @@ public:
     int StopSession(uint64_t uid);
     int CreateSession(uint64_t uid,int gateid,const gate::GateConnection & cnnx);
     int DeleteSession(uint64_t uid);
-    Session * FindSession(uint64_t    ulUID);    
+    Session * FindSession(uint64_t    ulUID);  
+    SessionPtr & GetSession(uint64_t);
     CSMsgHandler*   GetMsgHandler(uint32_t cmd);
     int       Dispatch(Session & session,const cs::CSMsg & csmsg);
     int       PackCSMsg(const cs::CSMsg & csmsg,Buffer & buffer);
