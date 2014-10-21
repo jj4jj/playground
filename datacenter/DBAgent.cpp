@@ -181,7 +181,7 @@ int   DBAgent::RegisterTable(string tableType)
     return 0;
 }
 
-int  DBAgent::Init(const DBAgentOption  & cao,MetaSerializer * seri)
+int  DBAgent::Init(const DBAgentOption  & cao,MetaSerializer * seri, bool createTable)
 {
     vector<MysqlMeta>    metas;
     serializer = seri;
@@ -203,6 +203,13 @@ int  DBAgent::Init(const DBAgentOption  & cao,MetaSerializer * seri)
     {
         LOG_ERROR("mysql thread start !");
         return -1;
+    }
+    if(createTable)
+    {
+        for(uint i = 0;i < tableTypes.size(); ++i)
+        {
+            CreateTable(tableTypes[i].c_str());
+        }
     }
     return 0;
 }

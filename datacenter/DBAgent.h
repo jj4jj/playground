@@ -17,7 +17,7 @@ class DBAgent
 public:
     int  AddListener(string typeName,DataListenerPtr ptr);
     int  RegisterTable(string  tableType);
-    int  Init(const DBAgentOption  & cao,MetaSerializer * seri);
+    int  Init(const DBAgentOption  & cao,MetaSerializer * seri,bool createTable = true);
     int  GenerateMysqlMetas(vector<MysqlMeta> & metas,const vector<string> & tables);
     int  Polling(int    iProcPerTick);
     int  Destroy();
