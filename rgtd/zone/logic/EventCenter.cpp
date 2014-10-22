@@ -89,8 +89,7 @@ uint32_t     EventCenter::FireEvent(EventCodeEnum iEventCode,
                 m_mpPlayerAgents.erase(ulParam);
             }
             ///////////////////////////////
-        }
-                
+        }                
         //there must has no player agent 
         if(secondsLater > 0 )
         {            
