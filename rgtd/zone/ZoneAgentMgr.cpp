@@ -8,7 +8,7 @@
 #include "proto/gen/db/include.h"
 #include "proto/gen/cs/include.h"
 #include "proto/gen/gate/include.h"
-
+#include "account/PlayerAgent.h"
 
 class AgentGateMsgDispatcher : public  ChannelMessageDispatcher
 {
@@ -216,5 +216,48 @@ int             ZoneAgentMgr::OnServerMessage(const ChannelMessage & msg)
     LOG_DEBUG("todo");
     return 0;
 }
+PlayerAgentPtr  ZoneAgentMgr::GetZonePlayerAgentPtr(uint64_t uid)
+{
+    //get zone mgr
+    uint16_t area = GetAreaFromRoleID(uid);
+    ZoneAgent* agent = GetZoneAgentByArea(area);
+    if(agent)
+    {
+        Session * sson = agent->GetSessionMgr().FindSession(uid);
+        if(sson)
+        {
+            return sson->GetPlayerAgentPtr();
+        }
+    }
+    return PlayerAgentPtr();
+}
+uint64_t    ZoneAgentMgr::GetRoleID(uint64_t uid,uint32_t area)
+{
+    ///area[16]uid[32]
+    uint64_t rid = (area&0xFFFF);
+    rid <<= 32;
+    rid |= (uid&0xFFFFFFFF);
+    return rid;
+}
+uint32_t    ZoneAgentMgr::GetUidFromRoleID(uint64_t rid)
+{
+    return rid&(0xFFFFFFFF);
+}
+uint16_t    ZoneAgentMgr::GetAreaFromRoleID(uint64_t rid)
+{
+    return (rid>>32)&0xFFFF;
+}
+uint16_t    ZoneAgentMgr::GetZoneIDFromArea(uint32_t area)
+{
+    //now area is zone
+    //when merge zone , it will find a map
+    //todo
+    return (uint16_t)area;
+}
+ZoneAgent *        ZoneAgentMgr::GetZoneAgentByArea(uint32_t area)
+{
+    return GetAgent(GetZoneIDFromArea(area));
+}
+
 #endif
 

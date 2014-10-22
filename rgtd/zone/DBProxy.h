@@ -22,6 +22,10 @@ struct DBProxyCallBack
         bzero(this,sizeof(*this));
     }
 };
+namespace   db
+{
+    class Role;
+};
 
 class ZoneAgentMgr;
 class DBProxy

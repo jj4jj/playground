@@ -9,6 +9,7 @@
 TimerMgr::TimerMgr()
 {
     m_lTickUs = 0L;
+    dwNextTimerID = 1;
     m_updatTickHandler = NULL;
     bzero(&m_old_sa,sizeof(m_old_sa));
 }
@@ -27,8 +28,14 @@ void TimerMgr::UpdateTick(int , siginfo_t *, void *)
     Time::now(tvNow);    
     int lElapseTime = Time::uspast(tvNow,mgr.m_lastTime);
     Time::usappend(mgr.m_curTime,lElapseTime);
+    mgr.UpdateMsTime();
     mgr.m_lastTime = tvNow;
     /////////////////////////////////////////////
+    //10ms
+    if(lElapseTime > 10000)
+    {
+        mgr.Expired();
+    }        
     if(mgr.m_updatTickHandler)
     {
         mgr.m_updatTickHandler(mgr.m_curTime,lElapseTime);
@@ -46,11 +53,81 @@ void TimerMgr::Destroy()
         LOG_DEBUG("destory timer mgr");
     }
 }
+int     TimerMgr::AddListener(int iEvent,TimerCallBackFunc listener)
+{
+    if(m_mpListeners.find(iEvent) == m_mpListeners.end())
+    {
+        m_mpListeners[iEvent] = listener;
+    }
+    else
+    {
+        LOG_ERROR("add listener repeat event = %d",iEvent);
+        return -1;
+    }
+    return 0;
+}
+void         TimerMgr::Expired()
+{
+    TimerMapItr it = m_mpTimers.begin();
+    while(it != m_mpTimers.end() &&
+          it->first <= m_curMsTime)
+    {        
+        uint32_t dwTimerID = it->second;
+        TimerMapItr cur = it++;
+        m_mpTimers.erase(cur);
+        ////////////////////////////////////////////////////////
+        TimerIDEventMapItr tit = m_mpTimerEvents.find(dwTimerID);
+        if(tit != m_mpTimerEvents.end())
+        {
+            TimerEvent te = tit->second;
+            m_mpTimerEvents.erase(tit);            
+            /////////////////////////////////////////////////////
+            if(te.cb)
+            {
+                te.cb(te.iEvent,te.ulParam);
+            }
+            else
+            {
+                //others
+                EventTimeListenerMapItr eit = m_mpListeners.find(te.iEvent);
+                if(eit != m_mpListeners.end())
+                {
+                    eit->second(te.iEvent,te.ulParam);
+                }
+            }            
+        }
+    }
+}
+uint32_t     TimerMgr::AddTimer(int msLater,int iEvent,TimerCallBackFunc func ,uint64_t ulParam )
+{
+    uint64_t expiredTime = m_curMsTime + msLater;
+    TimerEvent te;
+    te.dwTimerID = 0;
+    te.cb = func;
+    te.ulParam = ulParam;
+    te.iEvent = iEvent;
+    te.ulExpiredTime = expiredTime; //auto remove
+    
+    while(m_mpTimerEvents.find(dwNextTimerID) != m_mpTimerEvents.end())
+    {
+        ++dwNextTimerID;
+    }    
+    te.dwTimerID = dwNextTimerID;
+    m_mpTimers.insert(std::make_pair(dwNextTimerID,dwNextTimerID));
+    m_mpTimerEvents[dwNextTimerID] = te;
+    ++dwNextTimerID;
+    return te.dwTimerID;
+}
+void    TimerMgr::CancelTimer(uint32_t dwEventHandle)
+{
+    m_mpTimerEvents.erase(dwEventHandle);
+}
 int TimerMgr::Init(long lTickUs,UpdateTickHandler handler)
 {
     m_lTickUs = lTickUs;
     Time::now(m_curTime);
     Time::now(m_lastTime);
+    UpdateMsTime();
     struct sigaction sa;
     bzero(&sa,sizeof(sa));
     sa.sa_sigaction = TimerMgr::UpdateTick;

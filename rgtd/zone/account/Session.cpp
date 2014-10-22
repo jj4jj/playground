@@ -78,11 +78,13 @@ int       Session::Kick(int reason)
     {
         return -1;
     }
-    //todo notify client close connection
-    LOG_DEBUG("kick uid = %lu reason = %u",GetUID(),reason);
-    //delete flag
+    LOG_DEBUG("kick uid = %lu reason = %u [maybe todo notify reason]",GetUID(),reason);
+    if(player)
+    {
+        player->Detach();
+    }
     sessionMgr->GetLoginLogic().Logout(sessionMgr->GetSession(GetUID()));
-    //---------------------------------------------------------------
+    //-----------------------------------------------------------------
     ResponseClient(gate::GateConnection::EVENT_CLOSE,
                    gate::GateConnection::CONNECTION_CLOSE_BY_DEFAULT); 
     SetState(Session::PLAYER_STATE_KICKING);
@@ -91,7 +93,7 @@ int       Session::Kick(int reason)
 int       Session::AttachPlayerAgent(PlayerAgentPtr ptrPlayer)
 {
     player = ptrPlayer;
-    //todo sth
+    player->Attach();
     return 0;
 }
 

@@ -16,7 +16,7 @@ public:
     virtual void    OnAttach();
     virtual void    OnDetach();
     virtual void    OnEvent(int iEvent,int iParam = 0,void * arg = NULL);
-private:
+protected:
     PlayerAgent*    player;
     string          name;
 };

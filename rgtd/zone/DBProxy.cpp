@@ -116,6 +116,7 @@ int DBProxy::UpdateRole(uint64_t uid,const db::Role* pRole,int coid,int reason )
     {
         ret = CoroutineMgr::Instance().Yield();
     }
+    LOG_DEBUG("db proxy update role uid = %lu coid = %d reason = %d",uid,coid,reason);
     return ret;
 }
 int DBProxy::OnUpdateRole(int ret,uint64_t uid,int coid,int reason)
