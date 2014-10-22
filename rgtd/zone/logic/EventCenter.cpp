@@ -83,6 +83,7 @@ uint32_t     EventCenter::FireEvent(EventCodeEnum iEventCode,
         //online 
         else
         {
+            LOG_DEBUG("erase uid = %lu cache agent !",ulParam);
             m_mpPlayerAgents.erase(ulParam);
             ///////////////////////////////
         }
@@ -115,6 +116,7 @@ uint32_t     EventCenter::FireEvent(EventCodeEnum iEventCode,
             player->GetLogicCenter().NotifyEvent(iEventCode,ulParam,pszReceiverName,arg);
             if(timeExpired)
             {
+                LOG_DEBUG("erase uid = %lu cache agent !",ulParam);
                 m_mpPlayerAgents.erase(ulParam);
             }
         }
