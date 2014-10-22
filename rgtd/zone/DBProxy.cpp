@@ -62,7 +62,7 @@ int DBProxy::OnGetRole(int ret,void * obj,uint64_t uid, int reason, int coid,uin
     }
     else
     {
-        LOG_ERROR("no coid get role uid = %lu ret = %d reason = %d trigger = %lu",uid,ret,reason,ulTrigger);
+        LOG_INFO("no coid get role uid = %lu ret = %d reason = %d trigger = %lu",uid,ret,reason,ulTrigger);
     }    
     return 0;
 }
@@ -93,17 +93,17 @@ int DBProxy::OnInsertRole(int ret,uint64_t uid,int coid,int reason)
     }
     else
     {
-        LOG_ERROR("no coid insert role uid = %lu ret = %d reason = %d trigger = %lu",uid,ret);
+        LOG_INFO("no coid insert role uid = %lu ret = %d reason = %d trigger = %lu",uid,ret);
     }
     return 0;
 }
 
-int DBProxy::UpdateRole(uint64_t uid,const db::Role* pRole,int coid)
+int DBProxy::UpdateRole(uint64_t uid,const db::Role* pRole,int coid,int reason )
 {
     DBProxyCallBack  dcb;
     vector<string>  all;
     dcb.uid = uid;
-    dcb.reason = 0;
+    dcb.reason = reason;
     dcb.coid = coid;
     dcb.trigger = 0;    
     int ret = zoneMgr->GetDBAgent().Update((void*)pRole,all,Buffer((char*)&dcb,sizeof(dcb)));
@@ -126,7 +126,7 @@ int DBProxy::OnUpdateRole(int ret,uint64_t uid,int coid,int reason)
     }
     else
     {
-        LOG_ERROR("no coid update role uid = %lu ret = %d reason = %d trigger = %lu",uid,ret);
+        LOG_INFO("no coid update role uid = %lu ret = %d reason = %d trigger = %lu",uid,ret);
     }
     return 0;
 }

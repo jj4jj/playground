@@ -7,6 +7,9 @@ enum    RoleDBReason
 {
     ROLE_DB_REASON_DEFAULT    =   0,
     ROLE_DB_GET_LOGIN         =   1,
+    ROLE_DB_UPDATE_LOGOUT         =   2,
+    ROLE_DB_UPDATE_PERIOD         =   3,
+    
 };
 struct DBProxyCallBack
 {
@@ -36,7 +39,7 @@ public:
     MetaSerializer::MetaObjectPtr     GetRoleObjectPtr(uint64_t uid);
     int InsertRole(uint64_t uid,const db::Role* pRole,int coid = 0 );
     int OnInsertRole(int ret,uint64_t uid,int coid,int reason);
-    int UpdateRole(uint64_t uid,const db::Role* pRole,int coid = 0 );
+    int UpdateRole(uint64_t uid,const db::Role* pRole,int coid = 0,int reason = 0);
     int OnUpdateRole(int ret,uint64_t uid,int coid,int reason);
 
 

@@ -3,6 +3,14 @@
 #include "proto/gen/db/include.h"
 #include "logic/PlayerLogicCenter.h"
 
+/*
+player is all role data operator
+////////////////////////////////
+any logic want to hold player data
+must register in player logic center .
+
+*/
+
 class PlayerAgent
 {
 public:
@@ -19,12 +27,12 @@ public:
 public:
     uint64_t    GetUID();
     uint32_t    GetAreaID();      
-    const string  &    GetName();
+    const       string  &    GetName();
     inline      PlayerLogicCenter &  GetLogicCenter(){return *ptrLogic;}
     const db::Role * GetRoleData(){return pRoleData;}
     db::Role *       MutableRoleData(){ m_iDirty++ ;return pRoleData;}    
-    inline  bool             IsDirty(){return m_iDirty > 0;}
-    inline  void    CleanDirty(){m_iDirty = 0;}
+    inline  bool     IsDirty(){return m_iDirty > 0;}
+    inline  void     CleanDirty(){m_iDirty = 0;}
 private:
     PlayerLogicCenterPtr          ptrLogic;    
 private:

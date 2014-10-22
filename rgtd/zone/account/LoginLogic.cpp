@@ -93,7 +93,7 @@ TRY_SAVE_PLAYER:
     int ret = login->zoneMgr->GetDBProxy().UpdateRole(
             session->GetUID(),
             session->GetPlayerAgent()->GetRoleData(),
-            co->iID);
+            co->iID,ROLE_DB_UPDATE_LOGOUT);
     --retry;
     LOG_INFO("update role ret = %d uid = %lu .",ret,session->GetUID());
     if( ret < 0 )

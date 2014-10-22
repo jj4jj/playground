@@ -75,6 +75,11 @@ void     PlayerLogicCenter::NotifyEvent(int iEvent,int iParam,const char* pszLog
 void     PlayerLogicCenter::InitLogic()
 {
     Register("task",PlayerLogicPtr(new PlayerTaskLogic(host,string("task"))));
+    //other
+
+
+
+    
 }
 int      PlayerLogicCenter::Register(const char* pszLogicName,PlayerLogicPtr logic)
 {
