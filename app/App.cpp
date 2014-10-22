@@ -129,7 +129,7 @@ int     App::Closing(int closingReason)
 //us
 int     App::Tick(int64_t lElapseUsTime)
 {    
-    ctx->runtime += lElapseUsTime;
+    Time::usappend(ctx->runTime,lElapseUsTime);
     return OnTick(lElapseUsTime);
 }
 int     App::Destroy()
@@ -199,9 +199,10 @@ string  App::Ctrl(const std::vector<string> & cmdLine)
     }
     else if(mainCMD == "rtime")
     {
-        snprintf(buffer,sizeof(buffer),"%d hours %d min %d seconds",ctx->runtime/3600,
-                (ctx->runtime%3600)/60,
-                 ctx->runtime%60);
+        int runseconds = ctx->runTime.tv_sec;
+        snprintf(buffer,sizeof(buffer),"%d hours %d min %d seconds",runseconds/3600,
+                (runseconds%3600)/60,
+                 runseconds%60);
     }
     else
     {

@@ -21,14 +21,13 @@ public:
     int       tickCountUs;
     int       tickPollCount;
     struct    timeval  curTime;   //this tick time        
-    uint32_t  runtime;
     int       uniq_process;
     string    lockFilePath;
     int       hook_coredump;
 
     ///////////////////////////////////////
     int       closing;
-
+    struct    timeval  runTime;   //this tick time        
 public:
     //read config and init the common attr
     int     Init(const char * pszConfigFile);
