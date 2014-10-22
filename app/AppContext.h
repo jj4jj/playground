@@ -20,7 +20,8 @@ public:
     std::vector<ChannelConfig> channels;
     int       tickCountUs;
     int       tickPollCount;
-    struct timeval  curTime;   //this tick time        
+    struct    timeval  curTime;   //this tick time        
+    uint32_t  runtime;
     int       uniq_process;
     string    lockFilePath;
     int       hook_coredump;

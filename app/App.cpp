@@ -129,6 +129,7 @@ int     App::Closing(int closingReason)
 //us
 int     App::Tick(int64_t lElapseUsTime)
 {    
+    ctx->runtime += lElapseUsTime;
     return OnTick(lElapseUsTime);
 }
 int     App::Destroy()
@@ -184,27 +185,30 @@ string  App::Ctrl(const std::vector<string> & cmdLine)
 {
     string mainCMD = cmdLine[0];
     LOG_DEBUG("recv command control = [%s]",cmdLine[0].c_str());    
+    char buffer[128];
+    string rsp = mainCMD + ":";
     if(mainCMD == "quit")
     {
         ctx->closing = 1;
         return "system is closing ...";
     }
-    if(mainCMD == "test")
+    else if(mainCMD == "time")
     {
-        if(cmdLine[1] == "lock-read")
-        {
-            m_lockFile.Seek();
-            char buffer[32];
-            m_lockFile.GetLine(buffer,sizeof(buffer));
-            return string(buffer);
-        }
-        else
-        {
-            return string("not support test:")+cmdLine[1];
-        }
+        rsp += Time(GetTime()).ToString();
+        return rsp;
     }
-
-    return OnCtrl(cmdLine);
+    else if(mainCMD == "rtime")
+    {
+        snprintf(buffer,sizeof(buffer),"%d hours %d min %d seconds",ctx->runtime/3600,
+                (ctx->runtime%3600)/60,
+                 ctx->runtime%60);
+    }
+    else
+    {
+        return OnCtrl(cmdLine);
+    }
+    rsp += buffer;
+    return rsp;
 }
 int    App::InitLockFile()
 {

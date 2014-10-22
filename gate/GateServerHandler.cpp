@@ -118,6 +118,9 @@ GateServerHandler::GateServerHandler(ChannelMsgProxy * p,int iMaxConnections)
     m_pChannelProxy = p;
     /////////////////////////////////////////
     iConnxMaxIdleTime = gsc->iIdleCheckPeriod;        
+
+    downloadsize = 0;
+    uploadsize = 0;
 }
 
 
@@ -201,7 +204,7 @@ int     GateServerHandler::OnClientDataRecv(TcpSocket &   client,const Buffer & 
         client.Close();
         return -1;
     }
-
+    uploadsize += recvBuffer.iUsed;
     int iRet = 0;
     #define GATE_MESSAGE_PREFIX_LEN  (sizeof(uint16_t))
     //msg:lenth+data
@@ -513,6 +516,7 @@ int         GateServerHandler::SendFrameToClient(Connection* pConn,const GateFra
     {
         return -1;
     }
+    downloadsize += frame.size;
     return    pConn->cliSocket.Send(Buffer(frame.pData,frame.size));
 }
 int         GateServerHandler::SendToClient(Connection* pConn,gate::GateAuth & ga)

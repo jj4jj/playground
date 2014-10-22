@@ -58,7 +58,33 @@ int        GateServer::OnStart()
 //control command process
 string     GateServer::OnCtrl(const std::vector<string> & cmdLine)
 {
-    return "not supported !";
+    char buffer[128];
+    string rsp = cmdLine[0];
+    rsp += ":";    
+    GateServerHandler * h = (GateServerHandler*)((GateServerContext*)GetContext())->ptrHandler.get();
+    if(cmdLine[0] == "downspeed")
+    {
+        snprintf(buffer,sizeof(buffer),"%f MB/s",h->downloadsize*1.0/GetApp()->GetTime().tv_sec);
+    }
+    else if(cmdLine[0] == "upspeed")
+    {
+        snprintf(buffer,sizeof(buffer),"%f MB/s",h->uploadsize*1.0/GetApp()->GetTime().tv_sec);
+    }
+    else if(cmdLine[0] == "downsize")
+    {
+        snprintf(buffer,sizeof(buffer),"%f MB",h->downloadsize*1.0/1024);
+    }
+    else if(cmdLine[0] == "upsize")
+    {
+        snprintf(buffer,sizeof(buffer),"%f MB",h->uploadsize*1.0/1024);
+    }
+    else
+    {
+        rsp += "not supported !";
+        return rsp;    
+    }
+    rsp += buffer;
+    return rsp;
 }
 //tick 
 int     GateServer::OnTick(int64_t lElapseTime)

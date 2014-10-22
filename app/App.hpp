@@ -84,8 +84,8 @@ protected :
     virtual    ~App();
     DeclareSingltonSupport(App)
 private:
-    AppContext * ctx;
-    UdpDriver  m_consoleDrv;
+    AppContext *                ctx;
+    UdpDriver                   m_consoleDrv;
     ChannelMsgProxy             proxy;
     File                        m_lockFile;
     //////////////////////////////////////////////////////////////////////////////////

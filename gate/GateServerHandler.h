@@ -75,6 +75,8 @@ private:
     int     m_iLastFreeIdx ;
     ChannelMsgProxy * m_pChannelProxy;
 public:
-    uint32_t                iConnxMaxIdleTime;
+    uint32_t        iConnxMaxIdleTime;
+    uint64_t        downloadsize;
+    uint64_t        uploadsize;
 }; 
 

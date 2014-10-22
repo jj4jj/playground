@@ -54,7 +54,7 @@ int     AppContext::Init(const char * pszConfigFile)
 
     /////////////////////////////////////////////////////////////
     closing = 0;
-
+    runtime = 0;
 
     //custom config            
 
