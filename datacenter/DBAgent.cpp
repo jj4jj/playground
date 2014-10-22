@@ -409,28 +409,102 @@ int  DBAgent::CreateObjectFromMysql(MysqlResponse & rsp,void ** ppObj)
     }
     //ok
     *ppObj = ptrObj.get();
-    string primarykey ;
-    if(GetPrimaryKey(*ppObj,primarykey))
+    string objectKey ;
+    if(GetObjectKey(*ppObj,objectKey))
     {
         m_ptrTmpObj = ptrObj;
     }
     else
     {
-        m_mpGetObjects[primarykey] = ptrObj;
+        LOG_DEBUG("insert object key = %s type = %s to hash cache !",
+                objectKey.c_str(),objTypeName.c_str());
+        m_mpGetObjects[objectKey] = ptrObj;
     }
     return 0;   
 }
-
-int  DBAgent::GetPrimaryKey(void* obj,string & key)
+int            DBAgent::GetObjectKey(void* obj,string & key)
 {
     Message * msg = (Message*) obj;
+    key = "";
     const Descriptor* desc = msg->GetDescriptor();
     std::vector<string> &   pks = serializer->GetTypePrimaryKey(desc);
     if(pks.empty())
     {
         return -1;
     }
+    for(uint i = 0; i < pks.size(); ++i)
+    {
+        if(i > 0)
+        {
+            key += ":";
+        }
+        const FieldDescriptor*    field = desc->FindFieldByName(pks[i]);
+        if(!msg->GetReflection()->HasField(*msg,field))
+        {
+            LOG_ERROR("msg = %s has no field = %s",desc->name().c_str(),field->name().c_str());
+            return -1;
+        }
+        char keyBuffer[512];
+        switch(field->cpp_type())
+        {
+            case FieldDescriptor::CPPTYPE_INT32:
+            {
+                int32_t v = msg->GetReflection()->GetInt32(*msg,field);
+                snprintf(keyBuffer,sizeof(keyBuffer),"%d",v);                
+                break;
+            }
+            case FieldDescriptor::CPPTYPE_INT64:
+            {
+                int64_t v = msg->GetReflection()->GetInt64(*msg,field);
+                snprintf(keyBuffer,sizeof(keyBuffer),"%ld",v);                
+                break;
+            }
+            case FieldDescriptor::CPPTYPE_ENUM:
+            {
+                const EnumValueDescriptor * evd  = msg->GetReflection()->GetEnum(*msg,field);
+                int v = evd->number();
+                snprintf(keyBuffer,sizeof(keyBuffer),"%d",v);                
+                break;
+            }
+            case FieldDescriptor::CPPTYPE_UINT32:
+            {
+                uint32_t v = msg->GetReflection()->GetUInt32(*msg,field);
+                snprintf(keyBuffer,sizeof(keyBuffer),"%u",v);                
+                break;
+            }
+            case FieldDescriptor::CPPTYPE_UINT64:
+            {
+                uint64_t v = msg->GetReflection()->GetUInt64(*msg,field);
+                snprintf(keyBuffer,sizeof(keyBuffer),"%lu",v);                
+                break;
+            }
+            case FieldDescriptor::CPPTYPE_STRING:
+            {
+                snprintf(keyBuffer,sizeof(keyBuffer),"'%s'",msg->GetReflection()->GetString(*msg,field).c_str());                
+                break;
+            }                
+            case FieldDescriptor::CPPTYPE_DOUBLE:
+            case FieldDescriptor::CPPTYPE_FLOAT:
+            default:
+                LOG_ERROR("field = %s type = %d is not supported !",
+                    field->name().c_str(),field->cpp_type());
+                return -1;
+                break;                    
+        }
+        key += keyBuffer;          
+    }
+    return 0;
+}
+int  DBAgent::GetPrimaryKeyCond(void* obj,string & key)
+{
+    Message * msg = (Message*) obj;
     key = "";
+    const Descriptor* desc = msg->GetDescriptor();
+    std::vector<string> &   pks = serializer->GetTypePrimaryKey(desc);
+    if(pks.empty())
+    {
+        return -1;
+    }
     for(uint i = 0; i < pks.size(); ++i)
     {
         if(i > 0)
@@ -498,12 +572,31 @@ int  DBAgent::GetPrimaryKey(void* obj,string & key)
 }
 MetaSerializer::MetaObject*    DBAgent::FindObject(const string & key)
 {
+    if(key.length() == 0)
+    {
+        return NULL;
+    }
     if(m_mpGetObjects.find(key) != m_mpGetObjects.end())
     {
         return m_mpGetObjects[key].get();
     }
     return NULL;
 }
+MetaSerializer::MetaObjectPtr  DBAgent::GetObjectPtr(MetaSerializer::MetaObject * obj)
+{
+    string key;
+    string sEmpty = "";
+    if(GetObjectKey(obj,key))
+    {
+        return m_mpGetObjects[sEmpty];
+    }
+    if(m_mpGetObjects.find(key) != m_mpGetObjects.end())
+    {
+        return m_mpGetObjects[key];
+    }
+    return m_mpGetObjects[sEmpty];  
+}
+
 void        DBAgent::FreeObject(const string & key)
 {
     m_mpGetObjects.erase(key);
@@ -511,7 +604,7 @@ void        DBAgent::FreeObject(const string & key)
 MetaSerializer::MetaObject*    DBAgent::FindObject(MetaSerializer::MetaObject * obj)
 {
     string key;
-    if(GetPrimaryKey(obj,key))
+    if(GetObjectKey(obj,key))
     {
         return NULL;
     }
@@ -529,7 +622,7 @@ int  DBAgent::Get(void * obj,vector<string> & fields,const Buffer & cb,const cha
 {
     //gen key
     string key ;
-    if(GetPrimaryKey(obj,key))
+    if(GetPrimaryKeyCond(obj,key))
     {
         if(pszWhereCond)
         {
@@ -569,7 +662,7 @@ int  DBAgent::Remove(void * obj,const Buffer & cb)
 {
     //gen key
     string key ;
-    if(GetPrimaryKey(obj,key))
+    if(GetPrimaryKeyCond(obj,key))
     {
         return -1;
     }
@@ -600,7 +693,7 @@ int  DBAgent::Update(void * obj,vector<string> & fields,const Buffer &  cb)
 {
     //gen key
     string key ;
-    if(GetPrimaryKey(obj,key))
+    if(GetPrimaryKeyCond(obj,key))
     {
         return -1;
     }
@@ -635,7 +728,7 @@ int  DBAgent::Insert(void * obj,const Buffer &  cb)
 {
     //gen key
     string key ;
-    if(GetPrimaryKey(obj,key))
+    if(GetPrimaryKeyCond(obj,key))
     {
         return -1;
     }

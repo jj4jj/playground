@@ -251,11 +251,29 @@ int  CacheAgent::GetObjectKey(void* obj,string & key)
 }
 MetaSerializer::MetaObject*    CacheAgent::FindObject(const string & key)
 {
+    if(key.length())
+    {
+        return NULL;
+    }
     if(m_mpGetObjects.find(key) != m_mpGetObjects.end())
     {
         return m_mpGetObjects[key].get();
     }
     return NULL;
+}
+MetaSerializer::MetaObjectPtr  CacheAgent::GetObjectPtr(MetaSerializer::MetaObject * obj)
+{
+    string key;
+    string sEmpty = "";
+    if(GetObjectKey(obj,key))
+    {
+        return m_mpGetObjects[sEmpty];
+    }
+    if(m_mpGetObjects.find(key) != m_mpGetObjects.end())
+    {
+        return m_mpGetObjects[key];
+    }
+    return m_mpGetObjects[sEmpty];
 }
 void        CacheAgent::FreeObject(const string & key)
 {

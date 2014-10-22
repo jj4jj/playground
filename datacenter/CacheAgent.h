@@ -103,6 +103,7 @@ public:
                     redisReply* reply,Buffer & ucb,bool timeout); 
     MetaSerializer::MetaObject*    FindObject(const string & key);
     MetaSerializer::MetaObject*    FindObject(MetaSerializer::MetaObject * obj);
+    MetaSerializer::MetaObjectPtr  GetObjectPtr(MetaSerializer::MetaObject * obj);
     void           FreeObject(const string & key);
     int     CreateCallBack(Buffer & resultCB,CacheCollectionType type,
             CacheCallBackTypeCmd cmd,

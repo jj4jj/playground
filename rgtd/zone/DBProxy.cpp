@@ -14,6 +14,12 @@ db::Role*   DBProxy::FindRoleObject(uint64_t uid)
     role.set_rid(uid);
     return  (db::Role*)zoneMgr->GetDBAgent().FindObject(&role);
 }
+MetaSerializer::MetaObjectPtr     DBProxy::GetRoleObjectPtr(uint64_t uid)
+{
+    db::Role   role;
+    role.set_rid(uid);
+    return   zoneMgr->GetDBAgent().GetObjectPtr(&role);
+}
 int DBProxy::GetRole(uint64_t uid,int reason,int coid,uint64_t ulTrigger )
 {    
     vector < string > all;
@@ -37,7 +43,7 @@ int DBProxy::GetRole(uint64_t uid,int reason,int coid,uint64_t ulTrigger )
     }
     return ret;
 }
-int DBProxy::CommonResume(int ret,uint64_t uid,int coid,int reason)
+int DBProxy::CommonCoroutineResume(int ret,uint64_t uid,int coid,int reason)
 {
     Coroutine*  co = CoroutineMgr::Instance().Find(coid);
     if(!co)
@@ -52,7 +58,7 @@ int DBProxy::OnGetRole(int ret,void * obj,uint64_t uid, int reason, int coid,uin
 {
     if( coid != 0 )
     {
-        return CommonResume(ret,uid,coid,reason);
+        return CommonCoroutineResume(ret,uid,coid,reason);
     }
     else
     {
@@ -83,7 +89,7 @@ int DBProxy::OnInsertRole(int ret,uint64_t uid,int coid,int reason)
 {
     if(coid != 0)
     {
-        return CommonResume(ret,uid,coid,reason);
+        return CommonCoroutineResume(ret,uid,coid,reason);
     }
     else
     {
@@ -116,7 +122,7 @@ int DBProxy::OnUpdateRole(int ret,uint64_t uid,int coid,int reason)
 {
     if(coid != 0)
     {
-        return CommonResume(ret,uid,coid,reason);
+        return CommonCoroutineResume(ret,uid,coid,reason);
     }
     else
     {
