@@ -83,8 +83,11 @@ uint32_t     EventCenter::FireEvent(EventCodeEnum iEventCode,
         //online 
         else
         {
-            LOG_DEBUG("erase uid = %lu cache agent !",ulParam);
-            m_mpPlayerAgents.erase(ulParam);
+            if(m_mpPlayerAgents.find(ulParam) != m_mpPlayerAgents.end())
+            {
+                LOG_DEBUG("erase uid = %lu cache agent !",ulParam);
+                m_mpPlayerAgents.erase(ulParam);
+            }
             ///////////////////////////////
         }
                 

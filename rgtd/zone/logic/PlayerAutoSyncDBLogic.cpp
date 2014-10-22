@@ -18,17 +18,19 @@ void    PlayerAutoSyncDBLogic::OnDetach()
 void    PlayerAutoSyncDBLogic::OnEvent(int iEvent,int iParam ,void * arg )
 {
     //sync
-    if(EVENT_PLAYER_SYNC_DB == iEvent &&
-       player->IsDirty() )
+    if(EVENT_PLAYER_SYNC_DB == iEvent )
     {
         LOG_INFO("auto sysnc db logic event handing ... !");
-        int ret = db->UpdateRole(player->GetUID(),player->GetRoleData(),0,ROLE_DB_UPDATE_PERIOD);
-        if(ret)
+        if(player->IsDirty())
         {
-            LOG_ERROR("sync player = %lu db error = %d",player->GetUID(),ret);
-            return ;
+            int ret = db->UpdateRole(player->GetUID(),player->GetRoleData(),0,ROLE_DB_UPDATE_PERIOD);
+            if(ret)
+            {
+                LOG_ERROR("sync player = %lu db error = %d",player->GetUID(),ret);
+                return ;
+            }
+            player->CleanDirty();  
         }
-        player->CleanDirty();  
         m_dwTimerID = EventCenter::Instance().FireEvent(EVENT_PLAYER_SYNC_DB,name.c_str(),300,player->GetUID());    
     }
 }

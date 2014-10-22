@@ -97,6 +97,10 @@ void         TimerMgr::Expired()
                 }
             }            
         }
+        else
+        {
+            LOG_INFO("timer id = %u has been canccel !",dwTimerID);
+        }
     }
 }
 uint32_t     TimerMgr::AddTimer(int msLater,int iEvent,TimerCallBackFunc func ,uint64_t ulParam )
@@ -122,6 +126,7 @@ uint32_t     TimerMgr::AddTimer(int msLater,int iEvent,TimerCallBackFunc func ,u
 }
 void    TimerMgr::CancelTimer(uint32_t dwEventHandle)
 {
+    LOG_DEBUG("canccel timer id = %u",dwEventHandle);
     m_mpTimerEvents.erase(dwEventHandle);
 }
 int TimerMgr::Init(long lTickUs,UpdateTickHandler handler)
