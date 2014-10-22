@@ -31,12 +31,22 @@ public:
         int         bState;//invalid ? init ? authorized ? 
         uint64_t    ulUid;//uid
         string      sToken;
-        time_t      tLastActTime;
         int         iArea;
+        time_t      tLastActTime;
+
+        //every 5 s recv package num statistic
+        uint32_t    dwRecvNum;
+        uint32_t    dwSendNum;
+        uint32_t    dwLastPeriodRecvNum;
+        uint32_t    dwLastPeriodSendNum;
+        time_t      tLastPeriodTime;        
+        uint32_t    dwCurrentRecvSpeed;
+        uint32_t    dwCurrentSendSpeed;
     public:
         Connection();
         ~Connection();
-        void Init();        
+        void Init();    
+        void UpdateStat(bool recv);
         void Close();
     };
 public:

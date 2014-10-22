@@ -24,7 +24,7 @@ GateServerHandler::Connection::Connection()
 GateServerHandler::Connection::~Connection()
 {
     recvBuffer.Destroy();
-} 
+}
 void GateServerHandler::Connection::Init()
 {
     iIdx = -1;
@@ -36,7 +36,38 @@ void GateServerHandler::Connection::Init()
     ///////////////////////
     tLastActTime = 0;
     sToken = "";
+
+    dwRecvNum = 0 ;
+    dwSendNum = 0 ;
+    dwLastPeriodRecvNum = 0 ;
+    dwLastPeriodSendNum = 0 ;
+    tLastPeriodTime = 0 ;     
+    dwCurrentRecvSpeed = 0;
+    dwCurrentSendSpeed = 0;    
 }
+#define CONNECTION_STAT_PERIOD_TIME     (5)
+void GateServerHandler::Connection::UpdateStat(bool recv)
+{
+    tLastActTime = GetApp()->GetTime().tv_sec;
+    if(recv)
+    {
+        dwRecvNum++;        
+    }
+    else
+    {
+        dwSendNum++;
+    }
+    if(tLastPeriodTime + CONNECTION_STAT_PERIOD_TIME <= tLastActTime)
+    {
+        //get current speed
+        dwCurrentRecvSpeed = (dwRecvNum - dwLastPeriodRecvNum)/CONNECTION_STAT_PERIOD_TIME;
+        dwCurrentSendSpeed = (dwSendNum - dwLastPeriodSendNum)/CONNECTION_STAT_PERIOD_TIME;
+        dwLastPeriodRecvNum = dwRecvNum;
+        dwLastPeriodSendNum = dwSendNum;
+        tLastPeriodTime = tLastActTime;
+    }
+}
+
 void GateServerHandler::Connection::Close()
 {
     switch(bState)
@@ -197,6 +228,7 @@ int     GateServerHandler::OnClientMessage(GateServerHandler::Connection* pConn,
 {
 
     LOG_DEBUG("recv connx uid = %u msg = %d state = %d" ,pConn->ulUid,iMsgLen,pConn->bState);
+    pConn->UpdateStat(true);
     switch(pConn->bState)
     {        
         case STATE_CONNECTED:
@@ -430,6 +462,7 @@ void        GateServerHandler::ForwardData(Connection* pConn,const Buffer& buffe
 }
 int         GateServerHandler::SendFrameToClient(Connection* pConn,const GateFrame & frame)
 {
+    pConn->UpdateStat(false);
     uint16_t wMsgLen = htons(frame.size);
     if(pConn->cliSocket.Send(Buffer((char*)&wMsgLen,sizeof(GateFrame::FrameLength))))
     {

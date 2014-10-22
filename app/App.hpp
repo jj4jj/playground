@@ -52,7 +52,7 @@ public:
     virtual void    OnCoreDump();
 /////////////////////////////////////////////////////////////////////////////////
 public:
-    inline  timeval &   Getime()
+    inline  timeval &   GetTime()
     {
         return  ctx->curTime;
     }  
