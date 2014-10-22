@@ -9,6 +9,7 @@
 #if 1
 void    EventCenter::OnTimer(int iEvent,uint64_t ulParam)
 {
+    LOG_DEBUG("OnTimer event = %d timer param = %lu",iEvent,ulParam);
     EventCenter::Instance().OnDelayTimerExpired(iEvent,ulParam);
 }
 #endif
@@ -22,8 +23,9 @@ int EventCenter::Init()
     timerMgr = TimerMgr::instance();
     return 0;
 }
-int     EventCenter::OnDelayTimerExpired(int iEventCode,uint64_t )
+int     EventCenter::OnDelayTimerExpired(int iEventCode,uint64_t ulParam )
 {
+    LOG_DEBUG("on delay fire event = %d timer param = %lu",iEventCode,ulParam);
     if(m_mpDelayEventParams.find(iEventCode) == m_mpDelayEventParams.end())
     {
         LOG_ERROR("delay event code = %d is missing !",iEventCode);
@@ -31,12 +33,15 @@ int     EventCenter::OnDelayTimerExpired(int iEventCode,uint64_t )
     }
     DelayEventParam dep = m_mpDelayEventParams[iEventCode];
     m_mpDelayEventParams.erase(iEventCode);
-    return FireEvent((EventCodeEnum)iEventCode,dep.reciever.c_str(),0,dep.ulParam,dep.arg);
+    return FireEvent((EventCodeEnum)iEventCode,dep.reciever.c_str(),0,dep.ulParam,dep.arg,true);
 }
 //if name is null , broad cast , seconds is 0 then deliver right now , ...
 //return timerid if delay
-uint32_t     EventCenter::FireEvent(EventCodeEnum iEventCode,const char* pszReceiverName ,int secondsLater ,uint64_t ulParam ,void* arg )
+uint32_t     EventCenter::FireEvent(EventCodeEnum iEventCode,
+        const char* pszReceiverName ,int secondsLater ,
+        uint64_t ulParam ,void* arg,bool timeExpired )
 {
+    LOG_DEBUG("fire event = %d delay = %d param = %lu",iEventCode,secondsLater,ulParam);
     int ret = 0;
     if( iEventCode > EVENT_TEST_MIN && iEventCode < EVENT_TEST_MAX)
     {
@@ -52,29 +57,39 @@ uint32_t     EventCenter::FireEvent(EventCodeEnum iEventCode,const char* pszRece
         }
         //must be online palyer when a delay event comes
         PlayerAgentPtr player = zoneMgr->GetZonePlayerAgentPtr(ulParam);
-        if(!player && secondsLater > 0)
-        {
-            LOG_ERROR("player is not online event = %d delay = %d",iEventCode,secondsLater);
-            return (uint32_t)-1;
-        }
-        //if delay event expired  , seconds is 0  if 
-        if(m_mpPlayerAgents.find(ulParam) == m_mpPlayerAgents.end() &&
-           !player )
-        {
-            LOG_ERROR("player = %lu not found event = %d ",ulParam,iEventCode);
-            return (uint32_t)-1;
-        }
 
-        //get valid player agent
-        if(!player)
+        //offline
+        if(!player )
         {
-            player = m_mpPlayerAgents[ulParam];
+            if(secondsLater > 0)
+            {
+                LOG_ERROR("player is not online event = %d delay = %d",iEventCode,secondsLater);
+                return (uint32_t)-1;
+            }
+            else
+            {
+                //must have a cache (doing)
+                if(m_mpPlayerAgents.find(ulParam) == m_mpPlayerAgents.end())
+                {
+                    LOG_ERROR("player is not online adn also no player cache event = %d delay = %d",iEventCode,secondsLater);
+                    return (uint32_t)-1;
+                }
+                else
+                {
+                    player = m_mpPlayerAgents[ulParam];
+                }                
+            }
+        }
+        //online 
+        else
+        {
+            m_mpPlayerAgents.erase(ulParam);
+            ///////////////////////////////
         }
                 
         //there must has no player agent 
         if(secondsLater > 0 )
-        {
-            m_mpPlayerAgents[ulParam] = player;
+        {            
             //store
             DelayEventParam delayParam;
             delayParam.ulParam = ulParam;
@@ -88,14 +103,20 @@ uint32_t     EventCenter::FireEvent(EventCodeEnum iEventCode,const char* pszRece
                 LOG_WARN("delay event code = %d is already event queue . cover it .",iEventCode);
             }
             //timer
-            uint32_t dwTimerID = timerMgr->AddTimer(secondsLater*1000,iEventCode);
-            m_mpDelayEventParams[iEventCode] = delayParam;\
+            uint32_t dwTimerID = timerMgr->AddTimer(secondsLater*1000,iEventCode,EventCenter::OnTimer);
+            m_mpDelayEventParams[iEventCode] = delayParam;
+            //cache player
+            m_mpPlayerAgents[ulParam] = player;            
             return dwTimerID;
         }
         else
         {
             //right now 
             player->GetLogicCenter().NotifyEvent(iEventCode,ulParam,pszReceiverName,arg);
+            if(timeExpired)
+            {
+                m_mpPlayerAgents.erase(ulParam);
+            }
         }
     }
     else if( iEventCode > EVENT_AREA_MIN && iEventCode < EVENT_AREA_MAX)

@@ -73,8 +73,13 @@ int             ZoneAgentMgr::Init()
 {            
     AgentContext * contxt = (AgentContext *)GetApp()->GetContext();
 
-
-    int ret = login.Init(this);
+    int    ret = EventCenter::Instance().Init();
+    if(ret) 
+    {
+        LOG_ERROR("event center init error !");
+        return -1;
+    }
+    ret = login.Init(this);
     if(ret)
     {
         LOG_ERROR("login init error !");
@@ -85,12 +90,12 @@ int             ZoneAgentMgr::Init()
     m_cache = &GetAgentServer().cache;
     //
 
+    //bind db handler
     m_db->AddListener(string("Role"),DataListenerPtr( new RoleDBListener(this)));
     m_db->AddListener(string("Account"),DataListenerPtr(new AccountDBListener(this,ACCOUNT_DB)));
     m_db->AddListener(string("AccountLR"),DataListenerPtr(new AccountDBListener(this,ACCOUNT_LR)));
     m_db->AddListener(string("AccountRL"),DataListenerPtr(new AccountDBListener(this,ACCOUNT_RL)));
     
-    //bind db handler
     //bind cache handler
 
 
@@ -110,6 +115,7 @@ int             ZoneAgentMgr::Init()
             LOG_ERROR("zone agent id = %u add error !",zone_areas[i]);
             return -1;
         }
+        //init all zone
         if(zoneAgentPtr->Init())
         {
             LOG_ERROR("zone agent id = %u init error !",zone_areas[i]);
@@ -117,8 +123,7 @@ int             ZoneAgentMgr::Init()
         }        
     }
 
-
-    //init all zone
+    
     //gate msg
     AgentContext * ctx = ( AgentContext *)GetApp()->GetContext();
     vector<int>    ids;

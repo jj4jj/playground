@@ -2,6 +2,10 @@
 #include "base/Log.h"
 
 #include "PlayerTaskLogic.h"
+#include "PlayerAutoSyncDBLogic.h"
+
+
+
 ///------------------------------------
 #include "PlayerLogicCenter.h"
 
@@ -74,10 +78,11 @@ void     PlayerLogicCenter::NotifyEvent(int iEvent,int iParam,const char* pszLog
 }
 void     PlayerLogicCenter::InitLogic()
 {
-    Register("task",PlayerLogicPtr(new PlayerTaskLogic(host,string("task"))));
+    string name = string("task");
+    Register(name.c_str(),PlayerLogicPtr(new PlayerTaskLogic(host,name)));
     //other
-
-
+    name = string("autosync");
+    Register(name.c_str(),PlayerLogicPtr(new PlayerAutoSyncDBLogic(host,name)));
 
     
 }

@@ -65,7 +65,9 @@ public:
     int     Init();
     //if name is null , broad cast , seconds is 0 then deliver right now , ...
     //return timerid if delay
-    uint32_t     FireEvent(EventCodeEnum iEventCode,const char* pszReceiverName = NULL,int secondsLater = 0,uint64_t ulParam = 0,void* arg = NULL);
+    uint32_t     FireEvent(EventCodeEnum iEventCode,
+            const char* pszReceiverName = NULL,int secondsLater = 0,
+            uint64_t ulParam = 0,void* arg = NULL,bool timeExpired = false);
     int          OnDelayTimerExpired(int iEventCode,uint64_t param = 0);
 public:
     static  void    OnTimer(int iEvent,uint64_t ulParam);

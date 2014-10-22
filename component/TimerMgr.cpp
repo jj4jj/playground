@@ -73,6 +73,7 @@ void         TimerMgr::Expired()
           it->first <= m_curMsTime)
     {        
         uint32_t dwTimerID = it->second;
+        LOG_DEBUG("timer = %u expired time = %ul ms now = %ul ms!",dwTimerID,it->first,m_curMsTime);
         TimerMapItr cur = it++;
         m_mpTimers.erase(cur);
         ////////////////////////////////////////////////////////
@@ -113,9 +114,10 @@ uint32_t     TimerMgr::AddTimer(int msLater,int iEvent,TimerCallBackFunc func ,u
         ++dwNextTimerID;
     }    
     te.dwTimerID = dwNextTimerID;
-    m_mpTimers.insert(std::make_pair(dwNextTimerID,dwNextTimerID));
+    m_mpTimers.insert(std::make_pair(expiredTime,dwNextTimerID));
     m_mpTimerEvents[dwNextTimerID] = te;
     ++dwNextTimerID;
+    LOG_DEBUG("add timer = %u event = %d delay = %d",te.dwTimerID,iEvent,msLater);
     return te.dwTimerID;
 }
 void    TimerMgr::CancelTimer(uint32_t dwEventHandle)

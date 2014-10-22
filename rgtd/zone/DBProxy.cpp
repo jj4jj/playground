@@ -127,7 +127,14 @@ int DBProxy::OnUpdateRole(int ret,uint64_t uid,int coid,int reason)
     }
     else
     {
-        LOG_INFO("no coid update role uid = %lu ret = %d reason = %d trigger = %lu",uid,ret);
+        if(ret)
+        {
+            LOG_ERROR("no coid update role uid = %lu ret = %d reason = %d trigger = %lu",uid,ret);
+        }
+        else
+        {
+            LOG_INFO("no coid update role uid = %lu ret = %d reason = %d trigger = %lu",uid,ret);
+        }
     }
     return 0;
 }
