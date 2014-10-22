@@ -51,8 +51,8 @@ void    GateServerContext::OnGenerateDefaultConfig()
     {"gate:agent:num","1"},//agent number
     {"gate:agent#1:channel","1 "}, //agent channel id
     {"gate:agent#1:areas","1 2 3 4 5"}, //agent zone areas
-
-
+    {"gate:connx_idle","600"},
+    
     //default agent
     {"console:port","52000"},
     {"channel:num","1"}, //agent zone areas
@@ -84,6 +84,8 @@ int     GateServerContext::OnInit()
     iNeedAuth = parser.GetConfigInt("gate:need_auth");
     mpAreaID2ChannelID.clear();
     int nCount = parser.GetConfigInt("gate:agent:num");
+    iIdleCheckPeriod  =   parser.GetConfigInt("gate:connx_idle");    
+
     char szConfigBuffer[64];
     std::set<int>   chkUniq;
     for(int i = 0;i < nCount; ++i)

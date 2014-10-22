@@ -16,6 +16,7 @@ struct GateServerContext : AppContext
     int             iNeedAuth;    
     MapAgentAreaIDGateChannelID    mpAreaID2ChannelID;
     vector<int>                    vecAgentIDS;
+    int             iIdleCheckPeriod;
 public:
     virtual void    OnGenerateDefaultConfig();
     virtual int     OnInit();

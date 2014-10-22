@@ -15,7 +15,6 @@ public:
 public:
     virtual ~GateServerHandler();
     GateServerHandler(ChannelMsgProxy * p,int iMaxConnections);
-
 private:
     int     GetNextIdx();
     
@@ -42,6 +41,10 @@ public:
         time_t      tLastPeriodTime;        
         uint32_t    dwCurrentRecvSpeed;
         uint32_t    dwCurrentSendSpeed;
+
+        //timer check free
+        uint32_t    dwTimerID;
+        time_t      tLastCheckTime;
     public:
         Connection();
         ~Connection();
@@ -71,5 +74,7 @@ private:
     int     m_iAlivedConnections;    
     int     m_iLastFreeIdx ;
     ChannelMsgProxy * m_pChannelProxy;
+public:
+    uint32_t                iConnxMaxIdleTime;
 }; 
 

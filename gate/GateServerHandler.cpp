@@ -5,8 +5,11 @@
 #include "app/App.hpp"
 #include "GateServerContext.h"
 #include "base/DateTime.h"
+#include "component/TimerMgr.h"
 /////////////////////////////////////////////////////////////////////////////////////
 #include "GateServerHandler.h"
+
+
 
 #if 1
 enum    GateConnectionState
@@ -25,6 +28,8 @@ GateServerHandler::Connection::~Connection()
 {
     recvBuffer.Destroy();
 }
+
+#define CONNX_CHECK_FREE_PERIOD_TIME    (10*60)
 void GateServerHandler::Connection::Init()
 {
     iIdx = -1;
@@ -43,7 +48,9 @@ void GateServerHandler::Connection::Init()
     dwLastPeriodSendNum = 0 ;
     tLastPeriodTime = 0 ;     
     dwCurrentRecvSpeed = 0;
-    dwCurrentSendSpeed = 0;    
+    dwCurrentSendSpeed = 0;
+    dwTimerID = 0;
+    tLastCheckTime = 0;
 }
 #define CONNECTION_STAT_PERIOD_TIME     (5)
 void GateServerHandler::Connection::UpdateStat(bool recv)
@@ -102,13 +109,15 @@ GateServerHandler::~GateServerHandler()
 }
 GateServerHandler::GateServerHandler(ChannelMsgProxy * p,int iMaxConnections)
 {
+    GateServerContext * gsc = (GateServerContext *)GetApp()->GetContext();
+    //////////////////////////////////////////////////////////////////////
     m_iMaxConnection = iMaxConnections;
     m_iAlivedConnections = 0;        
     m_mpConnections.clear();
     m_vecConnections.resize(m_iMaxConnection);
     m_pChannelProxy = p;
     /////////////////////////////////////////
-        
+    iConnxMaxIdleTime = gsc->iIdleCheckPeriod;        
 }
 
 
@@ -117,6 +126,36 @@ GateServerHandler::GateServerHandler(ChannelMsgProxy * p,int iMaxConnections)
 
 
 #if 1
+
+static void CheckConnxFree(int cnnxidx,uint64_t)
+{
+    GateServerContext* ctx = (GateServerContext*)(GetApp()->GetContext());
+    GateServerHandler* h = (GateServerHandler*)ctx->ptrHandler.get();
+    if(h)
+    {
+        GateServerHandler::Connection * pConn = h->GetConnectionByIdx(cnnxidx);
+        if(pConn)
+        {
+            if(pConn->tLastActTime + ctx->iIdleCheckPeriod <
+                    GetApp()->GetTime().tv_sec )
+            {
+                //conx
+                //max idle time limit
+                h->RemoveConnection(pConn,gate::GateConnection::CONNECTION_CLOSE_BY_DEFAULT);
+            }
+            else
+            {
+                if(pConn->tLastCheckTime + ctx->iIdleCheckPeriod <=
+                    GetApp()->GetTime().tv_sec )
+                {
+                   pConn->dwTimerID = TimerMgr::Instance().AddTimer(h->iConnxMaxIdleTime*1000,
+                        cnnxidx,CheckConnxFree);     
+                   pConn->tLastCheckTime = GetApp()->GetTime().tv_sec;
+                }
+            }
+        }
+    }
+}
 ////////////////////////////////////////////////////////////////////////////////////////
 int     GateServerHandler::OnNewConnection(TcpSocket   &   client)
 {   
@@ -146,6 +185,11 @@ int     GateServerHandler::OnNewConnection(TcpSocket   &   client)
     m_vecConnections[iIdx].iIdx = iIdx;
     m_mpConnections[client.GetFD()] = iIdx;
 
+    //------------------------------------------------------------------------------------------------------------
+    if(iConnxMaxIdleTime > 0)
+    {
+       m_vecConnections[iIdx].dwTimerID = TimerMgr::Instance().AddTimer(iConnxMaxIdleTime*1000,iIdx,CheckConnxFree);
+    }    
     return 0; 
 }
 int     GateServerHandler::OnClientDataRecv(TcpSocket &   client,const Buffer & recvBuffer)
@@ -372,7 +416,8 @@ void        GateServerHandler::RemoveConnection(Connection* pConn,int iReason)
 {
     m_mpConnections.erase(pConn->cliSocket.GetFD());
     ReportEvent(pConn,gate::GateConnection::EVENT_CLOSE,iReason);
-    pConn->Close();
+    TimerMgr::Instance().CancelTimer(pConn->dwTimerID);
+    pConn->Close();    
 }
 GateServerHandler::Connection* GateServerHandler::GetConnectionByFD(int fd)
 {
