@@ -53,6 +53,8 @@ int GateAgentChannelMsgHandler::DispatchMessage(ChannelAgent & agent , const Cha
                 csmsglen,ggc.uid(),msg.iSrc,ggc.idx());
             //data msg unpack
             //forward msg
+            gateHandler->downpkgs++;
+            gateHandler->rsppkgs++;
             gateHandler->SendFrameToClient(pConn,GateFrame(pcsmsg,csmsglen));
         }
         ////////////////////////////////////////////////////////////////////////

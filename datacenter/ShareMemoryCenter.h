@@ -69,7 +69,7 @@ protected:
     void        AppendRegModules();
     size_t      GetOldShmSize();
     int         AttachAllModules();
-    int         Check();
+    int         Check(bool bExcludeProcess = true);
     int         AddModule(const char* pszName);
     ShareMemoryModuleReg * FindReg(const string & name);
 public:    

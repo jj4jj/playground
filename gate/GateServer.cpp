@@ -61,22 +61,43 @@ string     GateServer::OnCtrl(const std::vector<string> & cmdLine)
     char buffer[128];
     string rsp = cmdLine[0];
     rsp += ":";    
+    int rseconds = GetApp()->GetContext()->runTime.tv_sec;
+    if(rseconds == 0)
+    {
+        rseconds = 1;
+    }
     GateServerHandler * h = (GateServerHandler*)((GateServerContext*)GetContext())->ptrHandler.get();
     if(cmdLine[0] == "downspeed")
     {
-        snprintf(buffer,sizeof(buffer),"%f MB/s",h->downloadsize*1.0/GetApp()->GetTime().tv_sec);
+        snprintf(buffer,sizeof(buffer),"%.6f KB/s",h->downloadsize/1024*1.0/rseconds);
     }
     else if(cmdLine[0] == "upspeed")
     {
-        snprintf(buffer,sizeof(buffer),"%f MB/s",h->uploadsize*1.0/GetApp()->GetTime().tv_sec);
+        snprintf(buffer,sizeof(buffer),"%.6f KB/s",h->uploadsize/1024*1.0/rseconds);
     }
     else if(cmdLine[0] == "downsize")
     {
-        snprintf(buffer,sizeof(buffer),"%f MB",h->downloadsize*1.0/1024);
+        snprintf(buffer,sizeof(buffer),"%.6f MB",h->downloadsize*1.0/(1024*1024));
     }
     else if(cmdLine[0] == "upsize")
     {
-        snprintf(buffer,sizeof(buffer),"%f MB",h->uploadsize*1.0/1024);
+        snprintf(buffer,sizeof(buffer),"%.6f MB",h->uploadsize*1.0/(1024*1024));
+    }
+    else if(cmdLine[0] == "downpkg")
+    {
+        snprintf(buffer,sizeof(buffer),"%.6f MB",h->downpkgs*1.0/rseconds);        
+    }
+    else if(cmdLine[0] == "uppkg" )
+    {
+        snprintf(buffer,sizeof(buffer),"%.6f MB",h->uppkgs*1.0/rseconds);                
+    }
+    else if(cmdLine[0] == "qps" )
+    {
+        snprintf(buffer,sizeof(buffer),"%.6f MB",h->reqpkgs*1.0/rseconds);                
+    }
+    else if(cmdLine[0] == "tps" )
+    {
+        snprintf(buffer,sizeof(buffer),"%.6f MB",h->rsppkgs*1.0/rseconds);        
     }
     else
     {

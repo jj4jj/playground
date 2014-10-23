@@ -78,7 +78,7 @@ int     ShareMemoryCenter::Init(const char* pszShmKeyPath)
     }
     else
     {        
-        if(Check())
+        if(Check(true))
         {
             LOG_FATAL("attach memory but mem magic chck error !");
             return -1;
@@ -142,8 +142,18 @@ int     ShareMemoryCenter::AttachAllModules()
     }
     return 0;
 }
-int     ShareMemoryCenter::Check()
+int     ShareMemoryCenter::Check(bool bExludeProcess)
 {
+    //current 
+    if(bExludeProcess)
+    {
+        int nattach = m_shm.GetAttachNum();
+        if(nattach <= 0 || nattach < 1)
+        {
+            LOG_ERROR("attach shm process num = %d error or too much !!",nattach);
+            return -1;
+        }
+    }    
     return memcmp(m_pFmtBase->magic,SHM_MAGIC,strlen(SHM_MAGIC));
 }
 ShareMemoryModule*  ShareMemoryCenter::FindModule(const char* pszName)

@@ -155,10 +155,30 @@ static  void OnSignalCoreDump(int sign, siginfo_t * siginfo, void * p)
     SignalHelper::SetSigHandler(SIGSEGV,SIG_DFL);
     SignalHelper::SendSelfSignal(SIGSEGV);
 }
+static void OnSignal(int signo)
+{
+    App * app =  GetApp();
+    if(signo == SIGUSR1)
+    {
+        LOG_INFO("receive usr1 signal , system will exit for restarting ... set closing");
+        app->Shutdown(APP_CTRL_CLOSING_RESTART);
+    }
+    else if(signo == SIGUSR2)
+    {
+        LOG_INFO("receive usr2 signal , system will exit for stopping ... set closing");    
+        app->Shutdown(APP_CTRL_CLOSING_STOP);
+    }
+    else
+    {
+        LOG_INFO("receiver unkown signo = %d",signo);
+    }
+}
 void    App::InitSignal()
 {
     SignalHelper::IgnoreSignal(SIGPIPE);
     SignalHelper::IgnoreSignal(SIGTERM);
+    SignalHelper::SetSigHandler(SIGUSR1,OnSignal);
+    SignalHelper::SetSigHandler(SIGUSR2,OnSignal);
     /////////////////////////////////////////////////////////
     if(ctx->hook_coredump)
     {
@@ -211,7 +231,7 @@ string  App::Ctrl(const std::vector<string> & cmdLine)
     rsp += buffer;
     return rsp;
 }
-int    App::InitLockFile()
+int    App::InitLockFile(bool forStop)
 {
     if(ctx->uniq_process)
     {
@@ -253,8 +273,22 @@ int    App::InitLockFile()
                 }            
                 pidBuffer[sizeof(pidBuffer)-1] = '\0';            
                 int pid = atoi(pidBuffer);
-                //todo 
-                SignalHelper::SendProcessSignal(SIGUSR1,pid);
+                LOG_INFO("old process id=[%d] is running ...",pid);
+                //todo
+                if(!forStop)
+                {
+                    LOG_INFO("stop old process = [%d] for restarting ...",pid);
+                    SignalHelper::SendProcessSignal(SIGUSR1,pid);
+                    //check thread is over ?                
+                    LOG_INFO("waiting old process destroy (todo)");
+
+                }
+                else
+                {
+                    LOG_INFO("stop old process = [%d] for stopping ...",pid);
+                    SignalHelper::SendProcessSignal(SIGUSR2,pid);
+                    return -1;
+                }
             }            
         }
         else
@@ -320,7 +354,21 @@ int     App::InitLog()
     }
     return 0;
 }
-int     App::Init(AppContext * _ctx)
+int      App::Shutdown(int closing)
+{
+    if(ctx->closing == 0)
+    {
+        LOG_INFO("shutdown system reason = %d",closing);        
+        ctx->closing = closing;
+        return 0;
+    }
+    else
+    {
+        LOG_ERROR("system is already shutdowning ... ");
+        return -1;
+    }
+}
+int     App::Init(AppContext * _ctx , bool forStop)
 {
     ctx = _ctx;
     IniConfigParser & parser = ctx->parser;
@@ -342,7 +390,7 @@ int     App::Init(AppContext * _ctx)
         return -1;
     }
     ////////////////////////lock file ////////////////////////////
-    if(InitLockFile())
+    if(InitLockFile(forStop))
     {
         LOG_ERROR("init lock file error !");
         return -1;

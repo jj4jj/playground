@@ -65,8 +65,9 @@ public:
         return proxy;
     }
 public:
-    int     Init(AppContext * _ctx);   
+    int     Init(AppContext * _ctx , bool forStop = false);   
     int     Start();
+    int     Shutdown(int closing);
     int     Poll(int iRecommendPollNum = 1);
     int     Tick(int64_t lElapseUsTime);
     string  Ctrl(const std::vector<string> & cmdLine);
@@ -75,7 +76,7 @@ public:
 
 private:
     void    InitSignal();
-    int     InitLockFile();
+    int     InitLockFile(bool forStop);
     int     InitLog();
     int     InitConsole();
     static  void    UpdateTick(struct timeval & tvNow, int64_t lElapseTime);
@@ -107,13 +108,21 @@ int App::main(int argc , char* argv [])
         ctx.GenerateDefaultConfig(argv[0]);
         return -1;
     }
+    bool    forStop = false;
+    if(argc > 2)
+    {        
+        if(strcmp(argv[2],"stop"))
+        {
+            forStop = true;
+        }
+    }
     if(ctx.Init(argv[1]))
     {
         printf("server context init error !\n");
         return -1;
     }    
     /////////////////////////////////////////////////////////
-    if(pApp->Init(&ctx))
+    if(pApp->Init(&ctx,forStop))
     {
         LOG_ERROR("Init error !");
         pApp->Destroy();

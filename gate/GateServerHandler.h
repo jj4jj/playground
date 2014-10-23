@@ -78,5 +78,10 @@ public:
     uint32_t        iConnxMaxIdleTime;
     uint64_t        downloadsize;
     uint64_t        uploadsize;
+    uint64_t        reqpkgs;
+    uint64_t        rsppkgs;
+    uint64_t        downpkgs;
+    uint64_t        uppkgs;
+
 }; 
 

@@ -121,6 +121,11 @@ GateServerHandler::GateServerHandler(ChannelMsgProxy * p,int iMaxConnections)
 
     downloadsize = 0;
     uploadsize = 0;
+
+    reqpkgs  = 0 ;
+    rsppkgs = 0;
+    downpkgs = 0;
+    uppkgs = 0;
 }
 
 
@@ -273,7 +278,7 @@ int     GateServerHandler::OnClientDataRecv(TcpSocket &   client,const Buffer & 
 }
 int     GateServerHandler::OnClientMessage(GateServerHandler::Connection* pConn,char* pMsgBuffer,int iMsgLen)
 {
-
+    uppkgs++;
     LOG_DEBUG("recv connx uid = %u msg = %d state = %d" ,pConn->ulUid,iMsgLen,pConn->bState);
     pConn->UpdateStat(true);
     switch(pConn->bState)
@@ -491,6 +496,7 @@ void        GateServerHandler::ReportEvent(Connection* pConn,int iEvent,int iPar
 }
 void        GateServerHandler::ForwardData(Connection* pConn,const Buffer& buffer)
 {
+    reqpkgs++;
     //
     ReportEvent(pConn,gate::GateConnection::EVENT_DATA,0,&buffer);
     
