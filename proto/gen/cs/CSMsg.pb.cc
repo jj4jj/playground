@@ -115,9 +115,10 @@ void protobuf_AssignDesc_cs_2fCSMsg_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(TestInfoRsp));
   CSMsgTest_descriptor_ = file->message_type(1);
-  static const int CSMsgTest_offsets_[2] = {
+  static const int CSMsgTest_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSMsgTest, cmd_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSMsgTest, infrsp_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSMsgTest, txtrsp_),
   };
   CSMsgTest_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -522,55 +523,56 @@ void protobuf_AddDesc_cs_2fCSMsg_2eproto() {
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\016cs/CSMsg.proto\022\002cs\"\034\n\013TestInfoRsp\022\r\n\005d"
-    "ummy\030\001 \002(\r\"v\n\tCSMsgTest\022\013\n\003cmd\030\001 \002(\r\022\037\n\006"
-    "infRsp\030\002 \001(\0132\017.cs.TestInfoRsp\";\n\007CmdCode"
-    "\022\027\n\023CSMSG_TEST_INFO_REQ\020\001\022\027\n\023CSMSG_TEST_"
-    "INFO_RSP\020\002\"\037\n\016LoginRegNotify\022\r\n\005dummy\030\001 "
-    "\001(\r\"!\n\020LoginRegisterReq\022\r\n\005dummy\030\001 \001(\r\"\246"
-    "\001\n\nCSMsgLogin\022\013\n\003cmd\030\001 \002(\r\022%\n\tnotifyReq\030"
-    "\002 \001(\0132\022.cs.LoginRegNotify\022$\n\006regReq\030\003 \001("
-    "\0132\024.cs.LoginRegisterReq\">\n\007CmdCode\022\032\n\026CS"
-    "MSG_LOGIN_REG_NOTIFY\020\001\022\027\n\023CSMSG_LOGIN_RE"
-    "G_REQ\020\002\"9\n\rCSAccountBase\022\013\n\003uid\030\001 \002(\004\022\014\n"
-    "\004name\030\002 \001(\t\022\r\n\005level\030\003 \001(\r\"\035\n\014CSAccountE"
-    "xt\022\r\n\005dummy\030\001 \001(\r\"\036\n\rCSAccountMisc\022\r\n\005du"
-    "mmy\030\001 \001(\r\"l\n\tCSAccount\022\037\n\004base\030\001 \002(\0132\021.c"
-    "s.CSAccountBase\022\035\n\003ext\030\002 \002(\0132\020.cs.CSAcco"
-    "untExt\022\037\n\004misc\030\003 \002(\0132\021.cs.CSAccountMisc\""
-    "\304\003\n\014CSMsgAccount\022\013\n\003cmd\030\001 \002(\r\022!\n\nallInfo"
-    "Rsp\030\002 \001(\0132\r.cs.CSAccount\022&\n\013baseInfoRsp\030"
-    "\003 \001(\0132\021.cs.CSAccountBase\022$\n\nextInfoRsp\030\004"
-    " \001(\0132\020.cs.CSAccountExt\022&\n\013miscInfoRsp\030\005 "
-    "\001(\0132\021.cs.CSAccountMisc\"\215\002\n\007CmdCode\022\036\n\032CS"
-    "MSG_ACCOUNT_ALL_INFO_REQ\020\001\022\037\n\033CSMSG_ACCO"
-    "UNT_BASE_INFO_REQ\020\002\022\036\n\032CSMSG_ACCOUNT_EXT"
-    "_INFO_REQ\020\003\022\037\n\033CSMSG_ACCOUNT_MISC_INFO_R"
-    "EQ\020\004\022\036\n\032CSMSG_ACCOUNT_ALL_INFO_RSP\020\005\022\037\n\033"
-    "CSMSG_ACCOUNT_BASE_INFO_RSP\020\006\022\036\n\032CSMSG_A"
-    "CCOUNT_EXT_INFO_RSP\020\007\022\037\n\033CSMSG_ACCOUNT_M"
-    "ISC_INFO_RSP\020\010\";\n\tCSMsgTask\022\013\n\003cmd\030\001 \002(\r"
-    "\"!\n\007CmdCode\022\026\n\022CSMSG_TASK_UPD_REQ\020\001\"8\n\006C"
-    "SRank\022\013\n\003cmd\030\001 \002(\r\"!\n\007CmdCode\022\026\n\022CSMSG_R"
-    "ANK_UPD_REQ\020\001\"<\n\010CSFriend\022\013\n\003cmd\030\001 \002(\r\"#"
-    "\n\007CmdCode\022\030\n\024CSMSG_FRIEND_UPD_REQ\020\001\"<\n\010C"
-    "SFamily\022\013\n\003cmd\030\001 \002(\r\"#\n\007CmdCode\022\030\n\024CSMSG"
-    "_FAMILY_UPD_REQ\020\001\"@\n\nCSKnapsack\022\013\n\003cmd\030\001"
-    " \002(\r\"%\n\007CmdCode\022\032\n\026CSMSG_KNAPSACK_UPD_RE"
-    "Q\020\001\":\n\007CSStage\022\013\n\003cmd\030\001 \002(\r\"\"\n\007CmdCode\022\027"
-    "\n\023CSMSG_STAGE_UPD_REQ\020\001\"@\n\nCSActivity\022\013\n"
-    "\003cmd\030\001 \002(\r\"%\n\007CmdCode\022\032\n\026CSMSG_ACTIVITY_"
-    "UPD_REQ\020\001\"<\n\010CSBattle\022\013\n\003cmd\030\001 \002(\r\"#\n\007Cm"
-    "dCode\022\030\n\024CSMSG_BATTLE_UPD_REQ\020\001\"\225\003\n\005CSMs"
-    "g\022\013\n\003cmd\030\001 \002(\r\022\013\n\003err\030\002 \001(\r\022\035\n\005login\030e \001"
-    "(\0132\016.cs.CSMsgLogin\022\033\n\004test\030f \001(\0132\r.cs.CS"
-    "MsgTest\022!\n\007account\030g \001(\0132\020.cs.CSMsgAccou"
-    "nt\022\033\n\004task\030h \001(\0132\r.cs.CSMsgTask\022\030\n\004rank\030"
-    "i \001(\0132\n.cs.CSRank\022\034\n\006friend\030j \001(\0132\014.cs.C"
-    "SFriend\022\034\n\006family\030k \001(\0132\014.cs.CSFamily\022 \n"
-    "\010knapsack\030l \001(\0132\016.cs.CSKnapsack\022\032\n\005stage"
-    "\030m \001(\0132\013.cs.CSStage\022 \n\010activity\030n \001(\0132\016."
-    "cs.CSActivity\022\034\n\006battle\030o \001(\0132\014.cs.CSBat"
-    "tle\"\"\n\014CSMsgCmdCode\022\022\n\016CSMSG_CMD_TEST\020\001", 1999);
+    "ummy\030\001 \002(\r\"\236\001\n\tCSMsgTest\022\013\n\003cmd\030\001 \002(\r\022\037\n"
+    "\006infRsp\030\002 \001(\0132\017.cs.TestInfoRsp\022\016\n\006txtRsp"
+    "\030\003 \001(\t\"S\n\007CmdCode\022\027\n\023CSMSG_TEST_INFO_REQ"
+    "\020\001\022\027\n\023CSMSG_TEST_INFO_RSP\020\002\022\026\n\022CSMSG_TES"
+    "T_TXT_RSP\020\003\"\037\n\016LoginRegNotify\022\r\n\005dummy\030\001"
+    " \001(\r\"!\n\020LoginRegisterReq\022\r\n\005dummy\030\001 \001(\r\""
+    "\246\001\n\nCSMsgLogin\022\013\n\003cmd\030\001 \002(\r\022%\n\tnotifyReq"
+    "\030\002 \001(\0132\022.cs.LoginRegNotify\022$\n\006regReq\030\003 \001"
+    "(\0132\024.cs.LoginRegisterReq\">\n\007CmdCode\022\032\n\026C"
+    "SMSG_LOGIN_REG_NOTIFY\020\001\022\027\n\023CSMSG_LOGIN_R"
+    "EG_REQ\020\002\"9\n\rCSAccountBase\022\013\n\003uid\030\001 \002(\004\022\014"
+    "\n\004name\030\002 \001(\t\022\r\n\005level\030\003 \001(\r\"\035\n\014CSAccount"
+    "Ext\022\r\n\005dummy\030\001 \001(\r\"\036\n\rCSAccountMisc\022\r\n\005d"
+    "ummy\030\001 \001(\r\"l\n\tCSAccount\022\037\n\004base\030\001 \002(\0132\021."
+    "cs.CSAccountBase\022\035\n\003ext\030\002 \002(\0132\020.cs.CSAcc"
+    "ountExt\022\037\n\004misc\030\003 \002(\0132\021.cs.CSAccountMisc"
+    "\"\304\003\n\014CSMsgAccount\022\013\n\003cmd\030\001 \002(\r\022!\n\nallInf"
+    "oRsp\030\002 \001(\0132\r.cs.CSAccount\022&\n\013baseInfoRsp"
+    "\030\003 \001(\0132\021.cs.CSAccountBase\022$\n\nextInfoRsp\030"
+    "\004 \001(\0132\020.cs.CSAccountExt\022&\n\013miscInfoRsp\030\005"
+    " \001(\0132\021.cs.CSAccountMisc\"\215\002\n\007CmdCode\022\036\n\032C"
+    "SMSG_ACCOUNT_ALL_INFO_REQ\020\001\022\037\n\033CSMSG_ACC"
+    "OUNT_BASE_INFO_REQ\020\002\022\036\n\032CSMSG_ACCOUNT_EX"
+    "T_INFO_REQ\020\003\022\037\n\033CSMSG_ACCOUNT_MISC_INFO_"
+    "REQ\020\004\022\036\n\032CSMSG_ACCOUNT_ALL_INFO_RSP\020\005\022\037\n"
+    "\033CSMSG_ACCOUNT_BASE_INFO_RSP\020\006\022\036\n\032CSMSG_"
+    "ACCOUNT_EXT_INFO_RSP\020\007\022\037\n\033CSMSG_ACCOUNT_"
+    "MISC_INFO_RSP\020\010\";\n\tCSMsgTask\022\013\n\003cmd\030\001 \002("
+    "\r\"!\n\007CmdCode\022\026\n\022CSMSG_TASK_UPD_REQ\020\001\"8\n\006"
+    "CSRank\022\013\n\003cmd\030\001 \002(\r\"!\n\007CmdCode\022\026\n\022CSMSG_"
+    "RANK_UPD_REQ\020\001\"<\n\010CSFriend\022\013\n\003cmd\030\001 \002(\r\""
+    "#\n\007CmdCode\022\030\n\024CSMSG_FRIEND_UPD_REQ\020\001\"<\n\010"
+    "CSFamily\022\013\n\003cmd\030\001 \002(\r\"#\n\007CmdCode\022\030\n\024CSMS"
+    "G_FAMILY_UPD_REQ\020\001\"@\n\nCSKnapsack\022\013\n\003cmd\030"
+    "\001 \002(\r\"%\n\007CmdCode\022\032\n\026CSMSG_KNAPSACK_UPD_R"
+    "EQ\020\001\":\n\007CSStage\022\013\n\003cmd\030\001 \002(\r\"\"\n\007CmdCode\022"
+    "\027\n\023CSMSG_STAGE_UPD_REQ\020\001\"@\n\nCSActivity\022\013"
+    "\n\003cmd\030\001 \002(\r\"%\n\007CmdCode\022\032\n\026CSMSG_ACTIVITY"
+    "_UPD_REQ\020\001\"<\n\010CSBattle\022\013\n\003cmd\030\001 \002(\r\"#\n\007C"
+    "mdCode\022\030\n\024CSMSG_BATTLE_UPD_REQ\020\001\"\225\003\n\005CSM"
+    "sg\022\013\n\003cmd\030\001 \002(\r\022\013\n\003err\030\002 \001(\r\022\035\n\005login\030e "
+    "\001(\0132\016.cs.CSMsgLogin\022\033\n\004test\030f \001(\0132\r.cs.C"
+    "SMsgTest\022!\n\007account\030g \001(\0132\020.cs.CSMsgAcco"
+    "unt\022\033\n\004task\030h \001(\0132\r.cs.CSMsgTask\022\030\n\004rank"
+    "\030i \001(\0132\n.cs.CSRank\022\034\n\006friend\030j \001(\0132\014.cs."
+    "CSFriend\022\034\n\006family\030k \001(\0132\014.cs.CSFamily\022 "
+    "\n\010knapsack\030l \001(\0132\016.cs.CSKnapsack\022\032\n\005stag"
+    "e\030m \001(\0132\013.cs.CSStage\022 \n\010activity\030n \001(\0132\016"
+    ".cs.CSActivity\022\034\n\006battle\030o \001(\0132\014.cs.CSBa"
+    "ttle\"\"\n\014CSMsgCmdCode\022\022\n\016CSMSG_CMD_TEST\020\001", 2040);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "cs/CSMsg.proto", &protobuf_RegisterTypes);
   TestInfoRsp::default_instance_ = new TestInfoRsp();
@@ -854,6 +856,7 @@ bool CSMsgTest_CmdCode_IsValid(int value) {
   switch(value) {
     case 1:
     case 2:
+    case 3:
       return true;
     default:
       return false;
@@ -863,6 +866,7 @@ bool CSMsgTest_CmdCode_IsValid(int value) {
 #ifndef _MSC_VER
 const CSMsgTest_CmdCode CSMsgTest::CSMSG_TEST_INFO_REQ;
 const CSMsgTest_CmdCode CSMsgTest::CSMSG_TEST_INFO_RSP;
+const CSMsgTest_CmdCode CSMsgTest::CSMSG_TEST_TXT_RSP;
 const CSMsgTest_CmdCode CSMsgTest::CmdCode_MIN;
 const CSMsgTest_CmdCode CSMsgTest::CmdCode_MAX;
 const int CSMsgTest::CmdCode_ARRAYSIZE;
@@ -870,6 +874,7 @@ const int CSMsgTest::CmdCode_ARRAYSIZE;
 #ifndef _MSC_VER
 const int CSMsgTest::kCmdFieldNumber;
 const int CSMsgTest::kInfRspFieldNumber;
+const int CSMsgTest::kTxtRspFieldNumber;
 #endif  // !_MSC_VER
 
 CSMsgTest::CSMsgTest()
@@ -890,9 +895,11 @@ CSMsgTest::CSMsgTest(const CSMsgTest& from)
 }
 
 void CSMsgTest::SharedCtor() {
+  ::google::protobuf::internal::GetEmptyString();
   _cached_size_ = 0;
   cmd_ = 0u;
   infrsp_ = NULL;
+  txtrsp_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -902,6 +909,9 @@ CSMsgTest::~CSMsgTest() {
 }
 
 void CSMsgTest::SharedDtor() {
+  if (txtrsp_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    delete txtrsp_;
+  }
   if (this != default_instance_) {
     delete infrsp_;
   }
@@ -929,10 +939,15 @@ CSMsgTest* CSMsgTest::New() const {
 }
 
 void CSMsgTest::Clear() {
-  if (_has_bits_[0 / 32] & 3) {
+  if (_has_bits_[0 / 32] & 7) {
     cmd_ = 0u;
     if (has_infrsp()) {
       if (infrsp_ != NULL) infrsp_->::cs::TestInfoRsp::Clear();
+    }
+    if (has_txtrsp()) {
+      if (txtrsp_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+        txtrsp_->clear();
+      }
     }
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -969,6 +984,23 @@ bool CSMsgTest::MergePartialFromCodedStream(
          parse_infRsp:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_infrsp()));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(26)) goto parse_txtRsp;
+        break;
+      }
+
+      // optional string txtRsp = 3;
+      case 3: {
+        if (tag == 26) {
+         parse_txtRsp:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_txtrsp()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+            this->txtrsp().data(), this->txtrsp().length(),
+            ::google::protobuf::internal::WireFormat::PARSE,
+            "txtrsp");
         } else {
           goto handle_unusual;
         }
@@ -1012,6 +1044,16 @@ void CSMsgTest::SerializeWithCachedSizes(
       2, this->infrsp(), output);
   }
 
+  // optional string txtRsp = 3;
+  if (has_txtrsp()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->txtrsp().data(), this->txtrsp().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "txtrsp");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      3, this->txtrsp(), output);
+  }
+
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -1032,6 +1074,17 @@ void CSMsgTest::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
         2, this->infrsp(), target);
+  }
+
+  // optional string txtRsp = 3;
+  if (has_txtrsp()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->txtrsp().data(), this->txtrsp().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "txtrsp");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->txtrsp(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -1058,6 +1111,13 @@ int CSMsgTest::ByteSize() const {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           this->infrsp());
+    }
+
+    // optional string txtRsp = 3;
+    if (has_txtrsp()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->txtrsp());
     }
 
   }
@@ -1093,6 +1153,9 @@ void CSMsgTest::MergeFrom(const CSMsgTest& from) {
     if (from.has_infrsp()) {
       mutable_infrsp()->::cs::TestInfoRsp::MergeFrom(from.infrsp());
     }
+    if (from.has_txtrsp()) {
+      set_txtrsp(from.txtrsp());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -1122,6 +1185,7 @@ void CSMsgTest::Swap(CSMsgTest* other) {
   if (other != this) {
     std::swap(cmd_, other->cmd_);
     std::swap(infrsp_, other->infrsp_);
+    std::swap(txtrsp_, other->txtrsp_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

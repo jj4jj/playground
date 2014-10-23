@@ -44,8 +44,11 @@ class RoleHeroGrowth;
 class RoleHero;
 class HeroStrategy;
 class RoleHeroInfo;
+class RoleItem;
 class RolePackGrid;
 class RolePackage;
+class RoleOneTask;
+class RoleTaskInfo;
 class RoleGrowth;
 class RoleStage;
 class RoleSNS;
@@ -686,14 +689,14 @@ class RoleHeroGrowth : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // optional uint32 level = 1;
+  // required uint32 level = 1 [default = 1];
   inline bool has_level() const;
   inline void clear_level();
   static const int kLevelFieldNumber = 1;
   inline ::google::protobuf::uint32 level() const;
   inline void set_level(::google::protobuf::uint32 value);
 
-  // optional uint32 exp = 2;
+  // required uint32 exp = 2 [default = 0];
   inline bool has_exp() const;
   inline void clear_exp();
   static const int kExpFieldNumber = 2;
@@ -1025,6 +1028,95 @@ class RoleHeroInfo : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
+class RoleItem : public ::google::protobuf::Message {
+ public:
+  RoleItem();
+  virtual ~RoleItem();
+
+  RoleItem(const RoleItem& from);
+
+  inline RoleItem& operator=(const RoleItem& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const RoleItem& default_instance();
+
+  void Swap(RoleItem* other);
+
+  // implements Message ----------------------------------------------
+
+  RoleItem* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const RoleItem& from);
+  void MergeFrom(const RoleItem& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // required uint32 id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline ::google::protobuf::uint32 id() const;
+  inline void set_id(::google::protobuf::uint32 value);
+
+  // optional uint32 level = 2;
+  inline bool has_level() const;
+  inline void clear_level();
+  static const int kLevelFieldNumber = 2;
+  inline ::google::protobuf::uint32 level() const;
+  inline void set_level(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:db.RoleItem)
+ private:
+  inline void set_has_id();
+  inline void clear_has_id();
+  inline void set_has_level();
+  inline void clear_has_level();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 id_;
+  ::google::protobuf::uint32 level_;
+  friend void  protobuf_AddDesc_db_2fRole_2eproto();
+  friend void protobuf_AssignDesc_db_2fRole_2eproto();
+  friend void protobuf_ShutdownFile_db_2fRole_2eproto();
+
+  void InitAsDefaultInstance();
+  static RoleItem* default_instance_;
+};
+// -------------------------------------------------------------------
+
 class RolePackGrid : public ::google::protobuf::Message {
  public:
   RolePackGrid();
@@ -1078,33 +1170,26 @@ class RolePackGrid : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required uint32 pos = 1;
-  inline bool has_pos() const;
-  inline void clear_pos();
-  static const int kPosFieldNumber = 1;
-  inline ::google::protobuf::uint32 pos() const;
-  inline void set_pos(::google::protobuf::uint32 value);
+  // required .db.RoleItem item = 1;
+  inline bool has_item() const;
+  inline void clear_item();
+  static const int kItemFieldNumber = 1;
+  inline const ::db::RoleItem& item() const;
+  inline ::db::RoleItem* mutable_item();
+  inline ::db::RoleItem* release_item();
+  inline void set_allocated_item(::db::RoleItem* item);
 
-  // required uint32 id = 2;
-  inline bool has_id() const;
-  inline void clear_id();
-  static const int kIdFieldNumber = 2;
-  inline ::google::protobuf::uint32 id() const;
-  inline void set_id(::google::protobuf::uint32 value);
-
-  // required uint32 num = 3 [default = 0];
+  // required uint32 num = 2 [default = 0];
   inline bool has_num() const;
   inline void clear_num();
-  static const int kNumFieldNumber = 3;
+  static const int kNumFieldNumber = 2;
   inline ::google::protobuf::uint32 num() const;
   inline void set_num(::google::protobuf::uint32 value);
 
   // @@protoc_insertion_point(class_scope:db.RolePackGrid)
  private:
-  inline void set_has_pos();
-  inline void clear_has_pos();
-  inline void set_has_id();
-  inline void clear_has_id();
+  inline void set_has_item();
+  inline void clear_has_item();
   inline void set_has_num();
   inline void clear_has_num();
 
@@ -1112,8 +1197,7 @@ class RolePackGrid : public ::google::protobuf::Message {
 
   ::google::protobuf::uint32 _has_bits_[1];
   mutable int _cached_size_;
-  ::google::protobuf::uint32 pos_;
-  ::google::protobuf::uint32 id_;
+  ::db::RoleItem* item_;
   ::google::protobuf::uint32 num_;
   friend void  protobuf_AddDesc_db_2fRole_2eproto();
   friend void protobuf_AssignDesc_db_2fRole_2eproto();
@@ -1216,6 +1300,201 @@ class RolePackage : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
+class RoleOneTask : public ::google::protobuf::Message {
+ public:
+  RoleOneTask();
+  virtual ~RoleOneTask();
+
+  RoleOneTask(const RoleOneTask& from);
+
+  inline RoleOneTask& operator=(const RoleOneTask& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const RoleOneTask& default_instance();
+
+  void Swap(RoleOneTask* other);
+
+  // implements Message ----------------------------------------------
+
+  RoleOneTask* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const RoleOneTask& from);
+  void MergeFrom(const RoleOneTask& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // required uint32 id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline ::google::protobuf::uint32 id() const;
+  inline void set_id(::google::protobuf::uint32 value);
+
+  // optional uint32 cur = 2;
+  inline bool has_cur() const;
+  inline void clear_cur();
+  static const int kCurFieldNumber = 2;
+  inline ::google::protobuf::uint32 cur() const;
+  inline void set_cur(::google::protobuf::uint32 value);
+
+  // optional uint32 state = 3;
+  inline bool has_state() const;
+  inline void clear_state();
+  static const int kStateFieldNumber = 3;
+  inline ::google::protobuf::uint32 state() const;
+  inline void set_state(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:db.RoleOneTask)
+ private:
+  inline void set_has_id();
+  inline void clear_has_id();
+  inline void set_has_cur();
+  inline void clear_has_cur();
+  inline void set_has_state();
+  inline void clear_has_state();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 id_;
+  ::google::protobuf::uint32 cur_;
+  ::google::protobuf::uint32 state_;
+  friend void  protobuf_AddDesc_db_2fRole_2eproto();
+  friend void protobuf_AssignDesc_db_2fRole_2eproto();
+  friend void protobuf_ShutdownFile_db_2fRole_2eproto();
+
+  void InitAsDefaultInstance();
+  static RoleOneTask* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class RoleTaskInfo : public ::google::protobuf::Message {
+ public:
+  RoleTaskInfo();
+  virtual ~RoleTaskInfo();
+
+  RoleTaskInfo(const RoleTaskInfo& from);
+
+  inline RoleTaskInfo& operator=(const RoleTaskInfo& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const RoleTaskInfo& default_instance();
+
+  void Swap(RoleTaskInfo* other);
+
+  // implements Message ----------------------------------------------
+
+  RoleTaskInfo* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const RoleTaskInfo& from);
+  void MergeFrom(const RoleTaskInfo& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .db.RoleOneTask doing = 1;
+  inline int doing_size() const;
+  inline void clear_doing();
+  static const int kDoingFieldNumber = 1;
+  inline const ::db::RoleOneTask& doing(int index) const;
+  inline ::db::RoleOneTask* mutable_doing(int index);
+  inline ::db::RoleOneTask* add_doing();
+  inline const ::google::protobuf::RepeatedPtrField< ::db::RoleOneTask >&
+      doing() const;
+  inline ::google::protobuf::RepeatedPtrField< ::db::RoleOneTask >*
+      mutable_doing();
+
+  // repeated uint32 finishBitMap = 2 [packed = true];
+  inline int finishbitmap_size() const;
+  inline void clear_finishbitmap();
+  static const int kFinishBitMapFieldNumber = 2;
+  inline ::google::protobuf::uint32 finishbitmap(int index) const;
+  inline void set_finishbitmap(int index, ::google::protobuf::uint32 value);
+  inline void add_finishbitmap(::google::protobuf::uint32 value);
+  inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+      finishbitmap() const;
+  inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+      mutable_finishbitmap();
+
+  // @@protoc_insertion_point(class_scope:db.RoleTaskInfo)
+ private:
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  ::google::protobuf::RepeatedPtrField< ::db::RoleOneTask > doing_;
+  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > finishbitmap_;
+  mutable int _finishbitmap_cached_byte_size_;
+  friend void  protobuf_AddDesc_db_2fRole_2eproto();
+  friend void protobuf_AssignDesc_db_2fRole_2eproto();
+  friend void protobuf_ShutdownFile_db_2fRole_2eproto();
+
+  void InitAsDefaultInstance();
+  static RoleTaskInfo* default_instance_;
+};
+// -------------------------------------------------------------------
+
 class RoleGrowth : public ::google::protobuf::Message {
  public:
   RoleGrowth();
@@ -1269,33 +1548,25 @@ class RoleGrowth : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required uint32 level = 1 [default = 1];
-  inline bool has_level() const;
-  inline void clear_level();
-  static const int kLevelFieldNumber = 1;
-  inline ::google::protobuf::uint32 level() const;
-  inline void set_level(::google::protobuf::uint32 value);
-
-  // required uint32 exp = 2 [default = 0];
-  inline bool has_exp() const;
-  inline void clear_exp();
-  static const int kExpFieldNumber = 2;
-  inline ::google::protobuf::uint32 exp() const;
-  inline void set_exp(::google::protobuf::uint32 value);
+  // optional .db.RoleTaskInfo task = 1;
+  inline bool has_task() const;
+  inline void clear_task();
+  static const int kTaskFieldNumber = 1;
+  inline const ::db::RoleTaskInfo& task() const;
+  inline ::db::RoleTaskInfo* mutable_task();
+  inline ::db::RoleTaskInfo* release_task();
+  inline void set_allocated_task(::db::RoleTaskInfo* task);
 
   // @@protoc_insertion_point(class_scope:db.RoleGrowth)
  private:
-  inline void set_has_level();
-  inline void clear_has_level();
-  inline void set_has_exp();
-  inline void clear_has_exp();
+  inline void set_has_task();
+  inline void clear_has_task();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
   ::google::protobuf::uint32 _has_bits_[1];
   mutable int _cached_size_;
-  ::google::protobuf::uint32 level_;
-  ::google::protobuf::uint32 exp_;
+  ::db::RoleTaskInfo* task_;
   friend void  protobuf_AddDesc_db_2fRole_2eproto();
   friend void protobuf_AssignDesc_db_2fRole_2eproto();
   friend void protobuf_ShutdownFile_db_2fRole_2eproto();
@@ -2284,7 +2555,7 @@ RoleHeroSkill::mutable_skills() {
 
 // RoleHeroGrowth
 
-// optional uint32 level = 1;
+// required uint32 level = 1 [default = 1];
 inline bool RoleHeroGrowth::has_level() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -2295,7 +2566,7 @@ inline void RoleHeroGrowth::clear_has_level() {
   _has_bits_[0] &= ~0x00000001u;
 }
 inline void RoleHeroGrowth::clear_level() {
-  level_ = 0u;
+  level_ = 1u;
   clear_has_level();
 }
 inline ::google::protobuf::uint32 RoleHeroGrowth::level() const {
@@ -2308,7 +2579,7 @@ inline void RoleHeroGrowth::set_level(::google::protobuf::uint32 value) {
   // @@protoc_insertion_point(field_set:db.RoleHeroGrowth.level)
 }
 
-// optional uint32 exp = 2;
+// required uint32 exp = 2 [default = 0];
 inline bool RoleHeroGrowth::has_exp() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
@@ -2635,65 +2906,110 @@ inline void RoleHeroInfo::set_allocated_strategy(::db::HeroStrategy* strategy) {
 
 // -------------------------------------------------------------------
 
-// RolePackGrid
+// RoleItem
 
-// required uint32 pos = 1;
-inline bool RolePackGrid::has_pos() const {
+// required uint32 id = 1;
+inline bool RoleItem::has_id() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void RolePackGrid::set_has_pos() {
+inline void RoleItem::set_has_id() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void RolePackGrid::clear_has_pos() {
+inline void RoleItem::clear_has_id() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void RolePackGrid::clear_pos() {
-  pos_ = 0u;
-  clear_has_pos();
-}
-inline ::google::protobuf::uint32 RolePackGrid::pos() const {
-  // @@protoc_insertion_point(field_get:db.RolePackGrid.pos)
-  return pos_;
-}
-inline void RolePackGrid::set_pos(::google::protobuf::uint32 value) {
-  set_has_pos();
-  pos_ = value;
-  // @@protoc_insertion_point(field_set:db.RolePackGrid.pos)
-}
-
-// required uint32 id = 2;
-inline bool RolePackGrid::has_id() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void RolePackGrid::set_has_id() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void RolePackGrid::clear_has_id() {
-  _has_bits_[0] &= ~0x00000002u;
-}
-inline void RolePackGrid::clear_id() {
+inline void RoleItem::clear_id() {
   id_ = 0u;
   clear_has_id();
 }
-inline ::google::protobuf::uint32 RolePackGrid::id() const {
-  // @@protoc_insertion_point(field_get:db.RolePackGrid.id)
+inline ::google::protobuf::uint32 RoleItem::id() const {
+  // @@protoc_insertion_point(field_get:db.RoleItem.id)
   return id_;
 }
-inline void RolePackGrid::set_id(::google::protobuf::uint32 value) {
+inline void RoleItem::set_id(::google::protobuf::uint32 value) {
   set_has_id();
   id_ = value;
-  // @@protoc_insertion_point(field_set:db.RolePackGrid.id)
+  // @@protoc_insertion_point(field_set:db.RoleItem.id)
 }
 
-// required uint32 num = 3 [default = 0];
+// optional uint32 level = 2;
+inline bool RoleItem::has_level() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void RoleItem::set_has_level() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void RoleItem::clear_has_level() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void RoleItem::clear_level() {
+  level_ = 0u;
+  clear_has_level();
+}
+inline ::google::protobuf::uint32 RoleItem::level() const {
+  // @@protoc_insertion_point(field_get:db.RoleItem.level)
+  return level_;
+}
+inline void RoleItem::set_level(::google::protobuf::uint32 value) {
+  set_has_level();
+  level_ = value;
+  // @@protoc_insertion_point(field_set:db.RoleItem.level)
+}
+
+// -------------------------------------------------------------------
+
+// RolePackGrid
+
+// required .db.RoleItem item = 1;
+inline bool RolePackGrid::has_item() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void RolePackGrid::set_has_item() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void RolePackGrid::clear_has_item() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void RolePackGrid::clear_item() {
+  if (item_ != NULL) item_->::db::RoleItem::Clear();
+  clear_has_item();
+}
+inline const ::db::RoleItem& RolePackGrid::item() const {
+  // @@protoc_insertion_point(field_get:db.RolePackGrid.item)
+  return item_ != NULL ? *item_ : *default_instance_->item_;
+}
+inline ::db::RoleItem* RolePackGrid::mutable_item() {
+  set_has_item();
+  if (item_ == NULL) item_ = new ::db::RoleItem;
+  // @@protoc_insertion_point(field_mutable:db.RolePackGrid.item)
+  return item_;
+}
+inline ::db::RoleItem* RolePackGrid::release_item() {
+  clear_has_item();
+  ::db::RoleItem* temp = item_;
+  item_ = NULL;
+  return temp;
+}
+inline void RolePackGrid::set_allocated_item(::db::RoleItem* item) {
+  delete item_;
+  item_ = item;
+  if (item) {
+    set_has_item();
+  } else {
+    clear_has_item();
+  }
+  // @@protoc_insertion_point(field_set_allocated:db.RolePackGrid.item)
+}
+
+// required uint32 num = 2 [default = 0];
 inline bool RolePackGrid::has_num() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
+  return (_has_bits_[0] & 0x00000002u) != 0;
 }
 inline void RolePackGrid::set_has_num() {
-  _has_bits_[0] |= 0x00000004u;
+  _has_bits_[0] |= 0x00000002u;
 }
 inline void RolePackGrid::clear_has_num() {
-  _has_bits_[0] &= ~0x00000004u;
+  _has_bits_[0] &= ~0x00000002u;
 }
 inline void RolePackGrid::clear_num() {
   num_ = 0u;
@@ -2769,54 +3085,187 @@ RolePackage::mutable_grids() {
 
 // -------------------------------------------------------------------
 
-// RoleGrowth
+// RoleOneTask
 
-// required uint32 level = 1 [default = 1];
-inline bool RoleGrowth::has_level() const {
+// required uint32 id = 1;
+inline bool RoleOneTask::has_id() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void RoleGrowth::set_has_level() {
+inline void RoleOneTask::set_has_id() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void RoleGrowth::clear_has_level() {
+inline void RoleOneTask::clear_has_id() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void RoleGrowth::clear_level() {
-  level_ = 1u;
-  clear_has_level();
+inline void RoleOneTask::clear_id() {
+  id_ = 0u;
+  clear_has_id();
 }
-inline ::google::protobuf::uint32 RoleGrowth::level() const {
-  // @@protoc_insertion_point(field_get:db.RoleGrowth.level)
-  return level_;
+inline ::google::protobuf::uint32 RoleOneTask::id() const {
+  // @@protoc_insertion_point(field_get:db.RoleOneTask.id)
+  return id_;
 }
-inline void RoleGrowth::set_level(::google::protobuf::uint32 value) {
-  set_has_level();
-  level_ = value;
-  // @@protoc_insertion_point(field_set:db.RoleGrowth.level)
+inline void RoleOneTask::set_id(::google::protobuf::uint32 value) {
+  set_has_id();
+  id_ = value;
+  // @@protoc_insertion_point(field_set:db.RoleOneTask.id)
 }
 
-// required uint32 exp = 2 [default = 0];
-inline bool RoleGrowth::has_exp() const {
+// optional uint32 cur = 2;
+inline bool RoleOneTask::has_cur() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void RoleGrowth::set_has_exp() {
+inline void RoleOneTask::set_has_cur() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void RoleGrowth::clear_has_exp() {
+inline void RoleOneTask::clear_has_cur() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void RoleGrowth::clear_exp() {
-  exp_ = 0u;
-  clear_has_exp();
+inline void RoleOneTask::clear_cur() {
+  cur_ = 0u;
+  clear_has_cur();
 }
-inline ::google::protobuf::uint32 RoleGrowth::exp() const {
-  // @@protoc_insertion_point(field_get:db.RoleGrowth.exp)
-  return exp_;
+inline ::google::protobuf::uint32 RoleOneTask::cur() const {
+  // @@protoc_insertion_point(field_get:db.RoleOneTask.cur)
+  return cur_;
 }
-inline void RoleGrowth::set_exp(::google::protobuf::uint32 value) {
-  set_has_exp();
-  exp_ = value;
-  // @@protoc_insertion_point(field_set:db.RoleGrowth.exp)
+inline void RoleOneTask::set_cur(::google::protobuf::uint32 value) {
+  set_has_cur();
+  cur_ = value;
+  // @@protoc_insertion_point(field_set:db.RoleOneTask.cur)
+}
+
+// optional uint32 state = 3;
+inline bool RoleOneTask::has_state() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void RoleOneTask::set_has_state() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void RoleOneTask::clear_has_state() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void RoleOneTask::clear_state() {
+  state_ = 0u;
+  clear_has_state();
+}
+inline ::google::protobuf::uint32 RoleOneTask::state() const {
+  // @@protoc_insertion_point(field_get:db.RoleOneTask.state)
+  return state_;
+}
+inline void RoleOneTask::set_state(::google::protobuf::uint32 value) {
+  set_has_state();
+  state_ = value;
+  // @@protoc_insertion_point(field_set:db.RoleOneTask.state)
+}
+
+// -------------------------------------------------------------------
+
+// RoleTaskInfo
+
+// repeated .db.RoleOneTask doing = 1;
+inline int RoleTaskInfo::doing_size() const {
+  return doing_.size();
+}
+inline void RoleTaskInfo::clear_doing() {
+  doing_.Clear();
+}
+inline const ::db::RoleOneTask& RoleTaskInfo::doing(int index) const {
+  // @@protoc_insertion_point(field_get:db.RoleTaskInfo.doing)
+  return doing_.Get(index);
+}
+inline ::db::RoleOneTask* RoleTaskInfo::mutable_doing(int index) {
+  // @@protoc_insertion_point(field_mutable:db.RoleTaskInfo.doing)
+  return doing_.Mutable(index);
+}
+inline ::db::RoleOneTask* RoleTaskInfo::add_doing() {
+  // @@protoc_insertion_point(field_add:db.RoleTaskInfo.doing)
+  return doing_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::db::RoleOneTask >&
+RoleTaskInfo::doing() const {
+  // @@protoc_insertion_point(field_list:db.RoleTaskInfo.doing)
+  return doing_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::db::RoleOneTask >*
+RoleTaskInfo::mutable_doing() {
+  // @@protoc_insertion_point(field_mutable_list:db.RoleTaskInfo.doing)
+  return &doing_;
+}
+
+// repeated uint32 finishBitMap = 2 [packed = true];
+inline int RoleTaskInfo::finishbitmap_size() const {
+  return finishbitmap_.size();
+}
+inline void RoleTaskInfo::clear_finishbitmap() {
+  finishbitmap_.Clear();
+}
+inline ::google::protobuf::uint32 RoleTaskInfo::finishbitmap(int index) const {
+  // @@protoc_insertion_point(field_get:db.RoleTaskInfo.finishBitMap)
+  return finishbitmap_.Get(index);
+}
+inline void RoleTaskInfo::set_finishbitmap(int index, ::google::protobuf::uint32 value) {
+  finishbitmap_.Set(index, value);
+  // @@protoc_insertion_point(field_set:db.RoleTaskInfo.finishBitMap)
+}
+inline void RoleTaskInfo::add_finishbitmap(::google::protobuf::uint32 value) {
+  finishbitmap_.Add(value);
+  // @@protoc_insertion_point(field_add:db.RoleTaskInfo.finishBitMap)
+}
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+RoleTaskInfo::finishbitmap() const {
+  // @@protoc_insertion_point(field_list:db.RoleTaskInfo.finishBitMap)
+  return finishbitmap_;
+}
+inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+RoleTaskInfo::mutable_finishbitmap() {
+  // @@protoc_insertion_point(field_mutable_list:db.RoleTaskInfo.finishBitMap)
+  return &finishbitmap_;
+}
+
+// -------------------------------------------------------------------
+
+// RoleGrowth
+
+// optional .db.RoleTaskInfo task = 1;
+inline bool RoleGrowth::has_task() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void RoleGrowth::set_has_task() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void RoleGrowth::clear_has_task() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void RoleGrowth::clear_task() {
+  if (task_ != NULL) task_->::db::RoleTaskInfo::Clear();
+  clear_has_task();
+}
+inline const ::db::RoleTaskInfo& RoleGrowth::task() const {
+  // @@protoc_insertion_point(field_get:db.RoleGrowth.task)
+  return task_ != NULL ? *task_ : *default_instance_->task_;
+}
+inline ::db::RoleTaskInfo* RoleGrowth::mutable_task() {
+  set_has_task();
+  if (task_ == NULL) task_ = new ::db::RoleTaskInfo;
+  // @@protoc_insertion_point(field_mutable:db.RoleGrowth.task)
+  return task_;
+}
+inline ::db::RoleTaskInfo* RoleGrowth::release_task() {
+  clear_has_task();
+  ::db::RoleTaskInfo* temp = task_;
+  task_ = NULL;
+  return temp;
+}
+inline void RoleGrowth::set_allocated_task(::db::RoleTaskInfo* task) {
+  delete task_;
+  task_ = task;
+  if (task) {
+    set_has_task();
+  } else {
+    clear_has_task();
+  }
+  // @@protoc_insertion_point(field_set_allocated:db.RoleGrowth.task)
 }
 
 // -------------------------------------------------------------------

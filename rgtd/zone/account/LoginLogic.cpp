@@ -22,13 +22,18 @@ static void	Login(Coroutine* co,void* arg)
     SessionPtr   session = param->session;
     ////////////////////////////////////////////////////////////////
     session->SetState(Session::PLAYER_STATE_LOADING);
-    
-    int ret = login->zoneMgr->GetDBProxy().GetRole(session->GetUID(),
-        ROLE_DB_GET_LOGIN,co->iID);
-    
-
+    db::Role* pRole = login->zoneMgr->GetDBProxy().FindRoleObject(session->GetUID());
+    int ret = 0;
+    if(!pRole)
+    {
+        ret = login->zoneMgr->GetDBProxy().GetRole(session->GetUID(),
+            ROLE_DB_GET_LOGIN,co->iID);        
+    }    
+    else
+    {
+        LOG_INFO("player = %lu found in db proxy cache !",session->GetUID());
+    }
     LOG_INFO("get role ret = %d uid = %lu ",ret,session->GetUID());
-
     if( ret < 0 )
     {
         return ;   
@@ -36,7 +41,10 @@ static void	Login(Coroutine* co,void* arg)
     if(ret == DATA_OK)
     {
         //attach player agent
-        db::Role* pRole = login->zoneMgr->GetDBProxy().FindRoleObject(session->GetUID());
+        if(!pRole)
+        {
+            pRole = login->zoneMgr->GetDBProxy().FindRoleObject(session->GetUID());
+        }
         if(!pRole)
         {
             LOG_ERROR("get role object error !");

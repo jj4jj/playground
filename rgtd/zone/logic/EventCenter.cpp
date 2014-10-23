@@ -2,6 +2,7 @@
 #include "base/Log.h"
 #include "AgentApp.h"
 #include "component/TimerMgr.h"
+#include "logic/PlayerLogicCenter.h"
 
 #include "EventCenter.h"
 

@@ -3,7 +3,7 @@
 
 #include "PlayerTaskLogic.h"
 #include "PlayerAutoSyncDBLogic.h"
-
+#include "PlayerKnapsackLogic.h"
 
 
 ///------------------------------------
@@ -78,21 +78,20 @@ void     PlayerLogicCenter::NotifyEvent(int iEvent,int iParam,const char* pszLog
 }
 void     PlayerLogicCenter::InitLogic()
 {
-    string name = string("task");
-    Register(name.c_str(),PlayerLogicPtr(new PlayerTaskLogic(host,name)));
-    //other
-    name = string("autosync");
-    Register(name.c_str(),PlayerLogicPtr(new PlayerAutoSyncDBLogic(host,name)));
+    Register(PlayerLogicPtr(new PlayerTaskLogic(host)));
+    Register(PlayerLogicPtr(new PlayerAutoSyncDBLogic(host)));
+    Register(PlayerLogicPtr(new PlayerKnapsackLogic(host)));
 
+    //other
     
 }
-int      PlayerLogicCenter::Register(const char* pszLogicName,PlayerLogicPtr logic)
+int      PlayerLogicCenter::Register(PlayerLogicPtr logic)
 {
-    string  sLogicName = pszLogicName;
+    string  sLogicName = logic->GetName();
     LogicMapItr it = m_mpLogics.find(sLogicName);
     if(it != m_mpLogics.end())
     {
-        LOG_ERROR("reapeat register name = %s",pszLogicName);
+        LOG_ERROR("reapeat register name = %s",sLogicName.c_str());
         return -1;
     } 
     m_mpLogics[sLogicName] = logic;

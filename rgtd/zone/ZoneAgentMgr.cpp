@@ -9,6 +9,8 @@
 #include "proto/gen/cs/include.h"
 #include "proto/gen/gate/include.h"
 #include "account/PlayerAgent.h"
+#include "logic/EventCenter.h"
+
 
 class AgentGateMsgDispatcher : public  ChannelMessageDispatcher
 {

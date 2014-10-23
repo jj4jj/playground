@@ -1,21 +1,21 @@
 #pragma once
 #include "base/stdinc.h"
 #include "EventCenter.h"
+#include "account/PlayerAgent.h"
 
-class  PlayerAgent;
 class  PlayerTaskLogic;
-
 
 class PlayerLogic
 {
 public:
-    PlayerLogic(PlayerAgent* _pl,const string  nm):player(_pl),name(nm){}
+    PlayerLogic(PlayerAgent* _pl,const char* pszName):player(_pl),name(pszName){}
     virtual  ~PlayerLogic(){player = NULL;}
 public:
     virtual void    OnInitBirthPlayer();
     virtual void    OnAttach();
     virtual void    OnDetach();
     virtual void    OnEvent(int iEvent,int iParam = 0,void * arg = NULL);
+    inline  const string & GetName(){return name;}
 protected:
     PlayerAgent*    player;
     string          name;
@@ -39,7 +39,7 @@ public:
     void     NotifyEvent(int iEvent,int iParam = 0,const char* pszLogicName = NULL,void * arg = NULL);
 public:
     void     InitLogic();
-    int      Register(const char* pszLogicName,PlayerLogicPtr logic);
+    int      Register(PlayerLogicPtr logic);
 private:
     PlayerAgent*    host;    
 public:

@@ -56,11 +56,12 @@ class CSMsg;
 
 enum CSMsgTest_CmdCode {
   CSMsgTest_CmdCode_CSMSG_TEST_INFO_REQ = 1,
-  CSMsgTest_CmdCode_CSMSG_TEST_INFO_RSP = 2
+  CSMsgTest_CmdCode_CSMSG_TEST_INFO_RSP = 2,
+  CSMsgTest_CmdCode_CSMSG_TEST_TXT_RSP = 3
 };
 bool CSMsgTest_CmdCode_IsValid(int value);
 const CSMsgTest_CmdCode CSMsgTest_CmdCode_CmdCode_MIN = CSMsgTest_CmdCode_CSMSG_TEST_INFO_REQ;
-const CSMsgTest_CmdCode CSMsgTest_CmdCode_CmdCode_MAX = CSMsgTest_CmdCode_CSMSG_TEST_INFO_RSP;
+const CSMsgTest_CmdCode CSMsgTest_CmdCode_CmdCode_MAX = CSMsgTest_CmdCode_CSMSG_TEST_TXT_RSP;
 const int CSMsgTest_CmdCode_CmdCode_ARRAYSIZE = CSMsgTest_CmdCode_CmdCode_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* CSMsgTest_CmdCode_descriptor();
@@ -414,6 +415,7 @@ class CSMsgTest : public ::google::protobuf::Message {
   typedef CSMsgTest_CmdCode CmdCode;
   static const CmdCode CSMSG_TEST_INFO_REQ = CSMsgTest_CmdCode_CSMSG_TEST_INFO_REQ;
   static const CmdCode CSMSG_TEST_INFO_RSP = CSMsgTest_CmdCode_CSMSG_TEST_INFO_RSP;
+  static const CmdCode CSMSG_TEST_TXT_RSP = CSMsgTest_CmdCode_CSMSG_TEST_TXT_RSP;
   static inline bool CmdCode_IsValid(int value) {
     return CSMsgTest_CmdCode_IsValid(value);
   }
@@ -453,18 +455,33 @@ class CSMsgTest : public ::google::protobuf::Message {
   inline ::cs::TestInfoRsp* release_infrsp();
   inline void set_allocated_infrsp(::cs::TestInfoRsp* infrsp);
 
+  // optional string txtRsp = 3;
+  inline bool has_txtrsp() const;
+  inline void clear_txtrsp();
+  static const int kTxtRspFieldNumber = 3;
+  inline const ::std::string& txtrsp() const;
+  inline void set_txtrsp(const ::std::string& value);
+  inline void set_txtrsp(const char* value);
+  inline void set_txtrsp(const char* value, size_t size);
+  inline ::std::string* mutable_txtrsp();
+  inline ::std::string* release_txtrsp();
+  inline void set_allocated_txtrsp(::std::string* txtrsp);
+
   // @@protoc_insertion_point(class_scope:cs.CSMsgTest)
  private:
   inline void set_has_cmd();
   inline void clear_has_cmd();
   inline void set_has_infrsp();
   inline void clear_has_infrsp();
+  inline void set_has_txtrsp();
+  inline void clear_has_txtrsp();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
   ::google::protobuf::uint32 _has_bits_[1];
   mutable int _cached_size_;
   ::cs::TestInfoRsp* infrsp_;
+  ::std::string* txtrsp_;
   ::google::protobuf::uint32 cmd_;
   friend void  protobuf_AddDesc_cs_2fCSMsg_2eproto();
   friend void protobuf_AssignDesc_cs_2fCSMsg_2eproto();
@@ -2440,6 +2457,82 @@ inline void CSMsgTest::set_allocated_infrsp(::cs::TestInfoRsp* infrsp) {
     clear_has_infrsp();
   }
   // @@protoc_insertion_point(field_set_allocated:cs.CSMsgTest.infRsp)
+}
+
+// optional string txtRsp = 3;
+inline bool CSMsgTest::has_txtrsp() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void CSMsgTest::set_has_txtrsp() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void CSMsgTest::clear_has_txtrsp() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void CSMsgTest::clear_txtrsp() {
+  if (txtrsp_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    txtrsp_->clear();
+  }
+  clear_has_txtrsp();
+}
+inline const ::std::string& CSMsgTest::txtrsp() const {
+  // @@protoc_insertion_point(field_get:cs.CSMsgTest.txtRsp)
+  return *txtrsp_;
+}
+inline void CSMsgTest::set_txtrsp(const ::std::string& value) {
+  set_has_txtrsp();
+  if (txtrsp_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    txtrsp_ = new ::std::string;
+  }
+  txtrsp_->assign(value);
+  // @@protoc_insertion_point(field_set:cs.CSMsgTest.txtRsp)
+}
+inline void CSMsgTest::set_txtrsp(const char* value) {
+  set_has_txtrsp();
+  if (txtrsp_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    txtrsp_ = new ::std::string;
+  }
+  txtrsp_->assign(value);
+  // @@protoc_insertion_point(field_set_char:cs.CSMsgTest.txtRsp)
+}
+inline void CSMsgTest::set_txtrsp(const char* value, size_t size) {
+  set_has_txtrsp();
+  if (txtrsp_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    txtrsp_ = new ::std::string;
+  }
+  txtrsp_->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:cs.CSMsgTest.txtRsp)
+}
+inline ::std::string* CSMsgTest::mutable_txtrsp() {
+  set_has_txtrsp();
+  if (txtrsp_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    txtrsp_ = new ::std::string;
+  }
+  // @@protoc_insertion_point(field_mutable:cs.CSMsgTest.txtRsp)
+  return txtrsp_;
+}
+inline ::std::string* CSMsgTest::release_txtrsp() {
+  clear_has_txtrsp();
+  if (txtrsp_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    return NULL;
+  } else {
+    ::std::string* temp = txtrsp_;
+    txtrsp_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    return temp;
+  }
+}
+inline void CSMsgTest::set_allocated_txtrsp(::std::string* txtrsp) {
+  if (txtrsp_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    delete txtrsp_;
+  }
+  if (txtrsp) {
+    set_has_txtrsp();
+    txtrsp_ = txtrsp;
+  } else {
+    clear_has_txtrsp();
+    txtrsp_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  }
+  // @@protoc_insertion_point(field_set_allocated:cs.CSMsgTest.txtRsp)
 }
 
 // -------------------------------------------------------------------

@@ -1,7 +1,6 @@
 #pragma once
 #include "base/stdinc.h"
 #include "proto/gen/db/include.h"
-#include "logic/PlayerLogicCenter.h"
 
 /*
 player is all role data operator
@@ -10,6 +9,8 @@ any logic want to hold player data
 must register in player logic center .
 
 */
+class PlayerLogicCenter;
+typedef shared_ptr<PlayerLogicCenter>   PlayerLogicCenterPtr;
 
 class PlayerAgent
 {

@@ -5,7 +5,7 @@ class DBProxy;
 class PlayerAutoSyncDBLogic : public PlayerLogic
 {
 public:    
-    PlayerAutoSyncDBLogic(PlayerAgent* _pa,const string & nm):PlayerLogic(_pa,nm){}
+    PlayerAutoSyncDBLogic(PlayerAgent* _pa):PlayerLogic(_pa,"autosync"){}
     virtual void    OnAttach();
     virtual void    OnDetach();
     virtual void    OnEvent(int iEvent,int iParam = 0,void * arg = NULL);    

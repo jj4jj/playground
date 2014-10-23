@@ -3,6 +3,12 @@
 class PlayerTaskLogic : public PlayerLogic
 {
 public:    
-    PlayerTaskLogic(PlayerAgent* _pl,const string & nm):PlayerLogic(_pl,nm){}
+    PlayerTaskLogic(PlayerAgent* _pl):PlayerLogic(_pl,"task"){}
+public:
+    //
+    db::RoleTaskInfo* GetTaskInfo();
+    int CheckOneTask(db::RoleOneTask * task,int iEvent,int iParam = 0,void * arg = NULL);
+    virtual void    OnInitBirthPlayer();
+    virtual void    OnEvent(int iEvent,int iParam = 0,void * arg = NULL);
 };
 

@@ -51,12 +51,21 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* RoleHeroInfo_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   RoleHeroInfo_reflection_ = NULL;
+const ::google::protobuf::Descriptor* RoleItem_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  RoleItem_reflection_ = NULL;
 const ::google::protobuf::Descriptor* RolePackGrid_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   RolePackGrid_reflection_ = NULL;
 const ::google::protobuf::Descriptor* RolePackage_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   RolePackage_reflection_ = NULL;
+const ::google::protobuf::Descriptor* RoleOneTask_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  RoleOneTask_reflection_ = NULL;
+const ::google::protobuf::Descriptor* RoleTaskInfo_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  RoleTaskInfo_reflection_ = NULL;
 const ::google::protobuf::Descriptor* RoleGrowth_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   RoleGrowth_reflection_ = NULL;
@@ -253,10 +262,25 @@ void protobuf_AssignDesc_db_2fRole_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(RoleHeroInfo));
-  RolePackGrid_descriptor_ = file->message_type(10);
-  static const int RolePackGrid_offsets_[3] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RolePackGrid, pos_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RolePackGrid, id_),
+  RoleItem_descriptor_ = file->message_type(10);
+  static const int RoleItem_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RoleItem, id_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RoleItem, level_),
+  };
+  RoleItem_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      RoleItem_descriptor_,
+      RoleItem::default_instance_,
+      RoleItem_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RoleItem, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RoleItem, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(RoleItem));
+  RolePackGrid_descriptor_ = file->message_type(11);
+  static const int RolePackGrid_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RolePackGrid, item_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RolePackGrid, num_),
   };
   RolePackGrid_reflection_ =
@@ -270,7 +294,7 @@ void protobuf_AssignDesc_db_2fRole_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(RolePackGrid));
-  RolePackage_descriptor_ = file->message_type(11);
+  RolePackage_descriptor_ = file->message_type(12);
   static const int RolePackage_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RolePackage, maxgrid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RolePackage, grids_),
@@ -286,10 +310,42 @@ void protobuf_AssignDesc_db_2fRole_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(RolePackage));
-  RoleGrowth_descriptor_ = file->message_type(12);
-  static const int RoleGrowth_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RoleGrowth, level_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RoleGrowth, exp_),
+  RoleOneTask_descriptor_ = file->message_type(13);
+  static const int RoleOneTask_offsets_[3] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RoleOneTask, id_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RoleOneTask, cur_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RoleOneTask, state_),
+  };
+  RoleOneTask_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      RoleOneTask_descriptor_,
+      RoleOneTask::default_instance_,
+      RoleOneTask_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RoleOneTask, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RoleOneTask, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(RoleOneTask));
+  RoleTaskInfo_descriptor_ = file->message_type(14);
+  static const int RoleTaskInfo_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RoleTaskInfo, doing_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RoleTaskInfo, finishbitmap_),
+  };
+  RoleTaskInfo_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      RoleTaskInfo_descriptor_,
+      RoleTaskInfo::default_instance_,
+      RoleTaskInfo_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RoleTaskInfo, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RoleTaskInfo, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(RoleTaskInfo));
+  RoleGrowth_descriptor_ = file->message_type(15);
+  static const int RoleGrowth_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RoleGrowth, task_),
   };
   RoleGrowth_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -302,7 +358,7 @@ void protobuf_AssignDesc_db_2fRole_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(RoleGrowth));
-  RoleStage_descriptor_ = file->message_type(13);
+  RoleStage_descriptor_ = file->message_type(16);
   static const int RoleStage_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RoleStage, curstage_),
   };
@@ -317,7 +373,7 @@ void protobuf_AssignDesc_db_2fRole_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(RoleStage));
-  RoleSNS_descriptor_ = file->message_type(14);
+  RoleSNS_descriptor_ = file->message_type(17);
   static const int RoleSNS_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RoleSNS, maxfrinds_),
   };
@@ -332,7 +388,7 @@ void protobuf_AssignDesc_db_2fRole_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(RoleSNS));
-  RoleActInfo_descriptor_ = file->message_type(15);
+  RoleActInfo_descriptor_ = file->message_type(18);
   static const int RoleActInfo_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RoleActInfo, dummy_),
   };
@@ -347,7 +403,7 @@ void protobuf_AssignDesc_db_2fRole_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(RoleActInfo));
-  RoleExt_descriptor_ = file->message_type(16);
+  RoleExt_descriptor_ = file->message_type(19);
   static const int RoleExt_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RoleExt, dummy_),
   };
@@ -362,7 +418,7 @@ void protobuf_AssignDesc_db_2fRole_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(RoleExt));
-  Role_descriptor_ = file->message_type(17);
+  Role_descriptor_ = file->message_type(20);
   static const int Role_offsets_[10] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Role, rid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Role, name_),
@@ -449,9 +505,15 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     RoleHeroInfo_descriptor_, &RoleHeroInfo::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    RoleItem_descriptor_, &RoleItem::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     RolePackGrid_descriptor_, &RolePackGrid::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     RolePackage_descriptor_, &RolePackage::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    RoleOneTask_descriptor_, &RoleOneTask::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    RoleTaskInfo_descriptor_, &RoleTaskInfo::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     RoleGrowth_descriptor_, &RoleGrowth::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
@@ -493,10 +555,16 @@ void protobuf_ShutdownFile_db_2fRole_2eproto() {
   delete HeroStrategy_reflection_;
   delete RoleHeroInfo::default_instance_;
   delete RoleHeroInfo_reflection_;
+  delete RoleItem::default_instance_;
+  delete RoleItem_reflection_;
   delete RolePackGrid::default_instance_;
   delete RolePackGrid_reflection_;
   delete RolePackage::default_instance_;
   delete RolePackage_reflection_;
+  delete RoleOneTask::default_instance_;
+  delete RoleOneTask_reflection_;
+  delete RoleTaskInfo::default_instance_;
+  delete RoleTaskInfo_reflection_;
   delete RoleGrowth::default_instance_;
   delete RoleGrowth_reflection_;
   delete RoleStage::default_instance_;
@@ -530,31 +598,35 @@ void protobuf_AddDesc_db_2fRole_2eproto() {
     "\n\002lv\030\002 \001(\r\022\013\n\003pos\030\003 \001(\r\")\n\013RoleHeroArm\022\032"
     "\n\005grids\030\001 \003(\0132\013.db.HeroArm\"#\n\tHeroSkill\022"
     "\n\n\002id\030\001 \001(\r\022\n\n\002lv\030\002 \001(\r\".\n\rRoleHeroSkill"
-    "\022\035\n\006skills\030\001 \003(\0132\r.db.HeroSkill\",\n\016RoleH"
-    "eroGrowth\022\r\n\005level\030\001 \001(\r\022\013\n\003exp\030\002 \001(\r\"\235\001"
-    "\n\010RoleHero\022\r\n\002id\030\001 \002(\r:\0010\022\"\n\006growth\030\002 \002("
-    "\0132\022.db.RoleHeroGrowth\022\036\n\004attr\030\003 \002(\0132\020.db"
-    ".RoleHeroAttr\022\034\n\003arm\030\004 \002(\0132\017.db.RoleHero"
-    "Arm\022 \n\005skill\030\005 \002(\0132\021.db.RoleHeroSkill\"&\n"
-    "\014HeroStrategy\022\026\n\016joinWarHeroIDs\030\001 \003(\r\"O\n"
-    "\014RoleHeroInfo\022\033\n\005heros\030\001 \003(\0132\014.db.RoleHe"
-    "ro\022\"\n\010strategy\030\002 \002(\0132\020.db.HeroStrategy\"7"
-    "\n\014RolePackGrid\022\013\n\003pos\030\001 \002(\r\022\n\n\002id\030\002 \002(\r\022"
-    "\016\n\003num\030\003 \002(\r:\0010\"B\n\013RolePackage\022\022\n\007maxGri"
-    "d\030\001 \002(\r:\0010\022\037\n\005grids\030\002 \003(\0132\020.db.RolePackG"
-    "rid\".\n\nRoleGrowth\022\020\n\005level\030\001 \002(\r:\0011\022\016\n\003e"
-    "xp\030\002 \002(\r:\0010\" \n\tRoleStage\022\023\n\010curStage\030\001 \002"
-    "(\r:\0010\"\037\n\007RoleSNS\022\024\n\tmaxfrinds\030\001 \002(\r:\0015\"\034"
-    "\n\013RoleActInfo\022\r\n\005dummy\030\001 \001(\r\"\030\n\007RoleExt\022"
-    "\r\n\005dummy\030\001 \002(\r\"\306\002\n\004Role\022\013\n\003rid\030\001 \002(\004\022\014\n\004"
-    "name\030\002 \002(\t\022\032\n\004base\030\003 \002(\0132\014.db.RoleBase\022\036"
-    "\n\004hero\030\004 \002(\0132\020.db.RoleHeroInfo\022\035\n\004pack\030\005"
-    " \002(\0132\017.db.RolePackage\022\034\n\004grow\030\006 \002(\0132\016.db"
-    ".RoleGrowth\022\034\n\005stage\030\007 \002(\0132\r.db.RoleStag"
-    "e\022\030\n\003sns\030\010 \002(\0132\013.db.RoleSNS\022\034\n\003act\030\t \002(\013"
-    "2\017.db.RoleActInfo\022\030\n\003ext\030\n \002(\0132\013.db.Role"
-    "Ext\032\032\n\013_PrimaryKey\022\013\n\003rid\030\001 \001(\r\032\036\n\n_MaxL"
-    "ength\022\020\n\004name\030\001 \001(\r:\00232", 1303);
+    "\022\035\n\006skills\030\001 \003(\0132\r.db.HeroSkill\"2\n\016RoleH"
+    "eroGrowth\022\020\n\005level\030\001 \002(\r:\0011\022\016\n\003exp\030\002 \002(\r"
+    ":\0010\"\235\001\n\010RoleHero\022\r\n\002id\030\001 \002(\r:\0010\022\"\n\006growt"
+    "h\030\002 \002(\0132\022.db.RoleHeroGrowth\022\036\n\004attr\030\003 \002("
+    "\0132\020.db.RoleHeroAttr\022\034\n\003arm\030\004 \002(\0132\017.db.Ro"
+    "leHeroArm\022 \n\005skill\030\005 \002(\0132\021.db.RoleHeroSk"
+    "ill\"&\n\014HeroStrategy\022\026\n\016joinWarHeroIDs\030\001 "
+    "\003(\r\"O\n\014RoleHeroInfo\022\033\n\005heros\030\001 \003(\0132\014.db."
+    "RoleHero\022\"\n\010strategy\030\002 \002(\0132\020.db.HeroStra"
+    "tegy\"%\n\010RoleItem\022\n\n\002id\030\001 \002(\r\022\r\n\005level\030\002 "
+    "\001(\r\":\n\014RolePackGrid\022\032\n\004item\030\001 \002(\0132\014.db.R"
+    "oleItem\022\016\n\003num\030\002 \002(\r:\0010\"B\n\013RolePackage\022\022"
+    "\n\007maxGrid\030\001 \002(\r:\0010\022\037\n\005grids\030\002 \003(\0132\020.db.R"
+    "olePackGrid\"5\n\013RoleOneTask\022\n\n\002id\030\001 \002(\r\022\013"
+    "\n\003cur\030\002 \001(\r\022\r\n\005state\030\003 \001(\r\"H\n\014RoleTaskIn"
+    "fo\022\036\n\005doing\030\001 \003(\0132\017.db.RoleOneTask\022\030\n\014fi"
+    "nishBitMap\030\002 \003(\rB\002\020\001\",\n\nRoleGrowth\022\036\n\004ta"
+    "sk\030\001 \001(\0132\020.db.RoleTaskInfo\" \n\tRoleStage\022"
+    "\023\n\010curStage\030\001 \002(\r:\0010\"\037\n\007RoleSNS\022\024\n\tmaxfr"
+    "inds\030\001 \002(\r:\0015\"\034\n\013RoleActInfo\022\r\n\005dummy\030\001 "
+    "\001(\r\"\030\n\007RoleExt\022\r\n\005dummy\030\001 \002(\r\"\306\002\n\004Role\022\013"
+    "\n\003rid\030\001 \002(\004\022\014\n\004name\030\002 \002(\t\022\032\n\004base\030\003 \002(\0132"
+    "\014.db.RoleBase\022\036\n\004hero\030\004 \002(\0132\020.db.RoleHer"
+    "oInfo\022\035\n\004pack\030\005 \002(\0132\017.db.RolePackage\022\034\n\004"
+    "grow\030\006 \002(\0132\016.db.RoleGrowth\022\034\n\005stage\030\007 \002("
+    "\0132\r.db.RoleStage\022\030\n\003sns\030\010 \002(\0132\013.db.RoleS"
+    "NS\022\034\n\003act\030\t \002(\0132\017.db.RoleActInfo\022\030\n\003ext\030"
+    "\n \002(\0132\013.db.RoleExt\032\032\n\013_PrimaryKey\022\013\n\003rid"
+    "\030\001 \001(\r\032\036\n\n_MaxLength\022\020\n\004name\030\001 \001(\r:\00232", 1478);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "db/Role.proto", &protobuf_RegisterTypes);
   RoleBase::default_instance_ = new RoleBase();
@@ -567,8 +639,11 @@ void protobuf_AddDesc_db_2fRole_2eproto() {
   RoleHero::default_instance_ = new RoleHero();
   HeroStrategy::default_instance_ = new HeroStrategy();
   RoleHeroInfo::default_instance_ = new RoleHeroInfo();
+  RoleItem::default_instance_ = new RoleItem();
   RolePackGrid::default_instance_ = new RolePackGrid();
   RolePackage::default_instance_ = new RolePackage();
+  RoleOneTask::default_instance_ = new RoleOneTask();
+  RoleTaskInfo::default_instance_ = new RoleTaskInfo();
   RoleGrowth::default_instance_ = new RoleGrowth();
   RoleStage::default_instance_ = new RoleStage();
   RoleSNS::default_instance_ = new RoleSNS();
@@ -587,8 +662,11 @@ void protobuf_AddDesc_db_2fRole_2eproto() {
   RoleHero::default_instance_->InitAsDefaultInstance();
   HeroStrategy::default_instance_->InitAsDefaultInstance();
   RoleHeroInfo::default_instance_->InitAsDefaultInstance();
+  RoleItem::default_instance_->InitAsDefaultInstance();
   RolePackGrid::default_instance_->InitAsDefaultInstance();
   RolePackage::default_instance_->InitAsDefaultInstance();
+  RoleOneTask::default_instance_->InitAsDefaultInstance();
+  RoleTaskInfo::default_instance_->InitAsDefaultInstance();
   RoleGrowth::default_instance_->InitAsDefaultInstance();
   RoleStage::default_instance_->InitAsDefaultInstance();
   RoleSNS::default_instance_->InitAsDefaultInstance();
@@ -2221,7 +2299,7 @@ RoleHeroGrowth::RoleHeroGrowth(const RoleHeroGrowth& from)
 
 void RoleHeroGrowth::SharedCtor() {
   _cached_size_ = 0;
-  level_ = 0u;
+  level_ = 1u;
   exp_ = 0u;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -2258,21 +2336,10 @@ RoleHeroGrowth* RoleHeroGrowth::New() const {
 }
 
 void RoleHeroGrowth::Clear() {
-#define OFFSET_OF_FIELD_(f) (reinterpret_cast<char*>(      \
-  &reinterpret_cast<RoleHeroGrowth*>(16)->f) - \
-   reinterpret_cast<char*>(16))
-
-#define ZR_(first, last) do {                              \
-    size_t f = OFFSET_OF_FIELD_(first);                    \
-    size_t n = OFFSET_OF_FIELD_(last) - f + sizeof(last);  \
-    ::memset(&first, 0, n);                                \
-  } while (0)
-
-  ZR_(level_, exp_);
-
-#undef OFFSET_OF_FIELD_
-#undef ZR_
-
+  if (_has_bits_[0 / 32] & 3) {
+    level_ = 1u;
+    exp_ = 0u;
+  }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -2287,7 +2354,7 @@ bool RoleHeroGrowth::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional uint32 level = 1;
+      // required uint32 level = 1 [default = 1];
       case 1: {
         if (tag == 8) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
@@ -2301,7 +2368,7 @@ bool RoleHeroGrowth::MergePartialFromCodedStream(
         break;
       }
 
-      // optional uint32 exp = 2;
+      // required uint32 exp = 2 [default = 0];
       case 2: {
         if (tag == 16) {
          parse_exp:
@@ -2341,12 +2408,12 @@ failure:
 void RoleHeroGrowth::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:db.RoleHeroGrowth)
-  // optional uint32 level = 1;
+  // required uint32 level = 1 [default = 1];
   if (has_level()) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->level(), output);
   }
 
-  // optional uint32 exp = 2;
+  // required uint32 exp = 2 [default = 0];
   if (has_exp()) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->exp(), output);
   }
@@ -2361,12 +2428,12 @@ void RoleHeroGrowth::SerializeWithCachedSizes(
 ::google::protobuf::uint8* RoleHeroGrowth::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // @@protoc_insertion_point(serialize_to_array_start:db.RoleHeroGrowth)
-  // optional uint32 level = 1;
+  // required uint32 level = 1 [default = 1];
   if (has_level()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->level(), target);
   }
 
-  // optional uint32 exp = 2;
+  // required uint32 exp = 2 [default = 0];
   if (has_exp()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->exp(), target);
   }
@@ -2383,14 +2450,14 @@ int RoleHeroGrowth::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional uint32 level = 1;
+    // required uint32 level = 1 [default = 1];
     if (has_level()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt32Size(
           this->level());
     }
 
-    // optional uint32 exp = 2;
+    // required uint32 exp = 2 [default = 0];
     if (has_exp()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt32Size(
@@ -2447,6 +2514,7 @@ void RoleHeroGrowth::CopyFrom(const RoleHeroGrowth& from) {
 }
 
 bool RoleHeroGrowth::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
 
   return true;
 }
@@ -2846,6 +2914,9 @@ void RoleHero::CopyFrom(const RoleHero& from) {
 bool RoleHero::IsInitialized() const {
   if ((_has_bits_[0] & 0x0000001f) != 0x0000001f) return false;
 
+  if (has_growth()) {
+    if (!this->growth().IsInitialized()) return false;
+  }
   return true;
 }
 
@@ -3368,8 +3439,282 @@ void RoleHeroInfo::Swap(RoleHeroInfo* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int RolePackGrid::kPosFieldNumber;
-const int RolePackGrid::kIdFieldNumber;
+const int RoleItem::kIdFieldNumber;
+const int RoleItem::kLevelFieldNumber;
+#endif  // !_MSC_VER
+
+RoleItem::RoleItem()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:db.RoleItem)
+}
+
+void RoleItem::InitAsDefaultInstance() {
+}
+
+RoleItem::RoleItem(const RoleItem& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:db.RoleItem)
+}
+
+void RoleItem::SharedCtor() {
+  _cached_size_ = 0;
+  id_ = 0u;
+  level_ = 0u;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+RoleItem::~RoleItem() {
+  // @@protoc_insertion_point(destructor:db.RoleItem)
+  SharedDtor();
+}
+
+void RoleItem::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void RoleItem::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* RoleItem::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return RoleItem_descriptor_;
+}
+
+const RoleItem& RoleItem::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_db_2fRole_2eproto();
+  return *default_instance_;
+}
+
+RoleItem* RoleItem::default_instance_ = NULL;
+
+RoleItem* RoleItem::New() const {
+  return new RoleItem;
+}
+
+void RoleItem::Clear() {
+#define OFFSET_OF_FIELD_(f) (reinterpret_cast<char*>(      \
+  &reinterpret_cast<RoleItem*>(16)->f) - \
+   reinterpret_cast<char*>(16))
+
+#define ZR_(first, last) do {                              \
+    size_t f = OFFSET_OF_FIELD_(first);                    \
+    size_t n = OFFSET_OF_FIELD_(last) - f + sizeof(last);  \
+    ::memset(&first, 0, n);                                \
+  } while (0)
+
+  ZR_(id_, level_);
+
+#undef OFFSET_OF_FIELD_
+#undef ZR_
+
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool RoleItem::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:db.RoleItem)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required uint32 id = 1;
+      case 1: {
+        if (tag == 8) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &id_)));
+          set_has_id();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(16)) goto parse_level;
+        break;
+      }
+
+      // optional uint32 level = 2;
+      case 2: {
+        if (tag == 16) {
+         parse_level:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &level_)));
+          set_has_level();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:db.RoleItem)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:db.RoleItem)
+  return false;
+#undef DO_
+}
+
+void RoleItem::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:db.RoleItem)
+  // required uint32 id = 1;
+  if (has_id()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->id(), output);
+  }
+
+  // optional uint32 level = 2;
+  if (has_level()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->level(), output);
+  }
+
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+  // @@protoc_insertion_point(serialize_end:db.RoleItem)
+}
+
+::google::protobuf::uint8* RoleItem::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:db.RoleItem)
+  // required uint32 id = 1;
+  if (has_id()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->id(), target);
+  }
+
+  // optional uint32 level = 2;
+  if (has_level()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->level(), target);
+  }
+
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:db.RoleItem)
+  return target;
+}
+
+int RoleItem::ByteSize() const {
+  int total_size = 0;
+
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required uint32 id = 1;
+    if (has_id()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->id());
+    }
+
+    // optional uint32 level = 2;
+    if (has_level()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->level());
+    }
+
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void RoleItem::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const RoleItem* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const RoleItem*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void RoleItem::MergeFrom(const RoleItem& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_id()) {
+      set_id(from.id());
+    }
+    if (from.has_level()) {
+      set_level(from.level());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void RoleItem::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void RoleItem::CopyFrom(const RoleItem& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool RoleItem::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+
+  return true;
+}
+
+void RoleItem::Swap(RoleItem* other) {
+  if (other != this) {
+    std::swap(id_, other->id_);
+    std::swap(level_, other->level_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata RoleItem::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = RoleItem_descriptor_;
+  metadata.reflection = RoleItem_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int RolePackGrid::kItemFieldNumber;
 const int RolePackGrid::kNumFieldNumber;
 #endif  // !_MSC_VER
 
@@ -3380,6 +3725,7 @@ RolePackGrid::RolePackGrid()
 }
 
 void RolePackGrid::InitAsDefaultInstance() {
+  item_ = const_cast< ::db::RoleItem*>(&::db::RoleItem::default_instance());
 }
 
 RolePackGrid::RolePackGrid(const RolePackGrid& from)
@@ -3391,8 +3737,7 @@ RolePackGrid::RolePackGrid(const RolePackGrid& from)
 
 void RolePackGrid::SharedCtor() {
   _cached_size_ = 0;
-  pos_ = 0u;
-  id_ = 0u;
+  item_ = NULL;
   num_ = 0u;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -3404,6 +3749,7 @@ RolePackGrid::~RolePackGrid() {
 
 void RolePackGrid::SharedDtor() {
   if (this != default_instance_) {
+    delete item_;
   }
 }
 
@@ -3429,21 +3775,12 @@ RolePackGrid* RolePackGrid::New() const {
 }
 
 void RolePackGrid::Clear() {
-#define OFFSET_OF_FIELD_(f) (reinterpret_cast<char*>(      \
-  &reinterpret_cast<RolePackGrid*>(16)->f) - \
-   reinterpret_cast<char*>(16))
-
-#define ZR_(first, last) do {                              \
-    size_t f = OFFSET_OF_FIELD_(first);                    \
-    size_t n = OFFSET_OF_FIELD_(last) - f + sizeof(last);  \
-    ::memset(&first, 0, n);                                \
-  } while (0)
-
-  ZR_(pos_, num_);
-
-#undef OFFSET_OF_FIELD_
-#undef ZR_
-
+  if (_has_bits_[0 / 32] & 3) {
+    if (has_item()) {
+      if (item_ != NULL) item_->::db::RoleItem::Clear();
+    }
+    num_ = 0u;
+  }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -3458,38 +3795,21 @@ bool RolePackGrid::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required uint32 pos = 1;
+      // required .db.RoleItem item = 1;
       case 1: {
-        if (tag == 8) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &pos_)));
-          set_has_pos();
+        if (tag == 10) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_item()));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(16)) goto parse_id;
+        if (input->ExpectTag(16)) goto parse_num;
         break;
       }
 
-      // required uint32 id = 2;
+      // required uint32 num = 2 [default = 0];
       case 2: {
         if (tag == 16) {
-         parse_id:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &id_)));
-          set_has_id();
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectTag(24)) goto parse_num;
-        break;
-      }
-
-      // required uint32 num = 3 [default = 0];
-      case 3: {
-        if (tag == 24) {
          parse_num:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
@@ -3527,19 +3847,15 @@ failure:
 void RolePackGrid::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:db.RolePackGrid)
-  // required uint32 pos = 1;
-  if (has_pos()) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->pos(), output);
+  // required .db.RoleItem item = 1;
+  if (has_item()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, this->item(), output);
   }
 
-  // required uint32 id = 2;
-  if (has_id()) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->id(), output);
-  }
-
-  // required uint32 num = 3 [default = 0];
+  // required uint32 num = 2 [default = 0];
   if (has_num()) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(3, this->num(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->num(), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -3552,19 +3868,16 @@ void RolePackGrid::SerializeWithCachedSizes(
 ::google::protobuf::uint8* RolePackGrid::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // @@protoc_insertion_point(serialize_to_array_start:db.RolePackGrid)
-  // required uint32 pos = 1;
-  if (has_pos()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->pos(), target);
+  // required .db.RoleItem item = 1;
+  if (has_item()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        1, this->item(), target);
   }
 
-  // required uint32 id = 2;
-  if (has_id()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->id(), target);
-  }
-
-  // required uint32 num = 3 [default = 0];
+  // required uint32 num = 2 [default = 0];
   if (has_num()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(3, this->num(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->num(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -3579,21 +3892,14 @@ int RolePackGrid::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required uint32 pos = 1;
-    if (has_pos()) {
+    // required .db.RoleItem item = 1;
+    if (has_item()) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->pos());
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->item());
     }
 
-    // required uint32 id = 2;
-    if (has_id()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->id());
-    }
-
-    // required uint32 num = 3 [default = 0];
+    // required uint32 num = 2 [default = 0];
     if (has_num()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt32Size(
@@ -3627,11 +3933,8 @@ void RolePackGrid::MergeFrom(const ::google::protobuf::Message& from) {
 void RolePackGrid::MergeFrom(const RolePackGrid& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_pos()) {
-      set_pos(from.pos());
-    }
-    if (from.has_id()) {
-      set_id(from.id());
+    if (from.has_item()) {
+      mutable_item()->::db::RoleItem::MergeFrom(from.item());
     }
     if (from.has_num()) {
       set_num(from.num());
@@ -3653,15 +3956,17 @@ void RolePackGrid::CopyFrom(const RolePackGrid& from) {
 }
 
 bool RolePackGrid::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000007) != 0x00000007) return false;
+  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
 
+  if (has_item()) {
+    if (!this->item().IsInitialized()) return false;
+  }
   return true;
 }
 
 void RolePackGrid::Swap(RolePackGrid* other) {
   if (other != this) {
-    std::swap(pos_, other->pos_);
-    std::swap(id_, other->id_);
+    std::swap(item_, other->item_);
     std::swap(num_, other->num_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
@@ -3944,8 +4249,603 @@ void RolePackage::Swap(RolePackage* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int RoleGrowth::kLevelFieldNumber;
-const int RoleGrowth::kExpFieldNumber;
+const int RoleOneTask::kIdFieldNumber;
+const int RoleOneTask::kCurFieldNumber;
+const int RoleOneTask::kStateFieldNumber;
+#endif  // !_MSC_VER
+
+RoleOneTask::RoleOneTask()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:db.RoleOneTask)
+}
+
+void RoleOneTask::InitAsDefaultInstance() {
+}
+
+RoleOneTask::RoleOneTask(const RoleOneTask& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:db.RoleOneTask)
+}
+
+void RoleOneTask::SharedCtor() {
+  _cached_size_ = 0;
+  id_ = 0u;
+  cur_ = 0u;
+  state_ = 0u;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+RoleOneTask::~RoleOneTask() {
+  // @@protoc_insertion_point(destructor:db.RoleOneTask)
+  SharedDtor();
+}
+
+void RoleOneTask::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void RoleOneTask::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* RoleOneTask::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return RoleOneTask_descriptor_;
+}
+
+const RoleOneTask& RoleOneTask::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_db_2fRole_2eproto();
+  return *default_instance_;
+}
+
+RoleOneTask* RoleOneTask::default_instance_ = NULL;
+
+RoleOneTask* RoleOneTask::New() const {
+  return new RoleOneTask;
+}
+
+void RoleOneTask::Clear() {
+#define OFFSET_OF_FIELD_(f) (reinterpret_cast<char*>(      \
+  &reinterpret_cast<RoleOneTask*>(16)->f) - \
+   reinterpret_cast<char*>(16))
+
+#define ZR_(first, last) do {                              \
+    size_t f = OFFSET_OF_FIELD_(first);                    \
+    size_t n = OFFSET_OF_FIELD_(last) - f + sizeof(last);  \
+    ::memset(&first, 0, n);                                \
+  } while (0)
+
+  ZR_(id_, state_);
+
+#undef OFFSET_OF_FIELD_
+#undef ZR_
+
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool RoleOneTask::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:db.RoleOneTask)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required uint32 id = 1;
+      case 1: {
+        if (tag == 8) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &id_)));
+          set_has_id();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(16)) goto parse_cur;
+        break;
+      }
+
+      // optional uint32 cur = 2;
+      case 2: {
+        if (tag == 16) {
+         parse_cur:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &cur_)));
+          set_has_cur();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(24)) goto parse_state;
+        break;
+      }
+
+      // optional uint32 state = 3;
+      case 3: {
+        if (tag == 24) {
+         parse_state:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &state_)));
+          set_has_state();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:db.RoleOneTask)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:db.RoleOneTask)
+  return false;
+#undef DO_
+}
+
+void RoleOneTask::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:db.RoleOneTask)
+  // required uint32 id = 1;
+  if (has_id()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->id(), output);
+  }
+
+  // optional uint32 cur = 2;
+  if (has_cur()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->cur(), output);
+  }
+
+  // optional uint32 state = 3;
+  if (has_state()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(3, this->state(), output);
+  }
+
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+  // @@protoc_insertion_point(serialize_end:db.RoleOneTask)
+}
+
+::google::protobuf::uint8* RoleOneTask::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:db.RoleOneTask)
+  // required uint32 id = 1;
+  if (has_id()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->id(), target);
+  }
+
+  // optional uint32 cur = 2;
+  if (has_cur()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->cur(), target);
+  }
+
+  // optional uint32 state = 3;
+  if (has_state()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(3, this->state(), target);
+  }
+
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:db.RoleOneTask)
+  return target;
+}
+
+int RoleOneTask::ByteSize() const {
+  int total_size = 0;
+
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required uint32 id = 1;
+    if (has_id()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->id());
+    }
+
+    // optional uint32 cur = 2;
+    if (has_cur()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->cur());
+    }
+
+    // optional uint32 state = 3;
+    if (has_state()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->state());
+    }
+
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void RoleOneTask::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const RoleOneTask* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const RoleOneTask*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void RoleOneTask::MergeFrom(const RoleOneTask& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_id()) {
+      set_id(from.id());
+    }
+    if (from.has_cur()) {
+      set_cur(from.cur());
+    }
+    if (from.has_state()) {
+      set_state(from.state());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void RoleOneTask::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void RoleOneTask::CopyFrom(const RoleOneTask& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool RoleOneTask::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+
+  return true;
+}
+
+void RoleOneTask::Swap(RoleOneTask* other) {
+  if (other != this) {
+    std::swap(id_, other->id_);
+    std::swap(cur_, other->cur_);
+    std::swap(state_, other->state_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata RoleOneTask::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = RoleOneTask_descriptor_;
+  metadata.reflection = RoleOneTask_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int RoleTaskInfo::kDoingFieldNumber;
+const int RoleTaskInfo::kFinishBitMapFieldNumber;
+#endif  // !_MSC_VER
+
+RoleTaskInfo::RoleTaskInfo()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:db.RoleTaskInfo)
+}
+
+void RoleTaskInfo::InitAsDefaultInstance() {
+}
+
+RoleTaskInfo::RoleTaskInfo(const RoleTaskInfo& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:db.RoleTaskInfo)
+}
+
+void RoleTaskInfo::SharedCtor() {
+  _cached_size_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+RoleTaskInfo::~RoleTaskInfo() {
+  // @@protoc_insertion_point(destructor:db.RoleTaskInfo)
+  SharedDtor();
+}
+
+void RoleTaskInfo::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void RoleTaskInfo::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* RoleTaskInfo::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return RoleTaskInfo_descriptor_;
+}
+
+const RoleTaskInfo& RoleTaskInfo::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_db_2fRole_2eproto();
+  return *default_instance_;
+}
+
+RoleTaskInfo* RoleTaskInfo::default_instance_ = NULL;
+
+RoleTaskInfo* RoleTaskInfo::New() const {
+  return new RoleTaskInfo;
+}
+
+void RoleTaskInfo::Clear() {
+  doing_.Clear();
+  finishbitmap_.Clear();
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool RoleTaskInfo::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:db.RoleTaskInfo)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // repeated .db.RoleOneTask doing = 1;
+      case 1: {
+        if (tag == 10) {
+         parse_doing:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+                input, add_doing()));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(10)) goto parse_doing;
+        if (input->ExpectTag(18)) goto parse_finishBitMap;
+        break;
+      }
+
+      // repeated uint32 finishBitMap = 2 [packed = true];
+      case 2: {
+        if (tag == 18) {
+         parse_finishBitMap:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, this->mutable_finishbitmap())));
+        } else if (tag == 16) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 1, 18, input, this->mutable_finishbitmap())));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:db.RoleTaskInfo)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:db.RoleTaskInfo)
+  return false;
+#undef DO_
+}
+
+void RoleTaskInfo::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:db.RoleTaskInfo)
+  // repeated .db.RoleOneTask doing = 1;
+  for (int i = 0; i < this->doing_size(); i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, this->doing(i), output);
+  }
+
+  // repeated uint32 finishBitMap = 2 [packed = true];
+  if (this->finishbitmap_size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteTag(2, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
+    output->WriteVarint32(_finishbitmap_cached_byte_size_);
+  }
+  for (int i = 0; i < this->finishbitmap_size(); i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32NoTag(
+      this->finishbitmap(i), output);
+  }
+
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+  // @@protoc_insertion_point(serialize_end:db.RoleTaskInfo)
+}
+
+::google::protobuf::uint8* RoleTaskInfo::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:db.RoleTaskInfo)
+  // repeated .db.RoleOneTask doing = 1;
+  for (int i = 0; i < this->doing_size(); i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        1, this->doing(i), target);
+  }
+
+  // repeated uint32 finishBitMap = 2 [packed = true];
+  if (this->finishbitmap_size() > 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
+      2,
+      ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
+      target);
+    target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
+      _finishbitmap_cached_byte_size_, target);
+  }
+  for (int i = 0; i < this->finishbitmap_size(); i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteUInt32NoTagToArray(this->finishbitmap(i), target);
+  }
+
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:db.RoleTaskInfo)
+  return target;
+}
+
+int RoleTaskInfo::ByteSize() const {
+  int total_size = 0;
+
+  // repeated .db.RoleOneTask doing = 1;
+  total_size += 1 * this->doing_size();
+  for (int i = 0; i < this->doing_size(); i++) {
+    total_size +=
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        this->doing(i));
+  }
+
+  // repeated uint32 finishBitMap = 2 [packed = true];
+  {
+    int data_size = 0;
+    for (int i = 0; i < this->finishbitmap_size(); i++) {
+      data_size += ::google::protobuf::internal::WireFormatLite::
+        UInt32Size(this->finishbitmap(i));
+    }
+    if (data_size > 0) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
+    }
+    GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+    _finishbitmap_cached_byte_size_ = data_size;
+    GOOGLE_SAFE_CONCURRENT_WRITES_END();
+    total_size += data_size;
+  }
+
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void RoleTaskInfo::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const RoleTaskInfo* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const RoleTaskInfo*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void RoleTaskInfo::MergeFrom(const RoleTaskInfo& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  doing_.MergeFrom(from.doing_);
+  finishbitmap_.MergeFrom(from.finishbitmap_);
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void RoleTaskInfo::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void RoleTaskInfo::CopyFrom(const RoleTaskInfo& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool RoleTaskInfo::IsInitialized() const {
+
+  if (!::google::protobuf::internal::AllAreInitialized(this->doing())) return false;
+  return true;
+}
+
+void RoleTaskInfo::Swap(RoleTaskInfo* other) {
+  if (other != this) {
+    doing_.Swap(&other->doing_);
+    finishbitmap_.Swap(&other->finishbitmap_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata RoleTaskInfo::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = RoleTaskInfo_descriptor_;
+  metadata.reflection = RoleTaskInfo_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int RoleGrowth::kTaskFieldNumber;
 #endif  // !_MSC_VER
 
 RoleGrowth::RoleGrowth()
@@ -3955,6 +4855,7 @@ RoleGrowth::RoleGrowth()
 }
 
 void RoleGrowth::InitAsDefaultInstance() {
+  task_ = const_cast< ::db::RoleTaskInfo*>(&::db::RoleTaskInfo::default_instance());
 }
 
 RoleGrowth::RoleGrowth(const RoleGrowth& from)
@@ -3966,8 +4867,7 @@ RoleGrowth::RoleGrowth(const RoleGrowth& from)
 
 void RoleGrowth::SharedCtor() {
   _cached_size_ = 0;
-  level_ = 1u;
-  exp_ = 0u;
+  task_ = NULL;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -3978,6 +4878,7 @@ RoleGrowth::~RoleGrowth() {
 
 void RoleGrowth::SharedDtor() {
   if (this != default_instance_) {
+    delete task_;
   }
 }
 
@@ -4003,9 +4904,8 @@ RoleGrowth* RoleGrowth::New() const {
 }
 
 void RoleGrowth::Clear() {
-  if (_has_bits_[0 / 32] & 3) {
-    level_ = 1u;
-    exp_ = 0u;
+  if (has_task()) {
+    if (task_ != NULL) task_->::db::RoleTaskInfo::Clear();
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -4021,28 +4921,11 @@ bool RoleGrowth::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required uint32 level = 1 [default = 1];
+      // optional .db.RoleTaskInfo task = 1;
       case 1: {
-        if (tag == 8) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &level_)));
-          set_has_level();
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectTag(16)) goto parse_exp;
-        break;
-      }
-
-      // required uint32 exp = 2 [default = 0];
-      case 2: {
-        if (tag == 16) {
-         parse_exp:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &exp_)));
-          set_has_exp();
+        if (tag == 10) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_task()));
         } else {
           goto handle_unusual;
         }
@@ -4075,14 +4958,10 @@ failure:
 void RoleGrowth::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:db.RoleGrowth)
-  // required uint32 level = 1 [default = 1];
-  if (has_level()) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->level(), output);
-  }
-
-  // required uint32 exp = 2 [default = 0];
-  if (has_exp()) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->exp(), output);
+  // optional .db.RoleTaskInfo task = 1;
+  if (has_task()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, this->task(), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -4095,14 +4974,11 @@ void RoleGrowth::SerializeWithCachedSizes(
 ::google::protobuf::uint8* RoleGrowth::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // @@protoc_insertion_point(serialize_to_array_start:db.RoleGrowth)
-  // required uint32 level = 1 [default = 1];
-  if (has_level()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->level(), target);
-  }
-
-  // required uint32 exp = 2 [default = 0];
-  if (has_exp()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->exp(), target);
+  // optional .db.RoleTaskInfo task = 1;
+  if (has_task()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        1, this->task(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -4117,18 +4993,11 @@ int RoleGrowth::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required uint32 level = 1 [default = 1];
-    if (has_level()) {
+    // optional .db.RoleTaskInfo task = 1;
+    if (has_task()) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->level());
-    }
-
-    // required uint32 exp = 2 [default = 0];
-    if (has_exp()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->exp());
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->task());
     }
 
   }
@@ -4158,11 +5027,8 @@ void RoleGrowth::MergeFrom(const ::google::protobuf::Message& from) {
 void RoleGrowth::MergeFrom(const RoleGrowth& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_level()) {
-      set_level(from.level());
-    }
-    if (from.has_exp()) {
-      set_exp(from.exp());
+    if (from.has_task()) {
+      mutable_task()->::db::RoleTaskInfo::MergeFrom(from.task());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -4181,15 +5047,16 @@ void RoleGrowth::CopyFrom(const RoleGrowth& from) {
 }
 
 bool RoleGrowth::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
 
+  if (has_task()) {
+    if (!this->task().IsInitialized()) return false;
+  }
   return true;
 }
 
 void RoleGrowth::Swap(RoleGrowth* other) {
   if (other != this) {
-    std::swap(level_, other->level_);
-    std::swap(exp_, other->exp_);
+    std::swap(task_, other->task_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

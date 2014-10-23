@@ -1,6 +1,6 @@
 #include "base/CommonMacro.h"
 #include "AgentApp.h"
-
+#include "logic/PlayerLogicCenter.h"
 
 ////////////////////////////////////////////////////
 #include "PlayerAgent.h"
