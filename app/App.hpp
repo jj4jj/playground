@@ -54,15 +54,15 @@ public:
 public:
     inline  timeval &   GetTime()
     {
-        return  ctx->curTime;
+        return  m_pAppCtx->curTime;
     }  
     inline AppContext * GetContext()
     {
-        return ctx;
+        return m_pAppCtx;
     }
     inline ChannelMsgProxy & GetChannelProxy()
     {
-        return proxy;
+        return m_proxy;
     }
 public:
     int     Init(AppContext * _ctx , bool forStop = false);   
@@ -85,9 +85,9 @@ protected :
     virtual    ~App();
     DeclareSingltonSupport(App)
 private:
-    AppContext *                ctx;
+    AppContext *                m_pAppCtx;
     UdpDriver                   m_consoleDrv;
-    ChannelMsgProxy             proxy;
+    ChannelMsgProxy             m_proxy;
     File                        m_lockFile;
     //////////////////////////////////////////////////////////////////////////////////
 public:    
@@ -100,12 +100,12 @@ extern App* GetApp();
 template<class AppContextType>
 int App::main(int argc , char* argv [])
 {
-    AppContextType ctx;
+    AppContextType appCtx;
     App *  pApp = GetApp();
     assert(pApp);
     if(argc < 2)
     {
-        ctx.GenerateDefaultConfig(argv[0]);
+        appCtx.GenerateDefaultConfig(argv[0]);
         return -1;
     }
     bool    forStop = false;
@@ -125,38 +125,38 @@ int App::main(int argc , char* argv [])
             return -1 ;
         }
     }
-    if(ctx.Init(argv[1]))
+    if(appCtx.Init(argv[1]))
     {
         printf("server context init error !\n");
         return -1;
     }    
     /////////////////////////////////////////////////////////
-    if(pApp->Init(&ctx,forStop))
+    if(pApp->Init(&appCtx,forStop))
     {
         LOG_ERROR("Init error !");
         pApp->Destroy();
         return -1;
     }
     /////////////////////////////////////////////////////////
-    ctx.closing = 0;
+    appCtx.closing = 0;
     /////////////////////////////////////////////////////////
     if(0 == pApp->Start())
     {
         int proc = 0;
         while(true)
         {        
-            if(0 == ctx.closing)
+            if(0 == appCtx.closing)
             {
-                proc = pApp->Poll(ctx.tickPollCount);
+                proc = pApp->Poll(appCtx.tickPollCount);
                 if( proc <= 0 )
                 {
-                    usleep(ctx.tickCountUs);
+                    usleep(appCtx.tickCountUs);
                 }
             }
             else
             {            
                 //there is no sth todo
-                proc = pApp->Closing(ctx.closing);
+                proc = pApp->Closing(appCtx.closing);
                 if( proc <= 0 )
                 {
                     break;

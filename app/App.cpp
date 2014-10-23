@@ -57,8 +57,8 @@ private:
 
 
 #if 1
-App::App():ctx(NULL){}
-App::~App(){ctx = NULL;}  
+App::App():m_pAppCtx(NULL){}
+App::~App(){m_pAppCtx = NULL;}  
 #endif
 
 #if 1
@@ -129,20 +129,20 @@ int     App::Closing(int closingReason)
 //us
 int     App::Tick(int64_t lElapseUsTime)
 {    
-    Time::usappend(ctx->runTime,lElapseUsTime);
+    Time::usappend(m_pAppCtx->runTime,lElapseUsTime);
     return OnTick(lElapseUsTime);
 }
 int     App::Destroy()
 {    
     LOG_INFO("app is destroying ...");
     int ret = OnDestroy();
-    ctx = NULL;
+    m_pAppCtx = NULL;
     m_lockFile.Unlock();
     m_lockFile.Close();
 
     ///////////////////////////////
     TimerMgr::Instance().Destroy();
-    proxy.Destroy();
+    m_proxy.Destroy();
     m_consoleDrv.Destroy();    
     return ret;
 }
@@ -180,7 +180,7 @@ void    App::InitSignal()
     SignalHelper::SetSigHandler(SIGUSR1,OnSignal);
     SignalHelper::SetSigHandler(SIGUSR2,OnSignal);
     /////////////////////////////////////////////////////////
-    if(ctx->hook_coredump)
+    if(m_pAppCtx->hook_coredump)
     {
         struct sigaction   sig_segv_action;   
         bzero(&sig_segv_action,sizeof(sig_segv_action));
@@ -195,9 +195,9 @@ void    App::InitSignal()
 void  App::UpdateTick(timeval & tvNow,int64_t lElapseTime)
 {
     App & app =  *GetApp();
-    if(app.ctx)
+    if(app.m_pAppCtx)
     {
-        app.ctx->curTime = tvNow;
+        app.m_pAppCtx->curTime = tvNow;
         app.Tick(lElapseTime);
     }    
 }
@@ -209,7 +209,7 @@ string  App::Ctrl(const std::vector<string> & cmdLine)
     string rsp = mainCMD + ":";
     if(mainCMD == "quit")
     {
-        ctx->closing = 1;
+        m_pAppCtx->closing = 1;
         return "system is closing ...";
     }
     else if(mainCMD == "time")
@@ -219,7 +219,7 @@ string  App::Ctrl(const std::vector<string> & cmdLine)
     }
     else if(mainCMD == "rtime")
     {
-        int runseconds = ctx->runTime.tv_sec;
+        int runseconds = m_pAppCtx->runTime.tv_sec;
         snprintf(buffer,sizeof(buffer),"%d hours %d min %d seconds",runseconds/3600,
                 (runseconds%3600)/60,
                  runseconds%60);
@@ -233,26 +233,26 @@ string  App::Ctrl(const std::vector<string> & cmdLine)
 }
 int    App::InitLockFile(bool forStop)
 {
-    if(ctx->uniq_process)
+    if(m_pAppCtx->uniq_process)
     {
-        LOG_INFO("uniq process checking file path = [%s] ...",ctx->lockFilePath.c_str());
+        LOG_INFO("uniq process checking file path = [%s] ...",m_pAppCtx->lockFilePath.c_str());
         //if file not exist
         //ok , create it .
         //else
         //read pid
         //send pid signal stopping
         //init
-        bool existFile = File::Exist(ctx->lockFilePath.c_str());
+        bool existFile = File::Exist(m_pAppCtx->lockFilePath.c_str());
         if(!existFile)
         {
             //touch
-            m_lockFile.Open(ctx->lockFilePath.c_str(),"w+");
+            m_lockFile.Open(m_pAppCtx->lockFilePath.c_str(),"w+");
             m_lockFile.Close();            
         }
-        int ret = m_lockFile.Open(ctx->lockFilePath.c_str(),"r+");
+        int ret = m_lockFile.Open(m_pAppCtx->lockFilePath.c_str(),"r+");
         if(ret)
         {
-            LOG_ERROR("lock file = %s open error !",ctx->lockFilePath.c_str());
+            LOG_ERROR("lock file = %s open error !",m_pAppCtx->lockFilePath.c_str());
             return -1;
         }
         char pidBuffer[64];        
@@ -261,7 +261,7 @@ int    App::InitLockFile(bool forStop)
             if(true)//m_lockFile.ExcluLock())//it's blocking io
             {
                 //send signal  by context assign
-                LOG_ERROR("lock file = %s get lock error , pls be sure there is no another process running !",ctx->lockFilePath.c_str());
+                LOG_ERROR("lock file = %s get lock error , pls be sure there is no another process running !",m_pAppCtx->lockFilePath.c_str());
                 //send signal
                 m_lockFile.Seek();
                 m_lockFile.GetLine(pidBuffer,sizeof(pidBuffer));  
@@ -295,7 +295,7 @@ int    App::InitLockFile(bool forStop)
         {
             if(false)//m_lockFile.ExcluLock())
             {
-                LOG_ERROR("get file = %s lock error ! impossible !!! ",ctx->lockFilePath.c_str());
+                LOG_ERROR("get file = %s lock error ! impossible !!! ",m_pAppCtx->lockFilePath.c_str());
                 return -1;
             }
         }
@@ -315,7 +315,7 @@ int    App::InitLockFile(bool forStop)
 }
 int     App::InitConsole()
 {
-    IniConfigParser & parser = ctx->parser;
+    IniConfigParser & parser = m_pAppCtx->parser;
     //console
     string sConsoleIP = parser.GetConfigString("console:ip");        
     int console_port = parser.GetConfigInt("console:port");
@@ -339,7 +339,7 @@ int     App::InitConsole()
 }
 int     App::InitLog()
 {
-    IniConfigParser & parser = ctx->parser;    
+    IniConfigParser & parser = m_pAppCtx->parser;    
     //log
     string sLogFileName = parser.GetConfigString("log_file");
     int logFileSize = parser.GetConfigInt("log_file_size",1024);
@@ -356,10 +356,10 @@ int     App::InitLog()
 }
 int      App::Shutdown(int closing)
 {
-    if(ctx->closing == 0)
+    if(m_pAppCtx->closing == 0)
     {
         LOG_INFO("shutdown system reason = %d",closing);        
-        ctx->closing = closing;
+        m_pAppCtx->closing = closing;
         return 0;
     }
     else
@@ -370,9 +370,9 @@ int      App::Shutdown(int closing)
 }
 int     App::Init(AppContext * _ctx , bool forStop)
 {
-    ctx = _ctx;
-    IniConfigParser & parser = ctx->parser;
-
+    m_pAppCtx = _ctx;
+    
+    IniConfigParser & parser = m_pAppCtx->parser;
     
     //common option
     fprintf(stderr,"app is initializing ... \n");
@@ -411,22 +411,22 @@ int     App::Init(AppContext * _ctx , bool forStop)
         return -1;
     }
   
-    /////////////////// channel proxy ///////////////////////////
-    int ret = proxy.Init(ctx);
+    /////////////////// channel m_proxy ///////////////////////////
+    int ret = m_proxy.Init(m_pAppCtx);
     if(ret)
     {
-        LOG_FATAL("proxy init error = %d",ret);
+        LOG_FATAL("m_proxy init error = %d",ret);
         return -1;
     }
     
 
     ///////////////////// timer //////////////////////////////////
-    if(TimerMgr::Instance().Init(ctx->tickCountUs,UpdateTick))
+    if(TimerMgr::Instance().Init(m_pAppCtx->tickCountUs,UpdateTick))
     {
         LOG_FATAL("timer mgr init error !");
         return -1;
     }
-    ctx->curTime = TimerMgr::Instance().GetCurTime();
+    m_pAppCtx->curTime = TimerMgr::Instance().GetCurTime();
 
 
     ////////////////////// app  /////////////////////////////////
