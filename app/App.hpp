@@ -111,9 +111,18 @@ int App::main(int argc , char* argv [])
     bool    forStop = false;
     if(argc > 2)
     {        
-        if(strcmp(argv[2],"stop"))
+        if(0 == strcmp(argv[2],"stop"))
         {
             forStop = true;
+        }
+        else if(0 == strcmp(argv[2],"restart"))
+        {
+            forStop = true;
+        }
+        else
+        {
+            fprintf(stderr,"not support arg = %s",argv[2]);
+            return -1 ;
         }
     }
     if(ctx.Init(argv[1]))
