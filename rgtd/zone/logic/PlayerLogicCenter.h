@@ -14,7 +14,7 @@ public:
     virtual void    OnInitBirthPlayer();
     virtual void    OnAttach();
     virtual void    OnDetach();
-    virtual void    OnEvent(int iEvent,int iParam = 0,void * arg = NULL);
+    virtual void    OnEvent(int iEvent,uint64_t ulParam = 0L,void * arg = NULL);
     inline  const string & GetName(){return name;}
 protected:
     PlayerAgent*    player;
@@ -36,7 +36,7 @@ public:
     //detach role data
     void     Detach();
     //notifier other logic part
-    void     NotifyEvent(int iEvent,int iParam = 0,const char* pszLogicName = NULL,void * arg = NULL);
+    void     NotifyEvent(int iEvent,uint64_t ulParam = 0,const char* pszLogicName = NULL,void * arg = NULL);
 public:
     void     InitLogic();
     int      Register(PlayerLogicPtr logic);

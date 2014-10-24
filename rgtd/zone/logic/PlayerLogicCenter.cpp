@@ -24,7 +24,7 @@ void    PlayerLogic::OnDetach()
 {
     LOG_DEBUG("todo %s",name.c_str());
 }
-void    PlayerLogic::OnEvent(int iEvent,int iParam ,void * arg )
+void    PlayerLogic::OnEvent(int iEvent,uint64_t ulParam ,void * arg )
 {
     LOG_DEBUG("todo %s",name.c_str());
 }
@@ -60,7 +60,7 @@ void     PlayerLogicCenter::Detach()
     PLAYER_LOGIC_CENTER_VISIT_ALL(Detach);
 }
 //notifier other logic part
-void     PlayerLogicCenter::NotifyEvent(int iEvent,int iParam,const char* pszLogicName,void * arg )
+void     PlayerLogicCenter::NotifyEvent(int iEvent,uint64_t ulParam,const char* pszLogicName,void * arg )
 {
     if(pszLogicName)
     {
@@ -68,12 +68,12 @@ void     PlayerLogicCenter::NotifyEvent(int iEvent,int iParam,const char* pszLog
         LogicMapItr it = m_mpLogics.find(sLogicName);
         if(it != m_mpLogics.end())
         {
-            it->second->OnEvent(iEvent,iParam,arg);
+            it->second->OnEvent(iEvent,ulParam,arg);
         }        
     }
     else
     {
-        PLAYER_LOGIC_CENTER_VISIT_ALL(Event,iEvent,iParam,arg);
+        PLAYER_LOGIC_CENTER_VISIT_ALL(Event,iEvent,ulParam,arg);
     }
 }
 void     PlayerLogicCenter::InitLogic()

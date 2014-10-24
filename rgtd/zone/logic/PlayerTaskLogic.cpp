@@ -11,14 +11,14 @@ db::RoleTaskInfo* PlayerTaskLogic::GetTaskInfo()
 void    PlayerTaskLogic::OnInitBirthPlayer()
 {
 }
-int     PlayerTaskLogic::CheckOneTask(db::RoleOneTask * task,int iEvent,int iParam,void * arg)
+int     PlayerTaskLogic::CheckOneTask(db::RoleOneTask * task,int iEvent,uint64_t ulParam,void * arg)
 {
     //read config from task table 
     //check task state [task config also config the task event handler]
     
     return 0;    
 }
-void    PlayerTaskLogic::OnEvent(int iEvent,int iParam ,void * arg )
+void    PlayerTaskLogic::OnEvent(int iEvent,uint64_t ulParam ,void * arg )
 {
     //check event
     db::RoleTaskInfo * task = GetTaskInfo();
@@ -27,7 +27,7 @@ void    PlayerTaskLogic::OnEvent(int iEvent,int iParam ,void * arg )
         db::RoleOneTask * one_task = task->mutable_doing(i);
         int state = one_task->state();
         //if check error , delete the task
-        if(CheckOneTask(one_task,iEvent,iParam,arg))
+        if(CheckOneTask(one_task,iEvent,ulParam,arg))
         {
             LOG_ERROR("check player = %lu task = %u error , delete it !",
                       player->GetUID(),one_task->id());

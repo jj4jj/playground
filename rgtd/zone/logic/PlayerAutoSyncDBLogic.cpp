@@ -15,7 +15,7 @@ void    PlayerAutoSyncDBLogic::OnDetach()
     TimerMgr::Instance().CancelTimer(m_dwTimerID);
 }
 
-void    PlayerAutoSyncDBLogic::OnEvent(int iEvent,int iParam ,void * arg )
+void    PlayerAutoSyncDBLogic::OnEvent(int iEvent,uint64_t ulParam ,void * arg )
 {
     //sync
     if(EVENT_PLAYER_SYNC_DB == iEvent )
