@@ -1,6 +1,21 @@
 #!/bin/sh
 set +x
 GEN_DIR=gen
+CUR_DIR=`pwd`
+function sync_restable_metas()
+{
+	#cp xls convert
+	echo -e "syncing res table metas ..."
+	cp res/*.proto ../tools/xlsconverter/meta/
+	##################################################
+	cd ${CUR_DIR}/../tools/xlsconverter
+	echo "`pwd`"
+	python ./converter.py run
+	cd ${CUR_DIR}
+	##################################################
+	mv ../tools/xlsconverter/cpp/* ${GEN_DIR}/res/ 2>/dev/null
+	cp ../tools/xlsconverter/meta/* res/
+}
 function sync_restable_files()
 {
 	#cp xls convert
@@ -14,7 +29,7 @@ function generate_proto_buffer_cpp()
 {
 	for dir in `ls` ;do
 		if [[ -d $dir ]];then
-			if [[ $dir == "res" || ${dir} == "gen" ]];then
+			if [[ ${dir} == "gen" ]];then
 				continue
 			fi
 			mkdir -p ${GEN_DIR}/${dir}
@@ -45,8 +60,9 @@ function generate_proto_buffer_cpp()
 }
 
 ######################################################################
-sync_restable_files
+sync_restable_metas
 generate_proto_buffer_cpp
+sync_restable_files
 
 
 
