@@ -63,6 +63,7 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* RoleOneTask_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   RoleOneTask_reflection_ = NULL;
+const ::google::protobuf::EnumDescriptor* RoleOneTask_RoleOneTaskState_descriptor_ = NULL;
 const ::google::protobuf::Descriptor* RoleTaskInfo_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   RoleTaskInfo_reflection_ = NULL;
@@ -327,6 +328,7 @@ void protobuf_AssignDesc_db_2fRole_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(RoleOneTask));
+  RoleOneTask_RoleOneTaskState_descriptor_ = RoleOneTask_descriptor_->enum_type(0);
   RoleTaskInfo_descriptor_ = file->message_type(14);
   static const int RoleTaskInfo_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RoleTaskInfo, doing_),
@@ -611,22 +613,24 @@ void protobuf_AddDesc_db_2fRole_2eproto() {
     "\001(\r\":\n\014RolePackGrid\022\032\n\004item\030\001 \002(\0132\014.db.R"
     "oleItem\022\016\n\003num\030\002 \002(\r:\0010\"B\n\013RolePackage\022\022"
     "\n\007maxGrid\030\001 \002(\r:\0010\022\037\n\005grids\030\002 \003(\0132\020.db.R"
-    "olePackGrid\"5\n\013RoleOneTask\022\n\n\002id\030\001 \002(\r\022\013"
-    "\n\003cur\030\002 \001(\r\022\r\n\005state\030\003 \001(\r\"H\n\014RoleTaskIn"
-    "fo\022\036\n\005doing\030\001 \003(\0132\017.db.RoleOneTask\022\030\n\014fi"
-    "nishBitMap\030\002 \003(\rB\002\020\001\",\n\nRoleGrowth\022\036\n\004ta"
-    "sk\030\001 \001(\0132\020.db.RoleTaskInfo\" \n\tRoleStage\022"
-    "\023\n\010curStage\030\001 \002(\r:\0010\"\037\n\007RoleSNS\022\024\n\tmaxfr"
-    "inds\030\001 \002(\r:\0015\"\034\n\013RoleActInfo\022\r\n\005dummy\030\001 "
-    "\001(\r\"\030\n\007RoleExt\022\r\n\005dummy\030\001 \002(\r\"\306\002\n\004Role\022\013"
-    "\n\003rid\030\001 \002(\004\022\014\n\004name\030\002 \002(\t\022\032\n\004base\030\003 \002(\0132"
-    "\014.db.RoleBase\022\036\n\004hero\030\004 \002(\0132\020.db.RoleHer"
-    "oInfo\022\035\n\004pack\030\005 \002(\0132\017.db.RolePackage\022\034\n\004"
-    "grow\030\006 \002(\0132\016.db.RoleGrowth\022\034\n\005stage\030\007 \002("
-    "\0132\r.db.RoleStage\022\030\n\003sns\030\010 \002(\0132\013.db.RoleS"
-    "NS\022\034\n\003act\030\t \002(\0132\017.db.RoleActInfo\022\030\n\003ext\030"
-    "\n \002(\0132\013.db.RoleExt\032\032\n\013_PrimaryKey\022\013\n\003rid"
-    "\030\001 \001(\r\032\036\n\n_MaxLength\022\020\n\004name\030\001 \001(\r:\00232", 1478);
+    "olePackGrid\"t\n\013RoleOneTask\022\n\n\002id\030\001 \002(\r\022\013"
+    "\n\003cur\030\002 \001(\r\022\r\n\005state\030\003 \001(\r\"=\n\020RoleOneTas"
+    "kState\022\024\n\020TASK_STATE_DOING\020\000\022\023\n\017TASK_STA"
+    "TE_DONE\020\001\"H\n\014RoleTaskInfo\022\036\n\005doing\030\001 \003(\013"
+    "2\017.db.RoleOneTask\022\030\n\014finishBitMap\030\002 \003(\rB"
+    "\002\020\001\",\n\nRoleGrowth\022\036\n\004task\030\001 \001(\0132\020.db.Rol"
+    "eTaskInfo\" \n\tRoleStage\022\023\n\010curStage\030\001 \002(\r"
+    ":\0010\"\037\n\007RoleSNS\022\024\n\tmaxfrinds\030\001 \002(\r:\0015\"\034\n\013"
+    "RoleActInfo\022\r\n\005dummy\030\001 \001(\r\"\030\n\007RoleExt\022\r\n"
+    "\005dummy\030\001 \002(\r\"\306\002\n\004Role\022\013\n\003rid\030\001 \002(\004\022\014\n\004na"
+    "me\030\002 \002(\t\022\032\n\004base\030\003 \002(\0132\014.db.RoleBase\022\036\n\004"
+    "hero\030\004 \002(\0132\020.db.RoleHeroInfo\022\035\n\004pack\030\005 \002"
+    "(\0132\017.db.RolePackage\022\034\n\004grow\030\006 \002(\0132\016.db.R"
+    "oleGrowth\022\034\n\005stage\030\007 \002(\0132\r.db.RoleStage\022"
+    "\030\n\003sns\030\010 \002(\0132\013.db.RoleSNS\022\034\n\003act\030\t \002(\0132\017"
+    ".db.RoleActInfo\022\030\n\003ext\030\n \002(\0132\013.db.RoleEx"
+    "t\032\032\n\013_PrimaryKey\022\013\n\003rid\030\001 \001(\r\032\036\n\n_MaxLen"
+    "gth\022\020\n\004name\030\001 \001(\r:\00232", 1541);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "db/Role.proto", &protobuf_RegisterTypes);
   RoleBase::default_instance_ = new RoleBase();
@@ -4248,6 +4252,27 @@ void RolePackage::Swap(RolePackage* other) {
 
 // ===================================================================
 
+const ::google::protobuf::EnumDescriptor* RoleOneTask_RoleOneTaskState_descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return RoleOneTask_RoleOneTaskState_descriptor_;
+}
+bool RoleOneTask_RoleOneTaskState_IsValid(int value) {
+  switch(value) {
+    case 0:
+    case 1:
+      return true;
+    default:
+      return false;
+  }
+}
+
+#ifndef _MSC_VER
+const RoleOneTask_RoleOneTaskState RoleOneTask::TASK_STATE_DOING;
+const RoleOneTask_RoleOneTaskState RoleOneTask::TASK_STATE_DONE;
+const RoleOneTask_RoleOneTaskState RoleOneTask::RoleOneTaskState_MIN;
+const RoleOneTask_RoleOneTaskState RoleOneTask::RoleOneTaskState_MAX;
+const int RoleOneTask::RoleOneTaskState_ARRAYSIZE;
+#endif  // _MSC_VER
 #ifndef _MSC_VER
 const int RoleOneTask::kIdFieldNumber;
 const int RoleOneTask::kCurFieldNumber;

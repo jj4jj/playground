@@ -77,6 +77,25 @@ inline bool RoleBase_Gender_Parse(
   return ::google::protobuf::internal::ParseNamedEnum<RoleBase_Gender>(
     RoleBase_Gender_descriptor(), name, value);
 }
+enum RoleOneTask_RoleOneTaskState {
+  RoleOneTask_RoleOneTaskState_TASK_STATE_DOING = 0,
+  RoleOneTask_RoleOneTaskState_TASK_STATE_DONE = 1
+};
+bool RoleOneTask_RoleOneTaskState_IsValid(int value);
+const RoleOneTask_RoleOneTaskState RoleOneTask_RoleOneTaskState_RoleOneTaskState_MIN = RoleOneTask_RoleOneTaskState_TASK_STATE_DOING;
+const RoleOneTask_RoleOneTaskState RoleOneTask_RoleOneTaskState_RoleOneTaskState_MAX = RoleOneTask_RoleOneTaskState_TASK_STATE_DONE;
+const int RoleOneTask_RoleOneTaskState_RoleOneTaskState_ARRAYSIZE = RoleOneTask_RoleOneTaskState_RoleOneTaskState_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* RoleOneTask_RoleOneTaskState_descriptor();
+inline const ::std::string& RoleOneTask_RoleOneTaskState_Name(RoleOneTask_RoleOneTaskState value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    RoleOneTask_RoleOneTaskState_descriptor(), value);
+}
+inline bool RoleOneTask_RoleOneTaskState_Parse(
+    const ::std::string& name, RoleOneTask_RoleOneTaskState* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<RoleOneTask_RoleOneTaskState>(
+    RoleOneTask_RoleOneTaskState_descriptor(), name, value);
+}
 // ===================================================================
 
 class RoleBase : public ::google::protobuf::Message {
@@ -1350,6 +1369,30 @@ class RoleOneTask : public ::google::protobuf::Message {
   ::google::protobuf::Metadata GetMetadata() const;
 
   // nested types ----------------------------------------------------
+
+  typedef RoleOneTask_RoleOneTaskState RoleOneTaskState;
+  static const RoleOneTaskState TASK_STATE_DOING = RoleOneTask_RoleOneTaskState_TASK_STATE_DOING;
+  static const RoleOneTaskState TASK_STATE_DONE = RoleOneTask_RoleOneTaskState_TASK_STATE_DONE;
+  static inline bool RoleOneTaskState_IsValid(int value) {
+    return RoleOneTask_RoleOneTaskState_IsValid(value);
+  }
+  static const RoleOneTaskState RoleOneTaskState_MIN =
+    RoleOneTask_RoleOneTaskState_RoleOneTaskState_MIN;
+  static const RoleOneTaskState RoleOneTaskState_MAX =
+    RoleOneTask_RoleOneTaskState_RoleOneTaskState_MAX;
+  static const int RoleOneTaskState_ARRAYSIZE =
+    RoleOneTask_RoleOneTaskState_RoleOneTaskState_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  RoleOneTaskState_descriptor() {
+    return RoleOneTask_RoleOneTaskState_descriptor();
+  }
+  static inline const ::std::string& RoleOneTaskState_Name(RoleOneTaskState value) {
+    return RoleOneTask_RoleOneTaskState_Name(value);
+  }
+  static inline bool RoleOneTaskState_Parse(const ::std::string& name,
+      RoleOneTaskState* value) {
+    return RoleOneTask_RoleOneTaskState_Parse(name, value);
+  }
 
   // accessors -------------------------------------------------------
 
@@ -3881,6 +3924,11 @@ template <> struct is_proto_enum< ::db::RoleBase_Gender> : ::google::protobuf::i
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::db::RoleBase_Gender>() {
   return ::db::RoleBase_Gender_descriptor();
+}
+template <> struct is_proto_enum< ::db::RoleOneTask_RoleOneTaskState> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::db::RoleOneTask_RoleOneTaskState>() {
+  return ::db::RoleOneTask_RoleOneTaskState_descriptor();
 }
 
 }  // namespace google
