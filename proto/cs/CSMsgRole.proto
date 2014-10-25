@@ -1,0 +1,48 @@
+package cs;
+
+
+message CSRoleBase
+{
+	required	uint64	uid = 1;
+	optional	string	name = 2;
+	optional	uint32	level = 3;
+};
+
+message CSRoleExt
+{
+	optional	uint32	dummy = 1;
+};
+
+message CSRoleMisc
+{
+	optional	uint32	dummy	=	1;
+};
+
+message CSRole
+{
+	required	CSRoleBase	base	= 	1;
+	required	CSRoleExt	ext 	=	2;
+	required	CSRoleMisc	misc	=	3;
+};
+
+message CSMsgRole
+{
+	enum	CmdCode
+	{
+		CSMSG_ACCOUNT_ALL_INFO_REQ	=	1;
+		CSMSG_ACCOUNT_BASE_INFO_REQ	=	2;
+		CSMSG_ACCOUNT_EXT_INFO_REQ	=	3;
+		CSMSG_ACCOUNT_MISC_INFO_REQ	=	4;
+		CSMSG_ACCOUNT_ALL_INFO_RSP	=	5;
+		CSMSG_ACCOUNT_BASE_INFO_RSP	=	6;
+		CSMSG_ACCOUNT_EXT_INFO_RSP	=	7;
+		CSMSG_ACCOUNT_MISC_INFO_RSP	=	8;
+	};
+	required	uint32					cmd			=   1;
+	optional	CSRole				allInfoRsp	=	2;	
+	optional	CSRoleBase			baseInfoRsp	=	3;	
+	optional	CSRoleExt			extInfoRsp	=	4;	
+	optional	CSRoleMisc			miscInfoRsp	=	5;	
+
+};
+

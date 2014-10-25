@@ -1,4 +1,6 @@
 package	cs;
+import "base/Role.proto";
+import "cs/CSMsgRole.proto";
 
 message TestInfoRsp
 {
@@ -43,50 +45,6 @@ message CSMsgLogin
 };
 
 
-message CSAccountBase
-{
-	required	uint64	uid = 1;
-	optional	string	name = 2;
-	optional	uint32	level = 3;
-};
-
-message CSAccountExt
-{
-	optional	uint32	dummy = 1;
-};
-
-message CSAccountMisc
-{
-	optional	uint32	dummy	=	1;
-};
-
-message CSAccount
-{
-	required	CSAccountBase	base	= 	1;
-	required	CSAccountExt	ext 	=	2;
-	required	CSAccountMisc	misc	=	3;
-};
-
-message CSMsgAccount
-{
-	enum	CmdCode
-	{
-		CSMSG_ACCOUNT_ALL_INFO_REQ	=	1;
-		CSMSG_ACCOUNT_BASE_INFO_REQ	=	2;
-		CSMSG_ACCOUNT_EXT_INFO_REQ	=	3;
-		CSMSG_ACCOUNT_MISC_INFO_REQ	=	4;
-		CSMSG_ACCOUNT_ALL_INFO_RSP	=	5;
-		CSMSG_ACCOUNT_BASE_INFO_RSP	=	6;
-		CSMSG_ACCOUNT_EXT_INFO_RSP	=	7;
-		CSMSG_ACCOUNT_MISC_INFO_RSP	=	8;
-	};
-	required	uint32					cmd			=   1;
-	optional	CSAccount				allInfoRsp	=	2;	
-	optional	CSAccountBase			baseInfoRsp	=	3;	
-	optional	CSAccountExt			extInfoRsp	=	4;	
-	optional	CSAccountMisc			miscInfoRsp	=	5;	
-
-};
 
 
 
@@ -180,7 +138,7 @@ message CSMsg
 	///////////////////////////////////////////////////
 	optional	CSMsgLogin		login			=	101;
 	optional	CSMsgTest		test			=	102;
-	optional	CSMsgAccount	account			=	103;
+	optional	CSMsgRole		role			=	103;
 	optional	CSMsgTask		task			=	104;
 	optional	CSRank			rank			=	105;
 	optional	CSFriend		friend			=	106;
