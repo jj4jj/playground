@@ -37,22 +37,6 @@ const ::google::protobuf::Descriptor* CSMsgLogin_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   CSMsgLogin_reflection_ = NULL;
 const ::google::protobuf::EnumDescriptor* CSMsgLogin_CmdCode_descriptor_ = NULL;
-const ::google::protobuf::Descriptor* CSAccountBase_descriptor_ = NULL;
-const ::google::protobuf::internal::GeneratedMessageReflection*
-  CSAccountBase_reflection_ = NULL;
-const ::google::protobuf::Descriptor* CSAccountExt_descriptor_ = NULL;
-const ::google::protobuf::internal::GeneratedMessageReflection*
-  CSAccountExt_reflection_ = NULL;
-const ::google::protobuf::Descriptor* CSAccountMisc_descriptor_ = NULL;
-const ::google::protobuf::internal::GeneratedMessageReflection*
-  CSAccountMisc_reflection_ = NULL;
-const ::google::protobuf::Descriptor* CSAccount_descriptor_ = NULL;
-const ::google::protobuf::internal::GeneratedMessageReflection*
-  CSAccount_reflection_ = NULL;
-const ::google::protobuf::Descriptor* CSMsgAccount_descriptor_ = NULL;
-const ::google::protobuf::internal::GeneratedMessageReflection*
-  CSMsgAccount_reflection_ = NULL;
-const ::google::protobuf::EnumDescriptor* CSMsgAccount_CmdCode_descriptor_ = NULL;
 const ::google::protobuf::Descriptor* CSMsgTask_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   CSMsgTask_reflection_ = NULL;
@@ -180,91 +164,7 @@ void protobuf_AssignDesc_cs_2fCSMsg_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(CSMsgLogin));
   CSMsgLogin_CmdCode_descriptor_ = CSMsgLogin_descriptor_->enum_type(0);
-  CSAccountBase_descriptor_ = file->message_type(5);
-  static const int CSAccountBase_offsets_[3] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSAccountBase, uid_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSAccountBase, name_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSAccountBase, level_),
-  };
-  CSAccountBase_reflection_ =
-    new ::google::protobuf::internal::GeneratedMessageReflection(
-      CSAccountBase_descriptor_,
-      CSAccountBase::default_instance_,
-      CSAccountBase_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSAccountBase, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSAccountBase, _unknown_fields_),
-      -1,
-      ::google::protobuf::DescriptorPool::generated_pool(),
-      ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(CSAccountBase));
-  CSAccountExt_descriptor_ = file->message_type(6);
-  static const int CSAccountExt_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSAccountExt, dummy_),
-  };
-  CSAccountExt_reflection_ =
-    new ::google::protobuf::internal::GeneratedMessageReflection(
-      CSAccountExt_descriptor_,
-      CSAccountExt::default_instance_,
-      CSAccountExt_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSAccountExt, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSAccountExt, _unknown_fields_),
-      -1,
-      ::google::protobuf::DescriptorPool::generated_pool(),
-      ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(CSAccountExt));
-  CSAccountMisc_descriptor_ = file->message_type(7);
-  static const int CSAccountMisc_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSAccountMisc, dummy_),
-  };
-  CSAccountMisc_reflection_ =
-    new ::google::protobuf::internal::GeneratedMessageReflection(
-      CSAccountMisc_descriptor_,
-      CSAccountMisc::default_instance_,
-      CSAccountMisc_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSAccountMisc, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSAccountMisc, _unknown_fields_),
-      -1,
-      ::google::protobuf::DescriptorPool::generated_pool(),
-      ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(CSAccountMisc));
-  CSAccount_descriptor_ = file->message_type(8);
-  static const int CSAccount_offsets_[3] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSAccount, base_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSAccount, ext_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSAccount, misc_),
-  };
-  CSAccount_reflection_ =
-    new ::google::protobuf::internal::GeneratedMessageReflection(
-      CSAccount_descriptor_,
-      CSAccount::default_instance_,
-      CSAccount_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSAccount, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSAccount, _unknown_fields_),
-      -1,
-      ::google::protobuf::DescriptorPool::generated_pool(),
-      ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(CSAccount));
-  CSMsgAccount_descriptor_ = file->message_type(9);
-  static const int CSMsgAccount_offsets_[5] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSMsgAccount, cmd_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSMsgAccount, allinforsp_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSMsgAccount, baseinforsp_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSMsgAccount, extinforsp_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSMsgAccount, miscinforsp_),
-  };
-  CSMsgAccount_reflection_ =
-    new ::google::protobuf::internal::GeneratedMessageReflection(
-      CSMsgAccount_descriptor_,
-      CSMsgAccount::default_instance_,
-      CSMsgAccount_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSMsgAccount, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSMsgAccount, _unknown_fields_),
-      -1,
-      ::google::protobuf::DescriptorPool::generated_pool(),
-      ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(CSMsgAccount));
-  CSMsgAccount_CmdCode_descriptor_ = CSMsgAccount_descriptor_->enum_type(0);
-  CSMsgTask_descriptor_ = file->message_type(10);
+  CSMsgTask_descriptor_ = file->message_type(5);
   static const int CSMsgTask_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSMsgTask, cmd_),
   };
@@ -280,7 +180,7 @@ void protobuf_AssignDesc_cs_2fCSMsg_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(CSMsgTask));
   CSMsgTask_CmdCode_descriptor_ = CSMsgTask_descriptor_->enum_type(0);
-  CSRank_descriptor_ = file->message_type(11);
+  CSRank_descriptor_ = file->message_type(6);
   static const int CSRank_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSRank, cmd_),
   };
@@ -296,7 +196,7 @@ void protobuf_AssignDesc_cs_2fCSMsg_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(CSRank));
   CSRank_CmdCode_descriptor_ = CSRank_descriptor_->enum_type(0);
-  CSFriend_descriptor_ = file->message_type(12);
+  CSFriend_descriptor_ = file->message_type(7);
   static const int CSFriend_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSFriend, cmd_),
   };
@@ -312,7 +212,7 @@ void protobuf_AssignDesc_cs_2fCSMsg_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(CSFriend));
   CSFriend_CmdCode_descriptor_ = CSFriend_descriptor_->enum_type(0);
-  CSFamily_descriptor_ = file->message_type(13);
+  CSFamily_descriptor_ = file->message_type(8);
   static const int CSFamily_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSFamily, cmd_),
   };
@@ -328,7 +228,7 @@ void protobuf_AssignDesc_cs_2fCSMsg_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(CSFamily));
   CSFamily_CmdCode_descriptor_ = CSFamily_descriptor_->enum_type(0);
-  CSKnapsack_descriptor_ = file->message_type(14);
+  CSKnapsack_descriptor_ = file->message_type(9);
   static const int CSKnapsack_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSKnapsack, cmd_),
   };
@@ -344,7 +244,7 @@ void protobuf_AssignDesc_cs_2fCSMsg_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(CSKnapsack));
   CSKnapsack_CmdCode_descriptor_ = CSKnapsack_descriptor_->enum_type(0);
-  CSStage_descriptor_ = file->message_type(15);
+  CSStage_descriptor_ = file->message_type(10);
   static const int CSStage_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSStage, cmd_),
   };
@@ -360,7 +260,7 @@ void protobuf_AssignDesc_cs_2fCSMsg_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(CSStage));
   CSStage_CmdCode_descriptor_ = CSStage_descriptor_->enum_type(0);
-  CSActivity_descriptor_ = file->message_type(16);
+  CSActivity_descriptor_ = file->message_type(11);
   static const int CSActivity_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSActivity, cmd_),
   };
@@ -376,7 +276,7 @@ void protobuf_AssignDesc_cs_2fCSMsg_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(CSActivity));
   CSActivity_CmdCode_descriptor_ = CSActivity_descriptor_->enum_type(0);
-  CSBattle_descriptor_ = file->message_type(17);
+  CSBattle_descriptor_ = file->message_type(12);
   static const int CSBattle_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSBattle, cmd_),
   };
@@ -392,13 +292,13 @@ void protobuf_AssignDesc_cs_2fCSMsg_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(CSBattle));
   CSBattle_CmdCode_descriptor_ = CSBattle_descriptor_->enum_type(0);
-  CSMsg_descriptor_ = file->message_type(18);
+  CSMsg_descriptor_ = file->message_type(13);
   static const int CSMsg_offsets_[13] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSMsg, cmd_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSMsg, err_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSMsg, login_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSMsg, test_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSMsg, account_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSMsg, role_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSMsg, task_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSMsg, rank_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CSMsg, friend__),
@@ -443,16 +343,6 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     CSMsgLogin_descriptor_, &CSMsgLogin::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    CSAccountBase_descriptor_, &CSAccountBase::default_instance());
-  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    CSAccountExt_descriptor_, &CSAccountExt::default_instance());
-  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    CSAccountMisc_descriptor_, &CSAccountMisc::default_instance());
-  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    CSAccount_descriptor_, &CSAccount::default_instance());
-  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    CSMsgAccount_descriptor_, &CSMsgAccount::default_instance());
-  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     CSMsgTask_descriptor_, &CSMsgTask::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     CSRank_descriptor_, &CSRank::default_instance());
@@ -485,16 +375,6 @@ void protobuf_ShutdownFile_cs_2fCSMsg_2eproto() {
   delete LoginRegisterReq_reflection_;
   delete CSMsgLogin::default_instance_;
   delete CSMsgLogin_reflection_;
-  delete CSAccountBase::default_instance_;
-  delete CSAccountBase_reflection_;
-  delete CSAccountExt::default_instance_;
-  delete CSAccountExt_reflection_;
-  delete CSAccountMisc::default_instance_;
-  delete CSAccountMisc_reflection_;
-  delete CSAccount::default_instance_;
-  delete CSAccount_reflection_;
-  delete CSMsgAccount::default_instance_;
-  delete CSMsgAccount_reflection_;
   delete CSMsgTask::default_instance_;
   delete CSMsgTask_reflection_;
   delete CSRank::default_instance_;
@@ -521,58 +401,43 @@ void protobuf_AddDesc_cs_2fCSMsg_2eproto() {
   already_here = true;
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
+  ::cs::protobuf_AddDesc_cs_2fCSMsgRole_2eproto();
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\016cs/CSMsg.proto\022\002cs\"\034\n\013TestInfoRsp\022\r\n\005d"
-    "ummy\030\001 \002(\r\"\236\001\n\tCSMsgTest\022\013\n\003cmd\030\001 \002(\r\022\037\n"
-    "\006infRsp\030\002 \001(\0132\017.cs.TestInfoRsp\022\016\n\006txtRsp"
-    "\030\003 \001(\t\"S\n\007CmdCode\022\027\n\023CSMSG_TEST_INFO_REQ"
-    "\020\001\022\027\n\023CSMSG_TEST_INFO_RSP\020\002\022\026\n\022CSMSG_TES"
-    "T_TXT_RSP\020\003\"\037\n\016LoginRegNotify\022\r\n\005dummy\030\001"
-    " \001(\r\"!\n\020LoginRegisterReq\022\r\n\005dummy\030\001 \001(\r\""
-    "\246\001\n\nCSMsgLogin\022\013\n\003cmd\030\001 \002(\r\022%\n\tnotifyReq"
-    "\030\002 \001(\0132\022.cs.LoginRegNotify\022$\n\006regReq\030\003 \001"
-    "(\0132\024.cs.LoginRegisterReq\">\n\007CmdCode\022\032\n\026C"
-    "SMSG_LOGIN_REG_NOTIFY\020\001\022\027\n\023CSMSG_LOGIN_R"
-    "EG_REQ\020\002\"9\n\rCSAccountBase\022\013\n\003uid\030\001 \002(\004\022\014"
-    "\n\004name\030\002 \001(\t\022\r\n\005level\030\003 \001(\r\"\035\n\014CSAccount"
-    "Ext\022\r\n\005dummy\030\001 \001(\r\"\036\n\rCSAccountMisc\022\r\n\005d"
-    "ummy\030\001 \001(\r\"l\n\tCSAccount\022\037\n\004base\030\001 \002(\0132\021."
-    "cs.CSAccountBase\022\035\n\003ext\030\002 \002(\0132\020.cs.CSAcc"
-    "ountExt\022\037\n\004misc\030\003 \002(\0132\021.cs.CSAccountMisc"
-    "\"\304\003\n\014CSMsgAccount\022\013\n\003cmd\030\001 \002(\r\022!\n\nallInf"
-    "oRsp\030\002 \001(\0132\r.cs.CSAccount\022&\n\013baseInfoRsp"
-    "\030\003 \001(\0132\021.cs.CSAccountBase\022$\n\nextInfoRsp\030"
-    "\004 \001(\0132\020.cs.CSAccountExt\022&\n\013miscInfoRsp\030\005"
-    " \001(\0132\021.cs.CSAccountMisc\"\215\002\n\007CmdCode\022\036\n\032C"
-    "SMSG_ACCOUNT_ALL_INFO_REQ\020\001\022\037\n\033CSMSG_ACC"
-    "OUNT_BASE_INFO_REQ\020\002\022\036\n\032CSMSG_ACCOUNT_EX"
-    "T_INFO_REQ\020\003\022\037\n\033CSMSG_ACCOUNT_MISC_INFO_"
-    "REQ\020\004\022\036\n\032CSMSG_ACCOUNT_ALL_INFO_RSP\020\005\022\037\n"
-    "\033CSMSG_ACCOUNT_BASE_INFO_RSP\020\006\022\036\n\032CSMSG_"
-    "ACCOUNT_EXT_INFO_RSP\020\007\022\037\n\033CSMSG_ACCOUNT_"
-    "MISC_INFO_RSP\020\010\";\n\tCSMsgTask\022\013\n\003cmd\030\001 \002("
-    "\r\"!\n\007CmdCode\022\026\n\022CSMSG_TASK_UPD_REQ\020\001\"8\n\006"
-    "CSRank\022\013\n\003cmd\030\001 \002(\r\"!\n\007CmdCode\022\026\n\022CSMSG_"
-    "RANK_UPD_REQ\020\001\"<\n\010CSFriend\022\013\n\003cmd\030\001 \002(\r\""
-    "#\n\007CmdCode\022\030\n\024CSMSG_FRIEND_UPD_REQ\020\001\"<\n\010"
-    "CSFamily\022\013\n\003cmd\030\001 \002(\r\"#\n\007CmdCode\022\030\n\024CSMS"
-    "G_FAMILY_UPD_REQ\020\001\"@\n\nCSKnapsack\022\013\n\003cmd\030"
-    "\001 \002(\r\"%\n\007CmdCode\022\032\n\026CSMSG_KNAPSACK_UPD_R"
-    "EQ\020\001\":\n\007CSStage\022\013\n\003cmd\030\001 \002(\r\"\"\n\007CmdCode\022"
-    "\027\n\023CSMSG_STAGE_UPD_REQ\020\001\"@\n\nCSActivity\022\013"
-    "\n\003cmd\030\001 \002(\r\"%\n\007CmdCode\022\032\n\026CSMSG_ACTIVITY"
-    "_UPD_REQ\020\001\"<\n\010CSBattle\022\013\n\003cmd\030\001 \002(\r\"#\n\007C"
-    "mdCode\022\030\n\024CSMSG_BATTLE_UPD_REQ\020\001\"\225\003\n\005CSM"
-    "sg\022\013\n\003cmd\030\001 \002(\r\022\013\n\003err\030\002 \001(\r\022\035\n\005login\030e "
-    "\001(\0132\016.cs.CSMsgLogin\022\033\n\004test\030f \001(\0132\r.cs.C"
-    "SMsgTest\022!\n\007account\030g \001(\0132\020.cs.CSMsgAcco"
-    "unt\022\033\n\004task\030h \001(\0132\r.cs.CSMsgTask\022\030\n\004rank"
-    "\030i \001(\0132\n.cs.CSRank\022\034\n\006friend\030j \001(\0132\014.cs."
-    "CSFriend\022\034\n\006family\030k \001(\0132\014.cs.CSFamily\022 "
-    "\n\010knapsack\030l \001(\0132\016.cs.CSKnapsack\022\032\n\005stag"
-    "e\030m \001(\0132\013.cs.CSStage\022 \n\010activity\030n \001(\0132\016"
-    ".cs.CSActivity\022\034\n\006battle\030o \001(\0132\014.cs.CSBa"
-    "ttle\"\"\n\014CSMsgCmdCode\022\022\n\016CSMSG_CMD_TEST\020\001", 2040);
+    "\n\016cs/CSMsg.proto\022\002cs\032\022cs/CSMsgRole.proto"
+    "\"\034\n\013TestInfoRsp\022\r\n\005dummy\030\001 \002(\r\"\236\001\n\tCSMsg"
+    "Test\022\013\n\003cmd\030\001 \002(\r\022\037\n\006infRsp\030\002 \001(\0132\017.cs.T"
+    "estInfoRsp\022\016\n\006txtRsp\030\003 \001(\t\"S\n\007CmdCode\022\027\n"
+    "\023CSMSG_TEST_INFO_REQ\020\001\022\027\n\023CSMSG_TEST_INF"
+    "O_RSP\020\002\022\026\n\022CSMSG_TEST_TXT_RSP\020\003\"\037\n\016Login"
+    "RegNotify\022\r\n\005dummy\030\001 \001(\r\"!\n\020LoginRegiste"
+    "rReq\022\r\n\005dummy\030\001 \001(\r\"\246\001\n\nCSMsgLogin\022\013\n\003cm"
+    "d\030\001 \002(\r\022%\n\tnotifyReq\030\002 \001(\0132\022.cs.LoginReg"
+    "Notify\022$\n\006regReq\030\003 \001(\0132\024.cs.LoginRegiste"
+    "rReq\">\n\007CmdCode\022\032\n\026CSMSG_LOGIN_REG_NOTIF"
+    "Y\020\001\022\027\n\023CSMSG_LOGIN_REG_REQ\020\002\";\n\tCSMsgTas"
+    "k\022\013\n\003cmd\030\001 \002(\r\"!\n\007CmdCode\022\026\n\022CSMSG_TASK_"
+    "UPD_REQ\020\001\"8\n\006CSRank\022\013\n\003cmd\030\001 \002(\r\"!\n\007CmdC"
+    "ode\022\026\n\022CSMSG_RANK_UPD_REQ\020\001\"<\n\010CSFriend\022"
+    "\013\n\003cmd\030\001 \002(\r\"#\n\007CmdCode\022\030\n\024CSMSG_FRIEND_"
+    "UPD_REQ\020\001\"<\n\010CSFamily\022\013\n\003cmd\030\001 \002(\r\"#\n\007Cm"
+    "dCode\022\030\n\024CSMSG_FAMILY_UPD_REQ\020\001\"@\n\nCSKna"
+    "psack\022\013\n\003cmd\030\001 \002(\r\"%\n\007CmdCode\022\032\n\026CSMSG_K"
+    "NAPSACK_UPD_REQ\020\001\":\n\007CSStage\022\013\n\003cmd\030\001 \002("
+    "\r\"\"\n\007CmdCode\022\027\n\023CSMSG_STAGE_UPD_REQ\020\001\"@\n"
+    "\nCSActivity\022\013\n\003cmd\030\001 \002(\r\"%\n\007CmdCode\022\032\n\026C"
+    "SMSG_ACTIVITY_UPD_REQ\020\001\"<\n\010CSBattle\022\013\n\003c"
+    "md\030\001 \002(\r\"#\n\007CmdCode\022\030\n\024CSMSG_BATTLE_UPD_"
+    "REQ\020\001\"\217\003\n\005CSMsg\022\013\n\003cmd\030\001 \002(\r\022\013\n\003err\030\002 \001("
+    "\r\022\035\n\005login\030e \001(\0132\016.cs.CSMsgLogin\022\033\n\004test"
+    "\030f \001(\0132\r.cs.CSMsgTest\022\033\n\004role\030g \001(\0132\r.cs"
+    ".CSMsgRole\022\033\n\004task\030h \001(\0132\r.cs.CSMsgTask\022"
+    "\030\n\004rank\030i \001(\0132\n.cs.CSRank\022\034\n\006friend\030j \001("
+    "\0132\014.cs.CSFriend\022\034\n\006family\030k \001(\0132\014.cs.CSF"
+    "amily\022 \n\010knapsack\030l \001(\0132\016.cs.CSKnapsack\022"
+    "\032\n\005stage\030m \001(\0132\013.cs.CSStage\022 \n\010activity\030"
+    "n \001(\0132\016.cs.CSActivity\022\034\n\006battle\030o \001(\0132\014."
+    "cs.CSBattle\"\"\n\014CSMsgCmdCode\022\022\n\016CSMSG_CMD"
+    "_TEST\020\001", 1367);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "cs/CSMsg.proto", &protobuf_RegisterTypes);
   TestInfoRsp::default_instance_ = new TestInfoRsp();
@@ -580,11 +445,6 @@ void protobuf_AddDesc_cs_2fCSMsg_2eproto() {
   LoginRegNotify::default_instance_ = new LoginRegNotify();
   LoginRegisterReq::default_instance_ = new LoginRegisterReq();
   CSMsgLogin::default_instance_ = new CSMsgLogin();
-  CSAccountBase::default_instance_ = new CSAccountBase();
-  CSAccountExt::default_instance_ = new CSAccountExt();
-  CSAccountMisc::default_instance_ = new CSAccountMisc();
-  CSAccount::default_instance_ = new CSAccount();
-  CSMsgAccount::default_instance_ = new CSMsgAccount();
   CSMsgTask::default_instance_ = new CSMsgTask();
   CSRank::default_instance_ = new CSRank();
   CSFriend::default_instance_ = new CSFriend();
@@ -599,11 +459,6 @@ void protobuf_AddDesc_cs_2fCSMsg_2eproto() {
   LoginRegNotify::default_instance_->InitAsDefaultInstance();
   LoginRegisterReq::default_instance_->InitAsDefaultInstance();
   CSMsgLogin::default_instance_->InitAsDefaultInstance();
-  CSAccountBase::default_instance_->InitAsDefaultInstance();
-  CSAccountExt::default_instance_->InitAsDefaultInstance();
-  CSAccountMisc::default_instance_->InitAsDefaultInstance();
-  CSAccount::default_instance_->InitAsDefaultInstance();
-  CSMsgAccount::default_instance_->InitAsDefaultInstance();
   CSMsgTask::default_instance_->InitAsDefaultInstance();
   CSRank::default_instance_->InitAsDefaultInstance();
   CSFriend::default_instance_->InitAsDefaultInstance();
@@ -1975,1535 +1830,6 @@ void CSMsgLogin::Swap(CSMsgLogin* other) {
   ::google::protobuf::Metadata metadata;
   metadata.descriptor = CSMsgLogin_descriptor_;
   metadata.reflection = CSMsgLogin_reflection_;
-  return metadata;
-}
-
-
-// ===================================================================
-
-#ifndef _MSC_VER
-const int CSAccountBase::kUidFieldNumber;
-const int CSAccountBase::kNameFieldNumber;
-const int CSAccountBase::kLevelFieldNumber;
-#endif  // !_MSC_VER
-
-CSAccountBase::CSAccountBase()
-  : ::google::protobuf::Message() {
-  SharedCtor();
-  // @@protoc_insertion_point(constructor:cs.CSAccountBase)
-}
-
-void CSAccountBase::InitAsDefaultInstance() {
-}
-
-CSAccountBase::CSAccountBase(const CSAccountBase& from)
-  : ::google::protobuf::Message() {
-  SharedCtor();
-  MergeFrom(from);
-  // @@protoc_insertion_point(copy_constructor:cs.CSAccountBase)
-}
-
-void CSAccountBase::SharedCtor() {
-  ::google::protobuf::internal::GetEmptyString();
-  _cached_size_ = 0;
-  uid_ = GOOGLE_ULONGLONG(0);
-  name_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  level_ = 0u;
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-}
-
-CSAccountBase::~CSAccountBase() {
-  // @@protoc_insertion_point(destructor:cs.CSAccountBase)
-  SharedDtor();
-}
-
-void CSAccountBase::SharedDtor() {
-  if (name_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-    delete name_;
-  }
-  if (this != default_instance_) {
-  }
-}
-
-void CSAccountBase::SetCachedSize(int size) const {
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-}
-const ::google::protobuf::Descriptor* CSAccountBase::descriptor() {
-  protobuf_AssignDescriptorsOnce();
-  return CSAccountBase_descriptor_;
-}
-
-const CSAccountBase& CSAccountBase::default_instance() {
-  if (default_instance_ == NULL) protobuf_AddDesc_cs_2fCSMsg_2eproto();
-  return *default_instance_;
-}
-
-CSAccountBase* CSAccountBase::default_instance_ = NULL;
-
-CSAccountBase* CSAccountBase::New() const {
-  return new CSAccountBase;
-}
-
-void CSAccountBase::Clear() {
-  if (_has_bits_[0 / 32] & 7) {
-    uid_ = GOOGLE_ULONGLONG(0);
-    if (has_name()) {
-      if (name_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-        name_->clear();
-      }
-    }
-    level_ = 0u;
-  }
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-  mutable_unknown_fields()->Clear();
-}
-
-bool CSAccountBase::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:cs.CSAccountBase)
-  for (;;) {
-    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required uint64 uid = 1;
-      case 1: {
-        if (tag == 8) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
-                 input, &uid_)));
-          set_has_uid();
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectTag(18)) goto parse_name;
-        break;
-      }
-
-      // optional string name = 2;
-      case 2: {
-        if (tag == 18) {
-         parse_name:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_name()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
-            this->name().data(), this->name().length(),
-            ::google::protobuf::internal::WireFormat::PARSE,
-            "name");
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectTag(24)) goto parse_level;
-        break;
-      }
-
-      // optional uint32 level = 3;
-      case 3: {
-        if (tag == 24) {
-         parse_level:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &level_)));
-          set_has_level();
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectAtEnd()) goto success;
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0 ||
-            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-          goto success;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:cs.CSAccountBase)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:cs.CSAccountBase)
-  return false;
-#undef DO_
-}
-
-void CSAccountBase::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:cs.CSAccountBase)
-  // required uint64 uid = 1;
-  if (has_uid()) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt64(1, this->uid(), output);
-  }
-
-  // optional string name = 2;
-  if (has_name()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
-      this->name().data(), this->name().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE,
-      "name");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      2, this->name(), output);
-  }
-
-  // optional uint32 level = 3;
-  if (has_level()) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(3, this->level(), output);
-  }
-
-  if (!unknown_fields().empty()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:cs.CSAccountBase)
-}
-
-::google::protobuf::uint8* CSAccountBase::SerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
-  // @@protoc_insertion_point(serialize_to_array_start:cs.CSAccountBase)
-  // required uint64 uid = 1;
-  if (has_uid()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(1, this->uid(), target);
-  }
-
-  // optional string name = 2;
-  if (has_name()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
-      this->name().data(), this->name().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE,
-      "name");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->name(), target);
-  }
-
-  // optional uint32 level = 3;
-  if (has_level()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(3, this->level(), target);
-  }
-
-  if (!unknown_fields().empty()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        unknown_fields(), target);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:cs.CSAccountBase)
-  return target;
-}
-
-int CSAccountBase::ByteSize() const {
-  int total_size = 0;
-
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required uint64 uid = 1;
-    if (has_uid()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt64Size(
-          this->uid());
-    }
-
-    // optional string name = 2;
-    if (has_name()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->name());
-    }
-
-    // optional uint32 level = 3;
-    if (has_level()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->level());
-    }
-
-  }
-  if (!unknown_fields().empty()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        unknown_fields());
-  }
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = total_size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-  return total_size;
-}
-
-void CSAccountBase::MergeFrom(const ::google::protobuf::Message& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  const CSAccountBase* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const CSAccountBase*>(
-      &from);
-  if (source == NULL) {
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-    MergeFrom(*source);
-  }
-}
-
-void CSAccountBase::MergeFrom(const CSAccountBase& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_uid()) {
-      set_uid(from.uid());
-    }
-    if (from.has_name()) {
-      set_name(from.name());
-    }
-    if (from.has_level()) {
-      set_level(from.level());
-    }
-  }
-  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
-}
-
-void CSAccountBase::CopyFrom(const ::google::protobuf::Message& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void CSAccountBase::CopyFrom(const CSAccountBase& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool CSAccountBase::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
-
-  return true;
-}
-
-void CSAccountBase::Swap(CSAccountBase* other) {
-  if (other != this) {
-    std::swap(uid_, other->uid_);
-    std::swap(name_, other->name_);
-    std::swap(level_, other->level_);
-    std::swap(_has_bits_[0], other->_has_bits_[0]);
-    _unknown_fields_.Swap(&other->_unknown_fields_);
-    std::swap(_cached_size_, other->_cached_size_);
-  }
-}
-
-::google::protobuf::Metadata CSAccountBase::GetMetadata() const {
-  protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::Metadata metadata;
-  metadata.descriptor = CSAccountBase_descriptor_;
-  metadata.reflection = CSAccountBase_reflection_;
-  return metadata;
-}
-
-
-// ===================================================================
-
-#ifndef _MSC_VER
-const int CSAccountExt::kDummyFieldNumber;
-#endif  // !_MSC_VER
-
-CSAccountExt::CSAccountExt()
-  : ::google::protobuf::Message() {
-  SharedCtor();
-  // @@protoc_insertion_point(constructor:cs.CSAccountExt)
-}
-
-void CSAccountExt::InitAsDefaultInstance() {
-}
-
-CSAccountExt::CSAccountExt(const CSAccountExt& from)
-  : ::google::protobuf::Message() {
-  SharedCtor();
-  MergeFrom(from);
-  // @@protoc_insertion_point(copy_constructor:cs.CSAccountExt)
-}
-
-void CSAccountExt::SharedCtor() {
-  _cached_size_ = 0;
-  dummy_ = 0u;
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-}
-
-CSAccountExt::~CSAccountExt() {
-  // @@protoc_insertion_point(destructor:cs.CSAccountExt)
-  SharedDtor();
-}
-
-void CSAccountExt::SharedDtor() {
-  if (this != default_instance_) {
-  }
-}
-
-void CSAccountExt::SetCachedSize(int size) const {
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-}
-const ::google::protobuf::Descriptor* CSAccountExt::descriptor() {
-  protobuf_AssignDescriptorsOnce();
-  return CSAccountExt_descriptor_;
-}
-
-const CSAccountExt& CSAccountExt::default_instance() {
-  if (default_instance_ == NULL) protobuf_AddDesc_cs_2fCSMsg_2eproto();
-  return *default_instance_;
-}
-
-CSAccountExt* CSAccountExt::default_instance_ = NULL;
-
-CSAccountExt* CSAccountExt::New() const {
-  return new CSAccountExt;
-}
-
-void CSAccountExt::Clear() {
-  dummy_ = 0u;
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-  mutable_unknown_fields()->Clear();
-}
-
-bool CSAccountExt::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:cs.CSAccountExt)
-  for (;;) {
-    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional uint32 dummy = 1;
-      case 1: {
-        if (tag == 8) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &dummy_)));
-          set_has_dummy();
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectAtEnd()) goto success;
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0 ||
-            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-          goto success;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:cs.CSAccountExt)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:cs.CSAccountExt)
-  return false;
-#undef DO_
-}
-
-void CSAccountExt::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:cs.CSAccountExt)
-  // optional uint32 dummy = 1;
-  if (has_dummy()) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->dummy(), output);
-  }
-
-  if (!unknown_fields().empty()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:cs.CSAccountExt)
-}
-
-::google::protobuf::uint8* CSAccountExt::SerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
-  // @@protoc_insertion_point(serialize_to_array_start:cs.CSAccountExt)
-  // optional uint32 dummy = 1;
-  if (has_dummy()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->dummy(), target);
-  }
-
-  if (!unknown_fields().empty()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        unknown_fields(), target);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:cs.CSAccountExt)
-  return target;
-}
-
-int CSAccountExt::ByteSize() const {
-  int total_size = 0;
-
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional uint32 dummy = 1;
-    if (has_dummy()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->dummy());
-    }
-
-  }
-  if (!unknown_fields().empty()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        unknown_fields());
-  }
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = total_size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-  return total_size;
-}
-
-void CSAccountExt::MergeFrom(const ::google::protobuf::Message& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  const CSAccountExt* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const CSAccountExt*>(
-      &from);
-  if (source == NULL) {
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-    MergeFrom(*source);
-  }
-}
-
-void CSAccountExt::MergeFrom(const CSAccountExt& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_dummy()) {
-      set_dummy(from.dummy());
-    }
-  }
-  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
-}
-
-void CSAccountExt::CopyFrom(const ::google::protobuf::Message& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void CSAccountExt::CopyFrom(const CSAccountExt& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool CSAccountExt::IsInitialized() const {
-
-  return true;
-}
-
-void CSAccountExt::Swap(CSAccountExt* other) {
-  if (other != this) {
-    std::swap(dummy_, other->dummy_);
-    std::swap(_has_bits_[0], other->_has_bits_[0]);
-    _unknown_fields_.Swap(&other->_unknown_fields_);
-    std::swap(_cached_size_, other->_cached_size_);
-  }
-}
-
-::google::protobuf::Metadata CSAccountExt::GetMetadata() const {
-  protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::Metadata metadata;
-  metadata.descriptor = CSAccountExt_descriptor_;
-  metadata.reflection = CSAccountExt_reflection_;
-  return metadata;
-}
-
-
-// ===================================================================
-
-#ifndef _MSC_VER
-const int CSAccountMisc::kDummyFieldNumber;
-#endif  // !_MSC_VER
-
-CSAccountMisc::CSAccountMisc()
-  : ::google::protobuf::Message() {
-  SharedCtor();
-  // @@protoc_insertion_point(constructor:cs.CSAccountMisc)
-}
-
-void CSAccountMisc::InitAsDefaultInstance() {
-}
-
-CSAccountMisc::CSAccountMisc(const CSAccountMisc& from)
-  : ::google::protobuf::Message() {
-  SharedCtor();
-  MergeFrom(from);
-  // @@protoc_insertion_point(copy_constructor:cs.CSAccountMisc)
-}
-
-void CSAccountMisc::SharedCtor() {
-  _cached_size_ = 0;
-  dummy_ = 0u;
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-}
-
-CSAccountMisc::~CSAccountMisc() {
-  // @@protoc_insertion_point(destructor:cs.CSAccountMisc)
-  SharedDtor();
-}
-
-void CSAccountMisc::SharedDtor() {
-  if (this != default_instance_) {
-  }
-}
-
-void CSAccountMisc::SetCachedSize(int size) const {
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-}
-const ::google::protobuf::Descriptor* CSAccountMisc::descriptor() {
-  protobuf_AssignDescriptorsOnce();
-  return CSAccountMisc_descriptor_;
-}
-
-const CSAccountMisc& CSAccountMisc::default_instance() {
-  if (default_instance_ == NULL) protobuf_AddDesc_cs_2fCSMsg_2eproto();
-  return *default_instance_;
-}
-
-CSAccountMisc* CSAccountMisc::default_instance_ = NULL;
-
-CSAccountMisc* CSAccountMisc::New() const {
-  return new CSAccountMisc;
-}
-
-void CSAccountMisc::Clear() {
-  dummy_ = 0u;
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-  mutable_unknown_fields()->Clear();
-}
-
-bool CSAccountMisc::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:cs.CSAccountMisc)
-  for (;;) {
-    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional uint32 dummy = 1;
-      case 1: {
-        if (tag == 8) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &dummy_)));
-          set_has_dummy();
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectAtEnd()) goto success;
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0 ||
-            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-          goto success;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:cs.CSAccountMisc)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:cs.CSAccountMisc)
-  return false;
-#undef DO_
-}
-
-void CSAccountMisc::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:cs.CSAccountMisc)
-  // optional uint32 dummy = 1;
-  if (has_dummy()) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->dummy(), output);
-  }
-
-  if (!unknown_fields().empty()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:cs.CSAccountMisc)
-}
-
-::google::protobuf::uint8* CSAccountMisc::SerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
-  // @@protoc_insertion_point(serialize_to_array_start:cs.CSAccountMisc)
-  // optional uint32 dummy = 1;
-  if (has_dummy()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->dummy(), target);
-  }
-
-  if (!unknown_fields().empty()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        unknown_fields(), target);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:cs.CSAccountMisc)
-  return target;
-}
-
-int CSAccountMisc::ByteSize() const {
-  int total_size = 0;
-
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional uint32 dummy = 1;
-    if (has_dummy()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->dummy());
-    }
-
-  }
-  if (!unknown_fields().empty()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        unknown_fields());
-  }
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = total_size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-  return total_size;
-}
-
-void CSAccountMisc::MergeFrom(const ::google::protobuf::Message& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  const CSAccountMisc* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const CSAccountMisc*>(
-      &from);
-  if (source == NULL) {
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-    MergeFrom(*source);
-  }
-}
-
-void CSAccountMisc::MergeFrom(const CSAccountMisc& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_dummy()) {
-      set_dummy(from.dummy());
-    }
-  }
-  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
-}
-
-void CSAccountMisc::CopyFrom(const ::google::protobuf::Message& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void CSAccountMisc::CopyFrom(const CSAccountMisc& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool CSAccountMisc::IsInitialized() const {
-
-  return true;
-}
-
-void CSAccountMisc::Swap(CSAccountMisc* other) {
-  if (other != this) {
-    std::swap(dummy_, other->dummy_);
-    std::swap(_has_bits_[0], other->_has_bits_[0]);
-    _unknown_fields_.Swap(&other->_unknown_fields_);
-    std::swap(_cached_size_, other->_cached_size_);
-  }
-}
-
-::google::protobuf::Metadata CSAccountMisc::GetMetadata() const {
-  protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::Metadata metadata;
-  metadata.descriptor = CSAccountMisc_descriptor_;
-  metadata.reflection = CSAccountMisc_reflection_;
-  return metadata;
-}
-
-
-// ===================================================================
-
-#ifndef _MSC_VER
-const int CSAccount::kBaseFieldNumber;
-const int CSAccount::kExtFieldNumber;
-const int CSAccount::kMiscFieldNumber;
-#endif  // !_MSC_VER
-
-CSAccount::CSAccount()
-  : ::google::protobuf::Message() {
-  SharedCtor();
-  // @@protoc_insertion_point(constructor:cs.CSAccount)
-}
-
-void CSAccount::InitAsDefaultInstance() {
-  base_ = const_cast< ::cs::CSAccountBase*>(&::cs::CSAccountBase::default_instance());
-  ext_ = const_cast< ::cs::CSAccountExt*>(&::cs::CSAccountExt::default_instance());
-  misc_ = const_cast< ::cs::CSAccountMisc*>(&::cs::CSAccountMisc::default_instance());
-}
-
-CSAccount::CSAccount(const CSAccount& from)
-  : ::google::protobuf::Message() {
-  SharedCtor();
-  MergeFrom(from);
-  // @@protoc_insertion_point(copy_constructor:cs.CSAccount)
-}
-
-void CSAccount::SharedCtor() {
-  _cached_size_ = 0;
-  base_ = NULL;
-  ext_ = NULL;
-  misc_ = NULL;
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-}
-
-CSAccount::~CSAccount() {
-  // @@protoc_insertion_point(destructor:cs.CSAccount)
-  SharedDtor();
-}
-
-void CSAccount::SharedDtor() {
-  if (this != default_instance_) {
-    delete base_;
-    delete ext_;
-    delete misc_;
-  }
-}
-
-void CSAccount::SetCachedSize(int size) const {
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-}
-const ::google::protobuf::Descriptor* CSAccount::descriptor() {
-  protobuf_AssignDescriptorsOnce();
-  return CSAccount_descriptor_;
-}
-
-const CSAccount& CSAccount::default_instance() {
-  if (default_instance_ == NULL) protobuf_AddDesc_cs_2fCSMsg_2eproto();
-  return *default_instance_;
-}
-
-CSAccount* CSAccount::default_instance_ = NULL;
-
-CSAccount* CSAccount::New() const {
-  return new CSAccount;
-}
-
-void CSAccount::Clear() {
-  if (_has_bits_[0 / 32] & 7) {
-    if (has_base()) {
-      if (base_ != NULL) base_->::cs::CSAccountBase::Clear();
-    }
-    if (has_ext()) {
-      if (ext_ != NULL) ext_->::cs::CSAccountExt::Clear();
-    }
-    if (has_misc()) {
-      if (misc_ != NULL) misc_->::cs::CSAccountMisc::Clear();
-    }
-  }
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-  mutable_unknown_fields()->Clear();
-}
-
-bool CSAccount::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:cs.CSAccount)
-  for (;;) {
-    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required .cs.CSAccountBase base = 1;
-      case 1: {
-        if (tag == 10) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_base()));
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectTag(18)) goto parse_ext;
-        break;
-      }
-
-      // required .cs.CSAccountExt ext = 2;
-      case 2: {
-        if (tag == 18) {
-         parse_ext:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_ext()));
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectTag(26)) goto parse_misc;
-        break;
-      }
-
-      // required .cs.CSAccountMisc misc = 3;
-      case 3: {
-        if (tag == 26) {
-         parse_misc:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_misc()));
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectAtEnd()) goto success;
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0 ||
-            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-          goto success;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:cs.CSAccount)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:cs.CSAccount)
-  return false;
-#undef DO_
-}
-
-void CSAccount::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:cs.CSAccount)
-  // required .cs.CSAccountBase base = 1;
-  if (has_base()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, this->base(), output);
-  }
-
-  // required .cs.CSAccountExt ext = 2;
-  if (has_ext()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      2, this->ext(), output);
-  }
-
-  // required .cs.CSAccountMisc misc = 3;
-  if (has_misc()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      3, this->misc(), output);
-  }
-
-  if (!unknown_fields().empty()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:cs.CSAccount)
-}
-
-::google::protobuf::uint8* CSAccount::SerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
-  // @@protoc_insertion_point(serialize_to_array_start:cs.CSAccount)
-  // required .cs.CSAccountBase base = 1;
-  if (has_base()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteMessageNoVirtualToArray(
-        1, this->base(), target);
-  }
-
-  // required .cs.CSAccountExt ext = 2;
-  if (has_ext()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteMessageNoVirtualToArray(
-        2, this->ext(), target);
-  }
-
-  // required .cs.CSAccountMisc misc = 3;
-  if (has_misc()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteMessageNoVirtualToArray(
-        3, this->misc(), target);
-  }
-
-  if (!unknown_fields().empty()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        unknown_fields(), target);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:cs.CSAccount)
-  return target;
-}
-
-int CSAccount::ByteSize() const {
-  int total_size = 0;
-
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required .cs.CSAccountBase base = 1;
-    if (has_base()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-          this->base());
-    }
-
-    // required .cs.CSAccountExt ext = 2;
-    if (has_ext()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-          this->ext());
-    }
-
-    // required .cs.CSAccountMisc misc = 3;
-    if (has_misc()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-          this->misc());
-    }
-
-  }
-  if (!unknown_fields().empty()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        unknown_fields());
-  }
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = total_size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-  return total_size;
-}
-
-void CSAccount::MergeFrom(const ::google::protobuf::Message& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  const CSAccount* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const CSAccount*>(
-      &from);
-  if (source == NULL) {
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-    MergeFrom(*source);
-  }
-}
-
-void CSAccount::MergeFrom(const CSAccount& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_base()) {
-      mutable_base()->::cs::CSAccountBase::MergeFrom(from.base());
-    }
-    if (from.has_ext()) {
-      mutable_ext()->::cs::CSAccountExt::MergeFrom(from.ext());
-    }
-    if (from.has_misc()) {
-      mutable_misc()->::cs::CSAccountMisc::MergeFrom(from.misc());
-    }
-  }
-  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
-}
-
-void CSAccount::CopyFrom(const ::google::protobuf::Message& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void CSAccount::CopyFrom(const CSAccount& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool CSAccount::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000007) != 0x00000007) return false;
-
-  if (has_base()) {
-    if (!this->base().IsInitialized()) return false;
-  }
-  return true;
-}
-
-void CSAccount::Swap(CSAccount* other) {
-  if (other != this) {
-    std::swap(base_, other->base_);
-    std::swap(ext_, other->ext_);
-    std::swap(misc_, other->misc_);
-    std::swap(_has_bits_[0], other->_has_bits_[0]);
-    _unknown_fields_.Swap(&other->_unknown_fields_);
-    std::swap(_cached_size_, other->_cached_size_);
-  }
-}
-
-::google::protobuf::Metadata CSAccount::GetMetadata() const {
-  protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::Metadata metadata;
-  metadata.descriptor = CSAccount_descriptor_;
-  metadata.reflection = CSAccount_reflection_;
-  return metadata;
-}
-
-
-// ===================================================================
-
-const ::google::protobuf::EnumDescriptor* CSMsgAccount_CmdCode_descriptor() {
-  protobuf_AssignDescriptorsOnce();
-  return CSMsgAccount_CmdCode_descriptor_;
-}
-bool CSMsgAccount_CmdCode_IsValid(int value) {
-  switch(value) {
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-    case 6:
-    case 7:
-    case 8:
-      return true;
-    default:
-      return false;
-  }
-}
-
-#ifndef _MSC_VER
-const CSMsgAccount_CmdCode CSMsgAccount::CSMSG_ACCOUNT_ALL_INFO_REQ;
-const CSMsgAccount_CmdCode CSMsgAccount::CSMSG_ACCOUNT_BASE_INFO_REQ;
-const CSMsgAccount_CmdCode CSMsgAccount::CSMSG_ACCOUNT_EXT_INFO_REQ;
-const CSMsgAccount_CmdCode CSMsgAccount::CSMSG_ACCOUNT_MISC_INFO_REQ;
-const CSMsgAccount_CmdCode CSMsgAccount::CSMSG_ACCOUNT_ALL_INFO_RSP;
-const CSMsgAccount_CmdCode CSMsgAccount::CSMSG_ACCOUNT_BASE_INFO_RSP;
-const CSMsgAccount_CmdCode CSMsgAccount::CSMSG_ACCOUNT_EXT_INFO_RSP;
-const CSMsgAccount_CmdCode CSMsgAccount::CSMSG_ACCOUNT_MISC_INFO_RSP;
-const CSMsgAccount_CmdCode CSMsgAccount::CmdCode_MIN;
-const CSMsgAccount_CmdCode CSMsgAccount::CmdCode_MAX;
-const int CSMsgAccount::CmdCode_ARRAYSIZE;
-#endif  // _MSC_VER
-#ifndef _MSC_VER
-const int CSMsgAccount::kCmdFieldNumber;
-const int CSMsgAccount::kAllInfoRspFieldNumber;
-const int CSMsgAccount::kBaseInfoRspFieldNumber;
-const int CSMsgAccount::kExtInfoRspFieldNumber;
-const int CSMsgAccount::kMiscInfoRspFieldNumber;
-#endif  // !_MSC_VER
-
-CSMsgAccount::CSMsgAccount()
-  : ::google::protobuf::Message() {
-  SharedCtor();
-  // @@protoc_insertion_point(constructor:cs.CSMsgAccount)
-}
-
-void CSMsgAccount::InitAsDefaultInstance() {
-  allinforsp_ = const_cast< ::cs::CSAccount*>(&::cs::CSAccount::default_instance());
-  baseinforsp_ = const_cast< ::cs::CSAccountBase*>(&::cs::CSAccountBase::default_instance());
-  extinforsp_ = const_cast< ::cs::CSAccountExt*>(&::cs::CSAccountExt::default_instance());
-  miscinforsp_ = const_cast< ::cs::CSAccountMisc*>(&::cs::CSAccountMisc::default_instance());
-}
-
-CSMsgAccount::CSMsgAccount(const CSMsgAccount& from)
-  : ::google::protobuf::Message() {
-  SharedCtor();
-  MergeFrom(from);
-  // @@protoc_insertion_point(copy_constructor:cs.CSMsgAccount)
-}
-
-void CSMsgAccount::SharedCtor() {
-  _cached_size_ = 0;
-  cmd_ = 0u;
-  allinforsp_ = NULL;
-  baseinforsp_ = NULL;
-  extinforsp_ = NULL;
-  miscinforsp_ = NULL;
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-}
-
-CSMsgAccount::~CSMsgAccount() {
-  // @@protoc_insertion_point(destructor:cs.CSMsgAccount)
-  SharedDtor();
-}
-
-void CSMsgAccount::SharedDtor() {
-  if (this != default_instance_) {
-    delete allinforsp_;
-    delete baseinforsp_;
-    delete extinforsp_;
-    delete miscinforsp_;
-  }
-}
-
-void CSMsgAccount::SetCachedSize(int size) const {
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-}
-const ::google::protobuf::Descriptor* CSMsgAccount::descriptor() {
-  protobuf_AssignDescriptorsOnce();
-  return CSMsgAccount_descriptor_;
-}
-
-const CSMsgAccount& CSMsgAccount::default_instance() {
-  if (default_instance_ == NULL) protobuf_AddDesc_cs_2fCSMsg_2eproto();
-  return *default_instance_;
-}
-
-CSMsgAccount* CSMsgAccount::default_instance_ = NULL;
-
-CSMsgAccount* CSMsgAccount::New() const {
-  return new CSMsgAccount;
-}
-
-void CSMsgAccount::Clear() {
-  if (_has_bits_[0 / 32] & 31) {
-    cmd_ = 0u;
-    if (has_allinforsp()) {
-      if (allinforsp_ != NULL) allinforsp_->::cs::CSAccount::Clear();
-    }
-    if (has_baseinforsp()) {
-      if (baseinforsp_ != NULL) baseinforsp_->::cs::CSAccountBase::Clear();
-    }
-    if (has_extinforsp()) {
-      if (extinforsp_ != NULL) extinforsp_->::cs::CSAccountExt::Clear();
-    }
-    if (has_miscinforsp()) {
-      if (miscinforsp_ != NULL) miscinforsp_->::cs::CSAccountMisc::Clear();
-    }
-  }
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-  mutable_unknown_fields()->Clear();
-}
-
-bool CSMsgAccount::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:cs.CSMsgAccount)
-  for (;;) {
-    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required uint32 cmd = 1;
-      case 1: {
-        if (tag == 8) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &cmd_)));
-          set_has_cmd();
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectTag(18)) goto parse_allInfoRsp;
-        break;
-      }
-
-      // optional .cs.CSAccount allInfoRsp = 2;
-      case 2: {
-        if (tag == 18) {
-         parse_allInfoRsp:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_allinforsp()));
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectTag(26)) goto parse_baseInfoRsp;
-        break;
-      }
-
-      // optional .cs.CSAccountBase baseInfoRsp = 3;
-      case 3: {
-        if (tag == 26) {
-         parse_baseInfoRsp:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_baseinforsp()));
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectTag(34)) goto parse_extInfoRsp;
-        break;
-      }
-
-      // optional .cs.CSAccountExt extInfoRsp = 4;
-      case 4: {
-        if (tag == 34) {
-         parse_extInfoRsp:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_extinforsp()));
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectTag(42)) goto parse_miscInfoRsp;
-        break;
-      }
-
-      // optional .cs.CSAccountMisc miscInfoRsp = 5;
-      case 5: {
-        if (tag == 42) {
-         parse_miscInfoRsp:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_miscinforsp()));
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectAtEnd()) goto success;
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0 ||
-            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-          goto success;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:cs.CSMsgAccount)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:cs.CSMsgAccount)
-  return false;
-#undef DO_
-}
-
-void CSMsgAccount::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:cs.CSMsgAccount)
-  // required uint32 cmd = 1;
-  if (has_cmd()) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->cmd(), output);
-  }
-
-  // optional .cs.CSAccount allInfoRsp = 2;
-  if (has_allinforsp()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      2, this->allinforsp(), output);
-  }
-
-  // optional .cs.CSAccountBase baseInfoRsp = 3;
-  if (has_baseinforsp()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      3, this->baseinforsp(), output);
-  }
-
-  // optional .cs.CSAccountExt extInfoRsp = 4;
-  if (has_extinforsp()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      4, this->extinforsp(), output);
-  }
-
-  // optional .cs.CSAccountMisc miscInfoRsp = 5;
-  if (has_miscinforsp()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      5, this->miscinforsp(), output);
-  }
-
-  if (!unknown_fields().empty()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:cs.CSMsgAccount)
-}
-
-::google::protobuf::uint8* CSMsgAccount::SerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
-  // @@protoc_insertion_point(serialize_to_array_start:cs.CSMsgAccount)
-  // required uint32 cmd = 1;
-  if (has_cmd()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->cmd(), target);
-  }
-
-  // optional .cs.CSAccount allInfoRsp = 2;
-  if (has_allinforsp()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteMessageNoVirtualToArray(
-        2, this->allinforsp(), target);
-  }
-
-  // optional .cs.CSAccountBase baseInfoRsp = 3;
-  if (has_baseinforsp()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteMessageNoVirtualToArray(
-        3, this->baseinforsp(), target);
-  }
-
-  // optional .cs.CSAccountExt extInfoRsp = 4;
-  if (has_extinforsp()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteMessageNoVirtualToArray(
-        4, this->extinforsp(), target);
-  }
-
-  // optional .cs.CSAccountMisc miscInfoRsp = 5;
-  if (has_miscinforsp()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteMessageNoVirtualToArray(
-        5, this->miscinforsp(), target);
-  }
-
-  if (!unknown_fields().empty()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        unknown_fields(), target);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:cs.CSMsgAccount)
-  return target;
-}
-
-int CSMsgAccount::ByteSize() const {
-  int total_size = 0;
-
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required uint32 cmd = 1;
-    if (has_cmd()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->cmd());
-    }
-
-    // optional .cs.CSAccount allInfoRsp = 2;
-    if (has_allinforsp()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-          this->allinforsp());
-    }
-
-    // optional .cs.CSAccountBase baseInfoRsp = 3;
-    if (has_baseinforsp()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-          this->baseinforsp());
-    }
-
-    // optional .cs.CSAccountExt extInfoRsp = 4;
-    if (has_extinforsp()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-          this->extinforsp());
-    }
-
-    // optional .cs.CSAccountMisc miscInfoRsp = 5;
-    if (has_miscinforsp()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-          this->miscinforsp());
-    }
-
-  }
-  if (!unknown_fields().empty()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        unknown_fields());
-  }
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = total_size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-  return total_size;
-}
-
-void CSMsgAccount::MergeFrom(const ::google::protobuf::Message& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  const CSMsgAccount* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const CSMsgAccount*>(
-      &from);
-  if (source == NULL) {
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-    MergeFrom(*source);
-  }
-}
-
-void CSMsgAccount::MergeFrom(const CSMsgAccount& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_cmd()) {
-      set_cmd(from.cmd());
-    }
-    if (from.has_allinforsp()) {
-      mutable_allinforsp()->::cs::CSAccount::MergeFrom(from.allinforsp());
-    }
-    if (from.has_baseinforsp()) {
-      mutable_baseinforsp()->::cs::CSAccountBase::MergeFrom(from.baseinforsp());
-    }
-    if (from.has_extinforsp()) {
-      mutable_extinforsp()->::cs::CSAccountExt::MergeFrom(from.extinforsp());
-    }
-    if (from.has_miscinforsp()) {
-      mutable_miscinforsp()->::cs::CSAccountMisc::MergeFrom(from.miscinforsp());
-    }
-  }
-  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
-}
-
-void CSMsgAccount::CopyFrom(const ::google::protobuf::Message& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void CSMsgAccount::CopyFrom(const CSMsgAccount& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool CSMsgAccount::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
-
-  if (has_allinforsp()) {
-    if (!this->allinforsp().IsInitialized()) return false;
-  }
-  if (has_baseinforsp()) {
-    if (!this->baseinforsp().IsInitialized()) return false;
-  }
-  return true;
-}
-
-void CSMsgAccount::Swap(CSMsgAccount* other) {
-  if (other != this) {
-    std::swap(cmd_, other->cmd_);
-    std::swap(allinforsp_, other->allinforsp_);
-    std::swap(baseinforsp_, other->baseinforsp_);
-    std::swap(extinforsp_, other->extinforsp_);
-    std::swap(miscinforsp_, other->miscinforsp_);
-    std::swap(_has_bits_[0], other->_has_bits_[0]);
-    _unknown_fields_.Swap(&other->_unknown_fields_);
-    std::swap(_cached_size_, other->_cached_size_);
-  }
-}
-
-::google::protobuf::Metadata CSMsgAccount::GetMetadata() const {
-  protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::Metadata metadata;
-  metadata.descriptor = CSMsgAccount_descriptor_;
-  metadata.reflection = CSMsgAccount_reflection_;
   return metadata;
 }
 
@@ -5470,7 +3796,7 @@ const int CSMsg::kCmdFieldNumber;
 const int CSMsg::kErrFieldNumber;
 const int CSMsg::kLoginFieldNumber;
 const int CSMsg::kTestFieldNumber;
-const int CSMsg::kAccountFieldNumber;
+const int CSMsg::kRoleFieldNumber;
 const int CSMsg::kTaskFieldNumber;
 const int CSMsg::kRankFieldNumber;
 const int CSMsg::kFriendFieldNumber;
@@ -5490,7 +3816,7 @@ CSMsg::CSMsg()
 void CSMsg::InitAsDefaultInstance() {
   login_ = const_cast< ::cs::CSMsgLogin*>(&::cs::CSMsgLogin::default_instance());
   test_ = const_cast< ::cs::CSMsgTest*>(&::cs::CSMsgTest::default_instance());
-  account_ = const_cast< ::cs::CSMsgAccount*>(&::cs::CSMsgAccount::default_instance());
+  role_ = const_cast< ::cs::CSMsgRole*>(&::cs::CSMsgRole::default_instance());
   task_ = const_cast< ::cs::CSMsgTask*>(&::cs::CSMsgTask::default_instance());
   rank_ = const_cast< ::cs::CSRank*>(&::cs::CSRank::default_instance());
   friend__ = const_cast< ::cs::CSFriend*>(&::cs::CSFriend::default_instance());
@@ -5514,7 +3840,7 @@ void CSMsg::SharedCtor() {
   err_ = 0u;
   login_ = NULL;
   test_ = NULL;
-  account_ = NULL;
+  role_ = NULL;
   task_ = NULL;
   rank_ = NULL;
   friend__ = NULL;
@@ -5535,7 +3861,7 @@ void CSMsg::SharedDtor() {
   if (this != default_instance_) {
     delete login_;
     delete test_;
-    delete account_;
+    delete role_;
     delete task_;
     delete rank_;
     delete friend__;
@@ -5587,8 +3913,8 @@ void CSMsg::Clear() {
     if (has_test()) {
       if (test_ != NULL) test_->::cs::CSMsgTest::Clear();
     }
-    if (has_account()) {
-      if (account_ != NULL) account_->::cs::CSMsgAccount::Clear();
+    if (has_role()) {
+      if (role_ != NULL) role_->::cs::CSMsgRole::Clear();
     }
     if (has_task()) {
       if (task_ != NULL) task_->::cs::CSMsgTask::Clear();
@@ -5686,16 +4012,16 @@ bool CSMsg::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(826)) goto parse_account;
+        if (input->ExpectTag(826)) goto parse_role;
         break;
       }
 
-      // optional .cs.CSMsgAccount account = 103;
+      // optional .cs.CSMsgRole role = 103;
       case 103: {
         if (tag == 826) {
-         parse_account:
+         parse_role:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_account()));
+               input, mutable_role()));
         } else {
           goto handle_unusual;
         }
@@ -5854,10 +4180,10 @@ void CSMsg::SerializeWithCachedSizes(
       102, this->test(), output);
   }
 
-  // optional .cs.CSMsgAccount account = 103;
-  if (has_account()) {
+  // optional .cs.CSMsgRole role = 103;
+  if (has_role()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      103, this->account(), output);
+      103, this->role(), output);
   }
 
   // optional .cs.CSMsgTask task = 104;
@@ -5942,11 +4268,11 @@ void CSMsg::SerializeWithCachedSizes(
         102, this->test(), target);
   }
 
-  // optional .cs.CSMsgAccount account = 103;
-  if (has_account()) {
+  // optional .cs.CSMsgRole role = 103;
+  if (has_role()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        103, this->account(), target);
+        103, this->role(), target);
   }
 
   // optional .cs.CSMsgTask task = 104;
@@ -6045,11 +4371,11 @@ int CSMsg::ByteSize() const {
           this->test());
     }
 
-    // optional .cs.CSMsgAccount account = 103;
-    if (has_account()) {
+    // optional .cs.CSMsgRole role = 103;
+    if (has_role()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-          this->account());
+          this->role());
     }
 
     // optional .cs.CSMsgTask task = 104;
@@ -6149,8 +4475,8 @@ void CSMsg::MergeFrom(const CSMsg& from) {
     if (from.has_test()) {
       mutable_test()->::cs::CSMsgTest::MergeFrom(from.test());
     }
-    if (from.has_account()) {
-      mutable_account()->::cs::CSMsgAccount::MergeFrom(from.account());
+    if (from.has_role()) {
+      mutable_role()->::cs::CSMsgRole::MergeFrom(from.role());
     }
     if (from.has_task()) {
       mutable_task()->::cs::CSMsgTask::MergeFrom(from.task());
@@ -6203,8 +4529,8 @@ bool CSMsg::IsInitialized() const {
   if (has_test()) {
     if (!this->test().IsInitialized()) return false;
   }
-  if (has_account()) {
-    if (!this->account().IsInitialized()) return false;
+  if (has_role()) {
+    if (!this->role().IsInitialized()) return false;
   }
   if (has_task()) {
     if (!this->task().IsInitialized()) return false;
@@ -6239,7 +4565,7 @@ void CSMsg::Swap(CSMsg* other) {
     std::swap(err_, other->err_);
     std::swap(login_, other->login_);
     std::swap(test_, other->test_);
-    std::swap(account_, other->account_);
+    std::swap(role_, other->role_);
     std::swap(task_, other->task_);
     std::swap(rank_, other->rank_);
     std::swap(friend__, other->friend__);

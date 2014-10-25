@@ -1114,12 +1114,21 @@ class RoleItem : public ::google::protobuf::Message {
   inline ::google::protobuf::uint32 level() const;
   inline void set_level(::google::protobuf::uint32 value);
 
+  // optional uint32 gid = 3;
+  inline bool has_gid() const;
+  inline void clear_gid();
+  static const int kGidFieldNumber = 3;
+  inline ::google::protobuf::uint32 gid() const;
+  inline void set_gid(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:db.RoleItem)
  private:
   inline void set_has_id();
   inline void clear_has_id();
   inline void set_has_level();
   inline void clear_has_level();
+  inline void set_has_gid();
+  inline void clear_has_gid();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -1127,6 +1136,7 @@ class RoleItem : public ::google::protobuf::Message {
   mutable int _cached_size_;
   ::google::protobuf::uint32 id_;
   ::google::protobuf::uint32 level_;
+  ::google::protobuf::uint32 gid_;
   friend void  protobuf_AddDesc_db_2fRole_2eproto();
   friend void protobuf_AssignDesc_db_2fRole_2eproto();
   friend void protobuf_ShutdownFile_db_2fRole_2eproto();
@@ -1205,12 +1215,21 @@ class RolePackGrid : public ::google::protobuf::Message {
   inline ::google::protobuf::uint32 num() const;
   inline void set_num(::google::protobuf::uint32 value);
 
+  // required uint32 pos = 3;
+  inline bool has_pos() const;
+  inline void clear_pos();
+  static const int kPosFieldNumber = 3;
+  inline ::google::protobuf::uint32 pos() const;
+  inline void set_pos(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:db.RolePackGrid)
  private:
   inline void set_has_item();
   inline void clear_has_item();
   inline void set_has_num();
   inline void clear_has_num();
+  inline void set_has_pos();
+  inline void clear_has_pos();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -1218,6 +1237,7 @@ class RolePackGrid : public ::google::protobuf::Message {
   mutable int _cached_size_;
   ::db::RoleItem* item_;
   ::google::protobuf::uint32 num_;
+  ::google::protobuf::uint32 pos_;
   friend void  protobuf_AddDesc_db_2fRole_2eproto();
   friend void protobuf_AssignDesc_db_2fRole_2eproto();
   friend void protobuf_ShutdownFile_db_2fRole_2eproto();
@@ -1299,10 +1319,19 @@ class RolePackage : public ::google::protobuf::Message {
   inline ::google::protobuf::RepeatedPtrField< ::db::RolePackGrid >*
       mutable_grids();
 
+  // required uint32 nextgid = 3 [default = 1];
+  inline bool has_nextgid() const;
+  inline void clear_nextgid();
+  static const int kNextgidFieldNumber = 3;
+  inline ::google::protobuf::uint32 nextgid() const;
+  inline void set_nextgid(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:db.RolePackage)
  private:
   inline void set_has_maxgrid();
   inline void clear_has_maxgrid();
+  inline void set_has_nextgid();
+  inline void clear_has_nextgid();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -1310,6 +1339,7 @@ class RolePackage : public ::google::protobuf::Message {
   mutable int _cached_size_;
   ::google::protobuf::RepeatedPtrField< ::db::RolePackGrid > grids_;
   ::google::protobuf::uint32 maxgrid_;
+  ::google::protobuf::uint32 nextgid_;
   friend void  protobuf_AddDesc_db_2fRole_2eproto();
   friend void protobuf_AssignDesc_db_2fRole_2eproto();
   friend void protobuf_ShutdownFile_db_2fRole_2eproto();
@@ -2999,6 +3029,30 @@ inline void RoleItem::set_level(::google::protobuf::uint32 value) {
   // @@protoc_insertion_point(field_set:db.RoleItem.level)
 }
 
+// optional uint32 gid = 3;
+inline bool RoleItem::has_gid() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void RoleItem::set_has_gid() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void RoleItem::clear_has_gid() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void RoleItem::clear_gid() {
+  gid_ = 0u;
+  clear_has_gid();
+}
+inline ::google::protobuf::uint32 RoleItem::gid() const {
+  // @@protoc_insertion_point(field_get:db.RoleItem.gid)
+  return gid_;
+}
+inline void RoleItem::set_gid(::google::protobuf::uint32 value) {
+  set_has_gid();
+  gid_ = value;
+  // @@protoc_insertion_point(field_set:db.RoleItem.gid)
+}
+
 // -------------------------------------------------------------------
 
 // RolePackGrid
@@ -3068,6 +3122,30 @@ inline void RolePackGrid::set_num(::google::protobuf::uint32 value) {
   // @@protoc_insertion_point(field_set:db.RolePackGrid.num)
 }
 
+// required uint32 pos = 3;
+inline bool RolePackGrid::has_pos() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void RolePackGrid::set_has_pos() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void RolePackGrid::clear_has_pos() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void RolePackGrid::clear_pos() {
+  pos_ = 0u;
+  clear_has_pos();
+}
+inline ::google::protobuf::uint32 RolePackGrid::pos() const {
+  // @@protoc_insertion_point(field_get:db.RolePackGrid.pos)
+  return pos_;
+}
+inline void RolePackGrid::set_pos(::google::protobuf::uint32 value) {
+  set_has_pos();
+  pos_ = value;
+  // @@protoc_insertion_point(field_set:db.RolePackGrid.pos)
+}
+
 // -------------------------------------------------------------------
 
 // RolePackage
@@ -3124,6 +3202,30 @@ inline ::google::protobuf::RepeatedPtrField< ::db::RolePackGrid >*
 RolePackage::mutable_grids() {
   // @@protoc_insertion_point(field_mutable_list:db.RolePackage.grids)
   return &grids_;
+}
+
+// required uint32 nextgid = 3 [default = 1];
+inline bool RolePackage::has_nextgid() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void RolePackage::set_has_nextgid() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void RolePackage::clear_has_nextgid() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void RolePackage::clear_nextgid() {
+  nextgid_ = 1u;
+  clear_has_nextgid();
+}
+inline ::google::protobuf::uint32 RolePackage::nextgid() const {
+  // @@protoc_insertion_point(field_get:db.RolePackage.nextgid)
+  return nextgid_;
+}
+inline void RolePackage::set_nextgid(::google::protobuf::uint32 value) {
+  set_has_nextgid();
+  nextgid_ = value;
+  // @@protoc_insertion_point(field_set:db.RolePackage.nextgid)
 }
 
 // -------------------------------------------------------------------

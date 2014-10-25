@@ -1,5 +1,6 @@
+
 package	cs;
-import "base/Role.proto";
+
 import "cs/CSMsgRole.proto";
 
 message TestInfoRsp
