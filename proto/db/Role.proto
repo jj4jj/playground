@@ -71,6 +71,7 @@ message RolePackGrid
 {
 	required	RoleItem		item	=	1;
 	required	uint32			num		=	2 [default = 0];	
+	required	uint32			pos		=	3 ;	
 };
 message	RolePackage
 {
