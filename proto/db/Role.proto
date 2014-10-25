@@ -65,6 +65,7 @@ message RoleItem
 {
 	required	uint32		id		=	1;
 	optional	uint32		level	=	2;
+	optional	uint32		gid		=	3;
 };
 message RolePackGrid
 {
@@ -73,8 +74,9 @@ message RolePackGrid
 };
 message	RolePackage
 {
-	required	uint32			maxGrid	=	1 [default = 0];
-	repeated	RolePackGrid	grids	=	2 ; //package grid
+	required	uint32			maxGrid		=	1 [default = 0];
+	repeated	RolePackGrid	grids		=	2 ; //package grid
+	required	uint32			nextgid		=	3 [default = 1];
 };
 
 message RoleOneTask
