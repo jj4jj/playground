@@ -70,6 +70,11 @@ const string  &   PlayerAgent::GetName()
 {
     return pRoleData->name();
 }
+uint32_t    PlayerAgent::GetLevel()
+{
+    //todo
+    return 1;
+}
 
 #endif
 

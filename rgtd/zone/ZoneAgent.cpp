@@ -50,7 +50,7 @@ int ZoneAgent::DispatchPlayerAgentMsg(const gate::GateConnection & ggc,const cs:
         LOG_ERROR("not found session uid = %lu",uid);
         return -1;
     }
-    return m_sessionMgr.Dispatch(*session,csmsg);
+    return m_sessionMgr.GetDispatcher().Dispatch(*session,csmsg);
 }
 int ZoneAgent::AttachPlayerAgent(int gateid,const gate::GateConnection & ggc)
 {

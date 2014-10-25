@@ -3,29 +3,19 @@
 #include "cs_handler/CSMsgHandler.h"
 #include "proto/gen/gate/include.h"
 #include "ZoneAgent.h"
-
-
 #include "SessionMgr.h"
 
 
 #if 1
-SessionMgr::SessionMgr(ZoneAgent* zone):zoneAgent(zone)
+SessionMgr::SessionMgr(ZoneAgent* zone):zoneAgent(zone),m_csmsgDispatcher(this)
 {
-}
-int SessionMgr::RegisterCSMsgHandler(uint32_t cmd,CSMsgHandlerPtr handler)
-{
-    if(m_mpHandlers.find(cmd) == m_mpHandlers.end())
-    {
-        LOG_ERROR("register handler repeatly ! cmd = %u",cmd);
-        return -1;
-    }
-    m_mpHandlers[cmd] = handler;
-    return 0;
 }
 
 int SessionMgr::Init()
 {
     login = &(zoneAgent->GetZoneMgr().GetLoginLogic());    
+    //////////////////////////////////////////////////
+    m_csmsgDispatcher.SetupAllCSMsgHandler();    
     return 0;
 }
 int SessionMgr::StopSession(uint64_t uid)
@@ -101,29 +91,7 @@ SessionPtr & SessionMgr::GetSession(uint64_t uid)
     }
     return m_mpSessions[0];
 }
-CSMsgHandler *  SessionMgr::GetMsgHandler(uint32_t cmd)
-{
-    CMDHandlerMapItr it = m_mpHandlers.find(cmd);
-    if(it != m_mpHandlers.end())
-    {
-        return it->second.get();
-    }
-    return NULL;
-}
-int       SessionMgr::Dispatch(Session & session,const cs::CSMsg & csmsg)
-{
-    uint32_t    cmd = csmsg.cmd();
-    CSMsgHandler * pHandler = GetMsgHandler(cmd);
-    if(pHandler)
-    {
-        return pHandler->Handle(session,csmsg);
-    }
-    else
-    {
-        LOG_ERROR("known cs msg cmd = %u",cmd);
-        return -100; 
-    }
-}
+
 int       SessionMgr::PackCSMsg(const cs::CSMsg & csmsg,Buffer & buffer)
 {
     int len = csmsg.ByteSize();

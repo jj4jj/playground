@@ -29,6 +29,7 @@ public:
     uint64_t    GetUID();
     uint32_t    GetAreaID();      
     const       string  &    GetName();
+    uint32_t    GetLevel();
     inline      PlayerLogicCenter &  GetLogicCenter(){return *ptrLogic;}
     const db::Role * GetRoleData(){return pRoleData;}
     db::Role *       MutableRoleData(){ m_iDirty++ ;return pRoleData;}    

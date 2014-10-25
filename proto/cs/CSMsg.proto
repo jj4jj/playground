@@ -133,6 +133,16 @@ message CSMsg
 	enum	CSMsgCmdCode
 	{
 		CSMSG_CMD_TEST	=	1;
+		CSMSG_CMD_ROLE	=	2;
+		CSMSG_CMD_LOGIN	=	3;
+		CSMSG_CMD_TASK	=	4;
+		CSMSG_CMD_RANK	=	5;
+		CSMSG_CMD_FRIEND	=	6;
+		CSMSG_CMD_FAMILY	=	7;
+		CSMSG_CMD_KNAPSACK	=	8;
+		CSMSG_CMD_STAGE	=	9;
+		CSMSG_CMD_ACTIVITY	=	10;
+		CSMSG_CMD_BATTLE	=	11;
 	};
 	required	uint32		cmd 		= 	1;
 	optional	uint32		err			=	2;
