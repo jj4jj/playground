@@ -11,7 +11,6 @@ public:
     virtual void    OnInitBirthPlayer();
     virtual void    OnEvent(int iEvent,uint64_t ulParam = 0,void * arg = NULL);
 public:
-    //todo
     //get role item
     int   CreateItem(db::RoleItem & item);
     //role item    

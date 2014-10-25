@@ -24,10 +24,10 @@ void    PlayerKnapsackLogic::OnEvent(int iEvent,uint64_t ulParam ,void * arg )
 int   PlayerKnapsackLogic::CreateItem(db::RoleItem & item)
 {
     db::RolePackage * pack = GetPackInfo();
-    uint32_t nextgid = 1;//todo get from data
-    //item->set_gid(nextgid);
+    uint32_t nextgid = pack->nextgid();
+    item.set_gid(nextgid);
     ++nextgid;
-    //set next gid
+    pack->set_nextgid(nextgid);
     return 0;
 }
 bool     PlayerKnapsackLogic::IsGridFill(uint32_t pos)
@@ -41,8 +41,8 @@ bool     PlayerKnapsackLogic::IsGridFill(uint32_t pos)
     int ngrids = pack->grids_size();      
     for(int i = 0;i < ngrids ;++i)
     {
-        if(pack->grids(i)->pos() == pos &&
-           pack->grids(i)->num() > 0 )
+        if(pack->grids(i).pos() == pos &&
+           pack->grids(i).num() > 0 )
         {
             return true;
         }
@@ -53,12 +53,12 @@ int PlayerKnapsackLogic::GetFreeGridPos()
 {
     int pos = 1;
     db::RolePackage * pack = GetPackInfo();
-    while(pos < pack->maxgrid() && 
+    while(pos < (int)pack->maxgrid() && 
           IsGridFill(pos) )
     {
         ++pos;
     }
-    if(pos >= pack->maxgrid())
+    if(pos >= (int)pack->maxgrid())
     {
         return -1;
     }
@@ -69,7 +69,7 @@ int   PlayerKnapsackLogic::PutItem(const db::RoleItem & item,uint32_t num)
 {
     db::RolePackage * pack = GetPackInfo();
     int iCap = GetItemCapacity(item.id());
-    if(iCap < num)
+    if(iCap < (int)num)
     {
         return -1;
     }
@@ -82,22 +82,22 @@ int   PlayerKnapsackLogic::PutItem(const db::RoleItem & item,uint32_t num)
     for(int i = 0;i < ngrids ;++i)
     {
         db::RolePackGrid & one_grid = *(pack->mutable_grids(i));
-        db::RoleItem & one_item = one_grid->mutable_item();
-        iOneFill = one_item.num();
+        db::RoleItem & one_item = *one_grid.mutable_item();
+        iOneFill = one_grid.num();
         iOneFree = iMaxTiled - iOneFill;
         if(item.id() == one_item.id() &&
            iOneFree > 0)
         {
-            if(num > iOneFree)
+            if((int)num > iOneFree)
             {
                 num -= iOneFree;    
-                one_item.set_num(iMaxTiled);
+                one_grid.set_num(iMaxTiled);
             }
             else
             {
                 iOneFill += num;
                 num = 0;
-                one_item.set_num(iOneFill);
+                one_grid.set_num(iOneFill);
             }
         }
     }
@@ -108,9 +108,9 @@ int   PlayerKnapsackLogic::PutItem(const db::RoleItem & item,uint32_t num)
         CreateItem(newitem);
         *(grid->mutable_item()) = newitem;
         //grid
-        grid->set_grid(GetFreeGridPos());
+        grid->set_pos(GetFreeGridPos());
         
-        if(iMaxTiled > num)
+        if(iMaxTiled > (int)num)
         {
             grid->set_num(num);
             num = 0;
@@ -120,7 +120,13 @@ int   PlayerKnapsackLogic::PutItem(const db::RoleItem & item,uint32_t num)
             grid->set_num(iMaxTiled);
             num -= iMaxTiled;
         }
-    }            
+    }   
+
+    //event add
+    uint64_t param = item.id();
+    param <<= 32;
+    param |= num;
+    EventCenter::Instance().FireEvent(EVENT_PLAYER_ITEM_ADD,NULL,0,param);        
     return 0;
 }
 int   PlayerKnapsackLogic::GetItemCapacity(uint32_t  id)
@@ -137,8 +143,8 @@ int   PlayerKnapsackLogic::GetItemCapacity(uint32_t  id)
     for(int i = 0;i < ngrids ;++i)
     {
         db::RolePackGrid & one_grid = *(pack->mutable_grids(i));
-        db::RoleItem & one_item = one_grid->mutable_item();
-        iOneFill = one_item.num();
+        db::RoleItem & one_item = *one_grid.mutable_item();
+        iOneFill = one_grid.num();
         iOneFree = iMaxTiled - iOneFill;
         if(id == one_item.id() &&
            iOneFree > 0)
@@ -153,8 +159,11 @@ int   PlayerKnapsackLogic::GetItemCapacity(uint32_t  id)
 }
 int   PlayerKnapsackLogic::RemoveItem(uint32_t id,uint32_t num)
 {
+    if(GetItemNum(id) < (int)num)
+    {
+        return -1;
+    }
     db::RolePackage * pack = GetPackInfo();
-
     int ngrids = pack->grids_size();
     //todo read from cfg    
     int32_t iMaxTiled = 1;
@@ -165,12 +174,12 @@ int   PlayerKnapsackLogic::RemoveItem(uint32_t id,uint32_t num)
     for(int i = 0;i < ngrids && num > 0;++i)
     {
         db::RolePackGrid & one_grid = *(pack->mutable_grids(i));
-        db::RoleItem & one_item = one_grid->mutable_item();
-        iOneItemNum = one_item.num();
+        db::RoleItem & one_item = *one_grid.mutable_item();
+        iOneItemNum = one_grid.num();
         if(id == one_item.id() &&
            iOneItemNum > 0)
         {
-            if(iOneItemNum >= num)
+            if(iOneItemNum >= (int)num)
             {
                 iOneItemNum -= num;
                 num = 0;                
@@ -192,6 +201,13 @@ int   PlayerKnapsackLogic::RemoveItem(uint32_t id,uint32_t num)
     {
         RemoveGrid(rmposvec[i]);
     }
+
+    //event add
+    uint64_t param = id;
+    param <<= 32;
+    param |= num;
+    EventCenter::Instance().FireEvent(EVENT_PLAYER_ITEM_DEC,NULL,0,param);        
+    return 0;    
 }
 db::RolePackGrid *  PlayerKnapsackLogic::FindPackGrid(uint32_t pos)
 {
@@ -211,9 +227,9 @@ int PlayerKnapsackLogic::FindPackGridIdx(uint32_t pos)
         return -1;
     }
     int ngrids = pack->grids_size();
-    for(int i = 0;i < ngrids && num > 0;++i)
+    for(int i = 0;i < ngrids ;++i)
     {
-        if(pack->grids(i)->pos() == pos)
+        if(pack->grids(i).pos() == pos)
         {
             return i;
         }
@@ -231,6 +247,8 @@ int   PlayerKnapsackLogic::RemoveGrid(uint32_t pos)
     int size =  pack->grids_size();
     pack->mutable_grids()->SwapElements(idx,size-1);
     pack->mutable_grids()->RemoveLast();
+    ///////////////////////////////////////////////
+    EventCenter::Instance().FireEvent(EVENT_PLAYER_REMOVE_GRID_ITEM,NULL,0,pos);
     return 0;
 }
 
@@ -244,11 +262,11 @@ int   PlayerKnapsackLogic::GetItemNum(uint32_t id)
     for(int i = 0;i < ngrids ;++i)
     {
         db::RolePackGrid & one_grid = *(pack->mutable_grids(i));
-        db::RoleItem & one_item = one_grid->mutable_item();
+        db::RoleItem & one_item = *one_grid.mutable_item();
         if(id == one_item.id() &&
-           one_item.num() > 0)
+           one_grid.num() > 0)
         {
-            iNum += one_item.num();
+            iNum += one_grid.num();
         }
     }
     return iNum;
@@ -264,6 +282,8 @@ int   PlayerKnapsackLogic::ChangeMaxGrid(uint8_t chg)
     int old = GetMaxGrid();
     old += chg;
     pack->set_maxgrid(old);
+    EventCenter::Instance().FireEvent(EVENT_PLAYER_CHANGE_PACK_MAX_GRID,NULL,0,old);
+    return 0;
 }
 
 
