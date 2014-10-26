@@ -81,6 +81,10 @@ void Login()
 void Reg();
 void Req();
 void Help();
+void Base();
+void Ext();
+void Misc();
+void All();
 static struct
 {
     const char* pszCMD;
@@ -90,7 +94,10 @@ static struct
     {"auth",Auth},
     {"login",Login},
     {"reg",Reg},
-    {"req",Req},
+    {"all",All},
+    {"base",Base},
+    {"ext",Ext},
+    {"misc",Misc},
     {"help",Help},
     {NULL,NULL}
 };
@@ -105,9 +112,37 @@ void Reg()
 {
 
 }
-void Req()
+void All()
 {
-
+    cs::CSMsg csmsg;
+    csmsg.set_cmd(cs::CSMsg::CSMSG_CMD_ROLE);
+    cs::CSMsgRole * role =  csmsg.mutable_role();
+    role->set_cmd(cs::CSMsgRole::CSMSG_ROLE_ALL_INFO_REQ);
+    //buffer todo
+    sender->SendMessage(csmsg);
+}
+void Base()
+{
+    cs::CSMsg csmsg;
+    csmsg.set_cmd(cs::CSMsg::CSMSG_CMD_ROLE);
+    cs::CSMsgRole * role =  csmsg.mutable_role();
+    role->set_cmd(cs::CSMsgRole::CSMSG_ROLE_BASE_INFO_REQ);
+    sender->SendMessage(csmsg);
+}
+void Ext()
+{
+    cs::CSMsg csmsg;
+    csmsg.set_cmd(cs::CSMsg::CSMSG_CMD_ROLE);
+    cs::CSMsgRole * role =  csmsg.mutable_role();
+    role->set_cmd(cs::CSMsgRole::CSMSG_ROLE_EXT_INFO_REQ);
+    sender->SendMessage(csmsg);
+}
+void Misc()
+{
+    cs::CSMsg csmsg;
+    csmsg.set_cmd(cs::CSMsg::CSMSG_CMD_ROLE);
+    cs::CSMsgRole * role =  csmsg.mutable_role();
+    role->set_cmd(cs::CSMsgRole::CSMSG_ROLE_MISC_INFO_REQ);
 }
 
 

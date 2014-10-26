@@ -1,6 +1,6 @@
 
 #include "base/Log.h"
-#include "proto/gen/gate/gate.pb.h"
+#include "proto/gen/gate/include.h"
 #include "GateClientHandler.h"
 
 
@@ -8,6 +8,7 @@
 GateClientHandler::~GateClientHandler()
 {
     m_rcvMsgBuffer.Destroy();
+    m_packMsgBuffer.Destroy();
     m_iCurState = GATE_CLI_STATE_CLOSED;
     m_iMsgLen = 0;
 }
@@ -22,8 +23,8 @@ GateClientHandler::GateClientHandler()
 #if 1
 int       GateClientHandler::Authorize(int type,uint64_t uid,const char* pszToken)
 {
-    gate::GateAuth ga;
-    ga.set_cmd(gate::GateAuth::GATE_AUTH_REQ);
+    gate::GateCSMsg ga;
+    ga.set_cmd(gate::GateCSMsg::GATE_AUTH_REQ);
     gate::AuthReq &  req =  *ga.mutable_authreq();
     req.set_uid(uid);
     req.set_auth((int)type);
@@ -34,9 +35,9 @@ int       GateClientHandler::Authorize(int type,uint64_t uid,const char* pszToke
     ga.SerializeToArray(buff.pBuffer,buff.iCap);
     buff.iUsed = buff.iCap;
     ///////////////////////////////////////////
-    return SendMessage((char*)buff.pBuffer,buff.iCap);
+    return SendFrame((char*)buff.pBuffer,buff.iCap);
 }
-int       GateClientHandler::SendMessage(char* pBuffer,int iBuffLen)
+int       GateClientHandler::SendFrame(char* pBuffer,int iBuffLen)
 {
     assert(iBuffLen < (1<<16));
     LOG_DEBUG("send meessage len = %d to server ",iBuffLen);
@@ -84,7 +85,7 @@ int     GateClientHandler::DispatchMessage(char* pBuffer,int iBuffLen)
         case GATE_CLI_STATE_CONNECTED:
         case GATE_CLI_STATE_AUTHORIZING:
         {
-            gate::GateAuth ga;
+            gate::GateCSMsg ga;
             if(!ga.ParseFromArray(pBuffer,iBuffLen))
             {
                 LOG_FATAL("gate gate auth parse error ! state = %d",m_iCurState);
@@ -92,11 +93,11 @@ int     GateClientHandler::DispatchMessage(char* pBuffer,int iBuffLen)
             }
             switch(ga.cmd())
             {
-               case gate::GateAuth::GATE_NEED_AUTH:
+               case gate::GateCSMsg::GATE_NEED_AUTH:
                 m_iCurState = GATE_CLI_STATE_AUTHORIZING;
                 return OnNeedAuth();
                break;
-               case gate::GateAuth::GATE_AUTH_RSP:
+               case gate::GateCSMsg::GATE_AUTH_RSP:
                {
                     int iResult = ga.authrsp().result();
                     if(0 == iResult)

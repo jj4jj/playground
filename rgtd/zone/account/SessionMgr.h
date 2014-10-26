@@ -13,7 +13,7 @@ public:
     SessionMgr(ZoneAgent* zone);
     int Init();
     int StopSession(uint64_t uid);
-    int CreateSession(uint64_t uid,int gateid,const gate::GateConnection & cnnx);
+    int CreateSession(uint64_t uid,int gateid,const gate::GateSSMsg & cnnx);
     int DeleteSession(uint64_t uid);
     Session * FindSession(uint64_t    ulUID);  
     SessionPtr & GetSession(uint64_t);

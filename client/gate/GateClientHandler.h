@@ -22,7 +22,28 @@ class GateClientHandler : public TcpClientHandler
 public:    
     inline    int     GetState(){return m_iCurState;}
     int       Authorize(int type,uint64_t uid,const char* pszToken);
-    int       SendMessage(char* pBuffer,int iBuffLen);
+    int       SendFrame(char* pBuffer,int iBuffLen);
+
+public:
+    template<class MsgType>
+    int       SendMessage(const MsgType & msg)
+    {
+        int len = msg.ByteSize();
+        if(m_packMsgBuffer.pBuffer == NULL ||
+           m_packMsgBuffer.iCap < len)
+        {
+            m_packMsgBuffer.Destroy();
+            m_packMsgBuffer.Create(len);
+        }
+        bool ret = msg.SerializeToArray(m_packMsgBuffer.pBuffer,len);
+        if(!ret)
+        {
+            LOG_ERROR("pack msg error !");
+            return -1;
+        }
+        m_packMsgBuffer.iUsed = len;
+        return SendFrame((char*)m_packMsgBuffer.pBuffer,len);         
+    }
 public:
     virtual   int  OnConnect(bool bSuccess);
     virtual   int  OnNeedAuth();
@@ -46,6 +67,7 @@ private:
     int m_iMsgLen;
     //ring buffer todo
     Buffer m_rcvMsgBuffer;
+    Buffer m_packMsgBuffer;
 };
 
 

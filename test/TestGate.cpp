@@ -29,12 +29,12 @@ public:
     virtual   int  OnAuthResult(int result)
     {
         LOG_INFO("server auth result = %d",result);
-        return SendMessage((char*)send_buffer.pBuffer,send_buffer.iUsed);
+        return SendFrame((char*)send_buffer.pBuffer,send_buffer.iUsed);
     }
     virtual   int  OnMessage(char* pBuffer,int iBuffLen)
     {
         LOG_INFO("recv msg len = %d",iBuffLen);
-        return SendMessage((char*)send_buffer.pBuffer,send_buffer.iUsed);
+        return SendFrame((char*)send_buffer.pBuffer,send_buffer.iUsed);
         return 0;
     }
     virtual   int  OnClose(bool bByMyself)//server or me close 

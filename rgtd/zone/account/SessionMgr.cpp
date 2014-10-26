@@ -32,7 +32,7 @@ int SessionMgr::StopSession(uint64_t uid)
     return ret;
 }
 
-int SessionMgr::CreateSession(uint64_t uid,int gateid,const gate::GateConnection & cnnx)
+int SessionMgr::CreateSession(uint64_t uid,int gateid,const gate::GateSSMsg & cnnx)
 {    
     Session *  sson =  FindSession(uid);
     int ret = 0;

@@ -212,8 +212,8 @@ class GateConnection : public ::google::protobuf::Message {
   inline bool has_event() const;
   inline void clear_event();
   static const int kEventFieldNumber = 1;
-  inline ::gate::GateConnection_EventType event() const;
-  inline void set_event(::gate::GateConnection_EventType value);
+  inline ::gate::GateSSMsg_EventType event() const;
+  inline void set_event(::gate::GateSSMsg_EventType value);
 
   // required uint32 idx = 2;
   inline bool has_idx() const;
@@ -634,12 +634,12 @@ inline void GateConnection::clear_event() {
   event_ = 1;
   clear_has_event();
 }
-inline ::gate::GateConnection_EventType GateConnection::event() const {
+inline ::gate::GateSSMsg_EventType GateConnection::event() const {
   // @@protoc_insertion_point(field_get:gate.GateConnection.event)
-  return static_cast< ::gate::GateConnection_EventType >(event_);
+  return static_cast< ::gate::GateSSMsg_EventType >(event_);
 }
-inline void GateConnection::set_event(::gate::GateConnection_EventType value) {
-  assert(::gate::GateConnection_EventType_IsValid(value));
+inline void GateConnection::set_event(::gate::GateSSMsg_EventType value) {
+  assert(::gate::GateSSMsg_EventType_IsValid(value));
   set_has_event();
   event_ = value;
   // @@protoc_insertion_point(field_set:gate.GateConnection.event)
@@ -1088,20 +1088,20 @@ inline void GateAuth::set_allocated_authrsp(::gate::AuthRsp* authrsp) {
 namespace google {
 namespace protobuf {
 
-template <> struct is_proto_enum< ::gate::GateConnection_EventType> : ::google::protobuf::internal::true_type {};
+template <> struct is_proto_enum< ::gate::GateSSMsg_EventType> : ::google::protobuf::internal::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::gate::GateConnection_EventType>() {
-  return ::gate::GateConnection_EventType_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::gate::GateSSMsg_EventType>() {
+  return ::gate::GateSSMsg_EventType_descriptor();
 }
-template <> struct is_proto_enum< ::gate::GateConnection_ConnectionCloseReason> : ::google::protobuf::internal::true_type {};
+template <> struct is_proto_enum< ::gate::GateSSMsg_ConnectionCloseReason> : ::google::protobuf::internal::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::gate::GateConnection_ConnectionCloseReason>() {
-  return ::gate::GateConnection_ConnectionCloseReason_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::gate::GateSSMsg_ConnectionCloseReason>() {
+  return ::gate::GateSSMsg_ConnectionCloseReason_descriptor();
 }
-template <> struct is_proto_enum< ::gate::GateAuth_GateAuthCMD> : ::google::protobuf::internal::true_type {};
+template <> struct is_proto_enum< ::gate::GateCSMsg_GateAuthCMD> : ::google::protobuf::internal::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::gate::GateAuth_GateAuthCMD>() {
-  return ::gate::GateAuth_GateAuthCMD_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::gate::GateCSMsg_GateAuthCMD>() {
+  return ::gate::GateCSMsg_GateAuthCMD_descriptor();
 }
 
 }  // namespace google

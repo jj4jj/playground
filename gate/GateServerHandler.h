@@ -1,6 +1,6 @@
 #pragma once
 #include "net/TcpServerHandler.h"
-#include "proto/gen/gate/gate.pb.h"
+#include "proto/gen/gate/include.h"
 #include "app/ChannelMsgProxy.h"
 //gate server report connection event to agent
 //msg
@@ -61,7 +61,7 @@ public:
     void        ReportEvent(Connection* pConn,int iEvent,int iParam,const Buffer * data = NULL);
     void        ForwardData(Connection* pConn,const Buffer& buffer);
     int         SendFrameToClient(Connection* pConn,const GateFrame & frame);
-    int         SendToClient(Connection* pConn,gate::GateAuth & ga);
+    int         SendToClient(Connection* pConn,gate::GateCSMsg & ga);
     int         NotifyNeedAuth(Connection* pConn);
     int         Authorizing(Connection * pConn,const gate::AuthReq & auth);
     int         NotifyAuthResult(Connection* pConn,int iRet);

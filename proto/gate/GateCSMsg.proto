@@ -1,0 +1,30 @@
+package gate;
+
+////////////////////////////////////////////////////////////////////////////////////
+
+message AuthReq
+{
+	required	uint64	uid		=	1;	//uid
+	required	uint32	auth	=	2;	//type
+	optional	string	token	=	3;	//passwd when type is password auth	
+	optional	uint32	area	=	4;	//area id
+};
+
+message AuthRsp
+{
+	required	uint32	result	=	1;	//result
+};
+
+
+message GateCSMsg
+{
+	enum	GateAuthCMD
+	{
+		GATE_NEED_AUTH		=	1;
+		GATE_AUTH_REQ		=	2;
+		GATE_AUTH_RSP		=	3;
+	};
+	required	uint32		cmd 	= 	1;
+	optional	AuthReq		authReq	=	2;
+	optional	AuthRsp		authRsp	=	3;	
+}

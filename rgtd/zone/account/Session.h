@@ -8,7 +8,7 @@ namespace cs
 
 namespace gate
 {
-    class GateConnection;
+    class GateSSMsg;
 };
 namespace db
 {
@@ -41,7 +41,7 @@ public:
     Session(int src,SessionMgr * smgr);
     ~Session();
 public:    
-    int       Init(uint64_t uid_,const gate::GateConnection & ggc);
+    int       Init(uint64_t uid_,const gate::GateSSMsg & ggc);
     int       Kick(int reason);
     int       AttachPlayerAgent(PlayerAgentPtr ptrPlayer);
     int       ResponseClient(int iEvent,int iParam,Buffer * data = NULL);

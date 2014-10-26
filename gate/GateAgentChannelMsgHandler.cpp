@@ -15,7 +15,7 @@ int GateAgentChannelMsgHandler::DispatchMessage(ChannelAgent & agent , const Cha
 {
     //gate server
     //todo distill
-    gate::GateConnection    ggc;
+    gate::GateSSMsg    ggc;
     uint16_t ggclen =  ntohs(*(uint16_t*)msg.pData);
     if(msg.dwSize < (uint32_t)ggclen +  ChannelMsgProxy::PROXY_CHANNEL_MESSAGE_HEAD_SIZE)
     {
@@ -41,12 +41,12 @@ int GateAgentChannelMsgHandler::DispatchMessage(ChannelAgent & agent , const Cha
     }
     switch(event)
     {
-        case gate::GateConnection::EVENT_CLOSE:
+        case gate::GateSSMsg::EVENT_CLOSE:
         {
             gateHandler->RemoveConnection(pConn,ggc.reason());
         }
         break;
-        case gate::GateConnection::EVENT_DATA:
+        case gate::GateSSMsg::EVENT_DATA:
         {
             //get uid area
             LOG_INFO("agent input data size = %u uid [%lu] src = [%d] idx = [%u]",
@@ -59,7 +59,7 @@ int GateAgentChannelMsgHandler::DispatchMessage(ChannelAgent & agent , const Cha
         }
         ////////////////////////////////////////////////////////////////////////
         break;       
-        case gate::GateConnection::EVENT_CONNECTED:
+        case gate::GateSSMsg::EVENT_CONNECTED:
         default:
             LOG_ERROR("gate connection unknown event = %d",event);
             return -1;

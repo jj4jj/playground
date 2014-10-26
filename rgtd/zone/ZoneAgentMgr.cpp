@@ -149,7 +149,7 @@ int             ZoneAgentMgr::Destroy()
 int             ZoneAgentMgr::OnGateMessage(const ChannelMessage & msg)
 {
     //csmsg
-    gate::GateConnection    ggc;
+    gate::GateSSMsg    ggc;
     uint16_t ggclen =  ntohs(*(uint16_t*)msg.pData);
     if(msg.dwSize < (uint32_t)ggclen +  ChannelMsgProxy::PROXY_CHANNEL_MESSAGE_HEAD_SIZE)
     {
@@ -174,7 +174,7 @@ int             ZoneAgentMgr::OnGateMessage(const ChannelMessage & msg)
     char * pcsmsg = (char*)msg.pData +  ChannelMsgProxy::PROXY_CHANNEL_MESSAGE_HEAD_SIZE + ggclen;
     switch(event)
     {
-        case gate::GateConnection::EVENT_CONNECTED:
+        case gate::GateSSMsg::EVENT_CONNECTED:
         {
             //get uid area
             LOG_INFO("client connected ip = [%u] port = [%d] uid [%lu] src = [%d] idx = [%u]",
@@ -184,7 +184,7 @@ int             ZoneAgentMgr::OnGateMessage(const ChannelMessage & msg)
             return  pAgent->AttachPlayerAgent(msg.iSrc,ggc);            
             break;
         }
-        case gate::GateConnection::EVENT_CLOSE:
+        case gate::GateSSMsg::EVENT_CLOSE:
         {
 
             //get uid area
@@ -196,7 +196,7 @@ int             ZoneAgentMgr::OnGateMessage(const ChannelMessage & msg)
             return pAgent->DetachPlayerAgent(ggc);
             break;
         }
-        case gate::GateConnection::EVENT_DATA:
+        case gate::GateSSMsg::EVENT_DATA:
         {
             //get uid area
             LOG_INFO("client input data size = %u uid [%lu] src = [%d] idx = [%u]",

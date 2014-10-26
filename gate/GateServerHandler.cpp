@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include "base/Log.h"
-#include "proto/gen/gate/gate.pb.h"
+#include "proto/gen/gate/include.h"
 #include "GateFrame.h"
 #include "app/App.hpp"
 #include "GateServerContext.h"
@@ -103,7 +103,7 @@ GateServerHandler::~GateServerHandler()
         Connection * pConn = GetConnectionByIdx(i);
         if(pConn)
         {
-            RemoveConnection(pConn,gate::GateConnection::CONNECTION_CLOSE_STOP_SVR);
+            RemoveConnection(pConn,gate::GateSSMsg::CONNECTION_CLOSE_STOP_SVR);
         }
     }
 }
@@ -149,7 +149,7 @@ static void CheckConnxFree(int cnnxidx,uint64_t)
             {
                 //conx
                 //max idle time limit
-                h->RemoveConnection(pConn,gate::GateConnection::CONNECTION_CLOSE_BY_DEFAULT);
+                h->RemoveConnection(pConn,gate::GateSSMsg::CONNECTION_CLOSE_BY_DEFAULT);
             }
             else
             {
@@ -287,7 +287,7 @@ int     GateServerHandler::OnClientMessage(GateServerHandler::Connection* pConn,
         {
             //a package
             //read a auth
-            gate::GateAuth  ga;
+            gate::GateCSMsg  ga;
             if(!ga.ParseFromArray(pMsgBuffer,iMsgLen))
             {
                 LOG_ERROR("decode ga pack error!");  
@@ -306,7 +306,7 @@ int     GateServerHandler::OnClientMessage(GateServerHandler::Connection* pConn,
                 //create a connection                 
                 NotifyAuthResult(pConn,iRet);    
                 pConn->bState = STATE_AUTHORIZED;                
-                ReportEvent(pConn,gate::GateConnection::EVENT_CONNECTED,0);
+                ReportEvent(pConn,gate::GateSSMsg::EVENT_CONNECTED,0);
             }
             else if(iRet > 0)
             {
@@ -315,7 +315,7 @@ int     GateServerHandler::OnClientMessage(GateServerHandler::Connection* pConn,
             else
             {
                 LOG_ERROR("ulUid = %lu authorizing error = %d",ga.authreq().uid(),iRet);
-                RemoveConnection(pConn,gate::GateConnection::CONNECTION_CLOSE_EXCEPTION);
+                RemoveConnection(pConn,gate::GateSSMsg::CONNECTION_CLOSE_EXCEPTION);
                 return -1;
             }
         }
@@ -334,7 +334,7 @@ int     GateServerHandler::OnClientMessage(GateServerHandler::Connection* pConn,
         ///////////////////////////////////////////
         //nothing to do ? error state ?
         default:
-            RemoveConnection(pConn,gate::GateConnection::CONNECTION_CLOSE_EXCEPTION);
+            RemoveConnection(pConn,gate::GateSSMsg::CONNECTION_CLOSE_EXCEPTION);
             return -1;
     }
     return 0;
@@ -350,7 +350,7 @@ int     GateServerHandler::OnConnectionClosed(TcpSocket &  client)
         LOG_ERROR("not found connection by fd = %d",client.GetFD());
         return -1;    
     }
-    RemoveConnection(pConn,gate::GateConnection::CONNECTION_CLOSE_BY_CLIENT);
+    RemoveConnection(pConn,gate::GateSSMsg::CONNECTION_CLOSE_BY_CLIENT);
     return 0;
 }
 #endif
@@ -360,8 +360,8 @@ int     GateServerHandler::OnConnectionClosed(TcpSocket &  client)
 #if 1
 int     GateServerHandler::NotifyNeedAuth(GateServerHandler::Connection* pConn)
 {    
-    gate::GateAuth    ga;
-    ga.set_cmd(gate::GateAuth::GATE_NEED_AUTH);    
+    gate::GateCSMsg    ga;
+    ga.set_cmd(gate::GateCSMsg::GATE_NEED_AUTH);    
     //void* data, int size
     return SendToClient(pConn,ga);
 }
@@ -397,8 +397,8 @@ int         GateServerHandler::Authorizing(GateServerHandler::Connection * pConn
 }
 int         GateServerHandler::NotifyAuthResult(GateServerHandler::Connection* pConn,int result)
 {
-    gate::GateAuth    ga;
-    ga.set_cmd(gate::GateAuth::GATE_AUTH_RSP);
+    gate::GateCSMsg    ga;
+    ga.set_cmd(gate::GateCSMsg::GATE_AUTH_RSP);
     ga.mutable_authrsp()->set_result(result);
     return SendToClient(pConn, ga);   
 }
@@ -423,7 +423,7 @@ int     GateServerHandler::GetNextIdx()
 void        GateServerHandler::RemoveConnection(Connection* pConn,int iReason)
 {
     m_mpConnections.erase(pConn->cliSocket.GetFD());
-    ReportEvent(pConn,gate::GateConnection::EVENT_CLOSE,iReason);
+    ReportEvent(pConn,gate::GateSSMsg::EVENT_CLOSE,iReason);
     TimerMgr::Instance().CancelTimer(pConn->dwTimerID);
     pConn->Close();    
 }
@@ -457,21 +457,21 @@ GateServerHandler::Connection* GateServerHandler::GetConnectionByIdx(int idx)
 void        GateServerHandler::ReportEvent(Connection* pConn,int iEvent,int iParam,const Buffer * data )
 {
 
-    gate::GateConnection gc;
-    gc.set_event((gate::GateConnection_EventType)iEvent);
+    gate::GateSSMsg gc;
+    gc.set_event((gate::GateSSMsg_EventType)iEvent);
     gc.set_idx(m_mpConnections[pConn->cliSocket.GetFD()]);    
     gc.set_uid(pConn->ulUid);
     gc.set_area(pConn->iArea);
     switch(iEvent)
     {
-        case gate::GateConnection::EVENT_CONNECTED:
+        case gate::GateSSMsg::EVENT_CONNECTED:
         gc.set_ip(pConn->cliSocket.GetPeerAddress().GetIP());
         gc.set_port(pConn->cliSocket.GetPeerAddress().GetPort());
         break;
-        case gate::GateConnection::EVENT_CLOSE:
+        case gate::GateSSMsg::EVENT_CLOSE:
         gc.set_reason(iParam);
         break;
-        case gate::GateConnection::EVENT_DATA:
+        case gate::GateSSMsg::EVENT_DATA:
         break;
         default:
         assert(false);
@@ -498,7 +498,7 @@ void        GateServerHandler::ForwardData(Connection* pConn,const Buffer& buffe
 {
     reqpkgs++;
     //
-    ReportEvent(pConn,gate::GateConnection::EVENT_DATA,0,&buffer);
+    ReportEvent(pConn,gate::GateSSMsg::EVENT_DATA,0,&buffer);
     
     //////////////////////////////////////////////////////
     GateServerContext * gsc = (GateServerContext *)GetApp()->GetContext();
@@ -525,7 +525,7 @@ int         GateServerHandler::SendFrameToClient(Connection* pConn,const GateFra
     downloadsize += frame.size;
     return    pConn->cliSocket.Send(Buffer(frame.pData,frame.size));
 }
-int         GateServerHandler::SendToClient(Connection* pConn,gate::GateAuth & ga)
+int         GateServerHandler::SendToClient(Connection* pConn,gate::GateCSMsg & ga)
 {
      //void* data, int size
     assert(ga.ByteSize() < GateFrame::MAX_GATE_FRAME_SIZE );

@@ -1,0 +1,28 @@
+//gate server connection and related
+package	gate;
+
+message	GateSSMsg
+{
+ 	enum EventType {
+ 		EVENT_CONNECTED		=	1;
+ 		EVENT_CLOSE			=	2;
+ 		EVENT_DATA			=	3; 		
+  	};	
+  	enum ConnectionCloseReason
+  	{
+  		CONNECTION_CLOSE_BY_DEFAULT	= 0;
+  		CONNECTION_CLOSE_BY_CLIENT	= 1;
+		CONNECTION_CLOSE_STOP_SVR 	= 2;
+		CONNECTION_CLOSE_EXCEPTION	= 3;
+  		CONNECTION_CLOSE_BY_SERVER	= 4;		
+  	};
+	required	EventType	event	=	1;	//event type
+	required	uint32		idx		=	2;	//connection idx
+	required	uint64		uid		=	3;	//user id
+	required	uint32		area	=	4;	//area
+
+	optional	uint32		ip		=	20;	//when event is connect,it's valid
+	optional	uint32		port	=	21;	//when event is connect,it's valid
+	optional	uint32		reason	=	22;	//when event is close,it's valid .
+};
+

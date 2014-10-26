@@ -41,7 +41,7 @@ int ZoneAgent::OnServerMessage()
 
 ////////////////////////////
 #if 1
-int ZoneAgent::DispatchPlayerAgentMsg(const gate::GateConnection & ggc,const cs::CSMsg & csmsg)
+int ZoneAgent::DispatchPlayerAgentMsg(const gate::GateSSMsg & ggc,const cs::CSMsg & csmsg)
 {   
     uint64_t uid = ZoneAgentMgr::GetRoleID(ggc.uid(),ggc.area());
     Session * session = m_sessionMgr.FindSession(uid);
@@ -52,7 +52,7 @@ int ZoneAgent::DispatchPlayerAgentMsg(const gate::GateConnection & ggc,const cs:
     }
     return m_sessionMgr.GetDispatcher().Dispatch(*session,csmsg);
 }
-int ZoneAgent::AttachPlayerAgent(int gateid,const gate::GateConnection & ggc)
+int ZoneAgent::AttachPlayerAgent(int gateid,const gate::GateSSMsg & ggc)
 {
     uint64_t uid = ZoneAgentMgr::GetRoleID(ggc.uid(),ggc.area());
     int ret = m_sessionMgr.CreateSession(uid,gateid, ggc);
@@ -65,7 +65,7 @@ int ZoneAgent::AttachPlayerAgent(int gateid,const gate::GateConnection & ggc)
             uid,gateid,ggc.idx(),ggc.area());
     return 0;
 }
-int ZoneAgent::DetachPlayerAgent(const gate::GateConnection & ggc)
+int ZoneAgent::DetachPlayerAgent(const gate::GateSSMsg & ggc)
 {
     uint64_t uid = ZoneAgentMgr::GetRoleID(ggc.uid(),ggc.area());
     return m_sessionMgr.StopSession(uid);

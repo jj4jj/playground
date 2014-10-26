@@ -360,8 +360,8 @@ bool GateConnection::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
                  input, &value)));
-          if (::gate::GateConnection_EventType_IsValid(value)) {
-            set_event(static_cast< ::gate::GateConnection_EventType >(value));
+          if (::gate::GateSSMsg_EventType_IsValid(value)) {
+            set_event(static_cast< ::gate::GateSSMsg_EventType >(value));
           } else {
             mutable_unknown_fields()->AddVarint(1, value);
           }

@@ -12,7 +12,7 @@
 
 int     CSMsgDispatcher::RegisterCSMsgHandler(uint32_t cmd,CSMsgHandlerPtr handler)
 {
-    if(m_mpHandlers.find(cmd) == m_mpHandlers.end())
+    if(m_mpHandlers.find(cmd) != m_mpHandlers.end())
     {
         LOG_ERROR("register handler repeatly ! cmd = %u",cmd);
         return -1;

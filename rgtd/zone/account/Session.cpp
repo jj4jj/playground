@@ -21,7 +21,7 @@ Session::~Session()
     LOG_DEBUG("real delete session uid = %lu",uid);
 }
 
-int       Session::Init(uint64_t uid_,const gate::GateConnection & ggc)
+int       Session::Init(uint64_t uid_,const gate::GateSSMsg & ggc)
 {
     //set uid
     uid = uid_;
@@ -34,20 +34,20 @@ int       Session::Init(uint64_t uid_,const gate::GateConnection & ggc)
 }
 int       Session::ResponseClient(int iEvent,int iParam,Buffer * data)
 {
-    gate::GateConnection gc;
-    gc.set_event((gate::GateConnection_EventType)iEvent);
+    gate::GateSSMsg gc;
+    gc.set_event((gate::GateSSMsg_EventType)iEvent);
     
     gc.set_idx(idx);    
     gc.set_uid(accountid);
     gc.set_area(area);
     switch(iEvent)
     {
-        case gate::GateConnection::EVENT_CONNECTED:
+        case gate::GateSSMsg::EVENT_CONNECTED:
         break;
-        case gate::GateConnection::EVENT_CLOSE:
+        case gate::GateSSMsg::EVENT_CLOSE:
         gc.set_reason(iParam);
         break;
-        case gate::GateConnection::EVENT_DATA:
+        case gate::GateSSMsg::EVENT_DATA:
         break;
         default:
         assert(false);
@@ -85,8 +85,8 @@ int       Session::Kick(int reason)
     }
     sessionMgr->GetLoginLogic().Logout(sessionMgr->GetSession(GetUID()));
     //-----------------------------------------------------------------
-    ResponseClient(gate::GateConnection::EVENT_CLOSE,
-                   gate::GateConnection::CONNECTION_CLOSE_BY_DEFAULT); 
+    ResponseClient(gate::GateSSMsg::EVENT_CLOSE,
+                   gate::GateSSMsg::CONNECTION_CLOSE_BY_DEFAULT); 
     SetState(Session::PLAYER_STATE_KICKING);
     return 0;
 }
@@ -117,7 +117,7 @@ int       Session::Send(const cs::CSMsg & csmsg)
         LOG_ERROR("pack cs msg error !");
         return -1;
     }
-    return ResponseClient(gate::GateConnection::EVENT_DATA,0,&buffer);
+    return ResponseClient(gate::GateSSMsg::EVENT_DATA,0,&buffer);
 }
 void      Session::SetState(uint8_t st)
 {
