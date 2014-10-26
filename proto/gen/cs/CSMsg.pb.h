@@ -234,11 +234,21 @@ inline bool CSBattle_CmdCode_Parse(
     CSBattle_CmdCode_descriptor(), name, value);
 }
 enum CSMsg_CSMsgCmdCode {
-  CSMsg_CSMsgCmdCode_CSMSG_CMD_TEST = 1
+  CSMsg_CSMsgCmdCode_CSMSG_CMD_TEST = 1,
+  CSMsg_CSMsgCmdCode_CSMSG_CMD_ROLE = 2,
+  CSMsg_CSMsgCmdCode_CSMSG_CMD_LOGIN = 3,
+  CSMsg_CSMsgCmdCode_CSMSG_CMD_TASK = 4,
+  CSMsg_CSMsgCmdCode_CSMSG_CMD_RANK = 5,
+  CSMsg_CSMsgCmdCode_CSMSG_CMD_FRIEND = 6,
+  CSMsg_CSMsgCmdCode_CSMSG_CMD_FAMILY = 7,
+  CSMsg_CSMsgCmdCode_CSMSG_CMD_KNAPSACK = 8,
+  CSMsg_CSMsgCmdCode_CSMSG_CMD_STAGE = 9,
+  CSMsg_CSMsgCmdCode_CSMSG_CMD_ACTIVITY = 10,
+  CSMsg_CSMsgCmdCode_CSMSG_CMD_BATTLE = 11
 };
 bool CSMsg_CSMsgCmdCode_IsValid(int value);
 const CSMsg_CSMsgCmdCode CSMsg_CSMsgCmdCode_CSMsgCmdCode_MIN = CSMsg_CSMsgCmdCode_CSMSG_CMD_TEST;
-const CSMsg_CSMsgCmdCode CSMsg_CSMsgCmdCode_CSMsgCmdCode_MAX = CSMsg_CSMsgCmdCode_CSMSG_CMD_TEST;
+const CSMsg_CSMsgCmdCode CSMsg_CSMsgCmdCode_CSMsgCmdCode_MAX = CSMsg_CSMsgCmdCode_CSMSG_CMD_BATTLE;
 const int CSMsg_CSMsgCmdCode_CSMsgCmdCode_ARRAYSIZE = CSMsg_CSMsgCmdCode_CSMsgCmdCode_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* CSMsg_CSMsgCmdCode_descriptor();
@@ -1617,6 +1627,16 @@ class CSMsg : public ::google::protobuf::Message {
 
   typedef CSMsg_CSMsgCmdCode CSMsgCmdCode;
   static const CSMsgCmdCode CSMSG_CMD_TEST = CSMsg_CSMsgCmdCode_CSMSG_CMD_TEST;
+  static const CSMsgCmdCode CSMSG_CMD_ROLE = CSMsg_CSMsgCmdCode_CSMSG_CMD_ROLE;
+  static const CSMsgCmdCode CSMSG_CMD_LOGIN = CSMsg_CSMsgCmdCode_CSMSG_CMD_LOGIN;
+  static const CSMsgCmdCode CSMSG_CMD_TASK = CSMsg_CSMsgCmdCode_CSMSG_CMD_TASK;
+  static const CSMsgCmdCode CSMSG_CMD_RANK = CSMsg_CSMsgCmdCode_CSMSG_CMD_RANK;
+  static const CSMsgCmdCode CSMSG_CMD_FRIEND = CSMsg_CSMsgCmdCode_CSMSG_CMD_FRIEND;
+  static const CSMsgCmdCode CSMSG_CMD_FAMILY = CSMsg_CSMsgCmdCode_CSMSG_CMD_FAMILY;
+  static const CSMsgCmdCode CSMSG_CMD_KNAPSACK = CSMsg_CSMsgCmdCode_CSMSG_CMD_KNAPSACK;
+  static const CSMsgCmdCode CSMSG_CMD_STAGE = CSMsg_CSMsgCmdCode_CSMSG_CMD_STAGE;
+  static const CSMsgCmdCode CSMSG_CMD_ACTIVITY = CSMsg_CSMsgCmdCode_CSMSG_CMD_ACTIVITY;
+  static const CSMsgCmdCode CSMSG_CMD_BATTLE = CSMsg_CSMsgCmdCode_CSMSG_CMD_BATTLE;
   static inline bool CSMsgCmdCode_IsValid(int value) {
     return CSMsg_CSMsgCmdCode_IsValid(value);
   }

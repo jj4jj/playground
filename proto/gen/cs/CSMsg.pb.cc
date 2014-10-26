@@ -427,7 +427,7 @@ void protobuf_AddDesc_cs_2fCSMsg_2eproto() {
     "\nCSActivity\022\013\n\003cmd\030\001 \002(\r\"%\n\007CmdCode\022\032\n\026C"
     "SMSG_ACTIVITY_UPD_REQ\020\001\"<\n\010CSBattle\022\013\n\003c"
     "md\030\001 \002(\r\"#\n\007CmdCode\022\030\n\024CSMSG_BATTLE_UPD_"
-    "REQ\020\001\"\217\003\n\005CSMsg\022\013\n\003cmd\030\001 \002(\r\022\013\n\003err\030\002 \001("
+    "REQ\020\001\"\350\004\n\005CSMsg\022\013\n\003cmd\030\001 \002(\r\022\013\n\003err\030\002 \001("
     "\r\022\035\n\005login\030e \001(\0132\016.cs.CSMsgLogin\022\033\n\004test"
     "\030f \001(\0132\r.cs.CSMsgTest\022\033\n\004role\030g \001(\0132\r.cs"
     ".CSMsgRole\022\033\n\004task\030h \001(\0132\r.cs.CSMsgTask\022"
@@ -436,8 +436,13 @@ void protobuf_AddDesc_cs_2fCSMsg_2eproto() {
     "amily\022 \n\010knapsack\030l \001(\0132\016.cs.CSKnapsack\022"
     "\032\n\005stage\030m \001(\0132\013.cs.CSStage\022 \n\010activity\030"
     "n \001(\0132\016.cs.CSActivity\022\034\n\006battle\030o \001(\0132\014."
-    "cs.CSBattle\"\"\n\014CSMsgCmdCode\022\022\n\016CSMSG_CMD"
-    "_TEST\020\001", 1367);
+    "cs.CSBattle\"\372\001\n\014CSMsgCmdCode\022\022\n\016CSMSG_CM"
+    "D_TEST\020\001\022\022\n\016CSMSG_CMD_ROLE\020\002\022\023\n\017CSMSG_CM"
+    "D_LOGIN\020\003\022\022\n\016CSMSG_CMD_TASK\020\004\022\022\n\016CSMSG_C"
+    "MD_RANK\020\005\022\024\n\020CSMSG_CMD_FRIEND\020\006\022\024\n\020CSMSG"
+    "_CMD_FAMILY\020\007\022\026\n\022CSMSG_CMD_KNAPSACK\020\010\022\023\n"
+    "\017CSMSG_CMD_STAGE\020\t\022\026\n\022CSMSG_CMD_ACTIVITY"
+    "\020\n\022\024\n\020CSMSG_CMD_BATTLE\020\013", 1584);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "cs/CSMsg.proto", &protobuf_RegisterTypes);
   TestInfoRsp::default_instance_ = new TestInfoRsp();
@@ -3779,6 +3784,16 @@ const ::google::protobuf::EnumDescriptor* CSMsg_CSMsgCmdCode_descriptor() {
 bool CSMsg_CSMsgCmdCode_IsValid(int value) {
   switch(value) {
     case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+    case 10:
+    case 11:
       return true;
     default:
       return false;
@@ -3787,6 +3802,16 @@ bool CSMsg_CSMsgCmdCode_IsValid(int value) {
 
 #ifndef _MSC_VER
 const CSMsg_CSMsgCmdCode CSMsg::CSMSG_CMD_TEST;
+const CSMsg_CSMsgCmdCode CSMsg::CSMSG_CMD_ROLE;
+const CSMsg_CSMsgCmdCode CSMsg::CSMSG_CMD_LOGIN;
+const CSMsg_CSMsgCmdCode CSMsg::CSMSG_CMD_TASK;
+const CSMsg_CSMsgCmdCode CSMsg::CSMSG_CMD_RANK;
+const CSMsg_CSMsgCmdCode CSMsg::CSMSG_CMD_FRIEND;
+const CSMsg_CSMsgCmdCode CSMsg::CSMSG_CMD_FAMILY;
+const CSMsg_CSMsgCmdCode CSMsg::CSMSG_CMD_KNAPSACK;
+const CSMsg_CSMsgCmdCode CSMsg::CSMSG_CMD_STAGE;
+const CSMsg_CSMsgCmdCode CSMsg::CSMSG_CMD_ACTIVITY;
+const CSMsg_CSMsgCmdCode CSMsg::CSMSG_CMD_BATTLE;
 const CSMsg_CSMsgCmdCode CSMsg::CSMsgCmdCode_MIN;
 const CSMsg_CSMsgCmdCode CSMsg::CSMsgCmdCode_MAX;
 const int CSMsg::CSMsgCmdCode_ARRAYSIZE;

@@ -92,21 +92,26 @@ SessionPtr & SessionMgr::GetSession(uint64_t uid)
     return m_mpSessions[0];
 }
 
-int       SessionMgr::PackCSMsg(const cs::CSMsg & csmsg,Buffer & buffer)
+int       SessionMgr::PackCSMsg(const cs::CSMsg & csmsg,Buffer & outputBuffer)
 {
     int len = csmsg.ByteSize();
+    if(len <= 0 || len >= ChannelMsgProxy::MAX_CHANNEL_MESSAGE_SIZE)
+    {
+        LOG_ERROR("get csmsg byte size = %d error !",len);
+        return -1;
+    }
     if( m_msgPackBuffer.iCap < len )
     {
         m_msgPackBuffer.Destroy();
         m_msgPackBuffer.Create(len);
     }
-    if(!csmsg.SerializeToArray(buffer.pBuffer,len))
+    if(!csmsg.SerializeToArray(m_msgPackBuffer.pBuffer,len))
     {
         LOG_ERROR("cs msg pack error !");
         return -1;
     }    
-    buffer.iUsed = len;
-    buffer = m_msgPackBuffer;
+    m_msgPackBuffer.iUsed = len;
+    outputBuffer = m_msgPackBuffer;
     return 0;
 }
 

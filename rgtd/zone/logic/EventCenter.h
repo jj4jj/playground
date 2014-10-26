@@ -37,11 +37,13 @@ enum    EventCodeEnum
 
 struct  DelayEventParam
 {
+    int         iEvent;
     uint64_t    ulParam;
     string      reciever;
     void *      arg;    
     DelayEventParam()
     {
+        iEvent = 0;
         reciever = "";
         ulParam = 0L;
         arg = NULL;
@@ -71,11 +73,16 @@ public:
     //if name is null , broad cast , seconds is 0 then deliver right now , ...
     //return timerid if delay
     uint32_t     FireEvent(EventCodeEnum iEventCode,
-            const char* pszReceiverName = NULL,int secondsLater = 0,
-            uint64_t ulParam = 0,void* arg = NULL,bool timeExpired = false);
-    int          OnDelayTimerExpired(int iEventCode,uint64_t param = 0);
+                    const char* pszReceiverName = NULL,int secondsLater = 0,
+                    uint64_t ulParam = 0,void* arg = NULL,bool timeExpired = false);
 public:
     static  void    OnTimer(int iEvent,uint64_t ulParam);
+protected:
+    uint32_t    GenerateDelayEvent(EventCodeEnum iEventCode,
+                            const char* pszReceiverName ,int secondsLater ,
+                            uint64_t ulParam ,void* arg );
+    int          OnDelayTimerExpired(int iEventCode,int iDelayEventSeq );
+    
 private:
     //listener name - code -
     ZoneAgentMgr    *   zoneMgr;
@@ -84,6 +91,7 @@ private:
     unordered_map<uint64_t,PlayerAgentPtr>           m_mpPlayerAgents;
     typedef     unordered_map<int,DelayEventParam>   DelayEventMap;
     typedef     DelayEventMap::iterator              DelayEventMapItr;
+    int                    m_iDelayEventNextSeq;
     DelayEventMap          m_mpDelayEventParams;
     //global timer 
     //session mgr

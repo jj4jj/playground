@@ -101,8 +101,6 @@ template<class AppContextType>
 int App::main(int argc , char* argv [])
 {
     AppContextType appCtx;
-    App *  pApp = GetApp();
-    assert(pApp);
     if(argc < 2)
     {
         appCtx.GenerateDefaultConfig(argv[0]);
@@ -125,12 +123,21 @@ int App::main(int argc , char* argv [])
             return -1 ;
         }
     }
+    //////////////////////////////////////////////////////////////
     if(appCtx.Init(argv[1]))
     {
         printf("server context init error !\n");
         return -1;
     }    
+    ///////////////////daemon ////////////////////////////////////
+    if(appCtx.daemon)
+    {
+        //daemonlize
+        Daemon::Instance().Create();
+    }
     /////////////////////////////////////////////////////////
+    App *  pApp = GetApp();
+    assert(pApp);
     if(pApp->Init(&appCtx,forStop))
     {
         LOG_ERROR("Init error !");

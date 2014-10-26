@@ -23,7 +23,6 @@
 #include <google/protobuf/message.h>
 #include <google/protobuf/repeated_field.h>
 #include <google/protobuf/extension_set.h>
-#include <google/protobuf/generated_enum_reflection.h>
 #include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
 
@@ -34,83 +33,18 @@ void  protobuf_AddDesc_gate_2fgate_2eproto();
 void protobuf_AssignDesc_gate_2fgate_2eproto();
 void protobuf_ShutdownFile_gate_2fgate_2eproto();
 
-class GateConnection;
-class AuthReq;
-class AuthRsp;
-class GateAuth;
+class Dummy;
 
-enum GateConnection_EventType {
-  GateConnection_EventType_EVENT_CONNECTED = 1,
-  GateConnection_EventType_EVENT_CLOSE = 2,
-  GateConnection_EventType_EVENT_DATA = 3
-};
-bool GateConnection_EventType_IsValid(int value);
-const GateConnection_EventType GateConnection_EventType_EventType_MIN = GateConnection_EventType_EVENT_CONNECTED;
-const GateConnection_EventType GateConnection_EventType_EventType_MAX = GateConnection_EventType_EVENT_DATA;
-const int GateConnection_EventType_EventType_ARRAYSIZE = GateConnection_EventType_EventType_MAX + 1;
-
-const ::google::protobuf::EnumDescriptor* GateConnection_EventType_descriptor();
-inline const ::std::string& GateConnection_EventType_Name(GateConnection_EventType value) {
-  return ::google::protobuf::internal::NameOfEnum(
-    GateConnection_EventType_descriptor(), value);
-}
-inline bool GateConnection_EventType_Parse(
-    const ::std::string& name, GateConnection_EventType* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<GateConnection_EventType>(
-    GateConnection_EventType_descriptor(), name, value);
-}
-enum GateConnection_ConnectionCloseReason {
-  GateConnection_ConnectionCloseReason_CONNECTION_CLOSE_BY_DEFAULT = 0,
-  GateConnection_ConnectionCloseReason_CONNECTION_CLOSE_BY_CLIENT = 1,
-  GateConnection_ConnectionCloseReason_CONNECTION_CLOSE_STOP_SVR = 2,
-  GateConnection_ConnectionCloseReason_CONNECTION_CLOSE_EXCEPTION = 3,
-  GateConnection_ConnectionCloseReason_CONNECTION_CLOSE_BY_SERVER = 4
-};
-bool GateConnection_ConnectionCloseReason_IsValid(int value);
-const GateConnection_ConnectionCloseReason GateConnection_ConnectionCloseReason_ConnectionCloseReason_MIN = GateConnection_ConnectionCloseReason_CONNECTION_CLOSE_BY_DEFAULT;
-const GateConnection_ConnectionCloseReason GateConnection_ConnectionCloseReason_ConnectionCloseReason_MAX = GateConnection_ConnectionCloseReason_CONNECTION_CLOSE_BY_SERVER;
-const int GateConnection_ConnectionCloseReason_ConnectionCloseReason_ARRAYSIZE = GateConnection_ConnectionCloseReason_ConnectionCloseReason_MAX + 1;
-
-const ::google::protobuf::EnumDescriptor* GateConnection_ConnectionCloseReason_descriptor();
-inline const ::std::string& GateConnection_ConnectionCloseReason_Name(GateConnection_ConnectionCloseReason value) {
-  return ::google::protobuf::internal::NameOfEnum(
-    GateConnection_ConnectionCloseReason_descriptor(), value);
-}
-inline bool GateConnection_ConnectionCloseReason_Parse(
-    const ::std::string& name, GateConnection_ConnectionCloseReason* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<GateConnection_ConnectionCloseReason>(
-    GateConnection_ConnectionCloseReason_descriptor(), name, value);
-}
-enum GateAuth_GateAuthCMD {
-  GateAuth_GateAuthCMD_GATE_NEED_AUTH = 1,
-  GateAuth_GateAuthCMD_GATE_AUTH_REQ = 2,
-  GateAuth_GateAuthCMD_GATE_AUTH_RSP = 3
-};
-bool GateAuth_GateAuthCMD_IsValid(int value);
-const GateAuth_GateAuthCMD GateAuth_GateAuthCMD_GateAuthCMD_MIN = GateAuth_GateAuthCMD_GATE_NEED_AUTH;
-const GateAuth_GateAuthCMD GateAuth_GateAuthCMD_GateAuthCMD_MAX = GateAuth_GateAuthCMD_GATE_AUTH_RSP;
-const int GateAuth_GateAuthCMD_GateAuthCMD_ARRAYSIZE = GateAuth_GateAuthCMD_GateAuthCMD_MAX + 1;
-
-const ::google::protobuf::EnumDescriptor* GateAuth_GateAuthCMD_descriptor();
-inline const ::std::string& GateAuth_GateAuthCMD_Name(GateAuth_GateAuthCMD value) {
-  return ::google::protobuf::internal::NameOfEnum(
-    GateAuth_GateAuthCMD_descriptor(), value);
-}
-inline bool GateAuth_GateAuthCMD_Parse(
-    const ::std::string& name, GateAuth_GateAuthCMD* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<GateAuth_GateAuthCMD>(
-    GateAuth_GateAuthCMD_descriptor(), name, value);
-}
 // ===================================================================
 
-class GateConnection : public ::google::protobuf::Message {
+class Dummy : public ::google::protobuf::Message {
  public:
-  GateConnection();
-  virtual ~GateConnection();
+  Dummy();
+  virtual ~Dummy();
 
-  GateConnection(const GateConnection& from);
+  Dummy(const Dummy& from);
 
-  inline GateConnection& operator=(const GateConnection& from) {
+  inline Dummy& operator=(const Dummy& from) {
     CopyFrom(from);
     return *this;
   }
@@ -124,208 +58,17 @@ class GateConnection : public ::google::protobuf::Message {
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const GateConnection& default_instance();
+  static const Dummy& default_instance();
 
-  void Swap(GateConnection* other);
-
-  // implements Message ----------------------------------------------
-
-  GateConnection* New() const;
-  void CopyFrom(const ::google::protobuf::Message& from);
-  void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const GateConnection& from);
-  void MergeFrom(const GateConnection& from);
-  void Clear();
-  bool IsInitialized() const;
-
-  int ByteSize() const;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input);
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
-  int GetCachedSize() const { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const;
-  public:
-  ::google::protobuf::Metadata GetMetadata() const;
-
-  // nested types ----------------------------------------------------
-
-  typedef GateConnection_EventType EventType;
-  static const EventType EVENT_CONNECTED = GateConnection_EventType_EVENT_CONNECTED;
-  static const EventType EVENT_CLOSE = GateConnection_EventType_EVENT_CLOSE;
-  static const EventType EVENT_DATA = GateConnection_EventType_EVENT_DATA;
-  static inline bool EventType_IsValid(int value) {
-    return GateConnection_EventType_IsValid(value);
-  }
-  static const EventType EventType_MIN =
-    GateConnection_EventType_EventType_MIN;
-  static const EventType EventType_MAX =
-    GateConnection_EventType_EventType_MAX;
-  static const int EventType_ARRAYSIZE =
-    GateConnection_EventType_EventType_ARRAYSIZE;
-  static inline const ::google::protobuf::EnumDescriptor*
-  EventType_descriptor() {
-    return GateConnection_EventType_descriptor();
-  }
-  static inline const ::std::string& EventType_Name(EventType value) {
-    return GateConnection_EventType_Name(value);
-  }
-  static inline bool EventType_Parse(const ::std::string& name,
-      EventType* value) {
-    return GateConnection_EventType_Parse(name, value);
-  }
-
-  typedef GateConnection_ConnectionCloseReason ConnectionCloseReason;
-  static const ConnectionCloseReason CONNECTION_CLOSE_BY_DEFAULT = GateConnection_ConnectionCloseReason_CONNECTION_CLOSE_BY_DEFAULT;
-  static const ConnectionCloseReason CONNECTION_CLOSE_BY_CLIENT = GateConnection_ConnectionCloseReason_CONNECTION_CLOSE_BY_CLIENT;
-  static const ConnectionCloseReason CONNECTION_CLOSE_STOP_SVR = GateConnection_ConnectionCloseReason_CONNECTION_CLOSE_STOP_SVR;
-  static const ConnectionCloseReason CONNECTION_CLOSE_EXCEPTION = GateConnection_ConnectionCloseReason_CONNECTION_CLOSE_EXCEPTION;
-  static const ConnectionCloseReason CONNECTION_CLOSE_BY_SERVER = GateConnection_ConnectionCloseReason_CONNECTION_CLOSE_BY_SERVER;
-  static inline bool ConnectionCloseReason_IsValid(int value) {
-    return GateConnection_ConnectionCloseReason_IsValid(value);
-  }
-  static const ConnectionCloseReason ConnectionCloseReason_MIN =
-    GateConnection_ConnectionCloseReason_ConnectionCloseReason_MIN;
-  static const ConnectionCloseReason ConnectionCloseReason_MAX =
-    GateConnection_ConnectionCloseReason_ConnectionCloseReason_MAX;
-  static const int ConnectionCloseReason_ARRAYSIZE =
-    GateConnection_ConnectionCloseReason_ConnectionCloseReason_ARRAYSIZE;
-  static inline const ::google::protobuf::EnumDescriptor*
-  ConnectionCloseReason_descriptor() {
-    return GateConnection_ConnectionCloseReason_descriptor();
-  }
-  static inline const ::std::string& ConnectionCloseReason_Name(ConnectionCloseReason value) {
-    return GateConnection_ConnectionCloseReason_Name(value);
-  }
-  static inline bool ConnectionCloseReason_Parse(const ::std::string& name,
-      ConnectionCloseReason* value) {
-    return GateConnection_ConnectionCloseReason_Parse(name, value);
-  }
-
-  // accessors -------------------------------------------------------
-
-  // required .gate.GateConnection.EventType event = 1;
-  inline bool has_event() const;
-  inline void clear_event();
-  static const int kEventFieldNumber = 1;
-  inline ::gate::GateSSMsg_EventType event() const;
-  inline void set_event(::gate::GateSSMsg_EventType value);
-
-  // required uint32 idx = 2;
-  inline bool has_idx() const;
-  inline void clear_idx();
-  static const int kIdxFieldNumber = 2;
-  inline ::google::protobuf::uint32 idx() const;
-  inline void set_idx(::google::protobuf::uint32 value);
-
-  // required uint64 uid = 3;
-  inline bool has_uid() const;
-  inline void clear_uid();
-  static const int kUidFieldNumber = 3;
-  inline ::google::protobuf::uint64 uid() const;
-  inline void set_uid(::google::protobuf::uint64 value);
-
-  // required uint32 area = 4;
-  inline bool has_area() const;
-  inline void clear_area();
-  static const int kAreaFieldNumber = 4;
-  inline ::google::protobuf::uint32 area() const;
-  inline void set_area(::google::protobuf::uint32 value);
-
-  // optional uint32 ip = 20;
-  inline bool has_ip() const;
-  inline void clear_ip();
-  static const int kIpFieldNumber = 20;
-  inline ::google::protobuf::uint32 ip() const;
-  inline void set_ip(::google::protobuf::uint32 value);
-
-  // optional uint32 port = 21;
-  inline bool has_port() const;
-  inline void clear_port();
-  static const int kPortFieldNumber = 21;
-  inline ::google::protobuf::uint32 port() const;
-  inline void set_port(::google::protobuf::uint32 value);
-
-  // optional uint32 reason = 22;
-  inline bool has_reason() const;
-  inline void clear_reason();
-  static const int kReasonFieldNumber = 22;
-  inline ::google::protobuf::uint32 reason() const;
-  inline void set_reason(::google::protobuf::uint32 value);
-
-  // @@protoc_insertion_point(class_scope:gate.GateConnection)
- private:
-  inline void set_has_event();
-  inline void clear_has_event();
-  inline void set_has_idx();
-  inline void clear_has_idx();
-  inline void set_has_uid();
-  inline void clear_has_uid();
-  inline void set_has_area();
-  inline void clear_has_area();
-  inline void set_has_ip();
-  inline void clear_has_ip();
-  inline void set_has_port();
-  inline void clear_has_port();
-  inline void set_has_reason();
-  inline void clear_has_reason();
-
-  ::google::protobuf::UnknownFieldSet _unknown_fields_;
-
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
-  int event_;
-  ::google::protobuf::uint32 idx_;
-  ::google::protobuf::uint64 uid_;
-  ::google::protobuf::uint32 area_;
-  ::google::protobuf::uint32 ip_;
-  ::google::protobuf::uint32 port_;
-  ::google::protobuf::uint32 reason_;
-  friend void  protobuf_AddDesc_gate_2fgate_2eproto();
-  friend void protobuf_AssignDesc_gate_2fgate_2eproto();
-  friend void protobuf_ShutdownFile_gate_2fgate_2eproto();
-
-  void InitAsDefaultInstance();
-  static GateConnection* default_instance_;
-};
-// -------------------------------------------------------------------
-
-class AuthReq : public ::google::protobuf::Message {
- public:
-  AuthReq();
-  virtual ~AuthReq();
-
-  AuthReq(const AuthReq& from);
-
-  inline AuthReq& operator=(const AuthReq& from) {
-    CopyFrom(from);
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _unknown_fields_;
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return &_unknown_fields_;
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const AuthReq& default_instance();
-
-  void Swap(AuthReq* other);
+  void Swap(Dummy* other);
 
   // implements Message ----------------------------------------------
 
-  AuthReq* New() const;
+  Dummy* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const AuthReq& from);
-  void MergeFrom(const AuthReq& from);
+  void CopyFrom(const Dummy& from);
+  void MergeFrom(const Dummy& from);
   void Clear();
   bool IsInitialized() const;
 
@@ -347,736 +90,59 @@ class AuthReq : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required uint64 uid = 1;
-  inline bool has_uid() const;
-  inline void clear_uid();
-  static const int kUidFieldNumber = 1;
-  inline ::google::protobuf::uint64 uid() const;
-  inline void set_uid(::google::protobuf::uint64 value);
+  // optional uint32 dummy = 1;
+  inline bool has_dummy() const;
+  inline void clear_dummy();
+  static const int kDummyFieldNumber = 1;
+  inline ::google::protobuf::uint32 dummy() const;
+  inline void set_dummy(::google::protobuf::uint32 value);
 
-  // required uint32 auth = 2;
-  inline bool has_auth() const;
-  inline void clear_auth();
-  static const int kAuthFieldNumber = 2;
-  inline ::google::protobuf::uint32 auth() const;
-  inline void set_auth(::google::protobuf::uint32 value);
-
-  // optional string token = 3;
-  inline bool has_token() const;
-  inline void clear_token();
-  static const int kTokenFieldNumber = 3;
-  inline const ::std::string& token() const;
-  inline void set_token(const ::std::string& value);
-  inline void set_token(const char* value);
-  inline void set_token(const char* value, size_t size);
-  inline ::std::string* mutable_token();
-  inline ::std::string* release_token();
-  inline void set_allocated_token(::std::string* token);
-
-  // optional uint32 area = 4;
-  inline bool has_area() const;
-  inline void clear_area();
-  static const int kAreaFieldNumber = 4;
-  inline ::google::protobuf::uint32 area() const;
-  inline void set_area(::google::protobuf::uint32 value);
-
-  // @@protoc_insertion_point(class_scope:gate.AuthReq)
+  // @@protoc_insertion_point(class_scope:gate.Dummy)
  private:
-  inline void set_has_uid();
-  inline void clear_has_uid();
-  inline void set_has_auth();
-  inline void clear_has_auth();
-  inline void set_has_token();
-  inline void clear_has_token();
-  inline void set_has_area();
-  inline void clear_has_area();
+  inline void set_has_dummy();
+  inline void clear_has_dummy();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
   ::google::protobuf::uint32 _has_bits_[1];
   mutable int _cached_size_;
-  ::google::protobuf::uint64 uid_;
-  ::std::string* token_;
-  ::google::protobuf::uint32 auth_;
-  ::google::protobuf::uint32 area_;
+  ::google::protobuf::uint32 dummy_;
   friend void  protobuf_AddDesc_gate_2fgate_2eproto();
   friend void protobuf_AssignDesc_gate_2fgate_2eproto();
   friend void protobuf_ShutdownFile_gate_2fgate_2eproto();
 
   void InitAsDefaultInstance();
-  static AuthReq* default_instance_;
-};
-// -------------------------------------------------------------------
-
-class AuthRsp : public ::google::protobuf::Message {
- public:
-  AuthRsp();
-  virtual ~AuthRsp();
-
-  AuthRsp(const AuthRsp& from);
-
-  inline AuthRsp& operator=(const AuthRsp& from) {
-    CopyFrom(from);
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _unknown_fields_;
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return &_unknown_fields_;
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const AuthRsp& default_instance();
-
-  void Swap(AuthRsp* other);
-
-  // implements Message ----------------------------------------------
-
-  AuthRsp* New() const;
-  void CopyFrom(const ::google::protobuf::Message& from);
-  void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const AuthRsp& from);
-  void MergeFrom(const AuthRsp& from);
-  void Clear();
-  bool IsInitialized() const;
-
-  int ByteSize() const;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input);
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
-  int GetCachedSize() const { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const;
-  public:
-  ::google::protobuf::Metadata GetMetadata() const;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // required uint32 result = 1;
-  inline bool has_result() const;
-  inline void clear_result();
-  static const int kResultFieldNumber = 1;
-  inline ::google::protobuf::uint32 result() const;
-  inline void set_result(::google::protobuf::uint32 value);
-
-  // @@protoc_insertion_point(class_scope:gate.AuthRsp)
- private:
-  inline void set_has_result();
-  inline void clear_has_result();
-
-  ::google::protobuf::UnknownFieldSet _unknown_fields_;
-
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
-  ::google::protobuf::uint32 result_;
-  friend void  protobuf_AddDesc_gate_2fgate_2eproto();
-  friend void protobuf_AssignDesc_gate_2fgate_2eproto();
-  friend void protobuf_ShutdownFile_gate_2fgate_2eproto();
-
-  void InitAsDefaultInstance();
-  static AuthRsp* default_instance_;
-};
-// -------------------------------------------------------------------
-
-class GateAuth : public ::google::protobuf::Message {
- public:
-  GateAuth();
-  virtual ~GateAuth();
-
-  GateAuth(const GateAuth& from);
-
-  inline GateAuth& operator=(const GateAuth& from) {
-    CopyFrom(from);
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _unknown_fields_;
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return &_unknown_fields_;
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const GateAuth& default_instance();
-
-  void Swap(GateAuth* other);
-
-  // implements Message ----------------------------------------------
-
-  GateAuth* New() const;
-  void CopyFrom(const ::google::protobuf::Message& from);
-  void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const GateAuth& from);
-  void MergeFrom(const GateAuth& from);
-  void Clear();
-  bool IsInitialized() const;
-
-  int ByteSize() const;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input);
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
-  int GetCachedSize() const { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const;
-  public:
-  ::google::protobuf::Metadata GetMetadata() const;
-
-  // nested types ----------------------------------------------------
-
-  typedef GateAuth_GateAuthCMD GateAuthCMD;
-  static const GateAuthCMD GATE_NEED_AUTH = GateAuth_GateAuthCMD_GATE_NEED_AUTH;
-  static const GateAuthCMD GATE_AUTH_REQ = GateAuth_GateAuthCMD_GATE_AUTH_REQ;
-  static const GateAuthCMD GATE_AUTH_RSP = GateAuth_GateAuthCMD_GATE_AUTH_RSP;
-  static inline bool GateAuthCMD_IsValid(int value) {
-    return GateAuth_GateAuthCMD_IsValid(value);
-  }
-  static const GateAuthCMD GateAuthCMD_MIN =
-    GateAuth_GateAuthCMD_GateAuthCMD_MIN;
-  static const GateAuthCMD GateAuthCMD_MAX =
-    GateAuth_GateAuthCMD_GateAuthCMD_MAX;
-  static const int GateAuthCMD_ARRAYSIZE =
-    GateAuth_GateAuthCMD_GateAuthCMD_ARRAYSIZE;
-  static inline const ::google::protobuf::EnumDescriptor*
-  GateAuthCMD_descriptor() {
-    return GateAuth_GateAuthCMD_descriptor();
-  }
-  static inline const ::std::string& GateAuthCMD_Name(GateAuthCMD value) {
-    return GateAuth_GateAuthCMD_Name(value);
-  }
-  static inline bool GateAuthCMD_Parse(const ::std::string& name,
-      GateAuthCMD* value) {
-    return GateAuth_GateAuthCMD_Parse(name, value);
-  }
-
-  // accessors -------------------------------------------------------
-
-  // required uint32 cmd = 1;
-  inline bool has_cmd() const;
-  inline void clear_cmd();
-  static const int kCmdFieldNumber = 1;
-  inline ::google::protobuf::uint32 cmd() const;
-  inline void set_cmd(::google::protobuf::uint32 value);
-
-  // optional .gate.AuthReq authReq = 2;
-  inline bool has_authreq() const;
-  inline void clear_authreq();
-  static const int kAuthReqFieldNumber = 2;
-  inline const ::gate::AuthReq& authreq() const;
-  inline ::gate::AuthReq* mutable_authreq();
-  inline ::gate::AuthReq* release_authreq();
-  inline void set_allocated_authreq(::gate::AuthReq* authreq);
-
-  // optional .gate.AuthRsp authRsp = 3;
-  inline bool has_authrsp() const;
-  inline void clear_authrsp();
-  static const int kAuthRspFieldNumber = 3;
-  inline const ::gate::AuthRsp& authrsp() const;
-  inline ::gate::AuthRsp* mutable_authrsp();
-  inline ::gate::AuthRsp* release_authrsp();
-  inline void set_allocated_authrsp(::gate::AuthRsp* authrsp);
-
-  // @@protoc_insertion_point(class_scope:gate.GateAuth)
- private:
-  inline void set_has_cmd();
-  inline void clear_has_cmd();
-  inline void set_has_authreq();
-  inline void clear_has_authreq();
-  inline void set_has_authrsp();
-  inline void clear_has_authrsp();
-
-  ::google::protobuf::UnknownFieldSet _unknown_fields_;
-
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
-  ::gate::AuthReq* authreq_;
-  ::gate::AuthRsp* authrsp_;
-  ::google::protobuf::uint32 cmd_;
-  friend void  protobuf_AddDesc_gate_2fgate_2eproto();
-  friend void protobuf_AssignDesc_gate_2fgate_2eproto();
-  friend void protobuf_ShutdownFile_gate_2fgate_2eproto();
-
-  void InitAsDefaultInstance();
-  static GateAuth* default_instance_;
+  static Dummy* default_instance_;
 };
 // ===================================================================
 
 
 // ===================================================================
 
-// GateConnection
+// Dummy
 
-// required .gate.GateConnection.EventType event = 1;
-inline bool GateConnection::has_event() const {
+// optional uint32 dummy = 1;
+inline bool Dummy::has_dummy() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void GateConnection::set_has_event() {
+inline void Dummy::set_has_dummy() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void GateConnection::clear_has_event() {
+inline void Dummy::clear_has_dummy() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void GateConnection::clear_event() {
-  event_ = 1;
-  clear_has_event();
-}
-inline ::gate::GateSSMsg_EventType GateConnection::event() const {
-  // @@protoc_insertion_point(field_get:gate.GateConnection.event)
-  return static_cast< ::gate::GateSSMsg_EventType >(event_);
-}
-inline void GateConnection::set_event(::gate::GateSSMsg_EventType value) {
-  assert(::gate::GateSSMsg_EventType_IsValid(value));
-  set_has_event();
-  event_ = value;
-  // @@protoc_insertion_point(field_set:gate.GateConnection.event)
-}
-
-// required uint32 idx = 2;
-inline bool GateConnection::has_idx() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void GateConnection::set_has_idx() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void GateConnection::clear_has_idx() {
-  _has_bits_[0] &= ~0x00000002u;
-}
-inline void GateConnection::clear_idx() {
-  idx_ = 0u;
-  clear_has_idx();
-}
-inline ::google::protobuf::uint32 GateConnection::idx() const {
-  // @@protoc_insertion_point(field_get:gate.GateConnection.idx)
-  return idx_;
-}
-inline void GateConnection::set_idx(::google::protobuf::uint32 value) {
-  set_has_idx();
-  idx_ = value;
-  // @@protoc_insertion_point(field_set:gate.GateConnection.idx)
-}
-
-// required uint64 uid = 3;
-inline bool GateConnection::has_uid() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void GateConnection::set_has_uid() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void GateConnection::clear_has_uid() {
-  _has_bits_[0] &= ~0x00000004u;
-}
-inline void GateConnection::clear_uid() {
-  uid_ = GOOGLE_ULONGLONG(0);
-  clear_has_uid();
-}
-inline ::google::protobuf::uint64 GateConnection::uid() const {
-  // @@protoc_insertion_point(field_get:gate.GateConnection.uid)
-  return uid_;
-}
-inline void GateConnection::set_uid(::google::protobuf::uint64 value) {
-  set_has_uid();
-  uid_ = value;
-  // @@protoc_insertion_point(field_set:gate.GateConnection.uid)
-}
-
-// required uint32 area = 4;
-inline bool GateConnection::has_area() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void GateConnection::set_has_area() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void GateConnection::clear_has_area() {
-  _has_bits_[0] &= ~0x00000008u;
-}
-inline void GateConnection::clear_area() {
-  area_ = 0u;
-  clear_has_area();
-}
-inline ::google::protobuf::uint32 GateConnection::area() const {
-  // @@protoc_insertion_point(field_get:gate.GateConnection.area)
-  return area_;
-}
-inline void GateConnection::set_area(::google::protobuf::uint32 value) {
-  set_has_area();
-  area_ = value;
-  // @@protoc_insertion_point(field_set:gate.GateConnection.area)
-}
-
-// optional uint32 ip = 20;
-inline bool GateConnection::has_ip() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-inline void GateConnection::set_has_ip() {
-  _has_bits_[0] |= 0x00000010u;
-}
-inline void GateConnection::clear_has_ip() {
-  _has_bits_[0] &= ~0x00000010u;
-}
-inline void GateConnection::clear_ip() {
-  ip_ = 0u;
-  clear_has_ip();
-}
-inline ::google::protobuf::uint32 GateConnection::ip() const {
-  // @@protoc_insertion_point(field_get:gate.GateConnection.ip)
-  return ip_;
-}
-inline void GateConnection::set_ip(::google::protobuf::uint32 value) {
-  set_has_ip();
-  ip_ = value;
-  // @@protoc_insertion_point(field_set:gate.GateConnection.ip)
-}
-
-// optional uint32 port = 21;
-inline bool GateConnection::has_port() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
-}
-inline void GateConnection::set_has_port() {
-  _has_bits_[0] |= 0x00000020u;
-}
-inline void GateConnection::clear_has_port() {
-  _has_bits_[0] &= ~0x00000020u;
-}
-inline void GateConnection::clear_port() {
-  port_ = 0u;
-  clear_has_port();
-}
-inline ::google::protobuf::uint32 GateConnection::port() const {
-  // @@protoc_insertion_point(field_get:gate.GateConnection.port)
-  return port_;
-}
-inline void GateConnection::set_port(::google::protobuf::uint32 value) {
-  set_has_port();
-  port_ = value;
-  // @@protoc_insertion_point(field_set:gate.GateConnection.port)
-}
-
-// optional uint32 reason = 22;
-inline bool GateConnection::has_reason() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
-}
-inline void GateConnection::set_has_reason() {
-  _has_bits_[0] |= 0x00000040u;
-}
-inline void GateConnection::clear_has_reason() {
-  _has_bits_[0] &= ~0x00000040u;
-}
-inline void GateConnection::clear_reason() {
-  reason_ = 0u;
-  clear_has_reason();
-}
-inline ::google::protobuf::uint32 GateConnection::reason() const {
-  // @@protoc_insertion_point(field_get:gate.GateConnection.reason)
-  return reason_;
-}
-inline void GateConnection::set_reason(::google::protobuf::uint32 value) {
-  set_has_reason();
-  reason_ = value;
-  // @@protoc_insertion_point(field_set:gate.GateConnection.reason)
-}
-
-// -------------------------------------------------------------------
-
-// AuthReq
-
-// required uint64 uid = 1;
-inline bool AuthReq::has_uid() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void AuthReq::set_has_uid() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void AuthReq::clear_has_uid() {
-  _has_bits_[0] &= ~0x00000001u;
-}
-inline void AuthReq::clear_uid() {
-  uid_ = GOOGLE_ULONGLONG(0);
-  clear_has_uid();
-}
-inline ::google::protobuf::uint64 AuthReq::uid() const {
-  // @@protoc_insertion_point(field_get:gate.AuthReq.uid)
-  return uid_;
-}
-inline void AuthReq::set_uid(::google::protobuf::uint64 value) {
-  set_has_uid();
-  uid_ = value;
-  // @@protoc_insertion_point(field_set:gate.AuthReq.uid)
-}
-
-// required uint32 auth = 2;
-inline bool AuthReq::has_auth() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void AuthReq::set_has_auth() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void AuthReq::clear_has_auth() {
-  _has_bits_[0] &= ~0x00000002u;
-}
-inline void AuthReq::clear_auth() {
-  auth_ = 0u;
-  clear_has_auth();
-}
-inline ::google::protobuf::uint32 AuthReq::auth() const {
-  // @@protoc_insertion_point(field_get:gate.AuthReq.auth)
-  return auth_;
-}
-inline void AuthReq::set_auth(::google::protobuf::uint32 value) {
-  set_has_auth();
-  auth_ = value;
-  // @@protoc_insertion_point(field_set:gate.AuthReq.auth)
-}
-
-// optional string token = 3;
-inline bool AuthReq::has_token() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void AuthReq::set_has_token() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void AuthReq::clear_has_token() {
-  _has_bits_[0] &= ~0x00000004u;
-}
-inline void AuthReq::clear_token() {
-  if (token_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-    token_->clear();
-  }
-  clear_has_token();
-}
-inline const ::std::string& AuthReq::token() const {
-  // @@protoc_insertion_point(field_get:gate.AuthReq.token)
-  return *token_;
-}
-inline void AuthReq::set_token(const ::std::string& value) {
-  set_has_token();
-  if (token_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-    token_ = new ::std::string;
-  }
-  token_->assign(value);
-  // @@protoc_insertion_point(field_set:gate.AuthReq.token)
-}
-inline void AuthReq::set_token(const char* value) {
-  set_has_token();
-  if (token_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-    token_ = new ::std::string;
-  }
-  token_->assign(value);
-  // @@protoc_insertion_point(field_set_char:gate.AuthReq.token)
-}
-inline void AuthReq::set_token(const char* value, size_t size) {
-  set_has_token();
-  if (token_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-    token_ = new ::std::string;
-  }
-  token_->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:gate.AuthReq.token)
-}
-inline ::std::string* AuthReq::mutable_token() {
-  set_has_token();
-  if (token_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-    token_ = new ::std::string;
-  }
-  // @@protoc_insertion_point(field_mutable:gate.AuthReq.token)
-  return token_;
-}
-inline ::std::string* AuthReq::release_token() {
-  clear_has_token();
-  if (token_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-    return NULL;
-  } else {
-    ::std::string* temp = token_;
-    token_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-    return temp;
-  }
-}
-inline void AuthReq::set_allocated_token(::std::string* token) {
-  if (token_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-    delete token_;
-  }
-  if (token) {
-    set_has_token();
-    token_ = token;
-  } else {
-    clear_has_token();
-    token_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  }
-  // @@protoc_insertion_point(field_set_allocated:gate.AuthReq.token)
-}
-
-// optional uint32 area = 4;
-inline bool AuthReq::has_area() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void AuthReq::set_has_area() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void AuthReq::clear_has_area() {
-  _has_bits_[0] &= ~0x00000008u;
-}
-inline void AuthReq::clear_area() {
-  area_ = 0u;
-  clear_has_area();
-}
-inline ::google::protobuf::uint32 AuthReq::area() const {
-  // @@protoc_insertion_point(field_get:gate.AuthReq.area)
-  return area_;
-}
-inline void AuthReq::set_area(::google::protobuf::uint32 value) {
-  set_has_area();
-  area_ = value;
-  // @@protoc_insertion_point(field_set:gate.AuthReq.area)
-}
-
-// -------------------------------------------------------------------
-
-// AuthRsp
-
-// required uint32 result = 1;
-inline bool AuthRsp::has_result() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void AuthRsp::set_has_result() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void AuthRsp::clear_has_result() {
-  _has_bits_[0] &= ~0x00000001u;
-}
-inline void AuthRsp::clear_result() {
-  result_ = 0u;
-  clear_has_result();
-}
-inline ::google::protobuf::uint32 AuthRsp::result() const {
-  // @@protoc_insertion_point(field_get:gate.AuthRsp.result)
-  return result_;
-}
-inline void AuthRsp::set_result(::google::protobuf::uint32 value) {
-  set_has_result();
-  result_ = value;
-  // @@protoc_insertion_point(field_set:gate.AuthRsp.result)
-}
-
-// -------------------------------------------------------------------
-
-// GateAuth
-
-// required uint32 cmd = 1;
-inline bool GateAuth::has_cmd() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void GateAuth::set_has_cmd() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void GateAuth::clear_has_cmd() {
-  _has_bits_[0] &= ~0x00000001u;
-}
-inline void GateAuth::clear_cmd() {
-  cmd_ = 0u;
-  clear_has_cmd();
-}
-inline ::google::protobuf::uint32 GateAuth::cmd() const {
-  // @@protoc_insertion_point(field_get:gate.GateAuth.cmd)
-  return cmd_;
-}
-inline void GateAuth::set_cmd(::google::protobuf::uint32 value) {
-  set_has_cmd();
-  cmd_ = value;
-  // @@protoc_insertion_point(field_set:gate.GateAuth.cmd)
-}
-
-// optional .gate.AuthReq authReq = 2;
-inline bool GateAuth::has_authreq() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void GateAuth::set_has_authreq() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void GateAuth::clear_has_authreq() {
-  _has_bits_[0] &= ~0x00000002u;
-}
-inline void GateAuth::clear_authreq() {
-  if (authreq_ != NULL) authreq_->::gate::AuthReq::Clear();
-  clear_has_authreq();
-}
-inline const ::gate::AuthReq& GateAuth::authreq() const {
-  // @@protoc_insertion_point(field_get:gate.GateAuth.authReq)
-  return authreq_ != NULL ? *authreq_ : *default_instance_->authreq_;
-}
-inline ::gate::AuthReq* GateAuth::mutable_authreq() {
-  set_has_authreq();
-  if (authreq_ == NULL) authreq_ = new ::gate::AuthReq;
-  // @@protoc_insertion_point(field_mutable:gate.GateAuth.authReq)
-  return authreq_;
-}
-inline ::gate::AuthReq* GateAuth::release_authreq() {
-  clear_has_authreq();
-  ::gate::AuthReq* temp = authreq_;
-  authreq_ = NULL;
-  return temp;
-}
-inline void GateAuth::set_allocated_authreq(::gate::AuthReq* authreq) {
-  delete authreq_;
-  authreq_ = authreq;
-  if (authreq) {
-    set_has_authreq();
-  } else {
-    clear_has_authreq();
-  }
-  // @@protoc_insertion_point(field_set_allocated:gate.GateAuth.authReq)
-}
-
-// optional .gate.AuthRsp authRsp = 3;
-inline bool GateAuth::has_authrsp() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void GateAuth::set_has_authrsp() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void GateAuth::clear_has_authrsp() {
-  _has_bits_[0] &= ~0x00000004u;
-}
-inline void GateAuth::clear_authrsp() {
-  if (authrsp_ != NULL) authrsp_->::gate::AuthRsp::Clear();
-  clear_has_authrsp();
-}
-inline const ::gate::AuthRsp& GateAuth::authrsp() const {
-  // @@protoc_insertion_point(field_get:gate.GateAuth.authRsp)
-  return authrsp_ != NULL ? *authrsp_ : *default_instance_->authrsp_;
-}
-inline ::gate::AuthRsp* GateAuth::mutable_authrsp() {
-  set_has_authrsp();
-  if (authrsp_ == NULL) authrsp_ = new ::gate::AuthRsp;
-  // @@protoc_insertion_point(field_mutable:gate.GateAuth.authRsp)
-  return authrsp_;
-}
-inline ::gate::AuthRsp* GateAuth::release_authrsp() {
-  clear_has_authrsp();
-  ::gate::AuthRsp* temp = authrsp_;
-  authrsp_ = NULL;
-  return temp;
-}
-inline void GateAuth::set_allocated_authrsp(::gate::AuthRsp* authrsp) {
-  delete authrsp_;
-  authrsp_ = authrsp;
-  if (authrsp) {
-    set_has_authrsp();
-  } else {
-    clear_has_authrsp();
-  }
-  // @@protoc_insertion_point(field_set_allocated:gate.GateAuth.authRsp)
+inline void Dummy::clear_dummy() {
+  dummy_ = 0u;
+  clear_has_dummy();
+}
+inline ::google::protobuf::uint32 Dummy::dummy() const {
+  // @@protoc_insertion_point(field_get:gate.Dummy.dummy)
+  return dummy_;
+}
+inline void Dummy::set_dummy(::google::protobuf::uint32 value) {
+  set_has_dummy();
+  dummy_ = value;
+  // @@protoc_insertion_point(field_set:gate.Dummy.dummy)
 }
 
 
@@ -1088,21 +154,6 @@ inline void GateAuth::set_allocated_authrsp(::gate::AuthRsp* authrsp) {
 namespace google {
 namespace protobuf {
 
-template <> struct is_proto_enum< ::gate::GateSSMsg_EventType> : ::google::protobuf::internal::true_type {};
-template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::gate::GateSSMsg_EventType>() {
-  return ::gate::GateSSMsg_EventType_descriptor();
-}
-template <> struct is_proto_enum< ::gate::GateSSMsg_ConnectionCloseReason> : ::google::protobuf::internal::true_type {};
-template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::gate::GateSSMsg_ConnectionCloseReason>() {
-  return ::gate::GateSSMsg_ConnectionCloseReason_descriptor();
-}
-template <> struct is_proto_enum< ::gate::GateCSMsg_GateAuthCMD> : ::google::protobuf::internal::true_type {};
-template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::gate::GateCSMsg_GateAuthCMD>() {
-  return ::gate::GateCSMsg_GateAuthCMD_descriptor();
-}
 
 }  // namespace google
 }  // namespace protobuf

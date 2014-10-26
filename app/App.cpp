@@ -376,13 +376,6 @@ int     App::Init(AppContext * _ctx , bool forStop)
     
     //common option
     fprintf(stderr,"app is initializing ... \n");
-    ///////////////////daemon ////////////////////////////////////
-    int daemon = parser.GetConfigInt("daemon");    
-    if(daemon)
-    {
-        //daemonlize
-        Daemon::Instance().Create();
-    }    
     /////////////////////  log  ///////////////////////////////
     if(InitLog())
     {

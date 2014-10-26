@@ -24,7 +24,7 @@ public:
     int       uniq_process;
     string    lockFilePath;
     int       hook_coredump;
-
+    int       daemon;
     ///////////////////////////////////////
     int       closing;
     struct    timeval  runTime;   //this tick time        

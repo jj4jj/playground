@@ -4,64 +4,6 @@
 
 #include "AppContext.h"
 
-//read config and init the common attr
-int     AppContext::Init(const char * pszConfigFile)
-{
-    if(!pszConfigFile)
-    {
-        return -1;
-    }
-    if(parser.ReadConfigFile(pszConfigFile))
-    {        
-        return -2;
-    }
-
-    hook_coredump = parser.GetConfigInt("hook_coredump");
-    
-    /////////////////////////common config////////////////////////
-    tickCountUs = parser.GetConfigInt("tick_count_us",100);//10000
-    tickPollCount = parser.GetConfigInt("tick_poll_num",1);//
-
-    uniq_process = parser.GetConfigInt("uniq_process",0);
-    lockFilePath = parser.GetConfigString("file_lock_path","./lock.file");;
-
-    //channel
-    int ichnlNum = parser.GetConfigInt("channel:num",-1);
-    ChannelConfig      chnl;
-    char keyBuffer[64];
-    channels.clear();
-    channelName  = parser.GetConfigString("channel:name");
-    localChannelAddr = parser.GetConfigString("channel:local");    
-    for(int i = 0;i < ichnlNum ; ++i)
-    {
-        SNPRINTF(keyBuffer,sizeof(keyBuffer),"channel:info#%d:id",i+1);
-        chnl.id = parser.GetConfigInt(keyBuffer,-1);
-        if(chnl.id < 0)
-        {
-            LOG_ERROR("get config key = %s error !",keyBuffer);
-            return -1;
-        }
-        SNPRINTF(keyBuffer,sizeof(keyBuffer),"channel:info#%d:addr",i+1);
-        chnl.channelAddr = parser.GetConfigString(keyBuffer);
-        if(strlen(chnl.channelAddr.c_str()) < 1)
-        {
-            LOG_ERROR("get config key = %s error !",keyBuffer);
-            return -1;
-        }
-        channels.push_back(chnl);
-    }
-
-
-    /////////////////////////////////////////////////////////////
-    closing = 0;
-    runTime.tv_sec = 0;
-    runTime.tv_usec = 0;
-
-    //custom config            
-
-    return OnInit();
-}
-
 /*
 default addr arrangement:
 
@@ -151,12 +93,71 @@ void    AppContext::GenerateDefaultConfig(const char* pszConfigFile)
     parser.DumpConfig(sConfFile.c_str());
     LOG_INFO("create default config ok !\n");
 }
+//read config and init the common attr
+int     AppContext::Init(const char * pszConfigFile)
+{
+    if(!pszConfigFile)
+    {
+        return -1;
+    }
+    if(parser.ReadConfigFile(pszConfigFile))
+    {        
+        return -2;
+    }
+
+    hook_coredump = parser.GetConfigInt("hook_coredump");
+    
+    /////////////////////////common config////////////////////////
+    tickCountUs = parser.GetConfigInt("tick_count_us",100);//10000
+    tickPollCount = parser.GetConfigInt("tick_poll_num",1);//
+
+    uniq_process = parser.GetConfigInt("uniq_process",0);
+    lockFilePath = parser.GetConfigString("file_lock_path","./lock.file");;
+    daemon = parser.GetConfigInt("daemon",0);
+
+    //channel
+    int ichnlNum = parser.GetConfigInt("channel:num",-1);
+    ChannelConfig      chnl;
+    char keyBuffer[64];
+    channels.clear();
+    channelName  = parser.GetConfigString("channel:name");
+    localChannelAddr = parser.GetConfigString("channel:local");    
+    for(int i = 0;i < ichnlNum ; ++i)
+    {
+        SNPRINTF(keyBuffer,sizeof(keyBuffer),"channel:info#%d:id",i+1);
+        chnl.id = parser.GetConfigInt(keyBuffer,-1);
+        if(chnl.id < 0)
+        {
+            LOG_ERROR("get config key = %s error !",keyBuffer);
+            return -1;
+        }
+        SNPRINTF(keyBuffer,sizeof(keyBuffer),"channel:info#%d:addr",i+1);
+        chnl.channelAddr = parser.GetConfigString(keyBuffer);
+        if(strlen(chnl.channelAddr.c_str()) < 1)
+        {
+            LOG_ERROR("get config key = %s error !",keyBuffer);
+            return -1;
+        }
+        channels.push_back(chnl);
+    }
+
+
+    /////////////////////////////////////////////////////////////
+    closing = 0;
+    runTime.tv_sec = 0;
+    runTime.tv_usec = 0;
+
+    //custom config            
+
+    return OnInit();
+}
+
 void    AppContext::OnGenerateDefaultConfig()
 {
     LOG_DEBUG("OnGenerateDefaultConfig");
 }
 int     AppContext::OnInit()
-{
+{    
     LOG_DEBUG("OnInit");
     return 0;
 }

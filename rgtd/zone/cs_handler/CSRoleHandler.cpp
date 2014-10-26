@@ -46,10 +46,9 @@ int   CSRoleHandler::OnPlayingMsg(Session & session,const cs::CSMsg & msg)
         break;
     case cs::CSMsgRole::CSMSG_ROLE_BASE_INFO_REQ:
     {
-        cs::CSMsgRole & rolersp = *rsp.mutable_role();        
-        cs::CSRole & roleinfo  = * rolersp.mutable_allinforsp();
+        cs::CSMsgRole & rolersp = *rsp.mutable_role();
         rolersp.set_cmd(cs::CSMsgRole::CSMSG_ROLE_BASE_INFO_RSP);
-        cs::CSRoleBase &  rolebase = *roleinfo.mutable_base();
+        cs::CSRoleBase &  rolebase = *rolersp.mutable_baseinforsp();
         GetPlayerRoleBase(rolebase,*session.GetPlayerAgent());
         session.Send(rsp);
     }
@@ -57,19 +56,17 @@ int   CSRoleHandler::OnPlayingMsg(Session & session,const cs::CSMsg & msg)
     case cs::CSMsgRole::CSMSG_ROLE_EXT_INFO_REQ:
     {
         cs::CSMsgRole & rolersp = *rsp.mutable_role();        
-        cs::CSRole & roleinfo  = * rolersp.mutable_allinforsp();
         rolersp.set_cmd(cs::CSMsgRole::CSMSG_ROLE_EXT_INFO_RSP);
-        cs::CSRoleExt &  roleext = *roleinfo.mutable_ext();
+        cs::CSRoleExt &  roleext = *rolersp.mutable_extinforsp();
         GetPlayerRoleExt(roleext,*session.GetPlayerAgent());
         session.Send(rsp);
     }
         break;
     case cs::CSMsgRole::CSMSG_ROLE_MISC_INFO_REQ:
     {
-        cs::CSMsgRole & rolersp = *rsp.mutable_role();        
-        cs::CSRole & roleinfo  = * rolersp.mutable_allinforsp();
+        cs::CSMsgRole & rolersp = *rsp.mutable_role();
         rolersp.set_cmd(cs::CSMsgRole::CSMSG_ROLE_MISC_INFO_RSP);
-        cs::CSRoleMisc &  rolemisc = *roleinfo.mutable_misc();
+        cs::CSRoleMisc &  rolemisc = *rolersp.mutable_miscinforsp();
         GetPlayerRoleMisc(rolemisc,*session.GetPlayerAgent());
         session.Send(rsp);
     }

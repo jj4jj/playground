@@ -381,7 +381,10 @@ int     AgentApp::OnClosing(int closingReason)
 //destroy sth uninitializing
 int     AgentApp::OnDestroy()
 {
+    zoneMgr.Destroy();
     //sth need destroy .
+    db.Destroy();
+    cache.Destroy();
     return 0;
 }    
 #endif

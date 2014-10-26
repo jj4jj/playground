@@ -41,9 +41,16 @@ public:
     {
         LOG_INFO("recv msg len = %d",iBuffLen);
         cs::CSMsg csmsg;
-        csmsg.ParseFromArray(pBuffer,iBuffLen);
-        string s = csmsg.DebugString();
-        printf("recv msg:\n%s\n",s.c_str());
+        bool unpack = csmsg.ParseFromArray(pBuffer,iBuffLen);
+        if(unpack)
+        {
+            string s = csmsg.DebugString();
+            printf("recv msg:\n%s\n",s.c_str());
+        }
+        else
+        {
+            LOG_ERROR("unpack error !");
+        }
         return 0;
     }
     virtual   int  OnClose(bool bByMyself)//server or me close 
@@ -143,6 +150,7 @@ void Misc()
     csmsg.set_cmd(cs::CSMsg::CSMSG_CMD_ROLE);
     cs::CSMsgRole * role =  csmsg.mutable_role();
     role->set_cmd(cs::CSMsgRole::CSMSG_ROLE_MISC_INFO_REQ);
+    sender->SendMessage(csmsg);
 }
 
 
