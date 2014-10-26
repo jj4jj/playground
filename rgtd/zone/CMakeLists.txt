@@ -11,6 +11,7 @@ include_directories(
   ${SSUKITS_HOME}
   ${INIPARSER_HOME}/src
   ${MYSQLCLI_C_HOME}/include
+  ${LUA_HOME}/include
 )
 
 #base dir linked lib dir
@@ -21,7 +22,9 @@ link_directories(
 	/usr/lib
 	${INIPARSER_HOME}	
 	${MYSQLCLI_C_HOME}/lib
-	${HIREDIS_HOME})
+	${HIREDIS_HOME}
+  	${LUA_HOME}/lib
+)
 
 #it will generate a exe
 ADD_EXECUTABLE(agent
@@ -40,9 +43,11 @@ target_link_libraries(agent
 	ssukits_net
 	ssukits_ipc
 	ssukits_thread
+	ssukits_script
 	ssukits_base
 	libmysqlclient.a
 	libhiredis.a
+	liblua.a
 	libev.a
 	iniparser
 	protobuf

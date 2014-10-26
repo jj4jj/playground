@@ -14,6 +14,7 @@ int     CSMsgDispatcher::RegisterCSMsgHandler(uint32_t cmd,CSMsgHandlerPtr handl
 {
     if(m_mpHandlers.find(cmd) != m_mpHandlers.end())
     {
+        //find script handler        
         LOG_ERROR("register handler repeatly ! cmd = %u",cmd);
         return -1;
     }
@@ -26,6 +27,10 @@ CSMsgHandler *  CSMsgDispatcher::GetMsgHandler(uint32_t cmd)
     if(it != m_mpHandlers.end())
     {
         return it->second.get();
+    }
+    if(m_luaHandler.IsListeningMsg(cmd))
+    {
+        return &(m_luaHandler);
     }
     return NULL;
 }
@@ -46,8 +51,13 @@ int       CSMsgDispatcher::Dispatch(Session & session,const cs::CSMsg & csmsg)
 ///////////////////////////////////////////////////////////////////////////////
 void    CSMsgDispatcher::SetupAllCSMsgHandler()
 {
+    
+    if(m_luaHandler.Init("cs_handler.lua"))
+    {
+        LOG_ERROR("lua cs msg handler init error !");
+    }
     RegisterCSMsgHandler(cs::CSMsg::CSMSG_CMD_ROLE,CSMsgHandlerPtr(new CSRoleHandler()));
-    //todo add handler here
+    //todo add c handler here
     
 }
 
