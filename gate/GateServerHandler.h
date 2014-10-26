@@ -65,7 +65,9 @@ public:
     int         NotifyNeedAuth(Connection* pConn);
     int         Authorizing(Connection * pConn,const gate::AuthReq & auth);
     int         NotifyAuthResult(Connection* pConn,int iRet);
+    int         OnClosing(int reason,int notifinum = 200);
 private:
+    uint32_t                m_dwLastClosingIdx;
     vector<Connection>      m_vecConnections;
     typedef unordered_map<int,int>  FD2IDXConnectionMap;
     typedef FD2IDXConnectionMap::iterator   FD2IDXConnectionMapItr;
@@ -84,4 +86,6 @@ public:
     uint64_t        uppkgs;
 
 }; 
+
+
 

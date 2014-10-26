@@ -168,6 +168,10 @@ int App::main(int argc , char* argv [])
                 {
                     break;
                 }
+                else
+                {
+                    usleep(appCtx.tickCountUs);
+                }
             }
         }
     }

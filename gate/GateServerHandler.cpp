@@ -96,6 +96,7 @@ void GateServerHandler::Connection::Close()
 #endif
 
 #if 1
+
 GateServerHandler::~GateServerHandler()
 {
     for(int i = 0;i < (int)m_vecConnections.size(); ++i)
@@ -117,6 +118,7 @@ GateServerHandler::GateServerHandler(ChannelMsgProxy * p,int iMaxConnections)
     m_vecConnections.resize(m_iMaxConnection);
     m_pChannelProxy = p;
     /////////////////////////////////////////
+    m_dwLastClosingIdx  =   0;
     iConnxMaxIdleTime = gsc->iIdleCheckPeriod;        
 
     downloadsize = 0;
@@ -403,6 +405,25 @@ int         GateServerHandler::NotifyAuthResult(GateServerHandler::Connection* p
     return SendToClient(pConn, ga);   
 }
 
+int         GateServerHandler::OnClosing(int reason,int notifinum)
+{
+    for(int i = 0;i < notifinum &&
+                  m_dwLastClosingIdx < m_vecConnections.size(); 
+                    ++i,++m_dwLastClosingIdx)
+    {
+        Connection * pConn = GetConnectionByIdx(m_dwLastClosingIdx);
+        if(!pConn)
+        {
+            continue;
+        }
+        RemoveConnection(pConn,reason);
+    }
+    if(m_dwLastClosingIdx < m_vecConnections.size())
+    {
+        return 0;
+    }
+    return 1;
+}
 
 int     GateServerHandler::GetNextIdx()
 {

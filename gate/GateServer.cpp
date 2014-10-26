@@ -37,7 +37,7 @@ int     GateServer::OnInit()
         LOG_FATAL("tcp server init error = %d",ret);
         return -1;
     }               
-    ctx->ptrHandler = TcpServerHandlerPtr(new GateServerHandler(&GetChannelProxy(),iMaxClient));
+    ctx->ptrHandler = GateServerHandlerPtr(new GateServerHandler(&GetChannelProxy(),iMaxClient));
     server.SetServerHandler(ctx->ptrHandler.get());
 
     GetChannelProxy().SubscribeScatterMsg( ctx->vecAgentIDS, ChannelMessageDispatcherPtr(new GateAgentChannelMsgHandler((GateServerHandler*)ctx->ptrHandler.get())));
@@ -127,7 +127,7 @@ int     GateServer::OnPoll(int iRecommendPollNum )
 //system will close for closing Reason
 int     GateServer::OnClosing(int closingReason)
 {
-    return 0;
+    return ((GateServerContext*)GetContext())->ptrHandler->OnClosing(closingReason);
 }
 //destroy sth uninitializing
 int     GateServer::OnDestroy()
