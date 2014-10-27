@@ -15,7 +15,12 @@ int SessionMgr::Init()
 {
     login = &(zoneAgent->GetZoneMgr().GetLoginLogic());    
     //////////////////////////////////////////////////
-    m_csmsgDispatcher.SetupAllCSMsgHandler();    
+    int ret = m_csmsgDispatcher.SetupAllCSMsgHandler();    
+    if(ret)
+    {
+        LOG_ERROR("setup cs msg handler error !");
+        return -1;
+    }
     return 0;
 }
 int SessionMgr::StopSession(int gateid,uint32_t idx,uint64_t uid)
@@ -26,7 +31,7 @@ int SessionMgr::StopSession(int gateid,uint32_t idx,uint64_t uid)
         LOG_ERROR("can't find session = %lu",uid);
         return -1;
     }
-    if(sson->idx != idx || sson->gate != gateid)
+    if(sson->GetIdx() != idx || sson->GetGateID() != gateid)
     {
         LOG_ERROR("session gate id = %d idx = %lu uid = %lu not match !",
                     gateid,idx,uid);

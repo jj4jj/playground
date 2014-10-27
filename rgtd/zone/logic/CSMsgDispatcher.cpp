@@ -5,6 +5,7 @@
 #include "cs_handler/CSMsgHandler.h"
 #include "cs_handler/CSRoleHandler.h"
 
+#include "cs_handler/CSMsgLuaHandler.h"
 
 /////////////////////////////////////////////////////////////////////////////////////
 #include "CSMsgDispatcher.h"
@@ -28,9 +29,9 @@ CSMsgHandler *  CSMsgDispatcher::GetMsgHandler(uint32_t cmd)
     {
         return it->second.get();
     }
-    if(m_luaHandler.IsListeningMsg(cmd))
+    if(m_ptrLuaHandler->IsListeningMsg(cmd))
     {
-        return &(m_luaHandler);
+        return m_ptrLuaHandler.get();
     }
     return NULL;
 }
@@ -49,16 +50,27 @@ int       CSMsgDispatcher::Dispatch(Session & session,const cs::CSMsg & csmsg)
     }
 }
 ///////////////////////////////////////////////////////////////////////////////
-void    CSMsgDispatcher::SetupAllCSMsgHandler()
+int    CSMsgDispatcher::SetupAllCSMsgHandler()
 {
-    
-    if(m_luaHandler.Init("cs_handler.lua"))
+    m_ptrLuaHandler = CSMsgLuaHandlerPtr(new CSMsgLuaHandler());   
+    if(m_ptrLuaHandler)
     {
-        LOG_ERROR("lua cs msg handler init error !");
+        if(m_ptrLuaHandler->Init("cs_handler.lua"))
+        {
+            LOG_ERROR("lua cs msg handler init error !");
+            return -1;
+        }
+    }
+    else
+    {
+        LOG_ERROR("lua cs msg handler create error !");
+        return -1;
     }
     RegisterCSMsgHandler(cs::CSMsg::CSMSG_CMD_ROLE,CSMsgHandlerPtr(new CSRoleHandler()));
     //todo add c handler here
-    
+
+
+    return 0;
 }
 
 

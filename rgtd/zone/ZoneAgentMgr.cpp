@@ -193,7 +193,7 @@ int             ZoneAgentMgr::OnGateMessage(const ChannelMessage & msg)
             
             ////////////////////////////////////////////////////////////////////////
             //area client close
-            return pAgent->DetachPlayerAgent(ggc);
+            return pAgent->DetachPlayerAgent(msg.iSrc,ggc);
             break;
         }
         case gate::GateSSMsg::EVENT_DATA:

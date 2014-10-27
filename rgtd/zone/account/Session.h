@@ -52,6 +52,8 @@ public:
     inline    uint64_t      GetUID(){return uid;}
     inline    PlayerAgent * GetPlayerAgent(){return player.get();}
     inline    PlayerAgentPtr    GetPlayerAgentPtr(){return player;}
+    inline    uint32_t      GetIdx(){return idx;}
+    inline    int           GetGateID(){return gate;}
 private:
     /////////////////////////////////////todo : instead of session data with protobuf
     uint64_t        uid;
