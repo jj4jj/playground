@@ -104,7 +104,18 @@ string  LuaContext::GetStringValue(const char* pszKey)
     m_luaAgent.Pop(1);
     return value;
 }
-
+int     LuaContext::SetIntValue(const char* pszKey,int value)
+{
+    m_luaAgent.PushInteger(value);
+    m_luaAgent.SetGlobal(pszKey);
+    return 0;
+}
+int     LuaContext::SetStringValue(const char* pszKey,const char* value)
+{
+    m_luaAgent.PushString(value);
+    m_luaAgent.SetGlobal(pszKey);
+    return 0;
+}
 int     LuaContext::LoadFile(const char* pszFileName)
 {
     LOG_INFO("lua context = %s load file = %s",m_sCtxName.c_str(),pszFileName);
