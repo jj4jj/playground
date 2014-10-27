@@ -78,6 +78,33 @@ int     LuaContext::CallFunction(int & result ,const char* pszFunctionName,int n
         return -1;
     }
 }
+int     LuaContext::GetIntValue(const char* pszKey,int defaultvalue )
+{
+    m_luaAgent.GetGlobal(pszKey);
+    int type = m_luaAgent.GetType(-1);
+    if(LUA_TNUMBER != type)
+    {
+        LOG_ERROR("lua key = %s type = %d not match !",pszKey,type);
+        return defaultvalue;
+    }
+    int val = m_luaAgent.ToInteger(-1);
+    m_luaAgent.Pop(1);
+    return val;
+}
+string  LuaContext::GetStringValue(const char* pszKey)
+{
+    m_luaAgent.GetGlobal(pszKey);
+    int type = m_luaAgent.GetType(-1);
+    if(LUA_TSTRING != type)
+    {
+        LOG_ERROR("lua key = %s type = %d not match !",pszKey,type);
+        return NULL;
+    }
+    string value = m_luaAgent.ToLString(-1);
+    m_luaAgent.Pop(1);
+    return value;
+}
+
 int     LuaContext::LoadFile(const char* pszFileName)
 {
     LOG_INFO("lua context = %s load file = %s",m_sCtxName.c_str(),pszFileName);

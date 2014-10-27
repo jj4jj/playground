@@ -58,11 +58,13 @@ static int  rgtd_register_cs_cmd(lua_State * pls)
     {
         LOG_ERROR("register cs cmd handler = null !");
         lua_pushinteger(pls,-1);
-        return -1;
     }
-    int ret = luahandler->RegisterCMD((uint32_t)cmd);
-    lua_pushinteger(pls,ret);
-    return 0;
+    else
+    {
+        int ret = luahandler->RegisterCMD((uint32_t)cmd);
+        lua_pushinteger(pls,ret);
+    }
+    return 1;
 }
 
 //rgtd_log("log","hello")
@@ -72,13 +74,13 @@ static int  rgtd_log(lua_State * pls)
     if(!content)
     {
         LOG_ERROR("rgtd log content is null !");
-        return -1;
+        return 0;
     }
     const char* level = lua_tostring(pls,-2);
     if(!level)
     {
         LOG_ERROR("rgtd log level is null !");
-        return -1;
+        return 0;
     }
     if(strcmp(level,"debug") == 0)
     {
