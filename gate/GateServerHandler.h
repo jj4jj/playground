@@ -76,6 +76,7 @@ private:
     int     m_iAlivedConnections;    
     int     m_iLastFreeIdx ;
     ChannelMsgProxy * m_pChannelProxy;
+    int     m_closing;
 public:
     uint32_t        iConnxMaxIdleTime;
     uint64_t        downloadsize;

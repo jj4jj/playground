@@ -117,10 +117,13 @@ GateServerHandler::GateServerHandler(ChannelMsgProxy * p,int iMaxConnections)
     m_mpConnections.clear();
     m_vecConnections.resize(m_iMaxConnection);
     m_pChannelProxy = p;
+    m_closing = 0;
     /////////////////////////////////////////
     m_dwLastClosingIdx  =   0;
     iConnxMaxIdleTime = gsc->iIdleCheckPeriod;        
 
+    /////////////////////////////////////////
+    
     downloadsize = 0;
     uploadsize = 0;
 
@@ -172,8 +175,9 @@ int     GateServerHandler::OnNewConnection(TcpSocket   &   client)
     m_iAlivedConnections++;
     int iIdx = GetNextIdx();
     LOG_INFO("new connection comming fd = %d alived = %d total = %d",client.GetFD(),m_iAlivedConnections,m_vecConnections.size());
-    if(!m_vecConnections[iIdx].recvBuffer.pBuffer &&
-        m_vecConnections[iIdx].recvBuffer.Create(CONNECTION_DEFAULT_RECV_BUFF_SIZE))
+    if((!m_vecConnections[iIdx].recvBuffer.pBuffer &&
+        m_vecConnections[iIdx].recvBuffer.Create(CONNECTION_DEFAULT_RECV_BUFF_SIZE)) ||
+        m_closing != 0 )
     {
         LOG_ERROR("client allocate recv buffer error");
         client.Close();
@@ -407,6 +411,10 @@ int         GateServerHandler::NotifyAuthResult(GateServerHandler::Connection* p
 
 int         GateServerHandler::OnClosing(int reason,int notifinum)
 {
+    if(0 == m_closing)
+    {
+        m_closing = reason;
+    }
     for(int i = 0;i < notifinum &&
                   m_dwLastClosingIdx < m_vecConnections.size(); 
                     ++i,++m_dwLastClosingIdx)
