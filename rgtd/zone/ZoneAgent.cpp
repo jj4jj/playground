@@ -65,9 +65,9 @@ int ZoneAgent::AttachPlayerAgent(int gateid,const gate::GateSSMsg & ggc)
             uid,gateid,ggc.idx(),ggc.area());
     return 0;
 }
-int ZoneAgent::DetachPlayerAgent(const gate::GateSSMsg & ggc)
+int ZoneAgent::DetachPlayerAgent(int gateid,const gate::GateSSMsg & ggc)
 {
     uint64_t uid = ZoneAgentMgr::GetRoleID(ggc.uid(),ggc.area());
-    return m_sessionMgr.StopSession(uid);
+    return m_sessionMgr.StopSession(gateid,ggc.idx(),uid);
 }
 #endif

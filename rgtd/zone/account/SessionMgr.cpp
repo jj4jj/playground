@@ -18,12 +18,18 @@ int SessionMgr::Init()
     m_csmsgDispatcher.SetupAllCSMsgHandler();    
     return 0;
 }
-int SessionMgr::StopSession(uint64_t uid)
+int SessionMgr::StopSession(int gateid,uint32_t idx,uint64_t uid)
 {
     Session *  sson =  FindSession(uid);
     if(!sson)
     {
         LOG_ERROR("can't find session = %lu",uid);
+        return -1;
+    }
+    if(sson->idx != idx || sson->gate != gateid)
+    {
+        LOG_ERROR("session gate id = %d idx = %lu uid = %lu not match !",
+                    gateid,idx,uid);
         return -1;
     }
     ///////////////////////////////////////////////////////

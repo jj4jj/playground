@@ -17,7 +17,7 @@ public:
     ////////////////////////////
     int     DispatchPlayerAgentMsg(const gate::GateSSMsg & ggc,const cs::CSMsg & csmsg);
     int     AttachPlayerAgent(int gateid,const gate::GateSSMsg & ggc);
-    int     DetachPlayerAgent(const gate::GateSSMsg & ggc);
+    int     DetachPlayerAgent(int gateid,const gate::GateSSMsg & ggc);
     inline  ZoneAgentMgr &  GetZoneMgr(){return *zoneMgr;}
     inline  SessionMgr   &  GetSessionMgr(){return m_sessionMgr;}
 private:
