@@ -10,19 +10,6 @@
 extern void CreateRgtdLuaLib(lua_State* pls);
 
 //////////////////////////////////////////////////////////////////////////////////////
-static  int BackTrace(lua_State* pls)
-{
-	const char *msg = lua_tostring(pls,1);
-	if (msg)
-	{
-        LOG_ERROR("lua trace back error msg = %s",msg);
-		luaL_traceback(pls,pls,msg, 1);
-    }
-	else {
-		lua_pushliteral(pls, "(no error message)");
-	}
-	return 1;
-}
 int     LuaContext::Init(CSMsgLuaHandler * host,const char* pszCtxName,const char* pszLuaPath,
                          const char* pszLuaCPath)
 {
@@ -50,9 +37,6 @@ int     LuaContext::Init(CSMsgLuaHandler * host,const char* pszCtxName,const cha
     
     //m_luaAgent.PushCClosure(BackTrace,0);
 	//assert(m_luaAgent.GetTop() == 1);
-
-    void * lua_handler = (void*)host;
-    EXPORT_VARIABLE(m_luaAgent.GetLuaState(),lua_handler);
    
     //export rgtd server core api to lua state
     ::CreateRgtdLuaLib(m_luaAgent.GetLuaState());
@@ -90,6 +74,7 @@ int     LuaContext::CallFunction(int & result ,const char* pszFunctionName,int n
     else
     {
 		LOG_ERROR("lua call function = [%s] error : [%s]",pszFunctionName,m_luaAgent.ToLString(-1));
+        m_luaAgent.Pop(1);
         return -1;
     }
 }
