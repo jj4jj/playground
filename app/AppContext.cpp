@@ -75,7 +75,6 @@ void    AppContext::GenerateDefaultConfig(const char* pszConfigFile)
     {"channel:local:addr","tcp://127.0.0.1:51010"},
     {"channel:local:name","gate#1"},
     {"channel:num","1"},
-    {"channel:info#1:id","1"},//connect other channel
     {"channel:info#1:addr","tcp://127.0.0.1:52010"},
     {"channel:info#1:name","agent#1"},
     //config center
@@ -136,61 +135,58 @@ int     AppContext::Init(const char * pszConfigFile)
 
     ////////////////channel//////////////////////////////////////////////
     int ichnlNum = parser.GetConfigInt("channel:num",-1);
-    if( ichnlNum > 0 )
+    ChannelConfig      chnl;
+    char keyBuffer[64];
+    channels.clear();
+    channelName  = parser.GetConfigString("channel:name");
+    localChannelName = parser.GetConfigString("channel:local:name");    
+    localChannelAddr = parser.GetConfigString("channel:local:addr");
+    const char* pszLocalChAddr = cc.GetConfig(localChannelName.c_str());
+    if(!pszLocalChAddr)
     {
-        ChannelConfig      chnl;
-        char keyBuffer[64];
-        channels.clear();
-        channelName  = parser.GetConfigString("channel:name");
-        localChannelName = parser.GetConfigString("channel:local:name");    
-        localChannelAddr = parser.GetConfigString("channel:local:addr");    
-        const char* pszLocalChAddr = cc.GetConfig(localChannelName.c_str());
-        if(!pszLocalChAddr)
+        LOG_INFO("local addr not found in config center , register it !");            
+        if(localChannelAddr.length() > 0)
         {
-            LOG_INFO("local addr not found in config center , register it !");            
-            if(localChannelAddr.length() > 0)
-            {
-                cc.SetConfig(localChannelName.c_str(),localChannelAddr.c_str());
-            }
-            else
-            {
-               return -1;
-            }
+            cc.SetConfig(localChannelName.c_str(),localChannelAddr.c_str());
         }
         else
         {
-            LOG_INFO("get cc local name = %s , addr = %s",
-                    localChannelName.c_str(),pszLocalChAddr);
-            if(localChannelAddr != string(pszLocalChAddr))
-            {
-                LOG_ERROR("local addr not match cc !",pszLocalChAddr);
-                return -1;
-            }
+           return -1;
         }
-            
-        for(int i = 0;i < ichnlNum ; ++i)
+    }
+    else
+    {
+        LOG_INFO("get cc local name = %s , addr = %s",
+                localChannelName.c_str(),pszLocalChAddr);
+        if(localChannelAddr != string(pszLocalChAddr))
         {
-            SNPRINTF(keyBuffer,sizeof(keyBuffer),"channel:info#%d:name",i+1);
-            chnl.name = parser.GetConfigString(keyBuffer);
-            const char* pszChName = cc.GetConfig(chnl.name.c_str());
-            SNPRINTF(keyBuffer,sizeof(keyBuffer),"channel:info#%d:addr",i+1);
-            chnl.channelAddr = parser.GetConfigString(keyBuffer);
-            if(!pszChName)
-            {
-                LOG_ERROR("get config key = %s error and not found in cc !",keyBuffer);
-                return -1;                
-            }            
-            if(chnl.channelAddr  != string(pszChName))
-            {
-                LOG_ERROR("not match chanenl name = %s name = %s , %s use cc",
-                         chnl.name.c_str(),chnl.channelAddr.c_str(),pszChName);
-            }
-            chnl.channelAddr = pszChName;
-            /////////////////////////////////////////////////////////////////////////
-            
-            channels.push_back(chnl);
-        }  
-    }      
+            LOG_ERROR("local addr not match cc !",pszLocalChAddr);
+            return -1;
+        }
+    }
+        
+    for(int i = 0;i < ichnlNum ; ++i)
+    {
+        SNPRINTF(keyBuffer,sizeof(keyBuffer),"channel:info#%d:name",i+1);
+        chnl.name = parser.GetConfigString(keyBuffer);
+        const char* pszChName = cc.GetConfig(chnl.name.c_str());
+        SNPRINTF(keyBuffer,sizeof(keyBuffer),"channel:info#%d:addr",i+1);
+        chnl.channelAddr = parser.GetConfigString(keyBuffer);
+        if(!pszChName)
+        {
+            LOG_ERROR("get config key = %s error and not found in cc !",keyBuffer);
+            return -1;                
+        }            
+        if(chnl.channelAddr  != string(pszChName))
+        {
+            LOG_ERROR("not match chanenl name = %s name = %s , %s use cc",
+                     chnl.name.c_str(),chnl.channelAddr.c_str(),pszChName);
+        }
+        chnl.channelAddr = pszChName;
+        /////////////////////////////////////////////////////////////////////////
+        
+        channels.push_back(chnl);
+    }  
     /////////////////////////////////////////////////////////////
     closing = 0;
     runTime.tv_sec = 0;

@@ -66,7 +66,7 @@ void    AgentContext::OnGenerateDefaultConfig()
     {"channel:num","1"},
     {"channel:local:addr","tcp://127.0.0.1:51010"},
     {"channel:local:name","agent#1"},
-    {"channel:info#1:addr",""},
+    {"channel:info#1:addr","-"},
     {"channel:info#1:name","gate#1"},
     /////////////add default config above////////////////
     {NULL,NULL}};
