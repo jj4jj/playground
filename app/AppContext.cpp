@@ -73,10 +73,10 @@ void    AppContext::GenerateDefaultConfig(const char* pszConfigFile)
     //channel
     {"channel:name","ch"},
     {"channel:local:addr","tcp://127.0.0.1:51010"},
-    {"channel:local:name","gate#1"},
+    {"channel:local:name","gate:1"},
     {"channel:num","1"},
     {"channel:info#1:addr","tcp://127.0.0.1:52010"},
-    {"channel:info#1:name","agent#1"},
+    {"channel:info#1:name","agent:1"},
     //config center
     {"configcenter:ip","127.0.0.1"},
     {"configcenter:port","6379"},
@@ -144,7 +144,8 @@ int     AppContext::Init(const char * pszConfigFile)
     const char* pszLocalChAddr = cc.GetConfig(localChannelName.c_str());
     if(!pszLocalChAddr)
     {
-        LOG_INFO("local addr not found in config center , register it !");            
+        LOG_INFO("local addr not found in config center , register it[%s] [%s] !",
+                localChannelName.c_str(),localChannelAddr.c_str());            
         if(localChannelAddr.length() > 0)
         {
             cc.SetConfig(localChannelName.c_str(),localChannelAddr.c_str());
@@ -174,7 +175,7 @@ int     AppContext::Init(const char * pszConfigFile)
         chnl.channelAddr = parser.GetConfigString(keyBuffer);
         if(!pszChName)
         {
-            LOG_ERROR("get config key = %s error and not found in cc !",keyBuffer);
+            LOG_ERROR("get config key = %s [%s] error and not found in cc !",keyBuffer,chnl.name.c_str());
             return -1;                
         }            
         if(chnl.channelAddr  != string(pszChName))
