@@ -206,5 +206,20 @@ target_link_libraries(gate_test
 )
 INSTALL(TARGETS  gate_test DESTINATION test/)
 
+###################################
+ADD_EXECUTABLE(confcenter_test
+	${CMAKE_CURRENT_SOURCE_DIR}/TestConfigCenter.cpp
+)
+target_link_libraries(confcenter_test
+	datacenter
+	ssukits_base
+	libhiredis.a
+	rt
+	dl
+)
+INSTALL(TARGETS  confcenter_test DESTINATION test/)
+
+
+
 
 

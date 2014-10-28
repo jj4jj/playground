@@ -43,9 +43,10 @@ struct RedisAgentCallBack
 
 class RedisAgent : public Singleton<RedisAgent>
 {
-public:
+private:    
     RedisAgent();
     ~RedisAgent();
+    DeclareSingltonSupport(RedisAgent)
 public:
     static  void CommandCallback(redisAsyncContext *c, void *r, void *privdata);
     static  void ConnectCallback(const redisAsyncContext *c, int status);
