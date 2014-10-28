@@ -135,4 +135,19 @@ int     ConfigCenter::SetConfig(const char* pszKey,const char* pszValue,const ch
         return 0;
     }
 }
+int     ConfigCenter::SetConfigInt(const char* pszKey,int value,const char* pszConfigName )
+{
+    char szNumBuffer[20];
+    snprintf(szNumBuffer,sizeof(szNumBuffer),"%d",value);
+    return SetConfig(pszKey,szNumBuffer,pszConfigName);
+}
+int     ConfigCenter::GetConfigInt(const char* pszKey,int defaultvalue,const char* pszConfigName )
+{
+    const char * pv = GetConfig(pszKey,pszConfigName);
+    if(!pv)
+    {
+        return defaultvalue;
+    }
+    return atoi(pv);
+}
 

@@ -19,6 +19,8 @@ public:
     int     HeartBeat();
     const   char* GetConfig(const char* pszKey,const char* pszConfigName = "");    
     int     SetConfig(const char* pszKey,const char* pszValue,const char* pszConfigName = "");    
+    int     SetConfigInt(const char* pszKey,int value,const char* pszConfigName = "");
+    int     GetConfigInt(const char* pszKey,int defaultvalue = 0,const char* pszConfigName = "");
     int     RemoveConfig(const char* pszKey,const char* pszConfigName = "");
 private:    
     redisContext * m_ctx;
