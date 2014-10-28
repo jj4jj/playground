@@ -33,7 +33,11 @@ ConfigCenter::ConfigCenter()
 }
 ConfigCenter::~ConfigCenter()
 {
-
+    Destroy();
+}
+void    ConfigCenter::Destroy()
+{
+    LOG_INFO("config center destroy !");
     if(m_reply)
     {
         freeReplyObject(m_reply);
@@ -46,8 +50,7 @@ ConfigCenter::~ConfigCenter()
     }
     m_buffer.Destroy();
 }
-
-int     ConfigCenter::Init(const char* pszHostName ,int port ,int timeout )
+int     ConfigCenter::Init(const char* pszHostName ,int port,int dbidx ,int timeout )
 {
     m_ctx = NULL;
     m_reply = NULL;
@@ -66,7 +69,10 @@ int     ConfigCenter::Init(const char* pszHostName ,int port ,int timeout )
             LOG_ERROR("redis Connection error: can't allocate redis context\n");
         }
         return -1;
-    }
+    }    
+    m_reply = (redisReply*)redisCommand(m_ctx,"SELECT %d",dbidx);
+    freeReplyObject(m_reply);
+    LOG_INFO("config center init ok !");
     return HeartBeat();
 }
 int    ConfigCenter::HeartBeat()

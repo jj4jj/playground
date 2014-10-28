@@ -2,6 +2,7 @@
 #include "base/Log.h"
 #include "base/CommonMacro.h"
 #include "ChannelAgent.h"
+#include "ChannelAgentMgr.h"
 #include "base/StringUtil.h"
 
 ///////////////////////////////////
@@ -31,7 +32,7 @@ int  Channel::Write(const Buffer & buffer)
     if(0 == zmq_msg_size(&msg_head))
     {
         char szHeadMsg[64];
-        snprintf(szHeadMsg,sizeof(szHeadMsg),"%d:%d",agent->GetID(),seqence);            
+        snprintf(szHeadMsg,sizeof(szHeadMsg),"%s|%d",agent->GetIDName(),seqence);            
         int len = strlen(szHeadMsg)+1;
         zmq_msg_init_size(&msg_head,len);
         memcpy(zmq_msg_data(&msg_head),szHeadMsg,len);
@@ -79,9 +80,11 @@ int  Channel::Read(int & rcvMsgID,ChannelMessage & msg)
     part1 = zmq_msg_size(&rcvMsg);
     char* pszPart1Msg = (char*)zmq_msg_data(&rcvMsg);
     int nums[4] = {-1,-1,-1,-1};
-    StringUtil::SplitNum(pszPart1Msg,nums,4,":");
-    msg.iSrc = rcvMsgID = nums[0];
-    msg.seqence = nums[1];
+    string heads = pszPart1Msg;
+    vector<string>  vecheads = StringUtil::SplitString(heads,"|");
+    string chname =  vecheads[0];
+    msg.seqence = rcvMsgID = strtol(vecheads[1].c_str(),NULL,10);
+    msg.iSrc = ChannelAgentMgr::Instance().GetChannelID(chname);
     zmq_msg_close(&rcvMsg);
 
     //------------------------------------------------------------------------------
@@ -159,7 +162,7 @@ int Channel::Create(int mode,void* ctx,const char* pszAddr,const char* name,int 
             Destroy();            
             return -2;
         }  
-        agent->SetName(receiverName);
+        agent->SetBindName(receiverName);
     }
     else
     {
@@ -189,7 +192,7 @@ int Channel::Create(int mode,void* ctx,const char* pszAddr,const char* name,int 
             Destroy();
             return -4;
         }
-        agent->SetName(senderName);
+        agent->SetBindName(senderName);
     }
     /////////////////////////////////////////////////////////////
 

@@ -12,7 +12,8 @@ ChannelAgentMgr::ChannelAgentMgr()
 {
     zmq_context = NULL;
     nzpollitem = 0;
-    zpollitems = 0;    
+    zpollitems = 0;
+    m_iNextGenID = 1;
 }
 ChannelAgentMgr::~ChannelAgentMgr()
 {
@@ -21,6 +22,15 @@ ChannelAgentMgr::~ChannelAgentMgr()
 #endif
 
 #if 1
+int             ChannelAgentMgr::GenerateChannelID(const string & name)
+{    
+    while(m_iNextGenID == 0 ||
+          GetChannel(m_iNextGenID) )
+    {
+        ++m_iNextGenID;
+    }
+    return m_iNextGenID;
+}
 int             ChannelAgentMgr::Init(const char * pszName,const char* pszListenAddr,
                                       ChannelMessageDispatcherPtr  _ptrDispatcher,
                                       int iMaxLocalChannel )
@@ -91,6 +101,24 @@ int             ChannelAgentMgr::AddChannel(int id,bool local,const char * pszNa
     LOG_DEBUG("agent id = %d agent ptr = %p ptr agent id = %d zitem = %d",
         id,p.get(),p->GetID(),nzpollitem);
     return 0;
+}
+int             ChannelAgentMgr::GetChannelID(const string & name)
+{
+    if(m_mpNameChnlID.find(name) != m_mpNameChnlID.end())
+    {
+        return m_mpNameChnlID[name];
+    }
+    LOG_ERROR("not found channel id name = %s",name.c_str());
+    return 0;
+}
+
+ChannelAgent*   ChannelAgentMgr::GetChannel(const string & name)
+{
+    if(m_mpNameChnlID.find(name) != m_mpNameChnlID.end())
+    {
+        return GetChannel(m_mpNameChnlID[name]);
+    }
+    return NULL;
 }
 ChannelAgent* ChannelAgentMgr::GetChannel(int id)
 {

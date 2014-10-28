@@ -1,7 +1,7 @@
 #include "base/File.h"
 #include "base/Log.h"
 #include "base/CommonMacro.h"
-
+#include "datacenter/ConfigCenter.h"
 #include "AppContext.h"
 
 /*
@@ -72,10 +72,16 @@ void    AppContext::GenerateDefaultConfig(const char* pszConfigFile)
     {"console:port","51000"},
     //channel
     {"channel:name","ch"},
-    {"channel:local","tcp://127.0.0.1:51010"},
+    {"channel:local:addr","tcp://127.0.0.1:51010"},
+    {"channel:local:name","gate#1"},
     {"channel:num","1"},
     {"channel:info#1:id","1"},//connect other channel
-    {"channel:info#1:addr","tcp://127.0.0.1:51010"},
+    {"channel:info#1:addr","tcp://127.0.0.1:52010"},
+    {"channel:info#1:name","agent#1"},
+    //config center
+    {"configcenter:ip","127.0.0.1"},
+    {"configcenter:port","6379"},
+    {"configcenter:dbidx","0"},
 
     /////////////add default config above////////////////
     {NULL,NULL}};
@@ -105,43 +111,86 @@ int     AppContext::Init(const char * pszConfigFile)
         return -2;
     }
 
-    hook_coredump = parser.GetConfigInt("hook_coredump");
+    ////////////////////configcenter////////////////////////////
+    confcenter.ip = parser.GetConfigString("configcenter:ip");
+    confcenter.port = parser.GetConfigInt("configcenter:port");
+    confcenter.dbidx = parser.GetConfigInt("configcenter:dbidx");
+    ConfigCenter & cc = ConfigCenter::Instance();
+    int ret = cc.Init(confcenter.ip.c_str(), confcenter.port,confcenter.dbidx);
+    if(ret)
+    {
+        LOG_ERROR("config center init error !");
+        return -1;
+    }
+    //////////////////////////////////////////////////////////////
+    
     
     /////////////////////////common config////////////////////////
     tickCountUs = parser.GetConfigInt("tick_count_us",100);//10000
     tickPollCount = parser.GetConfigInt("tick_poll_num",1);//
-
     uniq_process = parser.GetConfigInt("uniq_process",0);
     lockFilePath = parser.GetConfigString("file_lock_path","./lock.file");;
     daemon = parser.GetConfigInt("daemon",0);
+    hook_coredump = parser.GetConfigInt("hook_coredump");
 
-    //channel
+
+    ////////////////channel//////////////////////////////////////////////
     int ichnlNum = parser.GetConfigInt("channel:num",-1);
-    ChannelConfig      chnl;
-    char keyBuffer[64];
-    channels.clear();
-    channelName  = parser.GetConfigString("channel:name");
-    localChannelAddr = parser.GetConfigString("channel:local");    
-    for(int i = 0;i < ichnlNum ; ++i)
+    if( ichnlNum > 0 )
     {
-        SNPRINTF(keyBuffer,sizeof(keyBuffer),"channel:info#%d:id",i+1);
-        chnl.id = parser.GetConfigInt(keyBuffer,-1);
-        if(chnl.id < 0)
+        ChannelConfig      chnl;
+        char keyBuffer[64];
+        channels.clear();
+        channelName  = parser.GetConfigString("channel:name");
+        localChannelName = parser.GetConfigString("channel:local:name");    
+        localChannelAddr = parser.GetConfigString("channel:local:addr");    
+        const char* pszLocalChAddr = cc.GetConfig(localChannelName.c_str());
+        if(!pszLocalChAddr)
         {
-            LOG_ERROR("get config key = %s error !",keyBuffer);
-            return -1;
+            LOG_INFO("local addr not found in config center , register it !");            
+            if(localChannelAddr.length() > 0)
+            {
+                cc.SetConfig(localChannelName.c_str(),localChannelAddr.c_str());
+            }
+            else
+            {
+               return -1;
+            }
         }
-        SNPRINTF(keyBuffer,sizeof(keyBuffer),"channel:info#%d:addr",i+1);
-        chnl.channelAddr = parser.GetConfigString(keyBuffer);
-        if(strlen(chnl.channelAddr.c_str()) < 1)
+        else
         {
-            LOG_ERROR("get config key = %s error !",keyBuffer);
-            return -1;
+            LOG_INFO("get cc local name = %s , addr = %s",
+                    localChannelName.c_str(),pszLocalChAddr);
+            if(localChannelAddr != string(pszLocalChAddr))
+            {
+                LOG_ERROR("local addr not match cc !",pszLocalChAddr);
+                return -1;
+            }
         }
-        channels.push_back(chnl);
-    }
-
-
+            
+        for(int i = 0;i < ichnlNum ; ++i)
+        {
+            SNPRINTF(keyBuffer,sizeof(keyBuffer),"channel:info#%d:name",i+1);
+            chnl.name = parser.GetConfigString(keyBuffer);
+            const char* pszChName = cc.GetConfig(chnl.name.c_str());
+            SNPRINTF(keyBuffer,sizeof(keyBuffer),"channel:info#%d:addr",i+1);
+            chnl.channelAddr = parser.GetConfigString(keyBuffer);
+            if(!pszChName)
+            {
+                LOG_ERROR("get config key = %s error and not found in cc !",keyBuffer);
+                return -1;                
+            }            
+            if(chnl.channelAddr  != string(pszChName))
+            {
+                LOG_ERROR("not match chanenl name = %s name = %s , %s use cc",
+                         chnl.name.c_str(),chnl.channelAddr.c_str(),pszChName);
+            }
+            chnl.channelAddr = pszChName;
+            /////////////////////////////////////////////////////////////////////////
+            
+            channels.push_back(chnl);
+        }  
+    }      
     /////////////////////////////////////////////////////////////
     closing = 0;
     runTime.tv_sec = 0;
@@ -149,7 +198,9 @@ int     AppContext::Init(const char * pszConfigFile)
 
     //custom config            
 
-    return OnInit();
+    ret = OnInit();
+    cc.Destroy();
+    return ret;
 }
 
 void    AppContext::OnGenerateDefaultConfig()

@@ -5,10 +5,16 @@
 
 struct ChannelConfig
 {
-    //id = 0 is local listen channel , otherwise connecting channel
-    int     id;
+    string  name;
     string  channelAddr;
 };
+struct ConfigCenterAddr
+{
+    string  ip;
+    int     port;   
+    int     dbidx;
+};
+
 
 class AppContext
 {
@@ -16,6 +22,7 @@ public:
     IniConfigParser     parser;
     //////////////////////////////////////////////
     string                     channelName;
+    string                     localChannelName;
     string                     localChannelAddr;
     std::vector<ChannelConfig> channels;
     int       tickCountUs;
@@ -27,7 +34,8 @@ public:
     int       daemon;
     ///////////////////////////////////////
     int       closing;
-    struct    timeval  runTime;   //this tick time        
+    struct    timeval   runTime;   //this tick time        
+    ConfigCenterAddr    confcenter;
 public:
     //read config and init the common attr
     int     Init(const char * pszConfigFile);

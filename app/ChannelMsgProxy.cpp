@@ -52,18 +52,25 @@ int     ChannelMsgProxy::Init(AppContext * pCtx)
         LOG_ERROR("channel mgr init error !");
         return -1;
     }
+    ChannelAgentMgr::Instance().GetChannel(0)->SetIDName(pCtx->localChannelName.c_str());
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+
     //build all dst chennel , map id . from config file
     LOG_INFO("add channel count = %d",pCtx->channels.size());
     for(uint i = 0;i < pCtx->channels.size(); ++i)
     {
         ChannelConfig & chnl = pCtx->channels[i];
-        LOG_INFO("add channel id = %d addr = %s",chnl.id,chnl.channelAddr.c_str());
-        if(ChannelAgentMgr::Instance().AddChannel(chnl.id,false,
+        //add name map id
+        int chid = ChannelAgentMgr::Instance().GenerateChannelID(chnl.name);
+        LOG_INFO("add channel name = %s addr = %s id = %d",chnl.name.c_str(),chnl.channelAddr.c_str(),chid);
+        if(ChannelAgentMgr::Instance().AddChannel(chid,false,
             pCtx->channelName.c_str(),chnl.channelAddr.c_str()) ) 
         {
-            LOG_ERROR("chnnel create error id = %d",chnl.id);
+            LOG_ERROR("chnnel create error id = %d",chid);
             return -1;
         }
+        ChannelAgentMgr::Instance().GetChannel(chid)->SetIDName(chnl.name.c_str());
     }
     return 0;
 }

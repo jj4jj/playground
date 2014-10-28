@@ -19,6 +19,7 @@ link_directories(
 	${PROJECT_SOURCE_DIR}/lib
 	/usr/lib
 	${INIPARSER_HOME}	
+	${HIREDIS_HOME}
 )
 
 #it will generate a exe
@@ -31,6 +32,7 @@ target_link_libraries(gate
 	playground_app
 	playground_component
 	channel
+	datacenter
 	ssukits_net
 	ssukits_utility
 	ssukits_ipc
@@ -38,6 +40,7 @@ target_link_libraries(gate
 	playground_proto_gate
 	zmq
 	rt
+	libhiredis.a
 	iniparser
 	protobuf
 )

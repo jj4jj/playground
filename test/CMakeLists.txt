@@ -58,6 +58,8 @@ target_link_libraries(app_test
 	playground_app
 	playground_component
 	channel
+	datacenter
+	libhiredis.a	
 	ssukits_ipc
 	ssukits_utility
 	ssukits_net
@@ -213,7 +215,7 @@ ADD_EXECUTABLE(confcenter_test
 target_link_libraries(confcenter_test
 	datacenter
 	ssukits_base
-	libhiredis.a
+	libhiredis.a	
 	rt
 	dl
 )

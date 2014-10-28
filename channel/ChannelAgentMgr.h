@@ -16,12 +16,15 @@ private :
     ChannelAgentMgr();
     ~ChannelAgentMgr();
 public:
+    int             GenerateChannelID(const string & name);
     int             Init(const char * pszName,const char* pszAddr,
                          ChannelMessageDispatcherPtr  _ptrDispatcher,
                          int iMaxLocalChannel = 1);
     void            Destroy();
     int             AddChannel(int id,bool local,const char * pszName,const char* pszAddr);
     ChannelAgent*   GetChannel(int id);
+    ChannelAgent*   GetChannel(const string & name);
+    int             GetChannelID(const string & name);
     int             Polling(int timeout = 10);
     ChannelMessageDispatcher *  GetDispatcher(){return ptrDispatcher.get();}
 private:
@@ -32,6 +35,8 @@ private:
     zmq_pollitem_t* zpollitems;
     int             nzpollitem;
     ChannelMessageDispatcherPtr  ptrDispatcher;
+    int                          m_iNextGenID;
+    unordered_map<string,int>    m_mpNameChnlID;    
 };
 
 

@@ -20,6 +20,8 @@ int main()
     cc.SetConfigInt("num",13, "num");
     n = cc.GetConfigInt("num",23,"num");
     printf("get num = %d\n",n);
+
+    cc.RemoveConfig("hello");
     return -1;
 }
 

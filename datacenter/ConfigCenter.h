@@ -14,7 +14,7 @@ private:
     DeclareSingltonSupport(ConfigCenter)
 public:
     //1.5
-    int     Init(const char* pszHostName = "127.0.0.1",int port = 6379,int timeout = 1500);
+    int     Init(const char* pszHostName = "127.0.0.1",int port = 6379,int dbidx = 0,int timeout = 1500);
     void    Destroy();
     int     HeartBeat();
     const   char* GetConfig(const char* pszKey,const char* pszConfigName = "");    

@@ -76,7 +76,6 @@ void           MysqlAgent::WaitRequest()
     statechglock.Lock();
     statechg.WaitMutex(statechglock);
     statechglock.Unlock();
-    //pthread_cond_wait(&stateChg,&stateChgMutext);
 }
 MysqlRequest * MysqlAgent::GetRequest(MysqlRequest & req)
 {
@@ -112,6 +111,9 @@ void * MysqlAgent::Working(void*  p)
     {\
        break;\
     }
+
+    //TODO CHECK PING PANG ?
+    ///////////////////////////////////////////
     MysqlRequest * r;
     while(!agent->close)
     {
