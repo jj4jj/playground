@@ -57,9 +57,9 @@ void    GateServerContext::OnGenerateDefaultConfig()
     {"console:port","52000"},
     {"channel:num","1"}, //agent zone areas
     {"channel:local:addr","tcp://127.0.0.1:52010"},
-    {"channel:local:name","gate:1"},        
+    {"channel:local:name","name://gate:1"},        
     {"channel:info#1:name","agent:1"}, //agent zone areas
-    {"channel:info#1:addr","-"}, //agent zone areas
+    {"channel:info#1:addr","name://agent:1"}, //agent zone areas
     /////////////add default config above////////////////
     {NULL,NULL}};
     int i = 0;
