@@ -226,8 +226,8 @@ ADD_EXECUTABLE(mmpool_test
 	${CMAKE_CURRENT_SOURCE_DIR}/TestMMPool.cpp
 )
 target_link_libraries(mmpool_test
-	ssukits_base
 	ssukits_algo
+	ssukits_base
 	rt
 	dl
 )
