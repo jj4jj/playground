@@ -18,7 +18,6 @@ a simple online general game server demo
 
 ##doing
 * bugfixing
-* thinking
 
 ##todo
 * benchmark of channel and gate and agent server
