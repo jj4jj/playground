@@ -20,6 +20,7 @@ a simple online general game server demo
 * bugfixing
 
 ##todo
+
 * benchmark of channel and gate and agent server
 * lbs , rank , pay , oss , auth ,
 * exception sth to be cosidered
