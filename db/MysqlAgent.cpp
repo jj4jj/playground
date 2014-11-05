@@ -29,7 +29,7 @@ int    MysqlAgent::Request(const MysqlRequest & req)
     reqlock.Lock();
     reqQueue.push_back(MysqlRequestPtr(new MysqlRequest(req)));
     reqlock.Unlock();
-    statechg.NotifyAll();
+    statechg.Notify();
     return 0;
 }
 
