@@ -74,7 +74,7 @@ void           MysqlAgent::WaitRequest()
 {
     LOG_DEBUG("waiting request !");
     statechglock.Lock();
-    statechg.WaitMutex(statechglock);
+    statechg.Wait(statechglock);
     statechglock.Unlock();
 }
 MysqlRequest * MysqlAgent::GetRequest(MysqlRequest & req)
